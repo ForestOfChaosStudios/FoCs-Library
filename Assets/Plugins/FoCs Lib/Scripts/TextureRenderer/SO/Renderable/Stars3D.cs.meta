@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ac83937847f0d85448d997f923f8bef5
+timeCreated: 1499430283
+licenseType: Pro
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - FOV: {fileID: 11400000, guid: 1885fade0e720ea4cb7476b4d725b0c3, type: 2}
+  - ImageDataGlobal: {fileID: 11400000, guid: 0c88c9ac26b47ac45b9d87215f6f932e, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
