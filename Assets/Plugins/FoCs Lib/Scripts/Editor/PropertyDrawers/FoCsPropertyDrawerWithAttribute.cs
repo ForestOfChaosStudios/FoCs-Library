@@ -11,38 +11,25 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		public static float SingleLinePlusPadding { get; } = FoCsEditorUtilities.SingleLinePlusPadding;
 		public static float IndentSize { get; } = FoCsEditorUtilities.IndentSize;
 
-		public static float PropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			return EditorGUI.GetPropertyHeight(property, label);
-		}
+		public static float PropertyHeight(SerializedProperty property, GUIContent label) => EditorGUI.GetPropertyHeight(property, label);
 
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			return PropertyHeight(property, label);
-		}
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => PropertyHeight(property, label);
 	}
 
 	public class FoCsPropertyDrawer<T>: FoCsPropertyDrawer
 	{
-		public T GetOwner(SerializedProperty prop)
-		{
-			return prop.GetTargetObjectOfProperty<T>();
-		}
+		public T GetOwner(SerializedProperty prop) => prop.GetTargetObjectOfProperty<T>();
 	}
 
-	public class FoCsPropertyDrawerWithAttribute<A>: FoCsPropertyDrawer where A: PropertyAttribute
+	public class FoCsPropertyDrawerWithAttribute<A>: FoCsPropertyDrawer
+		where A: PropertyAttribute
 	{
-		public A GetAttribute
-		{
-			get { return (A)attribute; }
-		}
+		public A GetAttribute => (A)attribute;
 	}
 
-	public class FoCsPropertyDrawerWithAttribute<T, A>: FoCsPropertyDrawer<T> where A: PropertyAttribute
+	public class FoCsPropertyDrawerWithAttribute<T, A>: FoCsPropertyDrawer<T>
+		where A: PropertyAttribute
 	{
-		public A GetAttribute
-		{
-			get { return (A)attribute; }
-		}
+		public A GetAttribute => (A)attribute;
 	}
 }

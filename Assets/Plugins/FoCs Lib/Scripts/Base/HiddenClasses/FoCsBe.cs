@@ -1,7 +1,7 @@
 ﻿using ForestOfChaosLib.Components.Linker;
 using UnityEngine;
 
-namespace ForestOfChaosLib.HiddenClasses
+namespace ForestOfChaosLib.Base.HiddenClasses
 {
 	public partial class FoCsBe: MonoBehaviour
 	{

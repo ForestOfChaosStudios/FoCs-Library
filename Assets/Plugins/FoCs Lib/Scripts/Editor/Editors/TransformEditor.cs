@@ -1,110 +1,106 @@
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.UnityScriptsExtensions;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Editors
 {
 	[CustomEditor(typeof(Transform))]
-	public class TransformEditor: UnityEditor.Editor
+	public class TransformEditor: FoCsEditor<Transform>
 	{
 		private static bool scaleToggle;
 		private static float scaleAmount = 1;
+
+		private static readonly GUIContent ResetContent = new GUIContent("Reset Transform", "Reset Transforms in global space");
+		private static readonly GUIContent ResetLocalContent = new GUIContent("Reset Local Transform", "Reset Transforms in local space");
+
+		public override bool ShowCopyPasteButtons => true;
 
 		public override bool UseDefaultMargins() => false;
 
 		public override void OnInspectorGUI()
 		{
-			var transform = target as Transform;
+			serializedObject.Update();
+			var transform = Target;
 
-			//Horizontal Scope
-			////An Indented way of using Unitys Scopes
-
-			EditorHelpers.CopyPastObjectButtons(serializedObject.targetObject, new[] {new EditorHelpers.HeaderButton {OnDisplay = DisplayExtraHeaderButtons}});
+			DoDrawHeader();
 			using(EditorDisposables.Indent())
 			{
-				//Vertical Scope
-				////An Indented way of using Unitys Scopes
-				using(EditorDisposables.VerticalScope())
-				{
-					if((scaleToggle = EditorGUILayout.Foldout(scaleToggle, "Scale Presets")))
-						ScaleBtnsEnabled();
-				}
-
-				EditorHelpers.Label(transform.parent == null? "Transform" : "Local Transform");
-
-				var localPosition = EditorHelpers.DrawVector3("Position", transform.localPosition, Vector3.zero, transform);
-				var localEulerAngles = EditorHelpers.DrawVector3("Rotation", transform.localEulerAngles, Vector3.zero, transform);
-
-				var localScale = EditorHelpers.DrawVector3("Scale   ", transform.localScale, Vector3.one, transform);
-				if(transform.localEulerAngles != localEulerAngles)
-				{
-					Undo.RecordObject(transform, "localEulerAngles Changed");
-					transform.localEulerAngles = localEulerAngles;
-				}
-				if(transform.localPosition != localPosition)
+				EditorGUILayout.LabelField(transform.parent == null?
+											   "Transform" :
+											   "Local Transform");
+				bool guiChanged;
+				var localPosition = EditorHelpers.DrawVector3("Position", transform.localPosition, Vector3.zero, transform, out guiChanged);
+				if(guiChanged)
 				{
 					Undo.RecordObject(transform, "localPosition Changed");
 					transform.localPosition = localPosition;
 				}
-				if(transform.localScale != localScale)
+
+				var localEulerAngles = EditorHelpers.DrawVector3("Rotation", transform.localEulerAngles, Vector3.zero, transform, out guiChanged);
+				if(guiChanged)
+				{
+					Undo.RecordObject(transform, "localEulerAngles Changed");
+					transform.localEulerAngles = localEulerAngles;
+				}
+
+				var localScale = EditorHelpers.DrawVector3("Scale", transform.localScale, Vector3.one, transform, out guiChanged);
+				if(guiChanged)
 				{
 					Undo.RecordObject(transform, "localScale Changed");
 					transform.localScale = localScale;
 				}
-
+				using(EditorDisposables.VerticalScope())
+				{
+					if(scaleToggle = EditorGUILayout.Foldout(scaleToggle, "Scale Options"))
+						ScaleBtnsEnabled();
+				}
 				serializedObject.ApplyModifiedProperties();
 			}
 		}
 
-
-		private void DisplayExtraHeaderButtons()
+		protected override void DoDrawHeader()
 		{
-			var transform = target as Transform;
-			var ResetContent = new GUIContent("Reset Transform", "Reset Transforms in global space");
-			var ResetLocalContent = new GUIContent("Reset Local Transform", "Reset Transforms in local space");
-			if(GUILayout.Button(ResetContent, EditorStyles.toolbarButton))
+			using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
 			{
-				Undo.RecordObject(transform, "ResetPosRotScale");
-				transform.ResetPosRotScale();
-			}
-			if(GUILayout.Button(ResetLocalContent, EditorStyles.toolbarButton))
-			{
-				Undo.RecordObject(transform, "ResetLocalPosRotScale");
-				transform.ResetLocalPosRotScale();
+				var transform = Target;
+				if(GUILayout.Button(ResetContent, EditorStyles.toolbarButton))
+				{
+					Undo.RecordObject(transform, "ResetPosRotScale");
+					transform.ResetPosRotScale();
+				}
+				if(GUILayout.Button(ResetLocalContent, EditorStyles.toolbarButton))
+				{
+					Undo.RecordObject(transform, "ResetLocalPosRotScale");
+					transform.ResetLocalPosRotScale();
+				}
+				DrawCopyPasteButtons();
 			}
 		}
 
 		private void ScaleBtnsEnabled()
 		{
-			//Vertical Scope
-			////An Indented way of using Unitys Scopes
-			using(EditorDisposables.VerticalScope(GUI.skin.box))
+			ScaleArea();
+			using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
 			{
-				ScaleArea();
-				//Horizontal Scope
-				////An Indented way of using Unitys Scopes
-				using(EditorDisposables.HorizontalScope())
-				{
-					ScaleBtn(0.5f);
-					ScaleBtn(1);
-					ScaleBtn(2);
-					ScaleBtn(5);
-					ScaleBtn(10);
-					ScaleBtn(20);
-					ScaleBtn(50);
-					ScaleBtn(100);
-				}
+				ScaleBtn(0.5f);
+				ScaleBtn(1);
+				ScaleBtn(2);
+				ScaleBtn(5);
+				ScaleBtn(10);
+				ScaleBtn(20);
+				ScaleBtn(50);
+				ScaleBtn(100);
 			}
 		}
 
 		private void ScaleBtn(float multi = 1)
 		{
-			var resetContent = new GUIContent(string.Format("{0}x", multi), string.Format("Resets the vector to ({0},{0},{0})", multi));
+			var resetContent = new GUIContent($"{multi}x", $"Sets the Scale to ({multi},{multi},{multi})");
 
-			if(GUILayout.Button(resetContent))
+			if(GUILayout.Button(resetContent, EditorStyles.toolbarButton))
 			{
-				var transform = target as Transform;
+				var transform = Target;
 				Undo.RecordObject(transform, "Scale reset");
 				transform.localScale = Vector3.one * multi;
 				scaleAmount = transform.localScale.x;
@@ -113,25 +109,21 @@ namespace ForestOfChaosLib.Editor.Editors
 
 		private void ScaleArea()
 		{
-			var transform = target as Transform;
-			//Horizontal Scope
-			////An Indented way of using Unitys Scopes
-			using(EditorDisposables.HorizontalScope())
+			var transform = Target;
+
+			using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
 			{
 				var content = new GUIContent("Scale amount", "Set amount to uniformly scale the object");
-				scaleAmount = EditorGUILayout.FloatField(content, scaleAmount);
-				var scaleContent = new GUIContent("Set Scale", string.Format("Sets the scale ({0},{0},{0})", scaleAmount));
-				if(GUILayout.Button(scaleContent))
+				scaleAmount = EditorGUILayout.FloatField(content, scaleAmount, EditorStyles.toolbarTextField);
+				var scaleContent = new GUIContent("Set Scale", $"Sets the scale ({scaleAmount},{scaleAmount},{scaleAmount})");
+				if(GUILayout.Button(scaleContent, EditorStyles.toolbarButton))
 				{
 					Undo.RecordObject(transform, "Scale set");
 					transform.localScale = Vector3.one * scaleAmount;
 				}
 				var scaleTimesContent = new GUIContent("Times Scale",
-													   string.Format("Sets the scale ({0},{1},{2})",
-																	 transform.position.x * scaleAmount,
-																	 transform.position.y * scaleAmount,
-																	 transform.position.z * scaleAmount));
-				if(GUILayout.Button(scaleTimesContent))
+													   $"Sets the scale ({transform.position.x * scaleAmount},{transform.position.y * scaleAmount},{transform.position.z * scaleAmount})");
+				if(GUILayout.Button(scaleTimesContent, EditorStyles.toolbarButton))
 				{
 					Undo.RecordObject(transform, "Scale set");
 					transform.localScale *= scaleAmount;

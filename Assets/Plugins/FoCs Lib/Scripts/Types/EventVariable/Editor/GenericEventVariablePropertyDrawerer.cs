@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLib.EventVariable.Editor
+namespace ForestOfChaosLib.Types.EventVariable.Editor
 {
 	public class GenericEventVariablePropertyDrawerer<T>: FoCsPropertyDrawer<GenericEventVariable<T>>
 	{

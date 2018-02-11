@@ -1,4 +1,5 @@
-﻿using ForestOfChaosLib.AdvVar.Base;
+﻿/*
+using ForestOfChaosLib.AdvVar.Base;
 using UnityEngine;
 using UnityEditor;
 
@@ -18,3 +19,4 @@ namespace ForestOfChaosLib.AdvVar.Editor
 		}
 	}
 }
+*/

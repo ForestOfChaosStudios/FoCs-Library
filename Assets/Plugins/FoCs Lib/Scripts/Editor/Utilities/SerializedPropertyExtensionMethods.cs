@@ -13,6 +13,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 			var iteratorNext = property.Next(true);
 			if(iteratorNext)
 			{
+				yield return iterator.Copy();
 				do
 				{
 					if(property.depth == iterator.depth)
@@ -23,7 +24,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 			}
 		}
 
-		public static IEnumerable<SerializedProperty> Properties(this SerializedObject serializedObject)
+		public static IEnumerable<SerializedProperty> Properties(this SerializedObject serializedObject, bool enterChildren = false)
 		{
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);
@@ -31,7 +32,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 			{
 				yield return iterator.Copy();
 			}
-			while(iterator.NextVisible(false));
+			while(iterator.NextVisible(enterChildren));
 		}
 
 		public static int GetChildrenCount(this SerializedProperty property) => property.GetChildren().Count();

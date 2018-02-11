@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 {
-	public class ObjectDrawer: FoCsPropertyDrawer
+	public class ObjectReferenceDrawer: FoCsPropertyDrawer
 	{
-		internal static readonly GUIContent foldoutGUIContent = new GUIContent("", "Open up the References Data");
+		protected static readonly GUIContent foldoutGUIContent = new GUIContent("", "Open up the References Data");
 
-		private bool foldOut;
-		private SerializedObject serializedObject;
+		protected bool foldOut;
+		protected SerializedObject serializedObject;
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -32,8 +32,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 			foldOut = EditorGUI.Foldout(position.SetHeight(SingleLine).SetWidth(SingleLine), foldOut, foldoutGUIContent);
 			if(!foldOut)
 				return;
-				if(Event.current.type == EventType.repaint)
-					GUI.skin.box.Draw(position.ChangeY(-1), false, false, false, false);
+			if(Event.current.type == EventType.repaint)
+				GUI.skin.box.Draw(position.ChangeY(-1).MoveWidth(2).MoveHeight(2), false, false, false, false);
 			using(var changeCheckScope = EditorDisposables.ChangeCheck())
 			{
 				using(EditorDisposables.Indent())
@@ -51,18 +51,18 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 			}
 		}
 
-		private static Rect DrawSubProp(SerializedProperty prop, Rect drawPos)
+		protected static Rect DrawSubProp(SerializedProperty prop, Rect drawPos)
 		{
 			var height = EditorGUI.GetPropertyHeight(prop);
 			drawPos.height = height;
 			EditorGUI.PropertyField(drawPos, prop, prop.isExpanded);
-			drawPos.y += height;
+			drawPos.y += height + Padding;
 			return drawPos;
 		}
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			if(serializedObject == null)
+			if(serializedObject == null || !foldOut)
 				return SingleLine;
 
 			var iterator = serializedObject.GetIterator();
@@ -70,14 +70,12 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 
 			if(!foldOut)
 				return SingleLine;
-			var height = 4.5f;
+			var height = 0f;
 			iterator.Next(true);
 			do
 			{
-				if(FoCsEditor.IsPropertyHidden(iterator))
-					continue;
-
-				height += EditorGUI.GetPropertyHeight(iterator, iterator.isExpanded);
+				if(!FoCsEditor.IsPropertyHidden(iterator))
+					height += EditorGUI.GetPropertyHeight(iterator, iterator.isExpanded) + Padding;
 			}
 			while(iterator.NextVisible(false));
 			return height;

@@ -1,4 +1,4 @@
-using ForestOfChaosLib.HiddenClasses;
+using ForestOfChaosLib.Base.HiddenClasses;
 using UnityEngine;
 
 namespace ForestOfChaosLib

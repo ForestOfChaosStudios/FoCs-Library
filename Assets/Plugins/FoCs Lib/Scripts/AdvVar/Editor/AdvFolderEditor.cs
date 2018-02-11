@@ -14,6 +14,7 @@ using Object = UnityEngine.Object;
 
 namespace ForestOfChaosLib.AdvVar.Editor
 {
+	//TODO: look into making this editor better!!!
 	[CustomEditor(typeof(AdvFolder))]
 	[CanEditMultipleObjects]
 	public class AdvFolderEditor: FoCsEditor

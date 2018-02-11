@@ -1,6 +1,5 @@
-using System;
+using ForestOfChaosLib.Editor.ImGUI;
 using ForestOfChaosLib.Editor.Utilities;
-using ForestOfChaosLib.CSharpExtensions;
 using UnityEditor;
 using UnityEngine;
 using Obj = UnityEngine.Object;
@@ -9,215 +8,126 @@ namespace ForestOfChaosLib.Editor
 {
 	public class EditorHelpers: UnityEditor.Editor
 	{
-		public static Vector3 DrawVector3(string label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn)
-		{
-			return DrawVector3(new GUIContent(label, "The vectors X,Y,Z values."), vec, defaultValue, objectIAmOn);
-		}
+		private static readonly GUIContent CP_CopyContent = new GUIContent("Copy Data", "Copies the data.");
+		private static readonly GUIContent CP_EditorCopyContent = new GUIContent("(Editor) Copy Data", "Copies the data.");
 
-		public static Vector3 DrawVector3(GUIContent label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn)
+		private static readonly GUIContent CopyContent = new GUIContent("C", "Copies the vectors data.");
+		private static readonly GUIContent PasteContent = new GUIContent("P", "Pastes the vectors data.");
+		private static readonly GUIContent ResetContent = new GUIContent("R", "Resets the vectors data.");
+
+
+		public static Vector3 DrawVector3(string label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn,out bool GUIChanged) =>
+				DrawVector3(new GUIContent(label, "The vectors X,Y,Z values."), vec, defaultValue, objectIAmOn,out GUIChanged);
+
+		public static Vector3 DrawVector3(GUIContent label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn,out bool GUIChanged)
 		{
-			//Horizontal Scope
-			////An Indented way of using Unitys Scopes
 			using(EditorDisposables.HorizontalScope())
 			{
-				vec = EditorGUILayout.Vector3Field(label, vec);
+				using(var cc = EditorDisposables.ChangeCheck())
+				{
+					vec = EditorGUILayout.Vector3Field(label, vec);
+					GUIChanged = cc.changed;
+				}
 				var cachedGuiColor = GUI.color;
+				using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
+				{
+					if(GUILayout.Button(ResetContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+					{
+						Undo.RecordObject(objectIAmOn, "Vector 3 Reset");
+						vec = defaultValue;
+						GUIChanged = true;
+					}
+					if(GUILayout.Button(CopyContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+					{
+						CopyPasteUtility.EditorCopy(vec);
+					}
 
-				var resetContent = new GUIContent("R", "Resets the vector to  " + defaultValue);
-				if(GUILayout.Button(resetContent, GUILayout.Width(25)))
-				{
-					Undo.RecordObject(objectIAmOn, "Vector 3 Reset");
-					vec = defaultValue;
+					if(GUILayout.Button(PasteContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+					{
+						Undo.RecordObject(objectIAmOn, "Vector 3 Paste");
+						vec = CopyPasteUtility.Paste<Vector3>();
+						GUIChanged = true;
+					}
+					GUI.color = cachedGuiColor;
 				}
-				var copyContent = new GUIContent("C", "Copies the vectors data.");
-				if(GUILayout.Button(copyContent, GUILayout.Width(25)))
-					CopyPasteUtility.EditorCopy(vec);
-				var pasteContent = new GUIContent("P", "Pastes the vectors data.");
-				if(GUILayout.Button(pasteContent, GUILayout.Width(25)))
-				{
-					Undo.RecordObject(objectIAmOn, "Vector 3 Paste");
-					vec = CopyPasteUtility.Paste<Vector3>();
-				}
-				GUI.color = cachedGuiColor;
 			}
 			return vec;
 		}
 
-		public static void Label(string label)
+		public static Obj CopyPastObjectButtons(Obj obj)
 		{
-			EditorGUILayout.LabelField(label, GUILayout.Width(GetStringLengthinPix(label)));
-		}
+			var canCopy = CopyPasteUtility.CanCopy(obj);
+			var canEditorCopy = CopyPasteUtility.CanEditorCopy(obj);
 
-		public static void Label(Rect position, string label)
-		{
-			EditorGUI.LabelField(position, label);
-		}
-
-		public static Obj CopyPastObjectButtons(Obj obj, HeaderButton headerButtons, bool after = false)
-		{
-			return CopyPastObjectButtons(obj, headerButtons.ToArray(), after);
-		}
-
-		public static Obj CopyPastObjectButtons(Obj obj, HeaderButton[] headerButtons = null, bool after = false)
-		{
-			bool canCopy = CopyPasteUtility.CanCopy(obj);
-			bool canEditorCopy = CopyPasteUtility.CanEditorCopy(obj);
-			bool hasHeaderButtons = headerButtons != null;
-
-			using(canCopy || canEditorCopy|| hasHeaderButtons?
-				EditorDisposables.HorizontalScope(EditorStyles.toolbar):
-				EditorDisposables.HorizontalScope())
+			if(canCopy)
 			{
-				if(!after)
+				if(GUILayout.Button(CP_CopyContent, EditorStyles.toolbarButton))
+					CopyPasteUtility.Copy(obj);
+				var isType = CopyPasteUtility.IsTypeInBuffer(obj);
+				using(EditorDisposables.ColorChanger(isType?
+														 GUI.color :
+														 Color.red))
 				{
-					if(!headerButtons.IsNull())
-					{
-						foreach(var headerButton in headerButtons)
-						{
-							headerButton.OnDisplay.Trigger();
-						}
-					}
-				}
-				if(canCopy)
-				{
-					var CopyContent = new GUIContent("Copy Data", "Copies the data.");
-					if(GUILayout.Button(CopyContent, EditorStyles.toolbarButton))
-						CopyPasteUtility.Copy(obj);
-					var isType = CopyPasteUtility.IsTypeInBuffer(obj);
-					using(EditorDisposables.ColorChanger(isType? GUI.color : Color.red))
-					{
-						var PasteContent = new GUIContent("Paste Data",
-														  "Pastes the data.\n" +
-														  CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 2048? 2048 : CopyPasteUtility.CopyBuffer.Length));
-
-						if(!isType)
-						{
-							PasteContent.tooltip = "Warning, this will attempt to paste any feilds with the same name.\n" + PasteContent.tooltip;
-						}
-
-						if(GUILayout.Button(PasteContent, EditorStyles.toolbarButton))
-						{
-							Undo.RecordObject(obj, "Before Paste Settings");
-							CopyPasteUtility.Paste(ref obj);
-						}
-
-						return obj;
-					}
-				}
-				if(canEditorCopy)
-				{
-					var CopyContent = new GUIContent("(Editor) Copy Data", "Copies the data.");
-
-					if(GUILayout.Button(CopyContent, EditorStyles.toolbarButton))
-						CopyPasteUtility.EditorCopy(obj);
-					var PasteContent = new GUIContent("(Editor) Paste Data",
+					var PasteContent = new GUIContent("Paste Data",
 													  "Pastes the data.\n" +
-													  CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 2048? 2048 : CopyPasteUtility.CopyBuffer.Length));
+													  CopyPasteUtility.CopyBuffer.Substring(0,
+																							CopyPasteUtility.CopyBuffer.Length >= 2048?
+																								2048 :
+																								CopyPasteUtility.CopyBuffer.Length));
 
-					var isType = CopyPasteUtility.IsTypeInBuffer(obj);
-					using(EditorDisposables.ColorChanger(isType? GUI.color : Color.red))
+					if(!isType)
+						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;
+
+					if(GUILayout.Button(PasteContent, EditorStyles.toolbarButton))
 					{
-						if(!isType)
-						{
-							PasteContent.tooltip = "Warning, this will attempt to paste any feilds with the same name.\n" + PasteContent.tooltip;
-						}
-
-						if(GUILayout.Button(PasteContent, EditorStyles.toolbarButton))
-						{
-							Undo.RecordObject(obj, "Before Paste Settings");
-							CopyPasteUtility.EditorPaste(ref obj);
-						}
+						Undo.RecordObject(obj, "Before Paste Settings");
+						CopyPasteUtility.Paste(ref obj);
 					}
 
 					return obj;
 				}
-				if(after)
+			}
+			if(canEditorCopy)
+			{
+				if(GUILayout.Button(CP_EditorCopyContent, EditorStyles.toolbarButton))
+					CopyPasteUtility.EditorCopy(obj);
+				var PasteContent = new GUIContent("(Editor) Paste Data",
+												  "Pastes the data.\n" +
+												  CopyPasteUtility.CopyBuffer.Substring(0,
+																						CopyPasteUtility.CopyBuffer.Length >= 2048?
+																							2048 :
+																							CopyPasteUtility.CopyBuffer.Length));
+
+				var isType = CopyPasteUtility.IsTypeInBuffer(obj);
+				using(EditorDisposables.ColorChanger(isType?
+														 GUI.color :
+														 Color.red))
 				{
-					if(headerButtons.IsNotNull())
+					if(!isType)
+						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;
+
+					if(GUILayout.Button(PasteContent, EditorStyles.toolbarButton))
 					{
-						foreach(var headerButton in headerButtons)
-						{
-							headerButton.OnDisplay.Trigger();
-						}
+						Undo.RecordObject(obj, "Before Paste Settings");
+						CopyPasteUtility.EditorPaste(ref obj);
 					}
 				}
+
 				return obj;
 			}
-		}
-
-		public class HeaderButton
-		{
-			public Action OnDisplay;
-
-			public HeaderButton()
-			{
-
-			}
-
-			public HeaderButton(Action onDisplay)
-			{
-				OnDisplay = onDisplay;
-			}
-
-			public HeaderButton[] ToArray()
-			{
-				return new[] {this};
-			}
-
-			public static implicit operator HeaderButton(Action input)
-			{
-				return new HeaderButton {OnDisplay = input};
-			}
-
-			public static implicit operator HeaderButton[](HeaderButton input)
-			{
-				return new[] {input};
-			}
-		}
-
-		public static SerializedObject CopyPastObjectButtons(SerializedObject obj, HeaderButton[] headerButtons = null, bool after = false)
-		{
-			CopyPastObjectButtons(obj.targetObject, headerButtons, after);
 			return obj;
 		}
 
-		public static float GetStringLengthinPix(string str)
+		public static SerializedObject CopyPastObjectButtons(SerializedObject obj)
 		{
-			return str.EditorStringWidth();
+			CopyPastObjectButtons(obj.targetObject);
+			return obj;
 		}
 
 		public static void CreateAndCheckFolder(string path, string dir)
 		{
 			if(!AssetDatabase.IsValidFolder(path + "/" + dir))
 				AssetDatabase.CreateFolder(path, dir);
-		}
-	}
-
-	public static class EditorClassExtensions
-	{
-		public static float EditorStringWidth(this string str)
-		{
-			return (str.Length * 8f) + 4f;
-		}
-
-		public static void DrawGUIContent(this GUIContent content)
-		{
-			EditorGUILayout.LabelField(content);
-		}
-
-		public static void DrawGUIContent(this GUIContent content, Rect pos)
-		{
-			EditorGUI.LabelField(pos, content);
-		}
-
-		public static void DrawProperty(this SerializedProperty prop, GUIContent content)
-		{
-			EditorGUILayout.PropertyField(prop, content);
-		}
-
-		public static void DrawProperty(this SerializedProperty prop, Rect pos, GUIContent content)
-		{
-			EditorGUI.PropertyField(pos, prop, content);
 		}
 	}
 }

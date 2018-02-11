@@ -1,7 +1,7 @@
 ﻿using ForestOfChaosLib.AdvVar.Base;
 using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.ImGUI;
-using ForestOfChaosLib.Editor.PropertyDrawers;
+using ForestOfChaosLib.Editor.PropertyDrawers.Types;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.UnityScriptsExtensions;
 using UnityEditor;
@@ -10,13 +10,13 @@ using UnityEngine;
 namespace ForestOfChaosLib.AdvVar.Editor
 {
 	[CustomPropertyDrawer(typeof(AdvVariable),true)]
-	public class AdvReferencePropertyDrawerBase: FoCsPropertyDrawer
+	public class AdvReferencePropertyDrawerBase: ObjectReferenceDrawer
 	{
 		internal const float WIDTH = 16f;
 		internal const string VARIABLE_STR = "Variable";
 		internal const string CONSTANT_VALUE_STR = "ConstantValue";
 		internal const string USE_CONSTANT_STR = "UseConstant";
-		internal static readonly GUIContent foldoutGUIContent = new GUIContent("", "Open up the References Data");
+
 		internal static readonly GUIContent localConstantGUIContent = new GUIContent("Use Local Constant", "Use Local Constant");
 		internal static readonly GUIContent globalReferenceGUIContent = new GUIContent("Use Global Reference", "Use Global Reference");
 
@@ -25,10 +25,6 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			localConstantGUIContent,
 			globalReferenceGUIContent
 		};
-
-		internal bool foldOut;
-		private SerializedObject serializedObject;
-
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -67,7 +63,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				if(foldOut)
 				{
 					if(Event.current.type == EventType.repaint)
-						GUI.skin.box.Draw(position.ChangeY(-1), false, false, false, false);
+						GUI.skin.box.Draw(position.ChangeY(-1).MoveWidth(4).MoveHeight(2).ChangeX(-1), false, false, false, false);
 
 					using(EditorDisposables.Indent())
 					{
@@ -93,38 +89,6 @@ namespace ForestOfChaosLib.AdvVar.Editor
 					}
 				}
 			}
-		}
-
-		private static Rect DrawSubProp(SerializedProperty prop, Rect drawPos)
-		{
-			var height = EditorGUI.GetPropertyHeight(prop);
-			drawPos.height = height;
-			EditorGUI.PropertyField(drawPos, prop, prop.isExpanded);
-			drawPos.y += height;
-			return drawPos;
-		}
-
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			if(serializedObject == null || !foldOut)
-				return SingleLine;
-
-			var iterator = serializedObject.GetIterator();
-			iterator.Next(true);
-
-			if(foldOut)
-			{
-				var height = 4.5f;
-				iterator.Next(true);
-				do
-				{
-					if(!FoCsEditor.IsPropertyHidden(iterator))
-						height += EditorGUI.GetPropertyHeight(iterator, iterator.isExpanded);
-				}
-				while(iterator.NextVisible(false));
-				return height;
-			}
-			return SingleLine;
 		}
 	}
 }
