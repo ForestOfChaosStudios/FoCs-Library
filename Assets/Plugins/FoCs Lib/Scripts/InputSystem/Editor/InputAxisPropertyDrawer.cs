@@ -97,7 +97,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			using(var horizontalScope = EditorDisposables.RectHorizontalScope(2, pos))
 			{
 				EditorGUI.LabelField(horizontalScope.GetNext(), ProgressBarContent);
-				EditorDrawersUtilities.DrawSplitProgressBar(horizontalScope.GetNext(), m_Value.Property.floatValue);
+				FoCsEditorUtilities.DrawSplitProgressBar(horizontalScope.GetNext(), m_Value.Property.floatValue);
 			}
 		}
 	}

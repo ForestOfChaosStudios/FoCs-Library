@@ -19,13 +19,12 @@ namespace ForestOfChaosLib.Generics
 				if(instance)
 					return instance;
 				instance = FindObjectOfType<S>();
-				if(!instance)
-				{
-					if(Application.isPlaying)
-						CreateInstance();
-					else
-						Debug.LogError($"Unable to create: {typeof(S)}. One Should be added to scene."); //Print error
-				}
+				if(instance)
+					return instance;
+				if(Application.isPlaying)
+					CreateInstance();
+				else
+					Debug.LogError($"Unable to create: {typeof(S)}. One Should be added to scene."); //Print error
 				return instance;
 			}
 		}

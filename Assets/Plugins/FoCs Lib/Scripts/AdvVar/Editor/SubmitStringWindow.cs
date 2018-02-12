@@ -1,15 +1,22 @@
 ﻿using System;
-using ForestOfChaosLib.Editor.Utilities;
-using ForestOfChaosLib.Editor.Windows;
 using ForestOfChaosLib.CSharpExtensions;
 using ForestOfChaosLib.Editor.ImGUI;
+using ForestOfChaosLib.Editor.Utilities;
+using ForestOfChaosLib.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.Editor
 {
+//TODO : Make this window better, GE add the ability to add extra functionality eg submit more data
 	public class SubmitStringWindow: Window<SubmitStringWindow>
 	{
+		private const string GUI_SELECTION_LABEL = "SubmitStringWindowDataField";
+
+		private static bool notSelectedLabel;
+
+		private SubmitStringArguments currentArguments;
+
 		private static void Init()
 		{
 			GetWindow();
@@ -22,11 +29,6 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			window.currentArguments = Args;
 			notSelectedLabel = false;
 		}
-
-		private static bool notSelectedLabel = false;
-
-		private SubmitStringArguments currentArguments;
-		private const string GUI_SELECTION_LABEL = "SubmitStringWindowDataField";
 
 		protected override void DrawGUI()
 		{
@@ -58,15 +60,15 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		public class SubmitStringArguments
 		{
-			public string WindowTitle;
-			public string Title;
-			public string SubmitMessage;
 			public string CancelMessage;
 
 			public string Data;
+			public Action<SubmitStringArguments> OnCancel;
 
 			public Action<SubmitStringArguments> OnSubmit;
-			public Action<SubmitStringArguments> OnCancel;
+			public string SubmitMessage;
+			public string Title;
+			public string WindowTitle;
 		}
 	}
 }

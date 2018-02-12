@@ -8,7 +8,7 @@
 //Please note. I DID NOT MAKE THIS
 
 /*
-namespace JMiles42.Camera.Effects.Glitch
+namespace ForestOfChaos.Camera.Effects.Glitch
 {
 	using UnityEngine;
 	using UnityStandardAssets.ImageEffects;

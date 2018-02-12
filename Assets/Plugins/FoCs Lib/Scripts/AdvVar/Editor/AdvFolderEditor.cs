@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ForestOfChaosLib.AdvVar.Base;
-using ForestOfChaosLib.Editor;
-using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.ImGUI;
+using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.UnityScriptsExtensions;
 using UnityEditor;
 using UnityEngine;
@@ -50,11 +50,11 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				{
 					var area = EditorGUILayout.GetControlRect(true, StandardLine);
 					var @event = FoCsGUI.Toggle(area,
-														value,
-														value?
-															$"Hide {key.ToggleName}" :
-															$" {key.ToggleName}",
-														EditorStyles.toolbarButton);
+												value,
+												value?
+													$"Hide {key.ToggleName}" :
+													$" {key.ToggleName}",
+												EditorStyles.toolbarButton);
 
 					if(@event)
 						value = !value;
@@ -79,10 +79,10 @@ namespace ForestOfChaosLib.AdvVar.Editor
 						var rect = EditorGUILayout.GetControlRect(true, StandardLine, EditorStyles.toolbarButton);
 
 						var @event = FoCsGUI.Button(rect,
-															foldout?
-																"Hide Children Settings" :
-																"Edit Children",
-															EditorStyles.toolbarButton);
+													foldout?
+														"Hide Children Settings" :
+														"Edit Children",
+													EditorStyles.toolbarButton);
 
 						if(@event.AsButtonLeftClick)
 							foldout = !foldout;

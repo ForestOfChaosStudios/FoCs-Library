@@ -6,6 +6,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 {
 	public class FoCsPropertyDrawer: PropertyDrawer
 	{
+	/// <summary>
+	/// Returns 
+	/// </summary>
 		public static float SingleLine { get; } = FoCsEditorUtilities.SingleLine;
 		public static float Padding { get; } = FoCsEditorUtilities.Padding;
 		public static float SingleLinePlusPadding { get; } = FoCsEditorUtilities.SingleLinePlusPadding;

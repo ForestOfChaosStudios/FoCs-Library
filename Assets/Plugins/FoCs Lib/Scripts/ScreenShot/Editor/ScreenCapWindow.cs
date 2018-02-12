@@ -14,7 +14,7 @@ namespace ForestOfChaosLib.Screenshot
 
 		private const string Title = "Screen Capture Window";
 
-		[MenuItem("JMiles42/" + Title)]
+		[MenuItem("Forest Of Chaos/" + Title)]
 		private static void Init()
 		{
 			GetWindow();
