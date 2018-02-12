@@ -17,19 +17,7 @@ namespace ForestOfChaosLib.WIP.Editor.ObjectBrowser
 		private static void Init()
 		{
 			GetWindow();
-		}
-
-		public class ObjectBrowserTab: Tab<ObjectBrowserWindow>
-		{
-			public override string TabName { get; }
-
-			public ObjectBrowserTab(string tabName)
-			{
-				TabName = tabName;
-			}
-
-			public override void DrawTab(Window<ObjectBrowserWindow> owner)
-			{ }
+            window.titleContent.text = "Object Browser";
 		}
 	}
 }
