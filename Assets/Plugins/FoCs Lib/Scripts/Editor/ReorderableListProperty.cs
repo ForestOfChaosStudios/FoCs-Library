@@ -63,6 +63,8 @@ namespace ForestOfChaosLib.Editor
 			List.onCanRemoveCallback += OnListOnCanRemoveCallback;
 			List.drawElementCallback += DrawElement;
 			List.elementHeightCallback += OnListElementHeightCallback;
+			//TODO Impliment limited view of lists, eg only show index 50-100, and buttons to move limits
+			//List.drawFooterCallback += OnListDrawFooterCallback;
 			List.showDefaultBackground = true;
 		}
 
@@ -166,6 +168,19 @@ namespace ForestOfChaosLib.Editor
 		private bool OnListOnCanRemoveCallback(ReorderableList list) => List.count > 0;
 
 		private void OnListDrawHeaderCallback(Rect rect)
+		{
+			using(EditorDisposables.IndentSet(0))
+			{
+				_property.isExpanded = EditorGUI.ToggleLeft(rect,
+															$"{_property.displayName}\t[{_property.arraySize}]",
+															_property.isExpanded,
+															_property.prefabOverride?
+																EditorStyles.boldLabel :
+																GUIStyle.none);
+			}
+		}
+
+		private void OnListDrawFooterCallback(Rect rect)
 		{
 			using(EditorDisposables.IndentSet(0))
 			{
