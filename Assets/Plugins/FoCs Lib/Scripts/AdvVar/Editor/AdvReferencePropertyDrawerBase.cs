@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.Editor
 {
-	[CustomPropertyDrawer(typeof(AdvVariable),true)]
+	[CustomPropertyDrawer(typeof(AdvVariable), true)]
 	public class AdvReferencePropertyDrawerBase: ObjectReferenceDrawer
 	{
 		internal const float WIDTH = 16f;
@@ -35,14 +35,14 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			using(var changeCheckScope = EditorDisposables.ChangeCheck())
 			{
 				UseConstant.boolValue = FoCsGUI.DrawPropertyWithMenu(position.SetHeight(SingleLinePlusPadding),
-																	   UseConstant.boolValue?
-																		   ConstantValue :
-																		   Variable,
-																	   label,
-																	   OPTIONS_ARRAY,
-																	   UseConstant.boolValue?
-																		   0 :
-																		   1) ==
+																	 UseConstant.boolValue?
+																		 ConstantValue :
+																		 Variable,
+																	 label,
+																	 OPTIONS_ARRAY,
+																	 UseConstant.boolValue?
+																		 0 :
+																		 1) ==
 										0;
 				if(changeCheckScope.changed && Variable.objectReferenceValue)
 					serializedObject = new SerializedObject(Variable.objectReferenceValue);

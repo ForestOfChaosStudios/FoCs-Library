@@ -17,7 +17,7 @@ namespace ForestOfChaosLib.Editor.EditorWindows
 
 		private static List<string> DataList = new List<string>();
 
-		[MenuItem(FileStrings.JMILES42_SYSTEMS_ + WindowTitle)]
+		[MenuItem(FileStrings.FORESTOFCHAOS_SYSTEMS_ + WindowTitle)]
 		private static void Init()
 		{
 			// Get existing open window or if none, make a new one:

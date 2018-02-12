@@ -14,7 +14,7 @@ namespace ForestOfChaosLib.Database
 
 		private const string Title = "DatabaseWindow";
 
-		[MenuItem("JMiles42/" + Title)]
+		[MenuItem("Forest Of Chaos/" + Title)]
 		private static void Init()
 		{
 			GetWindow();

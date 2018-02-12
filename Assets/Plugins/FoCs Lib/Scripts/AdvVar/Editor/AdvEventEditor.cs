@@ -16,9 +16,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			{
 				var @event = FoCsGUILayout.Button("Trigger Event");
 				if(@event.AsButtonLeftClick)
-				{
 					Target.Trigger();
-				}
 			}
 		}
 	}
