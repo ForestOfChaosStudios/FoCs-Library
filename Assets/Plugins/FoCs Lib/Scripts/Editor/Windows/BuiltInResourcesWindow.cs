@@ -11,7 +11,7 @@ namespace ForestOfChaosLib.Editor.Windows
 {
 	public class BuiltInResourcesWindow: Window<BuiltInResourcesWindow>
 	{
-		[MenuItem("Forest Of Chaos/WIP/Built-in styles and icons")]
+		[MenuItem(FileStrings.FORESTOFCHAOS_ + "WIP/Built-in styles and icons")]
 		public static void ShowWindow()
 		{
 			GetWindow();

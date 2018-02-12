@@ -80,7 +80,7 @@ namespace ForestOfChaosLib.Editor
 	/// </summary>
 	public static class FileStrings
 	{
-		public const string FORESTOFCHAOS = "ForestOfChaos";
+		public const string FORESTOFCHAOS = "Forest Of Chaos";
 		public const string FOLDERS = "Folders";
 		public const string ASSETS = "Assets";
 		public const string GENERATED = "Generated";

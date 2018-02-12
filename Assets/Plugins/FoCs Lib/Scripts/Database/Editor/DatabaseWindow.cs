@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.Windows;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
@@ -14,7 +15,7 @@ namespace ForestOfChaosLib.Database
 
 		private const string Title = "DatabaseWindow";
 
-		[MenuItem("Forest Of Chaos/" + Title)]
+		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
 		private static void Init()
 		{
 			GetWindow();

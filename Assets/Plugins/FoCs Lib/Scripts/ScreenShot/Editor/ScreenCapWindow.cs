@@ -1,4 +1,5 @@
-﻿using ForestOfChaosLib.Editor.Windows;
+﻿using ForestOfChaosLib.Editor;
+using ForestOfChaosLib.Editor.Windows;
 using UnityEditor;
 
 namespace ForestOfChaosLib.Screenshot
@@ -14,7 +15,7 @@ namespace ForestOfChaosLib.Screenshot
 
 		private const string Title = "Screen Capture Window";
 
-		[MenuItem("Forest Of Chaos/" + Title)]
+		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
 		private static void Init()
 		{
 			GetWindow();
