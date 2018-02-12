@@ -5,7 +5,7 @@ namespace ForestOfChaosLib.ScriptableObjects.Generic
 {
 	public abstract class ArrayScriptableObject<T>: ScriptableObject
 	{
-		public const string ATTRIBUTE_PATH = "JMiles42/Scriptable Object/";
+		public const string ATTRIBUTE_PATH = "Forest Of Chaos/Scriptable Object/";
 		public T[] Data;
 
 		public T First

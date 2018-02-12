@@ -10,10 +10,10 @@ namespace ForestOfChaosLib.Editor
 {
 	public static class DefineManager
 	{
-		public const string DefineManagerPath = FileStrings.ASSETS_GENERATED_RAWDATA + "/DefineManager" + FileStrings.JMDataFILEEXT;
+		public const string DefineManagerPath = FileStrings.ASSETS_GENERATED_RAWDATA + "/DefineManager" + FileStrings.FOCS_EXTENSION;
 		private const string mcs_rspPath = FileStrings.ASSETS + "/mcs.rsp";
 
-		private static List<string> s_defines = new List<string> {"JMiles42"};
+		private static List<string> s_defines = new List<string> {"ForestOfChaos"};
 		public static Action OnDataChanged;
 
 		public static List<string> Defines

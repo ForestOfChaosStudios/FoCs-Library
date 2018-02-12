@@ -1,4 +1,4 @@
-//#define JMilesEditorBase_ANIMATED
+//#define FoCsEditor_ANIMATED
 
 using System;
 using System.Collections.Generic;
@@ -217,7 +217,7 @@ namespace ForestOfChaosLib.Editor
 				ret.Property = property;
 				return ret;
 			}
-#if JMilesEditorBase_ANIMATED
+#if FoCsEditor_ANIMATED
             ret = new RLP(property, true);
 #else
 			ret = new RLP(property, false);
@@ -229,7 +229,7 @@ namespace ForestOfChaosLib.Editor
 
 		public override bool RequiresConstantRepaint()
 		{
-#if JMilesEditorBase_ANIMATED
+#if FoCsEditor_ANIMATED
             foreach(var reorderableListProperty in reorderableLists)
             {
                 if(reorderableListProperty.Value.Animate && reorderableListProperty.Value.IsExpanded.isAnimating)

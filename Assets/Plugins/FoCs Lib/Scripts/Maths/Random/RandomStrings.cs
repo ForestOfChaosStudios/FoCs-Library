@@ -1,48 +1,35 @@
+using System;
+
 namespace ForestOfChaosLib.Maths.Random
 {
 	public static class RandomStrings
 	{
-		public const string ALLALPHA = "abcdefghijklmnopqrstuvwxyz";
-		public const string ALLNUMERIC = "1234567890";
+		public const string ALPHA = "abcdefghijklmnopqrstuvwxyz";
+		public const string NUMERIC = "1234567890";
 		public const string SYMBOLS = "!@#$%^&*()-_=+`~,<.>/?;:'";
-		public const string ALLCHARS = ALLALPHA + ALLNUMERIC;
-		public const string NUMERICSYMBOLS = SYMBOLS + ALLNUMERIC;
+		public const string ALL_CHARS = ALPHA + NUMERIC + SYMBOLS;
+		public const string ALPHA_SYMBOLS = ALPHA + SYMBOLS;
+		public const string NUMERIC_SYMBOLS = NUMERIC + SYMBOLS;
 
-		public static string GetRandomString(int length)
-		{
-			var s = "";
-			var rand = new System.Random(System.DateTime.UtcNow.Millisecond);
-			for(int i = 0; i < length; i++)
-			{
-				s += ALLCHARS[rand.Next(ALLCHARS.Length)];
-			}
-			return s;
-		}
+		public static string GetRandomString(int length) => GetRandomString(ALL_CHARS, length, DateTime.UtcNow.Millisecond);
 
-		public static string GetRandomString(int length, int seed)
+		public static string GetRandomString(int length, int seed) => GetRandomString(ALL_CHARS, length, seed);
+
+		public static string GetRandomString(string characters, int length, int seed)
 		{
 			var s = "";
 			var rand = new System.Random(seed);
-			for(int i = 0; i < length; i++)
+			for(var i = 0; i < length; i++)
 			{
-				s += ALLCHARS[rand.Next(ALLCHARS.Length)];
+				if(MiscMaths.IsOdd(i))
+					s += characters[rand.Next(characters.Length)];
+				else
+					s += characters[rand.Next(characters.Length)];
 			}
 			return s;
 		}
 
-		public static string GetRandomAltString(int length)
-		{
-			var s = "";
-			var rand = new System.Random(System.DateTime.UtcNow.Millisecond);
-			for(int i = 0; i < length; i++)
-			{
-				if(JMiscMaths.IsOdd(i))
-					s += ALLNUMERIC[rand.Next(ALLNUMERIC.Length)];
-				else
-					s += ALLALPHA[rand.Next(ALLALPHA.Length)];
-			}
-			return s;
-		}
+		public static string GetRandomAltString(int length) => GetRandomAltString(length, DateTime.UtcNow.Millisecond);
 
 		public static string GetRandomAltString(int length, int seed)
 		{
@@ -50,10 +37,10 @@ namespace ForestOfChaosLib.Maths.Random
 			var rand = new System.Random(seed);
 			for(var i = 0; i < length; i++)
 			{
-				if(JMiscMaths.IsOdd(i))
-					s += ALLNUMERIC[rand.Next(ALLNUMERIC.Length)];
+				if(MiscMaths.IsOdd(i))
+					s += NUMERIC[rand.Next(NUMERIC.Length)];
 				else
-					s += ALLALPHA[rand.Next(ALLALPHA.Length)];
+					s += ALPHA[rand.Next(ALPHA.Length)];
 			}
 			return s;
 		}

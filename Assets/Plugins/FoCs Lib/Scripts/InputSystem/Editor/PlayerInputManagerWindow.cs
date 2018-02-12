@@ -13,7 +13,7 @@ namespace ForestOfChaosLib.InputManager.Editor
 
 		private const string Title = "Input Manager";
 
-		[MenuItem(FileStrings.JMILES42_ + "Player Input Manager Window")]
+		[MenuItem(FileStrings.FORESTOFCHAOS_ + "Player Input Manager Window")]
 		private static void Init()
 		{
 			GetWindow();

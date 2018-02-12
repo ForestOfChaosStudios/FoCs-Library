@@ -4,7 +4,7 @@ using UnityEditor;
 
 // NOT MINE From: https://gamedev.stackexchange.com/questions/124320/force-reload-vs-soution-explorer-when-adding-new-c-script-via-unity3d
 #if DONTUSE
-namespace JMiles42.Editor
+namespace ForestOfChaosLib.Editor
 {
 	[InitializeOnLoad]
 	public class FileModDialogCloser

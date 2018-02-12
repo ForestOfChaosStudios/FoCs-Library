@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ForestOfChaosLib.Editor.Windows
 {
 	/// <summary>
-	/// [MenuItem("Tools/JMiles42/Example Window")]
+	/// [MenuItem("Tools/Forest Of Chaos/Example Window")]
 	/// private static void Init(){
 	/// GetWindow();
 	/// }

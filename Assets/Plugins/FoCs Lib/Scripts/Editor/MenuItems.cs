@@ -4,7 +4,7 @@ namespace ForestOfChaosLib.Editor
 {
 	public static class MenuItems
 	{
-		[MenuItem(FileStrings._JMILES42_ + FileStrings.FOLDERS_ + "Create All Folders")]
+		[MenuItem(FileStrings._FORESTOFCHAOS_ + FileStrings.FOLDERS_ + "Create All Folders")]
 		public static void CreateAllFolders()
 		{
 			CreateNormalFolders();
@@ -13,7 +13,7 @@ namespace ForestOfChaosLib.Editor
 			CreatePluginsFolder();
 		}
 
-		[MenuItem(FileStrings._JMILES42_ + FileStrings.FOLDERS_ + "Create Normal Folders")]
+		[MenuItem(FileStrings._FORESTOFCHAOS_ + FileStrings.FOLDERS_ + "Create Normal Folders")]
 		public static void CreateNormalFolders()
 		{
 			CreateScriptFolder();
@@ -22,19 +22,19 @@ namespace ForestOfChaosLib.Editor
 			CreatePrefabsFolder();
 		}
 
-		[MenuItem(FileStrings._JMILES42_ + FileStrings.FOLDERS_ + "Normal Folders/" + FileStrings.SCENES)]
+		[MenuItem(FileStrings._FORESTOFCHAOS_ + FileStrings.FOLDERS_ + "Normal Folders/" + FileStrings.SCENES)]
 		private static void CreateScenesFolder()
 		{
 			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS, FileStrings.SCENES);
 		}
 
-		[MenuItem(FileStrings._JMILES42_ + FileStrings.FOLDERS_ + "Normal Folders/" + FileStrings.PREFABS)]
+		[MenuItem(FileStrings._FORESTOFCHAOS_ + FileStrings.FOLDERS_ + "Normal Folders/" + FileStrings.PREFABS)]
 		private static void CreatePrefabsFolder()
 		{
 			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS, FileStrings.PREFABS);
 		}
 
-		[MenuItem(FileStrings._JMILES42_ + FileStrings.FOLDERS_ + "Normal Folders/Art")]
+		[MenuItem(FileStrings._FORESTOFCHAOS_ + FileStrings.FOLDERS_ + "Normal Folders/Art")]
 		private static void CreateArtFolders()
 		{
 			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS, FileStrings.ART);
@@ -43,45 +43,35 @@ namespace ForestOfChaosLib.Editor
 			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_ART, FileStrings.MATERIALS);
 		}
 
-		[MenuItem(FileStrings._JMILES42_ + FileStrings.FOLDERS_ + "Normal Folders/Scripts")]
+		[MenuItem(FileStrings._FORESTOFCHAOS_ + FileStrings.FOLDERS_ + "Normal Folders/Scripts")]
 		public static void CreateScriptFolder()
 		{
 			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS, FileStrings.SCRIPTS);
 		}
 
-		[MenuItem(FileStrings._JMILES42_ + FileStrings.FOLDERS_ + "Create Resource Folder")]
+		[MenuItem(FileStrings._FORESTOFCHAOS_ + FileStrings.FOLDERS_ + "Create Resource Folder")]
 		public static void CreateResourcesFolder()
 		{
 			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS, FileStrings.RESOURCES);
 		}
 
-		[MenuItem(FileStrings._JMILES42_ + FileStrings.FOLDERS_ + "Create StreamingAssets Folder")]
+		[MenuItem(FileStrings._FORESTOFCHAOS_ + FileStrings.FOLDERS_ + "Create StreamingAssets Folder")]
 		public static void CreateStreamingAssetsFolder()
 		{
 			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS, FileStrings.STREAMINGASSETS);
 		}
 
-		[MenuItem(FileStrings._JMILES42_ + FileStrings.FOLDERS_ + "Create Plugins Folder")]
+		[MenuItem(FileStrings._FORESTOFCHAOS_ + FileStrings.FOLDERS_ + "Create Plugins Folder")]
 		public static void CreatePluginsFolder()
 		{
 			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS, FileStrings.PLUGINS);
 		}
 
-		[MenuItem(FileStrings._JMILES42_ + FileStrings.FOLDERS_ + "Create Editor Resources Folder")]
+		[MenuItem(FileStrings._FORESTOFCHAOS_ + FileStrings.FOLDERS_ + "Create Editor Resources Folder")]
 		public static void CreateEditorResourcesFolder()
 		{
 			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS, FileStrings.EDITOR_RESOURCES);
 		}
-
-		//[MenuItem(FileStrings._JMILES42_ + "Editor Play/Play")]
-		//public static void StartGame() {
-		//    EditorApplication.isPlaying = true;
-		//}
-		//
-		//[MenuItem(FileStrings._JMILES42_ + "Editor Play/Stop")]
-		//public static void EndGame() {
-		//    EditorApplication.isPlaying = false;
-		//}
 	}
 
 	/// <summary>
@@ -90,7 +80,7 @@ namespace ForestOfChaosLib.Editor
 	/// </summary>
 	public static class FileStrings
 	{
-		public const string JMILES42 = "JMiles42";
+		public const string FORESTOFCHAOS = "ForestOfChaos";
 		public const string FOLDERS = "Folders";
 		public const string ASSETS = "Assets";
 		public const string GENERATED = "Generated";
@@ -113,17 +103,17 @@ namespace ForestOfChaosLib.Editor
 		public const string RESOURCES = "Resources";
 		public const string EDITOR_RESOURCES = "Editor Resources";
 
-		public const string JMDataFILEEXT = ".JM42Dat";
+		public const string FOCS_EXTENSION = ".FoCs";
 
 		public const string S = "/";
 		public const string SPLIT = S;
 
 		public const string SCRIPTS_FILE_EXTENSION = ".cs";
 
-		public const string JMILES42_ = JMILES42 + S;
-		public const string JMILES42_SYSTEMS_ = JMILES42 + S + SYSTEMS + S;
-		public const string JMILES42_TOOLS_ = JMILES42 + S + TOOLS + S;
-		public const string _JMILES42_ = S + JMILES42 + S;
+		public const string FORESTOFCHAOS_ = FORESTOFCHAOS + S;
+		public const string FORESTOFCHAOS_SYSTEMS_ = FORESTOFCHAOS + S + SYSTEMS + S;
+		public const string FORESTOFCHAOS_TOOLS_ = FORESTOFCHAOS + S + TOOLS + S;
+		public const string _FORESTOFCHAOS_ = S + FORESTOFCHAOS + S;
 		public const string FOLDERS_ = FOLDERS + S;
 		public const string ASSETS_ART = ASSETS + S + ART;
 		public const string ASSETS_GENERATED = ASSETS + S + GENERATED;
