@@ -1,4 +1,5 @@
-﻿using ForestOfChaosLib.Editor.Utilities;
+﻿using ForestOfChaosLib.Editor.ImGUI;
+using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEditorInternal;
@@ -64,7 +65,7 @@ namespace ForestOfChaosLib.Editor
 			List.drawElementCallback += DrawElement;
 			List.elementHeightCallback += OnListElementHeightCallback;
 			//TODO Impliment limited view of lists, eg only show index 50-100, and buttons to move limits
-			//List.drawFooterCallback += OnListDrawFooterCallback;
+			List.drawFooterCallback += OnListDrawFooterCallback;
 			List.showDefaultBackground = true;
 		}
 
@@ -180,18 +181,95 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private void OnListDrawFooterCallback(Rect rect)
+		private bool RangedDisplay = true;
+
+		private void OnListDrawFooterCallback(Rect rowRect)
 		{
-			using(EditorDisposables.IndentSet(0))
+			float xMax = rowRect.xMax;
+			float x = xMax - 8f;
+			if(List.displayAdd)
+				x -= 25f;
+			if(List.displayRemove)
+				x -= 25f;
+
+			if(RangedDisplay)
+				x -= (25f * 6);
+			var rect = new Rect(x, rowRect.y, xMax - x, rowRect.height);
+
+
+			Rect addButtonRect = new Rect(xMax - 29f - 25f, rect.y - 3f, 25f, 13f);
+
+			Rect removeButtonRect = new Rect(xMax - 29f, rect.y - 3f, 25f, 13f);
+			if(Event.current.type == EventType.Repaint)
+				ListStyles.FooterBackground.Draw(rect, false, false, false, false);
+
+
+			if(RangedDisplay)
 			{
-				_property.isExpanded = EditorGUI.ToggleLeft(rect,
-															$"{_property.displayName}\t[{_property.arraySize}]",
-															_property.isExpanded,
-															_property.prefabOverride?
-																EditorStyles.boldLabel :
-																GUIStyle.none);
+				var horScope = EditorDisposables.RectHorizontalScope(RangedDisplay?
+																		 8 :
+																		 2,
+																	 rect);
+				for(int i = 0; i < 6; i++)
+				{
+					if(FoCsGUI.Button(horScope.GetNext(),i.ToString(), ListStyles.PreButton))
+					{ }
+				}
+			}
+
+
+			if(List.displayAdd)
+			{
+				using(EditorDisposables.DisabledScope(List.onCanAddCallback != null && !List.onCanAddCallback(List)))
+				{
+					if(GUI.Button(addButtonRect,
+								  List.onAddDropdownCallback == null?
+									  ListStyles.IconToolbarPlus :
+									  ListStyles.IconToolbarPlusMore,
+								  ListStyles.PreButton))
+					{
+						if(List.onAddDropdownCallback != null)
+							List.onAddDropdownCallback(addButtonRect, List);
+						else if(List.onAddCallback != null)
+							List.onAddCallback(List);
+						else
+							Defaults.DoAddButton(List);
+						if(List.onChangedCallback != null)
+							List.onChangedCallback(List);
+					}
+				}
+			}
+			if(!List.displayRemove)
+				return;
+			using(EditorDisposables.DisabledScope(List.index < 0 || List.index >= List.count || List.onCanRemoveCallback != null && !List.onCanRemoveCallback(List)))
+			{
+				if(GUI.Button(removeButtonRect, ListStyles.IconToolbarMinus, ListStyles.PreButton))
+				{
+					if(List.onRemoveCallback == null)
+						Defaults.DoRemoveButton(List);
+					else
+						List.onRemoveCallback(List);
+					if(List.onChangedCallback != null)
+						List.onChangedCallback(List);
+				}
 			}
 		}
 		#endregion
+
+
+		public static class ListStyles
+		{
+			public static readonly GUIContent IconToolbarPlus = EditorGUIUtility.IconContent("Toolbar Plus", "|Add to list");
+			public static readonly GUIContent IconToolbar = EditorGUIUtility.IconContent("Toolbar Plus", "|Add to list");
+
+			public static readonly GUIContent IconToolbarPlusMore = EditorGUIUtility.IconContent("Toolbar Plus More", "|Choose to add to list");
+			public static readonly GUIContent IconToolbarMinus = EditorGUIUtility.IconContent("Toolbar Minus", "|Remove selection from list");
+			public static readonly GUIStyle DraggingHandle = new GUIStyle("RL DragHandle");
+			public static readonly GUIStyle HeaderBackground = new GUIStyle("RL Header");
+			public static readonly GUIStyle FooterBackground = new GUIStyle("RL Footer");
+			public static readonly GUIStyle BoxBackground = new GUIStyle("RL Background");
+			public static readonly GUIStyle PreButton = new GUIStyle("RL FooterButton");
+			public static readonly GUIStyle ElementBackground = new GUIStyle("RL Element");
+		}
 	}
 }
