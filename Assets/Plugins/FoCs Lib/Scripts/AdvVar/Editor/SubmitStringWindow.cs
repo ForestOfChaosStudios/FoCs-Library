@@ -32,7 +32,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		protected override void DrawGUI()
 		{
-			if(currentArguments.IsNull())
+			if(currentArguments == null)
 				return;
 
 			EditorGUILayout.LabelField(currentArguments.Title);

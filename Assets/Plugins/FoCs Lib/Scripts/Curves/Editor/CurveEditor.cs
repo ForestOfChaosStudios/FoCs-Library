@@ -30,7 +30,7 @@ namespace ForestOfChaosLib.Curves.Editor
 		{
 			using(var cc = EditorDisposables.ChangeCheck())
 			{
-				if(Curve.IsNull())
+				if(Curve == null)
 					return;
 				var pos = Curve.CurvePositions;
 				for(var i = 0; i < pos.Count; i++)

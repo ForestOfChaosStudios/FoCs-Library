@@ -216,7 +216,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 				if(finalList.ContainsKey(attribute))
 				{
-					if(finalList[attribute].IsNull())
+					if(finalList[attribute] == null)
 						finalList[attribute] = new List<Type>();
 					if(!finalList[attribute].Contains(type))
 						finalList[attribute].Add(type);
