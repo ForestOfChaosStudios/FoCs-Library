@@ -25,20 +25,13 @@ namespace ForestOfChaosLib.Editor.Utilities
 		}
 
 		protected abstract Rect InitNextRect();
-		//{
-		//	var lRect = Rect;
-		//	lRect.width = Rect.width / Count;
-		//	NextRect = lRect;
-		//}
-
 		protected abstract void DoNextRect();
-		//{
-		//	var nexRect = NextRect;
-		//	nexRect.x += nexRect.width;
-		//	NextRect = nexRect;
-		//	++CurrentIndex;
-		//}
+		protected abstract Rect DoAmountRectCalculations(Rect rect, int amount);
 
+		/// <summary>
+		/// Gets the next rect in the layout
+		/// </summary>
+		/// <returns>Next rect</returns>
 		public Rect GetNext()
 		{
 			if(CurrentIndex == Count)
@@ -48,6 +41,22 @@ namespace ForestOfChaosLib.Editor.Utilities
 			var retVal = NextRect;
 			DoNextRect();
 			return retVal;
+		}
+		/// <summary>
+		/// Gets the next rect in the layout with a size of "amount" elements
+		/// </summary>
+		/// <param name="amount">How many spaces should this take</param>
+		/// <returns>Returns the Next rect, size of "amount" elements</returns>
+		public Rect GetNext(int amount)
+		{
+			if(CurrentIndex == Count || CurrentIndex + amount >= Count)
+				throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
+
+			LastRect = NextRect;
+			var retVal = NextRect;
+			for(int i = 0 ; i < amount; i++)
+				DoNextRect();
+			return DoAmountRectCalculations(retVal,amount);
 		}
 
 		public void Dispose()
