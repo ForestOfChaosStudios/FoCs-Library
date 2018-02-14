@@ -10,8 +10,6 @@ namespace ForestOfChaosLib.AdvVar.Base
 	{
 		[SerializeField] [NoFoldout] private List<T> _value;
 
-		private List<T> _startValue;
-
 		public List<T> Value
 		{
 			get { return _value; }
@@ -26,16 +24,6 @@ namespace ForestOfChaosLib.AdvVar.Base
 		[NonSerialized] public Action OnBeforeValueChange;
 
 		[NonSerialized] public Action OnValueChange;
-
-		protected void OnEnable()
-		{
-			_startValue = _value;
-		}
-
-		protected void OnDisable()
-		{
-			_value = _startValue;
-		}
 
 		public void Add(T value)
 		{
@@ -56,6 +44,6 @@ namespace ForestOfChaosLib.AdvVar.Base
 	/// <summary>
 	/// This is a base class so that as Unity needs a none generic base class for editors/property drawers
 	/// </summary>
-	public class AdvListReference
+	public class AdvListReference: FoCsScriptableObject
 	{ }
 }
