@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Utilities
 {
-	public class RectVerticalScope: RectLayoutScope
+	public sealed class RectVerticalScope: RectLayoutScope
 	{
 		public RectVerticalScope(int count, Rect rect)
 			: base(count, rect)
