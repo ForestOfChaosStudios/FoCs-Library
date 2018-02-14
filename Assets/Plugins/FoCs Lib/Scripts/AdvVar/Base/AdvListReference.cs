@@ -1,30 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using ForestOfChaosLib.Attributes;
+using ForestOfChaosLib.CSharpExtensions;
 using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.Base
 {
-	[Serializable]
-	public class AdvListVariable<T, aT> : AdvListVariable
-		where aT: AdvListReference<T>
+	public class AdvListReference<T>: AdvListReference
 	{
-		public bool UseConstant = true;
+		[SerializeField] [NoFoldout] private List<T> _value;
 
-		[SerializeField]
-		private List<T> ConstantValue;
-
-		[SerializeField]
-		private aT Variable;
+		private List<T> _startValue;
 
 		public List<T> Value
 		{
-			get { return UseConstant? ConstantValue : Variable.Value; }
+			get { return _value; }
+			set
+			{
+				OnBeforeValueChange.Trigger();
+				_value = value;
+				OnValueChange.Trigger();
+			}
+		}
+
+		[NonSerialized] public Action OnBeforeValueChange;
+
+		[NonSerialized] public Action OnValueChange;
+
+		protected void OnEnable()
+		{
+			_startValue = _value;
+		}
+
+		protected void OnDisable()
+		{
+			_value = _startValue;
+		}
+
+		public void Add(T value)
+		{
+			Value.Add(value);
+		}
+
+		public bool Contains(T value)
+		{
+			return Value.Contains(value);
+		}
+
+		public void Remove(T value)
+		{
+			Value.Remove(value);
 		}
 	}
 
 	/// <summary>
 	/// This is a base class so that as Unity needs a none generic base class for editors/property drawers
 	/// </summary>
-	public class AdvListVariable
+	public class AdvListReference
 	{ }
 }
