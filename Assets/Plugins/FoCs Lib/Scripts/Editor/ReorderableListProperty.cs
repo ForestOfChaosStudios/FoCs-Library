@@ -182,7 +182,7 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private bool RangedDisplay = true;
+		private bool RangedDisplay = false;
 
 		private void OnListDrawFooterCallback(Rect rowRect)
 		{
