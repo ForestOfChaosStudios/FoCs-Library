@@ -1,4 +1,5 @@
 using ForestOfChaosLib.Editor;
+using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.FoCsUI.Button;
 using UnityEditor;
 using UnityEngine;
@@ -11,9 +12,7 @@ namespace ForestOfChaosLib.FoCsUI.Editor
 	{
 		public override void DrawGUI()
 		{
-			//Horizontal Scope
-			////An Indented way of using Unitys Scopes
-			using(new GUILayout.HorizontalScope())
+			using(EditorDisposables.HorizontalScope())
 			{
 				if(GUILayout.Button("Add Object Name ID"))
 				{
@@ -31,13 +30,11 @@ namespace ForestOfChaosLib.FoCsUI.Editor
 		}
 	}
 
-	//#if TextMeshPro_DEFINE
 	[CustomEditor(typeof(ButtonClickEvent_TMP), true, isFallback = true)]
 	[CanEditMultipleObjects]
 	public class ButtonClickEvent_TMPDrawer: ButtonClickEventBaseDrawer
 	{ }
 
-	//#endif
 	[CustomEditor(typeof(ButtonClickEvent), true, isFallback = true)]
 	[CanEditMultipleObjects]
 	public class ButtonClickEventDrawer: ButtonClickEventBaseDrawer

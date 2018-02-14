@@ -1,5 +1,6 @@
 using ForestOfChaosLib.Attributes;
 using ForestOfChaosLib.Editor.Utilities;
+using ForestOfChaosLib.UnityScriptsExtensions;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,22 +11,19 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 	{
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var scope = EditorDisposables.RectHorizontalScope(GetAttribute.totalAmount, position))
+			using(EditorDisposables.LabelFieldSetWidth((position.width / GetAttribute.totalAmount) * 0.5f))
 			{
-				for(int i = 0; i < GetAttribute.index; i++)
+				using(var scope = EditorDisposables.RectHorizontalScope(GetAttribute.totalAmount, position))
 				{
-					scope.GetNext();
+					for(var i = 0; i < GetAttribute.index; i++)
+						scope.GetNext();
+					EditorGUI.PropertyField(scope.GetNext().MoveY(-(SingleLinePlusPadding * GetAttribute.index)).SetHeight(SingleLine), property, label);
 				}
-				EditorGUI.PropertyField(scope.GetNext(), property, label);
 			}
-
-
-			//EditorDrawersUtilities.DrawPropertyWidthIndexed(position.ChangeX(EditorGUI.indentLevel * 16), label, property, GetAttribute.totalAmount, GetAttribute.index, GetAttribute.expandToWidth);
 		}
 
-		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label)
-		{
-			return GetAttribute.index == 0? EditorGUIUtility.singleLineHeight : 0;
-		}
+		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label) => GetAttribute.index == 0?
+			EditorGUIUtility.singleLineHeight :
+			0;
 	}
 }

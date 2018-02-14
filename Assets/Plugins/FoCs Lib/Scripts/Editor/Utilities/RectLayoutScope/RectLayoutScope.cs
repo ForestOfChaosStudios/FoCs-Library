@@ -25,19 +25,8 @@ namespace ForestOfChaosLib.Editor.Utilities
 		}
 
 		protected abstract Rect InitNextRect();
-		//{
-		//	var lRect = Rect;
-		//	lRect.width = Rect.width / Count;
-		//	NextRect = lRect;
-		//}
 
 		protected abstract void DoNextRect();
-		//{
-		//	var nexRect = NextRect;
-		//	nexRect.x += nexRect.width;
-		//	NextRect = nexRect;
-		//	++CurrentIndex;
-		//}
 
 		public Rect GetNext()
 		{
@@ -52,8 +41,8 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 		public void Dispose()
 		{
-			if(CurrentIndex != Count)
-				Debug.LogWarning("You have not used all of the available Rects");
+			//if(CurrentIndex != Count)
+			//	Debug.LogWarning("You have not used all of the available Rects");
 		}
 
 		public IEnumerator<Rect> GetEnumerator()
