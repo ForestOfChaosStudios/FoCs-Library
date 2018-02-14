@@ -20,11 +20,13 @@ namespace ForestOfChaosLib.AdvVar.Editor
 	public class AdvFolderEditor: FoCsEditor
 	{
 		private static readonly Dictionary<string, bool> enableDictionary = new Dictionary<string, bool>();
-		private bool foldout;
+		private static SortedDictionary<AdvFolderNameAttribute, List<Type>> typeDictionary;
+
+		private bool showChildrenSettings;
 
 		public override bool ShowCopyPasteButtons => false;
 
-		public override void DrawGUI()
+		public override void OnInspectorGUI()
 		{
 			if(serializedObject.isEditingMultipleObjects)
 			{
@@ -34,35 +36,39 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 			EditorGUILayout.HelpBox("These options will add child assets to the current asset, this is done to help with sorting of the huge amount of Scriptable Objects this system could generate.",
 									MessageType.Info);
-
-			var dictionary = GetDictionaryTypes();
-			var nameList = dictionary.Keys.ToList();
+			if(typeDictionary == null)
+				typeDictionary = GetDictionaryTypes();
+			var nameList = typeDictionary.Keys.ToList();
 
 			for(var i = 0; i < nameList.Count; i++)
 			{
 				var key = nameList[i];
 
-				var value = true;
+				bool value;
 
 				enableDictionary.TryGetValue(key.ToggleName, out value);
 
-				using(EditorDisposables.VerticalScope())
+				using(EditorDisposables.Indent())
 				{
-					var area = EditorGUILayout.GetControlRect(true, StandardLine);
-					var @event = FoCsGUI.Toggle(area,
-												value,
-												value?
-													$"Hide {key.ToggleName}" :
-													$" {key.ToggleName}",
-												EditorStyles.toolbarButton);
-
-					if(@event)
-						value = !value;
-					if(value)
+					using(EditorDisposables.VerticalScope())
 					{
-						foreach(var type in dictionary[key])
-							DrawAddTypeButton(type);
-						EditorGUILayout.GetControlRect(true, EditorGUIUtility.standardVerticalSpacing);
+						var area = EditorGUILayout.GetControlRect(true, StandardLine);
+						var @event = FoCsGUI.Toggle(area,
+													value,
+													value?
+														$"Hide {key.ToggleName}" :
+														$" {key.ToggleName}",
+													EditorStyles.toolbarButton);
+
+						if(@event)
+							value = !value;
+						if(value)
+						{
+							foreach (var type in typeDictionary[key])
+								using (EditorDisposables.HorizontalScope(GUI.skin.box))
+									DrawAddTypeButton(type);
+							DoPadding();
+						}
 					}
 				}
 				enableDictionary[key.ToggleName] = value;
@@ -79,14 +85,14 @@ namespace ForestOfChaosLib.AdvVar.Editor
 						var rect = EditorGUILayout.GetControlRect(true, StandardLine, EditorStyles.toolbarButton);
 
 						var @event = FoCsGUI.Button(rect,
-													foldout?
+													showChildrenSettings?
 														"Hide Children Settings" :
 														"Edit Children",
 													EditorStyles.toolbarButton);
 
 						if(@event.AsButtonLeftClick)
-							foldout = !foldout;
-						if(foldout)
+							showChildrenSettings = !showChildrenSettings;
+						if(showChildrenSettings)
 						{
 							using(EditorDisposables.VerticalScope())
 							{
@@ -109,14 +115,18 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			}
 		}
 
+		private static void DoPadding()
+		{
+			EditorGUILayout.GetControlRect(true, EditorGUIUtility.standardVerticalSpacing);
+		}
+
+		//TODO: add Un Parent Button
 		private void DrawChildObject(Object[] assets, int index)
 		{
 			var obj = assets[index];
 
 			using(EditorDisposables.HorizontalScope())
 			{
-				using(EditorDisposables.Indent(-1))
-				{
 					using(var changeCheckScope = EditorDisposables.ChangeCheck())
 					{
 						obj.name = EditorGUILayout.DelayedTextField(obj.name);
@@ -127,7 +137,6 @@ namespace ForestOfChaosLib.AdvVar.Editor
 							AssetDatabase.ImportAsset(AssetPath(target));
 						}
 					}
-				}
 
 				var event2 = FoCsGUILayout.Button(FoCsGUIStyles.CrossCircle);
 				if(event2.AsButtonLeftClick)
@@ -140,6 +149,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 					}
 				}
 			}
+			DoPadding();
 		}
 
 		private void DrawAddTypeButton(Type type)
@@ -198,7 +208,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 		private static void OnRenameCancel(SubmitStringWindow.SubmitStringArguments obj)
 		{ }
 
-		private void DrawDevOptions()
+		private static void DrawDevOptions()
 		{
 			EditorGUILayout.LabelField("To Add You Own Scriptable Objects To This List, Add the ");
 			EditorGUILayout.LabelField("[AdvancedFolderName(toggleName: \"Custom Types\", order: 42)]");
