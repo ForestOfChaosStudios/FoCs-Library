@@ -114,12 +114,12 @@ namespace ForestOfChaosLib.Editor
 
 		private void DrawDefaultHeader(Rect headerRect)
 		{
-				Defaults.DrawHeaderBackground(headerRect);
-				headerRect.xMin += 6f;
-				headerRect.xMax -= 6f;
-				headerRect.height -= 2f;
-				++headerRect.y;
-				List.drawHeaderCallback(headerRect);
+			Defaults.DrawHeaderBackground(headerRect);
+			headerRect.xMin += 6f;
+			headerRect.xMax -= 6f;
+			headerRect.height -= 2f;
+			++headerRect.y;
+			List.drawHeaderCallback(headerRect);
 		}
 
 		public void HandleDrawing(Rect rect)
@@ -149,23 +149,30 @@ namespace ForestOfChaosLib.Editor
 		public float GetTotalHeight()
 		{
 			if(!Property.isExpanded)
-				return List.headerHeight;
-			return (List.elementHeight *
-					(List.count == 0?
-						1.5f :
-						List.count)) +
-				   List.headerHeight +
-				   List.footerHeight +
-				   2;
+				return List.headerHeight + FoCsEditorUtilities.Padding;
+
+			var height = List.headerHeight + List.footerHeight + 4 + FoCsEditorUtilities.Padding;
+
+			if(Property.isExpanded && List.serializedProperty.arraySize == 0)
+				return List.elementHeight + height;
+
+			for(var i = 0; i < List.serializedProperty.arraySize;i++)
+				height += OnListElementHeightCallback(i);
+
+			return height;
 		}
 
 		public static implicit operator ReorderableListProperty(SerializedProperty input) => new ReorderableListProperty(input);
 		public static implicit operator SerializedProperty(ReorderableListProperty input) => input.Property;
 
 		#region DelegateMethods
-		private float OnListElementHeightCallback(int index) => Mathf.Max(EditorGUIUtility.singleLineHeight,
-																		  EditorGUI.GetPropertyHeight(_property.GetArrayElementAtIndex(index), _property.GetArrayElementAtIndex(index).isExpanded)) +
-																4.0f;
+		private float OnListElementHeightCallback(int index)
+		{
+			var prop = _property.GetArrayElementAtIndex(index);
+			return Mathf.Max(EditorGUIUtility.singleLineHeight,
+							 EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) +
+				   4.0f;
+		}
 
 		private bool OnListOnCanRemoveCallback(ReorderableList list) => List.count > 0;
 

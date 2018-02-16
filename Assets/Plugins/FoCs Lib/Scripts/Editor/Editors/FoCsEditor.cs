@@ -167,11 +167,11 @@ namespace ForestOfChaosLib.Editor
 
 		public void HandleArray(SerializedProperty property)
 		{
-			using(EditorDisposables.Indent(-1))
+			using(EditorDisposables.Indent(0))
 			{
 				var listData = GetReorderableList(property);
 				var height = listData.GetTotalHeight();
-				var rect = EditorGUILayout.GetControlRect(true, height).ChangeX(16);
+				var rect = EditorGUILayout.GetControlRect(true, height);//.ChangeX(16);
 				listData.HandleDrawing(rect);
 			}
 		}
