@@ -43,7 +43,7 @@ namespace ForestOfChaosLib.AdvVar
 			if(ReferenceEquals(null, other))
 				return 1;
 			if(other._InternalNames == InternalNames.Other)
-				return string.Compare(ToggleName, other.ToggleName, StringComparison.Ordinal) + (int)_InternalNames;
+				return string.Compare(ToggleName, other.ToggleName, StringComparison.Ordinal);
 			return (int)_InternalNames.CompareTo(other._InternalNames);
 		}
 

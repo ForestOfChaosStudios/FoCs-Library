@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,8 +61,8 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 		public void Dispose()
 		{
-			if(CurrentIndex != Count)
-				Debug.LogWarning("You have not used all of the available Rects");
+			//if(CurrentIndex != Count)
+			//	Debug.LogWarning("You have not used all of the available Rects");
 		}
 
 		public IEnumerator<Rect> GetEnumerator()

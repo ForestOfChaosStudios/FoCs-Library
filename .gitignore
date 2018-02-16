@@ -27,3 +27,7 @@ ProjectSettings/
 UnityPackageManager/
 
 *IGNORE*
+
+Assets\.meta
+
+README\.md\.meta
