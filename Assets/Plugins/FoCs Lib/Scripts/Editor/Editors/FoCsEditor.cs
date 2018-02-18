@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using ForestOfChaosLib.Editor.PropertyDrawers.Types;
 using ForestOfChaosLib.Editor.Utilities;
-using ForestOfChaosLib.UnityScriptsExtensions;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;

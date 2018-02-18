@@ -75,10 +75,11 @@ namespace ForestOfChaosLib.Editor
 			rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(_property.GetArrayElementAtIndex(index), _property.GetArrayElementAtIndex(index).isExpanded));
 
 			rect.y += 1;
+			var iProp = _property.GetArrayElementAtIndex(index);
 			EditorGUI.PropertyField(rect,
-									_property.GetArrayElementAtIndex(index),
-									_property.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.Generic?
-										new GUIContent(_property.GetArrayElementAtIndex(index).displayName) :
+									iProp,
+									iProp.propertyType == SerializedPropertyType.Generic?
+										new GUIContent(iProp.displayName) :
 										GUIContent.none,
 									true);
 		}
