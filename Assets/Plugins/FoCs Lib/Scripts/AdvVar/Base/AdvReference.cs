@@ -9,21 +9,7 @@ namespace ForestOfChaosLib.AdvVar.Base
 	{
 		[SerializeField] [GetSetter("Value")] protected T _value;
 
-		private Action onValueChange = () => { };
-
-		public Action OnValueChange
-		{
-			get
-			{
-				return onValueChange ??
-					   (onValueChange = () =>
-							   { });
-			}
-			set
-			{
-				onValueChange = value;
-			}
-		}
+		public Action OnValueChange = () => { };
 
 		public T Value
 		{
