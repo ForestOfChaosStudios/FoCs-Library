@@ -62,9 +62,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				foldOut = EditorGUI.Foldout(position.SetHeight(SingleLine).SetWidth(SingleLine), foldOut, foldoutGUIContent);
 				if(foldOut)
 				{
-					if(Event.current.type == EventType.repaint)
-						GUI.skin.box.Draw(position.ChangeY(-1).MoveWidth(4).MoveHeight(2).ChangeX(-1), false, false, false, false);
-
+					DrawSurroundingBox(position);
 					using(EditorDisposables.Indent())
 					{
 						using(var changeCheckScope = EditorDisposables.ChangeCheck())

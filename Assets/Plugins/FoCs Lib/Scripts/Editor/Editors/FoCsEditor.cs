@@ -76,7 +76,7 @@ namespace ForestOfChaosLib.Editor
 						GUIChanged = true;
 					}
 				}
-
+				EditorGUILayout.GetControlRect(false, FoCsEditorUtilities.Padding); 
 				DrawGUI();
 			}
 		}
