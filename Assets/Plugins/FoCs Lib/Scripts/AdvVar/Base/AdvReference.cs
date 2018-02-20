@@ -1,4 +1,5 @@
 ﻿using System;
+using ForestOfChaosLib.Attributes;
 using ForestOfChaosLib.CSharpExtensions;
 using UnityEngine;
 
@@ -6,24 +7,9 @@ namespace ForestOfChaosLib.AdvVar.Base
 {
 	public class AdvReference<T> : AdvReference
 	{
-		[SerializeField] protected T _value;
+		[SerializeField] [GetSetter("Value")] protected T _value;
 
-		private Action onBeforeValueChange = () => {};
 		private Action onValueChange = () => { };
-
-		public Action OnBeforeValueChange
-		{
-			get
-			{
-				return onBeforeValueChange ??
-					   (onBeforeValueChange = () =>
-							   { });
-			}
-			set
-			{
-				onBeforeValueChange = value;
-			}
-		}
 
 		public Action OnValueChange
 		{
@@ -44,7 +30,6 @@ namespace ForestOfChaosLib.AdvVar.Base
 			get { return _value; }
 			set
 			{
-				OnBeforeValueChange.Trigger();
 				_value = value;
 				OnValueChange.Trigger();
 			}
