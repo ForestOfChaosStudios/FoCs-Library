@@ -78,7 +78,6 @@ namespace ForestOfChaosLib.Editor
 				}
 
 				DrawGUI();
-				EditorGUILayout.GetControlRect(false, 4);
 			}
 		}
 
