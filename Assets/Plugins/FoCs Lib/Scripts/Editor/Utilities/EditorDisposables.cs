@@ -18,7 +18,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 		public static EditorIndent Indent(int indentLevel) => new EditorIndent(indentLevel);
 		public static EditorIndent IndentSet(int indentLevel) => new EditorIndent(indentLevel, true);
 		public static EditorIndent SetIndent(int indentLevel) => IndentSet(indentLevel);
-
+		public static EditorIndent IndentZeroed() => new EditorIndent(0, true);
 		#endregion
 
 		#region ColorChanger
