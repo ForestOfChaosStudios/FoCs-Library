@@ -5,14 +5,14 @@ using UnityEngine;
 namespace ForestOfChaosLib.AdvVar.Base
 {
 	[Serializable]
-	public class AdvVariable<T, aT> : AdvVariable
+	public class AdvVariable<T, aT>: AdvVariable
 		where aT: AdvReference<T>
 	{
+		/*[GetSetter("Value")] */[SerializeField] private T ConstantValue;
+		/*[GetSetter("Value")] */[SerializeField] private aT Variable;
+		public Action OnValueChange;
 		public bool UseConstant;
 
-		[SerializeField] private T ConstantValue;
-
-		[SerializeField] private aT Variable;
 
 		public T Value
 		{
@@ -24,21 +24,14 @@ namespace ForestOfChaosLib.AdvVar.Base
 			}
 			set
 			{
-				OnBeforeValueChange.Trigger();
 				if(UseConstant)
 					ConstantValue = value;
 				else
 					Variable.Value = value;
 
-
 				OnValueChange.Trigger();
 			}
 		}
-
-		public Action OnBeforeValueChange;
-
-		public Action OnValueChange;
-
 
 		public AdvVariable()
 		{ }
@@ -66,8 +59,8 @@ namespace ForestOfChaosLib.AdvVar.Base
 	}
 
 	/// <summary>
-	/// This is a base class so that as Unity needs a none generic base class for editors/property drawers
+	///     This is a base class so that as Unity needs a none generic base class for editors/property drawers
 	/// </summary>
 	public class AdvVariable
-	{}
+	{ }
 }

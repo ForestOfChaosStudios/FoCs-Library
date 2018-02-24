@@ -14,6 +14,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		public static readonly GUIContent Z_Content = new GUIContent("Z", "The Z Value Of this Vector");
 
 		public static readonly GUIContent W_Content = new GUIContent("W", "The W Value Of this Vector");
+
+		protected const float LABEL_WIDTH = 16;
 	}
 
 	[CustomPropertyDrawer(typeof(Vector2))]
@@ -27,24 +29,28 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		{
 			position.height = SingleLine;
 			if(string.IsNullOrEmpty(label.text))
+			{
 				DoFieldsDraw(position, property);
+			}
 			else
 			{
 				EditorGUI.LabelField(position, label);
-
-				var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
-				DoFieldsDraw(pos, property);
+				using(EditorDisposables.IndentSet(0))
+				{
+					var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
+					DoFieldsDraw(pos, property);
+				}
 			}
 		}
 
 		private static void DoFieldsDraw(Rect position, SerializedProperty property)
 		{
-			using(EditorDisposables.LabelSetWidth(32f))
+			using(EditorDisposables.LabelSetWidth(LABEL_WIDTH))
 			{
 				using(var scope = EditorDisposables.RectHorizontalScope(2, position))
 				{
 					property.Next(true);
-					EditorGUI.PropertyField(scope.GetNext(), property, X_Content);
+					EditorGUI.PropertyField(scope.GetNext().MoveWidth(-2), property, X_Content);
 
 					property.Next(true);
 					EditorGUI.PropertyField(scope.GetNext(), property, Y_Content);
@@ -68,15 +74,17 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			else
 			{
 				EditorGUI.LabelField(position, label);
-
-				var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
-				DoFieldsDraw(pos, property);
+				using(EditorDisposables.IndentSet(0))
+				{
+					var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
+					DoFieldsDraw(pos, property);
+				}
 			}
 		}
 
 		private static void DoFieldsDraw(Rect position, SerializedProperty property)
 		{
-			using(EditorDisposables.LabelSetWidth(32f))
+			using(EditorDisposables.LabelSetWidth(LABEL_WIDTH))
 			{
 				using(var scope = EditorDisposables.RectHorizontalScope(3, position))
 				{
@@ -108,15 +116,17 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			else
 			{
 				EditorGUI.LabelField(position, label);
-
-				var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
-				DoFieldsDraw(pos, property);
+				using(EditorDisposables.IndentSet(0))
+				{
+					var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
+					DoFieldsDraw(pos, property);
+				}
 			}
 		}
 
 		private static void DoFieldsDraw(Rect position, SerializedProperty property)
 		{
-			using(EditorDisposables.LabelSetWidth(32f))
+			using(EditorDisposables.LabelSetWidth(LABEL_WIDTH))
 			{
 				using(var scope = EditorDisposables.RectHorizontalScope(4, position))
 				{

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ForestOfChaosLib.AdvVar.Base;
-using ForestOfChaosLib.CSharpExtensions;
 using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.ImGUI;
 using ForestOfChaosLib.Editor.Utilities;
-using ForestOfChaosLib.UnityScriptsExtensions;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -22,7 +20,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 		private static readonly Dictionary<string, bool> enableDictionary = new Dictionary<string, bool>();
 		private static SortedDictionary<AdvFolderNameAttribute, List<Type>> typeDictionary;
 
-		private bool showChildrenSettings;
+		private bool showChildrenSettings = true;
 
 		public override bool ShowCopyPasteButtons => false;
 
@@ -52,20 +50,20 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				{
 					using(EditorDisposables.VerticalScope())
 					{
-						var area = EditorGUILayout.GetControlRect(true, StandardLine);
-						var @event = FoCsGUI.Toggle(area,
-													value,
-													value?
-														$"Hide {key.ToggleName}" :
-														$" {key.ToggleName}",
-													EditorStyles.toolbarButton);
+						using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
+						{
+							var @event = FoCsGUILayout.Toggle(value,
+														value?
+															$"Hide {key.ToggleName}" :
+															$" {key.ToggleName}",
+														EditorStyles.toolbarButton);
 
 						if(@event)
 							value = !value;
+						}
 						if(value)
 						{
 							foreach (var type in typeDictionary[key])
-								using (EditorDisposables.HorizontalScope(GUI.skin.box))
 									DrawAddTypeButton(type);
 							DoPadding();
 						}
@@ -92,21 +90,19 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 						if(@event.AsButtonLeftClick)
 							showChildrenSettings = !showChildrenSettings;
-						if(showChildrenSettings)
+						if(!showChildrenSettings)
+							return;
+						using(EditorDisposables.VerticalScope())
 						{
-							using(EditorDisposables.VerticalScope())
+							using(EditorDisposables.Indent())
 							{
-								using(EditorDisposables.Indent())
+								for(var i = 0; i < assets.Length; i++)
 								{
-									for(var i = assets.Length - 1; i >= 0; i--)
-									{
-										var obj = assets[i];
-										if(obj)
-										{
-											if(AssetDatabase.IsSubAsset(obj))
-												DrawChildObject(assets, i);
-										}
-									}
+									var obj = assets[i];
+									if(!obj)
+										continue;
+									if(AssetDatabase.IsSubAsset(obj))
+										DrawChildObject(obj, i);
 								}
 							}
 						}
@@ -115,30 +111,33 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			}
 		}
 
-		private static void DoPadding()
-		{
-			EditorGUILayout.GetControlRect(true, EditorGUIUtility.standardVerticalSpacing);
-		}
+		private static void DoPadding(bool hasLabel = true) => DoPadding(EditorGUIUtility.standardVerticalSpacing, hasLabel);
+
+		private static void DoPadding(float height, bool hasLabel = true) => EditorGUILayout.GetControlRect(hasLabel, height);
 
 		//TODO: add Un Parent Button
-		private void DrawChildObject(Object[] assets, int index)
-		{
-			var obj = assets[index];
+		private void DrawChildObject(Object[] assets, int index) => DrawChildObject(assets[index], index);
+		//TODO: add Un Parent Button
 
+		private void DrawChildObject(Object obj, int index)
+		{
 			using(EditorDisposables.HorizontalScope())
 			{
-					using(var changeCheckScope = EditorDisposables.ChangeCheck())
-					{
+				FoCsGUILayout.Label($"[{index}] {obj.GetType().Name}", GUILayout.Width(Screen.width / 4f));
+
+				using(var changeCheckScope = EditorDisposables.ChangeCheck())
+				{
+					using(EditorDisposables.IndentSet(0))
 						obj.name = EditorGUILayout.DelayedTextField(obj.name);
 
-						if(changeCheckScope.changed)
-						{
-							EditorUtility.SetDirty(target);
-							AssetDatabase.ImportAsset(AssetPath(target));
-						}
+					if(changeCheckScope.changed)
+					{
+						EditorUtility.SetDirty(target);
+						AssetDatabase.ImportAsset(AssetPath(target));
 					}
+				}
 
-				var event2 = FoCsGUILayout.Button(FoCsGUIStyles.CrossCircle);
+				var event2 = FoCsGUILayout.Button(FoCsGUIStyles.CrossCircle, GUILayout.Width(FoCsGUIStyles.CrossCircle.fixedWidth));
 				if(event2.AsButtonLeftClick)
 				{
 					if(EditorUtility.DisplayDialog("Delete Child", $"Delete {obj.name}", "Yes Delete", "No Cancel"))
@@ -146,34 +145,35 @@ namespace ForestOfChaosLib.AdvVar.Editor
 						DestroyImmediate(obj, true);
 						EditorUtility.SetDirty(target);
 						AssetDatabase.ImportAsset(AssetPath(target));
+						Repaint();
+						return;
 					}
 				}
 			}
-			DoPadding();
+			DoPadding(1, false);
 		}
 
 		private void DrawAddTypeButton(Type type)
 		{
-			var rect = EditorGUILayout.GetControlRect();
-			var labelRect = rect.SetWidth(EditorGUIUtility.labelWidth);
-			var buttonRect = rect.SetWidth(rect.width - labelRect.width).MoveX(EditorGUIUtility.labelWidth);
-
-			EditorGUI.LabelField(labelRect, type.Name);
-			var @event = FoCsGUI.Button(buttonRect, "Add New");
-			if(@event.AsButtonLeftClick)
+			using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
 			{
-				SubmitStringWindow.SetUpInstance(new CreateArgs
-												 {
-													 Title = $"Enter Name of the new {type.Name}",
-													 WindowTitle = "Enter Name",
-													 CancelMessage = "Cancel",
-													 Data = $"New {type.Name}",
-													 SubmitMessage = $"Create new {type.Name}",
-													 OnSubmit = OnCreateSubmit,
-													 OnCancel = OnCreateCancel,
-													 target = target,
-													 type = type
-												 });
+				FoCsGUILayout.Label(type.Name, EditorStyles.toolbarButton);
+				var @event = FoCsGUILayout.Button("Add New", EditorStyles.toolbarButton);
+				if(@event.AsButtonLeftClick)
+				{
+					SubmitStringWindow.SetUpInstance(new CreateArgs
+													 {
+														 Title = $"Enter Name of the new {type.Name}",
+														 WindowTitle = "Enter Name",
+														 CancelMessage = "Cancel",
+														 Data = $"New {type.Name}",
+														 SubmitMessage = $"Create new {type.Name}",
+														 OnSubmit = OnCreateSubmit,
+														 OnCancel = OnCreateCancel,
+														 target = target,
+														 type = type
+													 });
+				}
 			}
 		}
 

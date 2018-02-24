@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using ForestOfChaosLib.Editor.PropertyDrawers.Types;
 using ForestOfChaosLib.Editor.Utilities;
-using ForestOfChaosLib.UnityScriptsExtensions;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -77,9 +76,8 @@ namespace ForestOfChaosLib.Editor
 						GUIChanged = true;
 					}
 				}
-
+				EditorGUILayout.GetControlRect(false, FoCsEditorUtilities.Padding); 
 				DrawGUI();
-				EditorGUILayout.GetControlRect(false, 4);
 			}
 		}
 
@@ -167,11 +165,11 @@ namespace ForestOfChaosLib.Editor
 
 		public void HandleArray(SerializedProperty property)
 		{
-			using(EditorDisposables.Indent(-1))
+			using(EditorDisposables.Indent(0))
 			{
 				var listData = GetReorderableList(property);
 				var height = listData.GetTotalHeight();
-				var rect = EditorGUILayout.GetControlRect(true, height).ChangeX(16);
+				var rect = EditorGUILayout.GetControlRect(true, height);//.ChangeX(16);
 				listData.HandleDrawing(rect);
 			}
 		}

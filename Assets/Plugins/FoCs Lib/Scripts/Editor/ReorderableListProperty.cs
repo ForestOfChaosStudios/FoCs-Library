@@ -1,4 +1,5 @@
-﻿using ForestOfChaosLib.Editor.ImGUI;
+﻿using System;
+using ForestOfChaosLib.Editor.ImGUI;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.UnityScriptsExtensions;
 using UnityEditor;
@@ -13,7 +14,7 @@ namespace ForestOfChaosLib.Editor
 		private SerializedProperty _property;
 		public bool Animate;
 
-		private ReorderableList.Defaults s_Defaults;
+		private static ReorderableList.Defaults s_Defaults;
 
 		/// <summary>
 		///     ref http://va.lent.in/unity-make-your-lists-functional-with-reorderablelist/
@@ -22,7 +23,8 @@ namespace ForestOfChaosLib.Editor
 
 		public AnimBool IsExpanded { get; set; }
 
-		public ReorderableList.Defaults Defaults => s_Defaults ?? (s_Defaults = new ReorderableList.Defaults());
+		public static ReorderableList.Defaults Defaults => s_Defaults ?? (s_Defaults = new ReorderableList.Defaults());
+		public ListLimiter Limiter;
 
 		public SerializedProperty Property
 		{
@@ -68,23 +70,53 @@ namespace ForestOfChaosLib.Editor
 			//TODO Impliment limited view of lists, eg only show index 50-100, and buttons to move limits
 			List.drawFooterCallback += OnListDrawFooterCallback;
 			List.showDefaultBackground = true;
+
+			CheckLimiter();
+		}
+
+		private void CheckLimiter()
+		{
+			if (List.serializedProperty.arraySize >= ListLimiter.TOTAL_VISIBLE_COUNT)
+			{
+				if (Limiter == null)
+					Limiter = ListLimiter.GetLimiter(this);
+			}
+			else
+			{
+				Limiter = null;
+			}
 		}
 
 		private void DrawElement(Rect rect, int index, bool active, bool focused)
 		{
-			rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(_property.GetArrayElementAtIndex(index), _property.GetArrayElementAtIndex(index).isExpanded));
+			if(Limiter == null)
+			{
+				DoDrawElement(rect, index);
+			}
+			else if(Limiter.ShowElement(index))
+			{
+				DoDrawElement(rect, index);
+			}
+		}
+
+		private void DoDrawElement(Rect rect, int index)
+		{
+			rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight,
+									EditorGUI.GetPropertyHeight(_property.GetArrayElementAtIndex(index), _property.GetArrayElementAtIndex(index).isExpanded));
 
 			rect.y += 1;
+			var iProp = _property.GetArrayElementAtIndex(index);
 			EditorGUI.PropertyField(rect,
-									_property.GetArrayElementAtIndex(index),
-									_property.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.Generic?
-										new GUIContent(_property.GetArrayElementAtIndex(index).displayName) :
+									iProp,
+									iProp.propertyType == SerializedPropertyType.Generic ?
+										new GUIContent(iProp.displayName) :
 										GUIContent.none,
 									true);
 		}
 
 		public void HandleDrawing()
 		{
+			CheckLimiter();
 			if(Animate)
 			{
 				IsExpanded.target = Property.isExpanded;
@@ -107,23 +139,9 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private void DrawDefaultHeader()
-		{
-			DrawDefaultHeader(GUILayoutUtility.GetRect(0.0f, List.headerHeight, GUILayout.ExpandWidth(true)));
-		}
-
-		private void DrawDefaultHeader(Rect headerRect)
-		{
-				Defaults.DrawHeaderBackground(headerRect);
-				headerRect.xMin += 6f;
-				headerRect.xMax -= 6f;
-				headerRect.height -= 2f;
-				++headerRect.y;
-				List.drawHeaderCallback(headerRect);
-		}
-
 		public void HandleDrawing(Rect rect)
 		{
+			CheckLimiter();
 			if(Animate)
 			{
 				IsExpanded.target = Property.isExpanded;
@@ -146,26 +164,172 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
+		private void DrawDefaultHeader()
+		{
+			DrawDefaultHeader(GUILayoutUtility.GetRect(0.0f, List.headerHeight, GUILayout.ExpandWidth(true)));
+		}
+
+		private void DrawDefaultHeader(Rect headerRect)
+		{
+			Defaults.DrawHeaderBackground(headerRect);
+			headerRect.xMin += 6f;
+			headerRect.xMax -= 6f;
+			headerRect.height -= 2f;
+			++headerRect.y;
+			List.drawHeaderCallback(headerRect);
+		}
+
 		public float GetTotalHeight()
 		{
-			if(!Property.isExpanded)
-				return List.headerHeight;
-			return (List.elementHeight *
-					(List.count == 0?
-						1.5f :
-						List.count)) +
-				   List.headerHeight +
-				   List.footerHeight +
-				   2;
+		if(!Property.isExpanded)
+				return List.headerHeight + FoCsEditorUtilities.Padding;
+
+			var height = List.headerHeight + List.footerHeight + 4 + FoCsEditorUtilities.Padding;
+
+			if(Property.isExpanded && (List.serializedProperty.arraySize == 0))
+				return List.elementHeight + height;
+
+			if(Limiter == null)
+			{
+				for(var i = 0; i < List.serializedProperty.arraySize; i++)
+					height += OnListElementHeightCallback(i);
+			}
+			else
+			{
+				for(var i = 0; i < List.serializedProperty.arraySize; i++)
+					if(Limiter.ShowElement(i))
+						height += OnListElementHeightCallback(i);
+			}
+
+			return height;
 		}
 
 		public static implicit operator ReorderableListProperty(SerializedProperty input) => new ReorderableListProperty(input);
 		public static implicit operator SerializedProperty(ReorderableListProperty input) => input.Property;
 
+		public static class ListStyles
+		{
+			public static readonly GUIContent IconToolbarPlus = EditorGUIUtility.IconContent("Toolbar Plus", "|Add to list");
+			public static readonly GUIContent IconToolbar = EditorGUIUtility.IconContent("Toolbar Plus", "|Add to list");
+
+			public static readonly GUIContent IconToolbarPlusMore = EditorGUIUtility.IconContent("Toolbar Plus More", "Choose to add to list");
+			public static readonly GUIContent IconToolbarMinus = EditorGUIUtility.IconContent("Toolbar Minus", "Remove selection from list");
+
+			public static readonly GUIContent UpArrow = new GUIContent(FoCsGUIStyles.FoCsGUIData.UpArrow, "Increase Displayed Index 5");
+			public static readonly GUIContent Up2Arrow = new GUIContent(FoCsGUIStyles.FoCsGUIData.Up2Arrow, "Increase Displayed Index 10");
+
+			public static readonly GUIContent DownArrow = new GUIContent(FoCsGUIStyles.FoCsGUIData.DownArrow, "Decrease Displayed Index 5");
+			public static readonly GUIContent Down2Arrow = new GUIContent(FoCsGUIStyles.FoCsGUIData.Down2Arrow, "Decrease Displayed Index 10");
+
+			private static GUIStyle miniLabel;
+
+			public static readonly GUIStyle DraggingHandle = new GUIStyle("RL DragHandle");
+			public static readonly GUIStyle HeaderBackground = new GUIStyle("RL Header");
+			public static readonly GUIStyle FooterBackground = new GUIStyle("RL Footer");
+			public static readonly GUIStyle BoxBackground = new GUIStyle("RL Background");
+			public static readonly GUIStyle PreButton = new GUIStyle("RL FooterButton");
+			public static readonly GUIStyle ElementBackground = new GUIStyle("RL Element");
+
+			public static GUIStyle MiniLabel
+			{
+				get
+				{
+					if(miniLabel != null)
+						return miniLabel;
+					miniLabel = new GUIStyle(EditorStyles.miniLabel);
+					miniLabel.alignment = TextAnchor.UpperCenter;
+
+					return miniLabel;
+				}
+			}
+		}
+
+		public class ListLimiter
+		{
+			public const int TOTAL_VISIBLE_COUNT = 25;
+
+			private int _max;
+			private int _min;
+			public ReorderableListProperty MyListProperty;
+			private int Count => MyListProperty.Property.arraySize;
+
+			public int Min
+			{
+				get { return _min; }
+				set { _min = Math.Max(0, value); }
+			}
+
+			public int Max
+			{
+				get { return _max; }
+				set { _max = Math.Min(Count, value); }
+			}
+
+			public bool ShowElement(int index) => (index >= Min) && (index < Max);
+
+
+			public static ListLimiter GetLimiter(ReorderableListProperty listProperty) => new ListLimiter
+																						  {
+																							  MyListProperty = listProperty,
+																							  _min = 0,
+																							  _max = TOTAL_VISIBLE_COUNT
+																						  };
+
+			public bool CanDecrease() => _min > 0;
+
+			public bool CanIncrease() => _max < Count;
+
+			public void ChangeRange(int amount)
+			{
+				var newMin = Min + amount;
+				var newMax = newMin + TOTAL_VISIBLE_COUNT;
+				if((newMax < Count) && (newMin >= 0))
+				{
+					Min = Min + amount;
+					Max = Min + TOTAL_VISIBLE_COUNT;
+					return;
+				}
+
+				if(newMax >= Count)
+				{
+					newMax = Count;
+					Min = newMax - TOTAL_VISIBLE_COUNT;
+					Max = newMax;
+					return;
+				}
+
+				Min = Min + amount;
+				Max = Min + TOTAL_VISIBLE_COUNT;
+			}
+
+			public void ChangeStart()
+			{
+				Min = 0;
+				Max = Min + TOTAL_VISIBLE_COUNT;
+			}
+
+			public void ChangeEnd()
+			{
+				Max = Count;
+				Min = Max - TOTAL_VISIBLE_COUNT;
+			}
+		}
+
 		#region DelegateMethods
-		private float OnListElementHeightCallback(int index) => Mathf.Max(EditorGUIUtility.singleLineHeight,
-																		  EditorGUI.GetPropertyHeight(_property.GetArrayElementAtIndex(index), _property.GetArrayElementAtIndex(index).isExpanded)) +
-																4.0f;
+		private float OnListElementHeightCallback(int index)
+		{
+			if(Limiter == null)
+			{
+				var prop = _property.GetArrayElementAtIndex(index);
+				return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
+			}
+			if(Limiter.ShowElement(index))
+			{
+				var prop = _property.GetArrayElementAtIndex(index);
+				return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
+			}
+			return 0;
+		}
 
 		private bool OnListOnCanRemoveCallback(ReorderableList list) => List.count > 0;
 
@@ -182,54 +346,61 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private bool RangedDisplay = false;
-
 		private void OnListDrawFooterCallback(Rect rowRect)
 		{
-			float xMax = rowRect.xMax;
-			float x = xMax - 8f;
+			var xMax = rowRect.xMax;
+			var x = xMax - 8f;
 			if(List.displayAdd)
 				x -= 25f;
 			if(List.displayRemove)
 				x -= 25f;
 
-			if(RangedDisplay)
-				x -= (25f * 6);
+			if(Limiter != null)
+				x -= 25f * 6;
 			var rect = new Rect(x, rowRect.y, xMax - x, rowRect.height);
 
-			Rect addButtonRect = new Rect(xMax - 29f - 25f, rect.y - 3f, 25f, 13f);
+			var addButtonRect = new Rect(xMax - 29f - 25f, rect.y - 3f, 25f, 13f);
 
-			Rect removeButtonRect = new Rect(xMax - 29f, rect.y - 3f, 25f, 13f);
+			var removeButtonRect = new Rect(xMax - 29f, rect.y - 3f, 25f, 13f);
 			if(Event.current.type == EventType.Repaint)
 				ListStyles.FooterBackground.Draw(rect, false, false, false, false);
 
-			if(RangedDisplay)
+			if(Limiter != null)
 			{
 				var horScope = EditorDisposables.RectHorizontalScope(11, rect.ChangeX(5).MoveWidth(-16));
+				using(EditorDisposables.DisabledScope(!Limiter.CanDecrease()))
+				{
+					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.UpArrow, ListStyles.PreButton))
+					{
+						Limiter.ChangeRange(-5);
+					}
+					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.Up2Arrow, ListStyles.PreButton))
+					{
+						Limiter.ChangeRange(-10);
+					}
+				}
+				var minString = Limiter.Min.ToString();
+				var maxString = Limiter.Max.ToString();
 
-				if(FoCsGUI.Button(horScope.GetNext(), ListStyles.UpArrow, ListStyles.PreButton))
-				{ }
-				if(FoCsGUI.Button(horScope.GetNext(), ListStyles.Up2Arrow, ListStyles.PreButton))
-				{ }
-				var minString = 32.ToString();
-				var maxString = 102.ToString();
-
-
-
-				var shortLabel = $"{(minString.Length + maxString.Length >4?"Index":"I")}: {minString}-{maxString}";
+				var shortLabel = $"{((minString.Length + maxString.Length) < 5? "Index" : "I")}: {minString}-{maxString}";
 				var toolTip = $"Viewable Indices: Min:{minString} Max:{maxString}";
 				FoCsGUI.Button(horScope.GetNext(5).ChangeY(-3), new GUIContent(shortLabel, toolTip), ListStyles.MiniLabel);
-
-				if(FoCsGUI.Button(horScope.GetNext(), ListStyles.DownArrow, ListStyles.PreButton))
-				{ }
-				if(FoCsGUI.Button(horScope.GetNext(), ListStyles.Down2Arrow, ListStyles.PreButton))
-				{ }
+				using(EditorDisposables.DisabledScope(!Limiter.CanIncrease()))
+				{
+					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.DownArrow, ListStyles.PreButton))
+					{
+						Limiter.ChangeRange(5);
+					}
+					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.Down2Arrow, ListStyles.PreButton))
+					{
+						Limiter.ChangeRange(10);
+					}
+				}
 			}
-
 
 			if(List.displayAdd)
 			{
-				using(EditorDisposables.DisabledScope(List.onCanAddCallback != null && !List.onCanAddCallback(List)))
+				using(EditorDisposables.DisabledScope((List.onCanAddCallback != null) && !List.onCanAddCallback(List)))
 				{
 					if(GUI.Button(addButtonRect,
 								  List.onAddDropdownCallback == null?
@@ -245,12 +416,15 @@ namespace ForestOfChaosLib.Editor
 							Defaults.DoAddButton(List);
 						if(List.onChangedCallback != null)
 							List.onChangedCallback(List);
+						Limiter?.ChangeEnd();
 					}
 				}
 			}
 			if(!List.displayRemove)
 				return;
-			using(EditorDisposables.DisabledScope(List.index < 0 || List.index >= List.count || List.onCanRemoveCallback != null && !List.onCanRemoveCallback(List)))
+			using(EditorDisposables.DisabledScope((List.index < 0) ||
+												  (List.index >= List.count) ||
+												  ((List.onCanRemoveCallback != null) && !List.onCanRemoveCallback(List))))
 			{
 				if(GUI.Button(removeButtonRect, ListStyles.IconToolbarMinus, ListStyles.PreButton))
 				{
@@ -260,51 +434,11 @@ namespace ForestOfChaosLib.Editor
 						List.onRemoveCallback(List);
 					if(List.onChangedCallback != null)
 						List.onChangedCallback(List);
+
+					Limiter?.ChangeRange(-1);
 				}
 			}
 		}
 		#endregion
-
-
-		public static class ListStyles
-		{
-			public static readonly GUIContent IconToolbarPlus = EditorGUIUtility.IconContent("Toolbar Plus", "|Add to list");
-			public static readonly GUIContent IconToolbar = EditorGUIUtility.IconContent("Toolbar Plus", "|Add to list");
-
-			public static readonly GUIContent IconToolbarPlusMore = EditorGUIUtility.IconContent("Toolbar Plus More", "Choose to add to list");
-			public static readonly GUIContent IconToolbarMinus = EditorGUIUtility.IconContent("Toolbar Minus", "Remove selection from list");
-
-
-			public static readonly GUIContent UpArrow = new GUIContent(FoCsGUIImages.UpArrow, "Increase Displayed Index 5");
-			public static readonly GUIContent Up2Arrow = new GUIContent(FoCsGUIImages.Up2Arrow, "Increase Displayed Index 10");
-
-			public static readonly GUIContent DownArrow = new GUIContent(FoCsGUIImages.DownArrow, "Decrease Displayed Index 5");
-			public static readonly GUIContent Down2Arrow = new GUIContent(FoCsGUIImages.Down2Arrow, "Decrease Displayed Index 10");
-
-			private static GUIStyle miniLabel;
-
-			public static GUIStyle MiniLabel
-			{
-				get
-				{
-					if(miniLabel != null)
-						return miniLabel;
-					miniLabel = new GUIStyle(EditorStyles.miniLabel);
-					miniLabel.alignment = TextAnchor.UpperCenter;
-
-					return miniLabel;
-				}
-			}
-
-
-
-
-			public static readonly GUIStyle DraggingHandle = new GUIStyle("RL DragHandle");
-			public static readonly GUIStyle HeaderBackground = new GUIStyle("RL Header");
-			public static readonly GUIStyle FooterBackground = new GUIStyle("RL Footer");
-			public static readonly GUIStyle BoxBackground = new GUIStyle("RL Background");
-			public static readonly GUIStyle PreButton = new GUIStyle("RL FooterButton");
-			public static readonly GUIStyle ElementBackground = new GUIStyle("RL Element");
-		}
 	}
 }

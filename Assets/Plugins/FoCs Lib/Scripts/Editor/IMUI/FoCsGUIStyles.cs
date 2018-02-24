@@ -3,29 +3,41 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.ImGUI
 {
+	[InitializeOnLoad]
 	public static class FoCsGUIStyles
 	{
-		private static GUISkin skin;
-		internal static string SkinFileName = "FoCsSkin";
-		internal static string SkinGUID = "9d2742e5c3c229d4c99d91613bd3c761";
+		public static FoCsGUIData FoCsGUIData { get; }
 
-		internal static string Path = @"Assets\Plugins\FoCs Lib\Editor Resources";
+		static FoCsGUIStyles()
+		{
+			EditorHelpers.CreateAndCheckFolder(FOLDER, DIR);
+			FoCsGUIData = (FoCsGUIData)EditorGUIUtility.Load(FILE_PATH_NAME);
+			if(FoCsGUIData != null)
+				return;
+			FoCsGUIData = ScriptableObject.CreateInstance<FoCsGUIData>();
+
+			AssetDatabase.CreateAsset(FoCsGUIData, FILE_PATH_NAME);
+			AssetDatabase.SaveAssets();
+		}
+
+
+		internal const string FILE_PATH_NAME = PATH +"\\" + SkinFileName + SkinFileExt;
+
+
+		internal const string SkinFileName = "FoCsEditorData";
+
+		internal const string SkinFileExt = ".asset";
+
+
+		internal const string PATH = FOLDER +"\\" + DIR;
+		internal const string FOLDER = "Assets";
+		internal const string DIR = "Editor Default Resources";
+
 		private static GUIStyle _InLineOptionsMenu;
 
 		private static GUIStyle _ButtonNoOutline;
 
 		private static GUIStyle _CrossCircle;
-
-		public static GUISkin Skin
-		{
-			get
-			{
-				if(skin != null)
-					return skin;
-				skin = (GUISkin)EditorGUIUtility.Load(Path + "\\" + SkinFileName);
-				return skin;
-			}
-		}
 
 		public static GUIStyle InLineOptionsMenu
 		{

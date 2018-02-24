@@ -17,6 +17,8 @@ namespace ForestOfChaosLib.Editor.Utilities
 		public static EditorIndent Indent() => new EditorIndent();
 		public static EditorIndent Indent(int indentLevel) => new EditorIndent(indentLevel);
 		public static EditorIndent IndentSet(int indentLevel) => new EditorIndent(indentLevel, true);
+		public static EditorIndent SetIndent(int indentLevel) => IndentSet(indentLevel);
+		public static EditorIndent IndentZeroed() => new EditorIndent(0, true);
 		#endregion
 
 		#region ColorChanger
@@ -34,7 +36,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 		#endregion
 
 		#region UnityDisposables
-		public static EditorGUI.DisabledGroupScope DisabledScope(bool val) => new EditorGUI.DisabledGroupScope(val);
+		public static EditorGUI.DisabledGroupScope DisabledScope(bool val = true) => new EditorGUI.DisabledGroupScope(val);
 		public static EditorGUI.ChangeCheckScope ChangeCheck() => new EditorGUI.ChangeCheckScope();
 
 		#region LayoutScopes
