@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 	[CreateAssetMenu(fileName = "Input Axis Variable", menuName = "ADV Variables/Input Axis", order = 2)]
 	[Serializable]
 	[AdvFolderNameForestOfChaos]
-	public class AdvInputAxisReference: AdvReference<InputAxis>
+	public class AdvInputAxisReference: AdvReferenceNoGetSetter<InputAxis>
 	{
 		public bool OnlyButton
 		{
