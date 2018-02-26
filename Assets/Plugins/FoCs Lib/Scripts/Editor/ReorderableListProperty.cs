@@ -11,10 +11,10 @@ namespace ForestOfChaosLib.Editor
 {
 	public class ReorderableListProperty
 	{
+		private static ReorderableList.Defaults s_Defaults;
 		private SerializedProperty _property;
 		public bool Animate;
-
-		private static ReorderableList.Defaults s_Defaults;
+		public ListLimiter Limiter;
 
 		/// <summary>
 		///     ref http://va.lent.in/unity-make-your-lists-functional-with-reorderablelist/
@@ -24,11 +24,10 @@ namespace ForestOfChaosLib.Editor
 		public AnimBool IsExpanded { get; set; }
 
 		public static ReorderableList.Defaults Defaults => s_Defaults ?? (s_Defaults = new ReorderableList.Defaults());
-		public ListLimiter Limiter;
 
 		public SerializedProperty Property
 		{
-			private get { return _property; }
+			get { return _property; }
 			set
 			{
 				_property = value;
@@ -36,10 +35,10 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		public ReorderableListProperty(SerializedProperty property, bool animate = false)
+		public ReorderableListProperty(SerializedProperty property)
 		{
 			_property = property;
-			Animate = animate;
+			Animate = false;
 			if(Animate)
 			{
 				IsExpanded = new AnimBool(property.isExpanded)
@@ -50,19 +49,35 @@ namespace ForestOfChaosLib.Editor
 			CreateList();
 		}
 
+		public ReorderableListProperty(
+				SerializedProperty property,
+				bool dragAble,
+				bool displayHeader = true,
+				bool displayAdd = true,
+				bool displayRemove = true,
+				bool animate = false)
+		{
+			_property = property;
+			Animate = animate;
+			if(Animate)
+			{
+				IsExpanded = new AnimBool(property.isExpanded)
+							 {
+								 speed = 1f
+							 };
+			}
+			CreateList(dragAble, displayHeader, displayAdd, displayRemove);
+		}
+
 		~ReorderableListProperty()
 		{
 			_property = null;
 			List = null;
 		}
 
-		private void CreateList()
+		private void CreateList(bool dragAble = true, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true)
 		{
-			const bool dragable = true,
-					   header = true,
-					   add = true,
-					   remove = true;
-			List = new ReorderableList(Property.serializedObject, Property, dragable, header, add, remove);
+			List = new ReorderableList(Property.serializedObject, Property, dragAble, displayHeader, displayAdd, displayRemove);
 			List.drawHeaderCallback += OnListDrawHeaderCallback;
 			List.onCanRemoveCallback += OnListOnCanRemoveCallback;
 			List.drawElementCallback += DrawElement;
@@ -76,27 +91,21 @@ namespace ForestOfChaosLib.Editor
 
 		private void CheckLimiter()
 		{
-			if (List.serializedProperty.arraySize >= ListLimiter.TOTAL_VISIBLE_COUNT)
+			if(List.serializedProperty.arraySize >= ListLimiter.TOTAL_VISIBLE_COUNT)
 			{
-				if (Limiter == null)
+				if(Limiter == null)
 					Limiter = ListLimiter.GetLimiter(this);
 			}
 			else
-			{
 				Limiter = null;
-			}
 		}
 
 		private void DrawElement(Rect rect, int index, bool active, bool focused)
 		{
 			if(Limiter == null)
-			{
 				DoDrawElement(rect, index);
-			}
 			else if(Limiter.ShowElement(index))
-			{
 				DoDrawElement(rect, index);
-			}
 		}
 
 		private void DoDrawElement(Rect rect, int index)
@@ -108,7 +117,7 @@ namespace ForestOfChaosLib.Editor
 			var iProp = _property.GetArrayElementAtIndex(index);
 			EditorGUI.PropertyField(rect,
 									iProp,
-									iProp.propertyType == SerializedPropertyType.Generic ?
+									iProp.propertyType == SerializedPropertyType.Generic?
 										new GUIContent(iProp.displayName) :
 										GUIContent.none,
 									true);
@@ -164,6 +173,10 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
+		public void DrawHeader() => DrawDefaultHeader();
+
+		public void DrawHeader(Rect rect) => DrawDefaultHeader(rect);
+
 		private void DrawDefaultHeader()
 		{
 			DrawDefaultHeader(GUILayoutUtility.GetRect(0.0f, List.headerHeight, GUILayout.ExpandWidth(true)));
@@ -181,7 +194,7 @@ namespace ForestOfChaosLib.Editor
 
 		public float GetTotalHeight()
 		{
-		if(!Property.isExpanded)
+			if(!Property.isExpanded)
 				return List.headerHeight + FoCsEditorUtilities.Padding;
 
 			var height = List.headerHeight + List.footerHeight + 4 + FoCsEditorUtilities.Padding;
@@ -197,8 +210,10 @@ namespace ForestOfChaosLib.Editor
 			else
 			{
 				for(var i = 0; i < List.serializedProperty.arraySize; i++)
+				{
 					if(Limiter.ShowElement(i))
 						height += OnListElementHeightCallback(i);
+				}
 			}
 
 			return height;
@@ -267,7 +282,6 @@ namespace ForestOfChaosLib.Editor
 
 			public bool ShowElement(int index) => (index >= Min) && (index < Max);
 
-
 			public static ListLimiter GetLimiter(ReorderableListProperty listProperty) => new ListLimiter
 																						  {
 																							  MyListProperty = listProperty,
@@ -335,14 +349,41 @@ namespace ForestOfChaosLib.Editor
 
 		private void OnListDrawHeaderCallback(Rect rect)
 		{
+
+			var xMax = rect.xMax;
+			var x = xMax - 8f;
+			if(List.displayAdd)
+				x -= 25f;
+			if(List.displayRemove)
+				x -= 25f;
+
+
 			using(EditorDisposables.IndentSet(0))
 			{
-				_property.isExpanded = EditorGUI.ToggleLeft(rect,
+				_property.isExpanded = EditorGUI.ToggleLeft(rect.SetWidth(x - 10),
 															$"{_property.displayName}\t[{_property.arraySize}]",
 															_property.isExpanded,
 															_property.prefabOverride?
 																EditorStyles.boldLabel :
 																GUIStyle.none);
+			}
+
+			using(EditorDisposables.DisabledScope(!_property.isExpanded))
+			{
+				var rect2 = new Rect(x, rect.y, xMax - x, rect.height);
+
+				var addButtonRect = new Rect(xMax - 29f - 25f, rect2.y - 3f, 25f, 13f);
+
+				var removeButtonRect = new Rect(xMax - 29f, rect2.y - 3f, 25f, 13f);
+
+				if(List.displayAdd)
+				{
+					FooterAddGUI(addButtonRect.MoveY(3));
+				}
+				if(List.displayRemove)
+				{
+					FooterRemoveGUI(removeButtonRect.MoveY(3));
+				}
 			}
 		}
 
@@ -367,77 +408,198 @@ namespace ForestOfChaosLib.Editor
 
 			if(Limiter != null)
 			{
-				var horScope = EditorDisposables.RectHorizontalScope(11, rect.ChangeX(5).MoveWidth(-16));
-				using(EditorDisposables.DisabledScope(!Limiter.CanDecrease()))
-				{
-					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.UpArrow, ListStyles.PreButton))
-					{
-						Limiter.ChangeRange(-5);
-					}
-					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.Up2Arrow, ListStyles.PreButton))
-					{
-						Limiter.ChangeRange(-10);
-					}
-				}
-				var minString = Limiter.Min.ToString();
-				var maxString = Limiter.Max.ToString();
-
-				var shortLabel = $"{((minString.Length + maxString.Length) < 5? "Index" : "I")}: {minString}-{maxString}";
-				var toolTip = $"Viewable Indices: Min:{minString} Max:{maxString}";
-				FoCsGUI.Button(horScope.GetNext(5).ChangeY(-3), new GUIContent(shortLabel, toolTip), ListStyles.MiniLabel);
-				using(EditorDisposables.DisabledScope(!Limiter.CanIncrease()))
-				{
-					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.DownArrow, ListStyles.PreButton))
-					{
-						Limiter.ChangeRange(5);
-					}
-					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.Down2Arrow, ListStyles.PreButton))
-					{
-						Limiter.ChangeRange(10);
-					}
-				}
+				FooterLimiterGUI(rect);
 			}
 
-			if(List.displayAdd)
+			if (List.displayAdd)
 			{
-				using(EditorDisposables.DisabledScope((List.onCanAddCallback != null) && !List.onCanAddCallback(List)))
+				FooterAddGUI(addButtonRect);
+			}
+			if (List.displayRemove)
+			{
+				FooterRemoveGUI(removeButtonRect);
+			}
+		}
+
+		private void FooterLimiterGUI(Rect rect)
+		{
+			var horScope = EditorDisposables.RectHorizontalScope(11, rect.ChangeX(5).MoveWidth(-16));
+			using (EditorDisposables.DisabledScope(!Limiter.CanDecrease()))
+			{
+				if (FoCsGUI.Button(horScope.GetNext(), ListStyles.UpArrow, ListStyles.PreButton))
+					Limiter.ChangeRange(-5);
+				if (FoCsGUI.Button(horScope.GetNext(), ListStyles.Up2Arrow, ListStyles.PreButton))
+					Limiter.ChangeRange(-10);
+			}
+			var minString = Limiter.Min.ToString();
+			var maxString = Limiter.Max.ToString();
+
+			var shortLabel = $"{(minString.Length + maxString.Length < 5 ? "Index" : "I")}: {minString}-{maxString}";
+			var toolTip = $"Viewable Indices: Min:{minString} Max:{maxString}";
+			FoCsGUI.Button(horScope.GetNext(5).ChangeY(-3), new GUIContent(shortLabel, toolTip), ListStyles.MiniLabel);
+			using (EditorDisposables.DisabledScope(!Limiter.CanIncrease()))
+			{
+				if (FoCsGUI.Button(horScope.GetNext(), ListStyles.DownArrow, ListStyles.PreButton))
+					Limiter.ChangeRange(5);
+				if (FoCsGUI.Button(horScope.GetNext(), ListStyles.Down2Arrow, ListStyles.PreButton))
+					Limiter.ChangeRange(10);
+			}
+		}
+
+		private void FooterAddGUI(Rect addButtonRect)
+		{
+			using (EditorDisposables.DisabledScope((List.onCanAddCallback != null) && !List.onCanAddCallback(List)))
+			{
+				if (GUI.Button(addButtonRect,
+							  List.onAddDropdownCallback == null ?
+								  ListStyles.IconToolbarPlus :
+								  ListStyles.IconToolbarPlusMore,
+							  ListStyles.PreButton))
 				{
-					if(GUI.Button(addButtonRect,
-								  List.onAddDropdownCallback == null?
-									  ListStyles.IconToolbarPlus :
-									  ListStyles.IconToolbarPlusMore,
-								  ListStyles.PreButton))
-					{
-						if(List.onAddDropdownCallback != null)
-							List.onAddDropdownCallback(addButtonRect, List);
-						else if(List.onAddCallback != null)
-							List.onAddCallback(List);
-						else
-							Defaults.DoAddButton(List);
-						if(List.onChangedCallback != null)
-							List.onChangedCallback(List);
-						Limiter?.ChangeEnd();
-					}
+					if (List.onAddDropdownCallback != null)
+						List.onAddDropdownCallback(addButtonRect, List);
+					else if (List.onAddCallback != null)
+						List.onAddCallback(List);
+					else
+						Defaults.DoAddButton(List);
+					if (List.onChangedCallback != null)
+						List.onChangedCallback(List);
+					Limiter?.ChangeEnd();
 				}
 			}
-			if(!List.displayRemove)
-				return;
-			using(EditorDisposables.DisabledScope((List.index < 0) ||
-												  (List.index >= List.count) ||
-												  ((List.onCanRemoveCallback != null) && !List.onCanRemoveCallback(List))))
+		}
+
+		private void FooterRemoveGUI(Rect removeButtonRect)
+		{
+			using (EditorDisposables.DisabledScope((List.index < 0) ||
+																  (List.index >= List.count) ||
+																  ((List.onCanRemoveCallback != null) && !List.onCanRemoveCallback(List))))
 			{
-				if(GUI.Button(removeButtonRect, ListStyles.IconToolbarMinus, ListStyles.PreButton))
+				if (GUI.Button(removeButtonRect, ListStyles.IconToolbarMinus, ListStyles.PreButton))
 				{
-					if(List.onRemoveCallback == null)
+					if (List.onRemoveCallback == null)
 						Defaults.DoRemoveButton(List);
 					else
 						List.onRemoveCallback(List);
-					if(List.onChangedCallback != null)
+					if (List.onChangedCallback != null)
 						List.onChangedCallback(List);
 
 					Limiter?.ChangeRange(-1);
 				}
 			}
+		}
+		#endregion
+
+		#region Delegate Setters
+		/// <summary>
+		/// SetAddCallBack
+		/// </summary>
+		/// <param name="a">The callback to be used instead of default</param>
+		/// <returns>This</returns>
+		public ReorderableListProperty SetAddCallBack(ReorderableList.AddCallbackDelegate a)
+		{
+			List.onAddCallback = a;
+			return this;
+		}
+		/// <summary>
+		/// SetAddDropdownCallback
+		/// </summary>
+		/// <param name="a">The callback to be used instead of default</param>
+		/// <returns>This</returns>
+		public ReorderableListProperty SetAddDropdownCallback(ReorderableList.AddDropdownCallbackDelegate a)
+		{
+			List.onAddDropdownCallback = a;
+			return this;
+		}
+		/// <summary>
+		/// SetCanAddCallback
+		/// </summary>
+		/// <param name="a">The callback to be used instead of default</param>
+		/// <returns>This</returns>
+		public ReorderableListProperty SetCanAddCallback(ReorderableList.CanAddCallbackDelegate a)
+		{
+			List.onCanAddCallback = a;
+			return this;
+		}
+		/// <summary>
+		/// SetCanRemoveCallback
+		/// </summary>
+		/// <param name="a">The callback to be used instead of default</param>
+		/// <returns>This</returns>
+		public ReorderableListProperty SetCanRemoveCallback(ReorderableList.CanRemoveCallbackDelegate a)
+		{
+			List.onCanRemoveCallback = a;
+			return this;
+		}
+		/// <summary>
+		/// SetReorderCallback
+		/// </summary>
+		/// <param name="a">The callback to be used instead of default</param>
+		/// <returns>This</returns>
+		public ReorderableListProperty SetReorderCallback(ReorderableList.ReorderCallbackDelegate a)
+		{
+			List.onReorderCallback = a;
+			return this;
+		}
+		/// <summary>
+		/// SetDrawElementBackgroundCallback
+		/// </summary>
+		/// <param name="a">The callback to be used instead of default</param>
+		/// <returns>This</returns>
+		public ReorderableListProperty SetDrawElementBackgroundCallback(ReorderableList.ElementCallbackDelegate a)
+		{
+			List.drawElementBackgroundCallback = a;
+			return this;
+		}
+		/// <summary>
+		/// SetDrawElementCallback
+		/// </summary>
+		/// <param name="a">The callback to be used instead of default</param>
+		/// <returns>This</returns>
+		public ReorderableListProperty SetDrawElementCallback(ReorderableList.ElementCallbackDelegate a)
+		{
+			List.drawElementCallback = a;
+			return this;
+		}
+		/// <summary>
+		/// SetDrawFooterCallback
+		/// </summary>
+		/// <param name="a">The callback to be used instead of default</param>
+		/// <returns>This</returns>
+		public ReorderableListProperty SetDrawFooterCallback(ReorderableList.FooterCallbackDelegate a)
+		{
+			List.drawFooterCallback = a;
+			return this;
+		}
+		/// <summary>
+		/// SetDrawHeaderCallback
+		/// </summary>
+		/// <param name="a">The callback to be used instead of default</param>
+		/// <returns>This</returns>
+		public ReorderableListProperty SetDrawHeaderCallback(ReorderableList.HeaderCallbackDelegate a)
+		{
+			List.drawHeaderCallback = a;
+			return this;
+		}
+		/// <summary>
+		/// SetElementHeightCallback
+		/// </summary>
+		/// <param name="a">The callback to be used instead of default</param>
+		/// <returns>This</returns>
+		public ReorderableListProperty SetElementHeightCallback(ReorderableList.ElementHeightCallbackDelegate a)
+		{
+			List.elementHeightCallback = a;
+			return this;
+		}
+		/// <summary>
+		/// SetSelectCallback
+		/// </summary>
+		/// <param name="a">The callback to be used instead of default</param>
+		/// <returns>This</returns>
+		public ReorderableListProperty SetSelectCallback(ReorderableList.SelectCallbackDelegate a)
+		{
+			List.onSelectCallback = a;
+			return this;
 		}
 		#endregion
 	}
