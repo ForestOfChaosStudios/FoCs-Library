@@ -125,26 +125,29 @@ namespace ForestOfChaosLib.Editor
 
 		public void HandleDrawing()
 		{
-			CheckLimiter();
-			if(Animate)
+			using(EditorDisposables.VerticalScope())
 			{
-				IsExpanded.target = Property.isExpanded;
-				if((!IsExpanded.value && !IsExpanded.isAnimating) || (!IsExpanded.value && IsExpanded.isAnimating))
-					DrawDefaultHeader();
+				CheckLimiter();
+				if(Animate)
+				{
+					IsExpanded.target = Property.isExpanded;
+					if((!IsExpanded.value && !IsExpanded.isAnimating) || (!IsExpanded.value && IsExpanded.isAnimating))
+						DrawDefaultHeader();
 
+					else
+					{
+						if(EditorGUILayout.BeginFadeGroup(IsExpanded.faded))
+							List.DoLayoutList();
+						EditorGUILayout.EndFadeGroup();
+					}
+				}
 				else
 				{
-					if(EditorGUILayout.BeginFadeGroup(IsExpanded.faded))
+					if(Property.isExpanded)
 						List.DoLayoutList();
-					EditorGUILayout.EndFadeGroup();
+					else
+						DrawDefaultHeader();
 				}
-			}
-			else
-			{
-				if(Property.isExpanded)
-					List.DoLayoutList();
-				else
-					DrawDefaultHeader();
 			}
 		}
 
