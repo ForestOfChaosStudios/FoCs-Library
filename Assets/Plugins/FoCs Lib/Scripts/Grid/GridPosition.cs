@@ -71,5 +71,45 @@ namespace ForestOfChaosLib.Grid
 		public static GridPosition operator +(GridPosition left, Vector2I right) => new GridPosition(left.Position + -right);
 
 		public override string ToString() => $"Grid (X:{X} Y:{Y})";
+
+		public GridPosition Left
+		{
+			get
+			{
+				var rv = new GridPosition(this);
+				rv.X -= 1;
+				return rv;
+			}
+		}
+
+		public GridPosition Right
+		{
+			get
+			{
+				var rv = new GridPosition(this);
+				rv.X += 1;
+				return rv;
+			}
+		}
+
+		public GridPosition Down
+		{
+			get
+			{
+				var rv = new GridPosition(this);
+				rv.Y -= 1;
+				return rv;
+			}
+		}
+
+		public GridPosition Up
+		{
+			get
+			{
+				var rv = new GridPosition(this);
+				rv.Y += 1;
+				return rv;
+			}
+		}
 	}
 }
