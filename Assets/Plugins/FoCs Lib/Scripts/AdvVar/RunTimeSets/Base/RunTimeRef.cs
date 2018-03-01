@@ -5,31 +5,9 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 {
 	public abstract class RunTimeRef<T>: RunTimeRef
 	{
-		private Action onBeforeValueChange = () => { };
+		public Action OnBeforeValueChange = () => { };
 
-		private Action onValueChange = () => { };
-
-		public Action OnBeforeValueChange
-		{
-			get
-			{
-				return onBeforeValueChange ??
-					   (onBeforeValueChange = () =>
-							   { });
-			}
-			//set { onBeforeValueChange = value; }
-		}
-
-		public Action OnValueChange
-		{
-			get
-			{
-				return onValueChange ??
-					   (onValueChange = () =>
-							   { });
-			}
-			//set { onValueChange = value; }
-		}
+		public Action OnValueChange = () => { };
 
 		private T reference;
 
@@ -42,14 +20,6 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 				reference = value;
 				OnValueChange.Trigger();
 			}
-		}
-
-		protected virtual void OnEnable()
-		{
-			if(onValueChange == null)
-				onValueChange = () => { };
-			if(onBeforeValueChange == null)
-				onBeforeValueChange = () => { };
 		}
 
 		public override bool HasReference => reference != null;
