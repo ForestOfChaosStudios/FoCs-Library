@@ -216,9 +216,9 @@ namespace ForestOfChaosLib.Editor
 				return ret;
 			}
 #if FoCsEditor_ANIMATED
-            ret = new RLP(property, true);
+            ret = new RLP(property, true,true,true,true,true);
 #else
-			ret = new RLP(property, false);
+			ret = new RLP(property, true);
 #endif
 
 			reorderableLists.Add(id, ret);
