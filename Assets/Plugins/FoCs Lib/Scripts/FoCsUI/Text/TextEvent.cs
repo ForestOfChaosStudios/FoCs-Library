@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,5 +15,10 @@ namespace ForestOfChaosLib.FoCsUI.Image
 		}
 
 		public override GameObject TextGO => Text.gameObject;
+
+		private void Reset()
+		{
+			Text = GetComponentInChildren<Text>();
+		}
 	}
 }
