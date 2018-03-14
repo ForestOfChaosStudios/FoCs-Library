@@ -4,7 +4,7 @@ using UImage = UnityEngine.UI.Image;
 
 namespace ForestOfChaosLib.FoCsUI.Image
 {
-	public class ImageEvent: ImageEventBase
+	public class ImageEvent: ImageComponentBase
 	{
 		[NoFoldout(true)]
 		public ImageText myImage;

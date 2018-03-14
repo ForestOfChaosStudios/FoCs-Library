@@ -5,7 +5,7 @@ using UButton = UnityEngine.UI.Button;
 
 namespace ForestOfChaosLib.FoCsUI.Button
 {
-	public class ButtonClickEvent: ButtonClickEventBase
+	public class ButtonClickEvent: ButtonComponentBase
 	{
 		[NoFoldout(true)] public ButtonText myButton;
 

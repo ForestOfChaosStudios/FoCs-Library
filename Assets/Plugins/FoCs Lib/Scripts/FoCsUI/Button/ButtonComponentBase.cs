@@ -6,7 +6,7 @@ using UButton = UnityEngine.UI.Button;
 
 namespace ForestOfChaosLib.FoCsUI.Button
 {
-	public abstract class ButtonClickEventBase: FoCsBehavior, IEventListening
+	public abstract class ButtonComponentBase: FoCsBehavior, IEventListening
 	{
 		public Action onMouseClick = () => { };
 		public abstract UButton Button { get; }

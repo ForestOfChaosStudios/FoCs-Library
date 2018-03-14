@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.FoCsUI.Editor
 {
-	[CustomEditor(typeof(ButtonClickEventBase), true, isFallback = true)]
+	[CustomEditor(typeof(ButtonComponentBase), true, isFallback = true)]
 	[CanEditMultipleObjects]
 	public class ButtonClickEventBaseDrawer: FoCsEditor
 	{
@@ -16,14 +16,14 @@ namespace ForestOfChaosLib.FoCsUI.Editor
 			{
 				if(GUILayout.Button("Add Object Name ID"))
 				{
-					var btn = (ButtonClickEventBase)serializedObject.targetObject;
+					var btn = (ButtonComponentBase)serializedObject.targetObject;
 					if(!btn.ButtonGO.name.Contains("_btn"))
 						btn.ButtonGO.name += "_btn";
 					btn.TextGO.name = btn.ButtonGO.name.Replace("_btn", "") + "_text";
 				}
 				if(GUILayout.Button("Change Button Text to Button GO Name"))
 				{
-					var btn = (ButtonClickEventBase)serializedObject.targetObject;
+					var btn = (ButtonComponentBase)serializedObject.targetObject;
 					btn.ButtonText = btn.ButtonGO.name.Replace("_btn", "");
 				}
 			}
