@@ -34,12 +34,13 @@ namespace ForestOfChaosLib.AdvDebug
 				EditorGUILayout.LabelField(data.Key);
 				using(EditorDisposables.HorizontalScope())
 				{
-					var depth = 0;
 					DrawData(data.Value);
 					var tempData = data.Value.previousData;
 
 					for(int i = 0; i < 5; i++)
 					{
+						if(tempData == null)
+							break;
 						DrawData(tempData);
 						tempData = tempData.previousData;
 					}
