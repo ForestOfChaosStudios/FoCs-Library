@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using UnityEditor;
+//using UnityEditor;
 
 namespace ForestOfChaosLib.AdvDebug
 {
-	[InitializeOnLoad]
+	//[InitializeOnLoad]
 	public static class AdvDebug
 	{
 		public static Dictionary<string, DictionaryData> DataDictionary = new Dictionary<string, DictionaryData>();
