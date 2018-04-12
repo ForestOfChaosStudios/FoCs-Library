@@ -6,6 +6,6 @@ namespace ForestOfChaosLib.ScriptableObjects
 {
 	[CreateAssetMenu(fileName = "GameObject Array", menuName = ATTRIBUTE_PATH + "GameObject Array", order = 0)]
 	[AdvFolderNameUnityLists]
-	public class GameObjectArrayScriptableObject: ArrayScriptableObject<GameObject>
+	public class GameObjectArray: ArrayScriptableObject<GameObject>
 	{ }
 }
