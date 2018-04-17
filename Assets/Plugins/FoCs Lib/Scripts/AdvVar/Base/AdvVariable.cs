@@ -10,9 +10,6 @@ namespace ForestOfChaosLib.AdvVar.Base
 	{
 		/*[GetSetter("Value")] */[SerializeField] private T ConstantValue;
 		/*[GetSetter("Value")] */[SerializeField] private aT Variable;
-		public Action OnValueChange;
-		public bool UseConstant;
-
 
 		public T Value
 		{
@@ -62,5 +59,8 @@ namespace ForestOfChaosLib.AdvVar.Base
 	///     This is a base class so that as Unity needs a none generic base class for editors/property drawers
 	/// </summary>
 	public class AdvVariable
-	{ }
+	{
+		public Action OnValueChange;
+		public bool UseConstant;
+	}
 }
