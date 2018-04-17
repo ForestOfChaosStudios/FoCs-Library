@@ -1,5 +1,6 @@
 using System;
 using ForestOfChaosLib.AdvVar;
+using ForestOfChaosLib.Attributes;
 using ForestOfChaosLib.CSharpExtensions;
 using USlider = UnityEngine.UI.Slider;
 
@@ -16,7 +17,8 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 		}
 
 		public Action<float> onValueChanged;
-
+		public bool UseFloatReference;
+		[ConditionalHide("UseFloatReference", false)]
 		public FloatReference ReferencedFloat;
 
 		protected virtual void OnEnable()
@@ -26,6 +28,8 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 			if(slider != null)
 			{
 				slider.onValueChanged.AddListener(ValueChanged);
+				if(UseFloatReference)
+					slider.value = ReferencedFloat.Value;
 			}
 		}
 
@@ -38,7 +42,7 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 		public void ValueChanged(float value)
 		{
 			onValueChanged.Trigger(value);
-			if(ReferencedFloat)
+			if(UseFloatReference)
 				ReferencedFloat.Value = value;
 		}
 
