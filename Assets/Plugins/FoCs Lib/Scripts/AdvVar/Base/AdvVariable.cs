@@ -10,7 +10,6 @@ namespace ForestOfChaosLib.AdvVar.Base
 	{
 		/*[GetSetter("Value")] */[SerializeField] private T ConstantValue;
 		/*[GetSetter("Value")] */[SerializeField] private aT Variable;
-		public Action<T> OnValueChangeT;
 		public T Value
 		{
 			get
@@ -25,9 +24,8 @@ namespace ForestOfChaosLib.AdvVar.Base
 					ConstantValue = value;
 				else
 					Variable.Value = value;
-				OnValueChangeT.Trigger(value);
 				OnValueChange.Trigger();
-				AdvDebug.AdvDebug.Log("OnValueChange: " + typeof(T),value.ToString());
+				//AdvDebug.AdvDebug.Log("OnValueChange: " + typeof(T),value.ToString());
 			}
 		}
 

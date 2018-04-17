@@ -32,7 +32,18 @@ namespace ForestOfChaosLib.AdvDebug
 			public static DictionaryData Build(string val)
 			{
 #if UNITY_EDITOR
-				if(!Application.isPlaying)
+				try
+				{
+					if(!Application.isPlaying)
+					{
+						return new DictionaryData
+							   {
+								   Value = val,
+								   Time = 0
+							   };
+					}
+				}
+				catch
 				{
 					return new DictionaryData
 						   {
@@ -51,7 +62,19 @@ namespace ForestOfChaosLib.AdvDebug
 			public static DictionaryData Build(string val, DictionaryData other)
 			{
 #if UNITY_EDITOR
-				if(!Application.isPlaying)
+				try
+				{
+					if(!Application.isPlaying)
+					{
+						return new DictionaryData
+							   {
+								   Value = val,
+								   Time = 0,
+								   previousData = other
+							   };
+					}
+				}
+				catch
 				{
 					return new DictionaryData
 						   {
