@@ -155,10 +155,10 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		private void DrawAddTypeButton(Type type)
 		{
-			using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
+			using(EditorDisposables.HorizontalScope())
 			{
-				FoCsGUILayout.Label(type.Name, EditorStyles.toolbarButton);
-				var @event = FoCsGUILayout.Button("Add New", EditorStyles.toolbarButton);
+				//FoCsGUILayout.Label(type.Name, EditorStyles.toolbarButton);
+				var @event = FoCsGUILayout.Button($"{type.Name} Add New", GUI.skin.button);
 				if(@event.AsButtonLeftClick)
 				{
 					SubmitStringWindow.SetUpInstance(new CreateArgs
@@ -169,6 +169,8 @@ namespace ForestOfChaosLib.AdvVar.Editor
 														 Data = $"New {type.Name}",
 														 SubmitMessage = $"Create new {type.Name}",
 														 OnSubmit = OnCreateSubmit,
+														 SubmitAnotherMessage = $"Create new {type.Name} & Add Another",
+														 OnSubmitAnother = OnCreateSubmit,
 														 OnCancel = OnCreateCancel,
 														 target = target,
 														 type = type
