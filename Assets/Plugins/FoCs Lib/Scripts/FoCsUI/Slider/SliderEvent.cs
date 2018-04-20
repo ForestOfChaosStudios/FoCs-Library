@@ -15,8 +15,7 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 			set { slider.value = value; }
 		}
 
-		public Action<float> onValueChanged;
-
+		public Action<float> OnValueChanged;
 		public FloatReference ReferencedFloat;
 
 		protected virtual void OnEnable()
@@ -26,6 +25,8 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 			if(slider != null)
 			{
 				slider.onValueChanged.AddListener(ValueChanged);
+				if(ReferencedFloat)
+					slider.value = ReferencedFloat.Value;
 			}
 		}
 
@@ -37,7 +38,7 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 
 		public void ValueChanged(float value)
 		{
-			onValueChanged.Trigger(value);
+			OnValueChanged.Trigger(value);
 			if(ReferencedFloat)
 				ReferencedFloat.Value = value;
 		}

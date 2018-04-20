@@ -14,7 +14,7 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 
 		private void OnEnable()
 		{
-			SliderEvent.onValueChanged += OnValueChanged;
+			SliderEvent.OnValueChanged += OnValueChanged;
 			OnValueChanged(SliderEvent.Value);
 		}
 
@@ -36,7 +36,7 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 
 		private void OnDisable()
 		{
-			SliderEvent.onValueChanged -= OnValueChanged;
+			SliderEvent.OnValueChanged -= OnValueChanged;
 		}
 	}
 }

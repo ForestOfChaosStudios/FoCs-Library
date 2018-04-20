@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
+
 //using UnityEditor;
 
 namespace ForestOfChaosLib.AdvDebug
@@ -27,18 +29,68 @@ namespace ForestOfChaosLib.AdvDebug
 			public float Time;
 			public DictionaryData previousData;
 
-			public static DictionaryData Build(string val) => new DictionaryData
-															  {
-																  Value = val,
-																  Time = UnityEngine.Time.time
-															  };
+			public static DictionaryData Build(string val)
+			{
+#if UNITY_EDITOR
+				try
+				{
+					if(!Application.isPlaying)
+					{
+						return new DictionaryData
+							   {
+								   Value = val,
+								   Time = 0
+							   };
+					}
+				}
+				catch
+				{
+					return new DictionaryData
+						   {
+							   Value = val,
+							   Time = 0
+						   };
+				}
+#endif
+				return new DictionaryData
+					   {
+						   Value = val,
+						   Time = UnityEngine.Time.time
+					   };
+			}
 
-			public static DictionaryData Build(string val, DictionaryData other) => new DictionaryData
-															  {
-																  Value = val,
-																  Time = UnityEngine.Time.time,
-																  previousData = other
-															  };
+			public static DictionaryData Build(string val, DictionaryData other)
+			{
+#if UNITY_EDITOR
+				try
+				{
+					if(!Application.isPlaying)
+					{
+						return new DictionaryData
+							   {
+								   Value = val,
+								   Time = 0,
+								   previousData = other
+							   };
+					}
+				}
+				catch
+				{
+					return new DictionaryData
+						   {
+							   Value = val,
+							   Time = 0,
+							   previousData = other
+						   };
+				}
+#endif
+				return new DictionaryData
+					   {
+						   Value = val,
+						   Time = UnityEngine.Time.time,
+						   previousData = other
+					   };
+			}
 
 			public static implicit operator DictionaryData(string input) => Build(input);
 		}
