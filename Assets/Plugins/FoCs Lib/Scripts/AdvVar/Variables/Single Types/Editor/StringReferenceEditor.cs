@@ -11,7 +11,6 @@ public class StringReferenceEditor: FoCsEditor
 {
 	public override void OnInspectorGUI()
 	{
-		GUIChanged = false;
 		using(EditorDisposables.Indent())
 		{
 			DoDrawHeader();
@@ -36,7 +35,6 @@ public class StringReferenceEditor: FoCsEditor
 				if(changeCheckScope.changed)
 				{
 					serializedObject.ApplyModifiedProperties();
-					GUIChanged = true;
 				}
 			}
 
