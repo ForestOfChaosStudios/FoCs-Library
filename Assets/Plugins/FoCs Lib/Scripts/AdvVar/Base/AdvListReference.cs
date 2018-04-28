@@ -15,19 +15,20 @@ namespace ForestOfChaosLib.AdvVar.Base
 			get { return _value; }
 			set
 			{
-				OnBeforeValueChange.Trigger();
 				_value = value;
 				OnValueChange.Trigger();
 			}
 		}
 
-		[NonSerialized] public Action OnBeforeValueChange;
-
 		[NonSerialized] public Action OnValueChange;
+		[NonSerialized] public Action<T> OnValueAdded;
+		[NonSerialized] public Action<T> OnValueRemoved;
+
 
 		public void Add(T value)
 		{
 			Value.Add(value);
+			OnValueAdded.Trigger(value);
 		}
 
 		public bool Contains(T value)
@@ -38,6 +39,7 @@ namespace ForestOfChaosLib.AdvVar.Base
 		public void Remove(T value)
 		{
 			Value.Remove(value);
+			OnValueRemoved.Trigger(value);
 		}
 	}
 

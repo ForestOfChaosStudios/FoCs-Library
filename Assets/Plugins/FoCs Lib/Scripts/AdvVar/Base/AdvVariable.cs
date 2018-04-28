@@ -10,13 +10,14 @@ namespace ForestOfChaosLib.AdvVar.Base
 	{
 		/*[GetSetter("Value")] */[SerializeField] private T ConstantValue;
 		/*[GetSetter("Value")] */[SerializeField] private aT Variable;
+
 		public T Value
 		{
 			get
 			{
-				return UseConstant?
-					ConstantValue :
-					Variable.Value;
+				if(UseConstant)
+					return ConstantValue;
+				return Variable.Value;
 			}
 			set
 			{
@@ -25,7 +26,6 @@ namespace ForestOfChaosLib.AdvVar.Base
 				else
 					Variable.Value = value;
 				OnValueChange.Trigger();
-				//AdvDebug.AdvDebug.Log("OnValueChange: " + typeof(T),value.ToString());
 			}
 		}
 
@@ -52,6 +52,32 @@ namespace ForestOfChaosLib.AdvVar.Base
 		}
 
 		public static implicit operator T(AdvVariable<T, aT> input) => input.Value;
+
+
+		private AdvVariableInternals _InternalData;
+		public AdvVariableInternals InternalData => _InternalData ?? (_InternalData = new AdvVariableInternals(this));
+
+		public class AdvVariableInternals
+		{
+			private readonly AdvVariable<T, aT> classRef;
+
+			public AdvVariableInternals(AdvVariable<T, aT> _classRef)
+			{
+				classRef = _classRef;
+			}
+
+			public aT GlobalVariable
+			{
+				get { return classRef.Variable; }
+				set { classRef.Variable = value; }
+			}
+
+			public T ConstantValue
+			{
+				get { return classRef.ConstantValue; }
+				set { classRef.ConstantValue = value; }
+			}
+		}
 	}
 
 	/// <summary>
