@@ -2,16 +2,11 @@
 using ForestOfChaosLib.Editor.Windows;
 using UnityEditor;
 
-namespace ForestOfChaosLib.Screenshot
+namespace ForestOfChaosLib.ScreenCap
 {
 	public class ScreenCapWindow: TabedWindow<ScreenCapWindow>
 	{
-		private Tab<ScreenCapWindow>[] _tabs = {new ScreenshotTaker(), new TimelapseTaker(),};
-
-		public override Tab<ScreenCapWindow>[] Tabs
-		{
-			get { return _tabs; }
-		}
+		public override Tab<ScreenCapWindow>[] Tabs { get; } = {new ScreenshotTab(), new TimelapseTab(),};
 
 		private const string Title = "Screen Capture Window";
 

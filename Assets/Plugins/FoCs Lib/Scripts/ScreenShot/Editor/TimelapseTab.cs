@@ -4,10 +4,9 @@ using UnityEngine;
 using UCamera = UnityEngine.Camera;
 
 //TODO: Move this to usable in gameplay, by making a non editor script, that this calls
-namespace ForestOfChaosLib.Screenshot
+namespace ForestOfChaosLib.ScreenCap
 {
-	[ExecuteInEditMode]
-	public class TimelapseTaker: Tab<ScreenCapWindow>
+	public class TimelapseTab: Tab<ScreenCapWindow>
 	{
 		private int HighResWidth = 1920;
 		private int HighResHeight = 1080;
