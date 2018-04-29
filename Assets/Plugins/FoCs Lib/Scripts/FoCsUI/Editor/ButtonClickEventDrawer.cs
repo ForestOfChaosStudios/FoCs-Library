@@ -12,7 +12,7 @@ namespace ForestOfChaosLib.FoCsUI.Editor
 	{
 		public override void DrawGUI()
 		{
-			using(EditorDisposables.HorizontalScope())
+			using(FoCsEditorDisposables.HorizontalScope())
 			{
 				if(GUILayout.Button("Add Object Name ID"))
 				{

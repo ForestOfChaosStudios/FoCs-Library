@@ -68,19 +68,19 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			public override void DrawTab(Window<AdvancedUnitySettingsWindow> owner)
 			{
-				using(EditorDisposables.HorizontalScope(GUI.skin.box))
+				using(FoCsEditorDisposables.HorizontalScope(GUI.skin.box))
 					EditorGUILayout.LabelField(TabName);
-				using(EditorDisposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
+				using(FoCsEditorDisposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
 				{
 					Asset.Update();
-					using(EditorDisposables.HorizontalScope())
+					using(FoCsEditorDisposables.HorizontalScope())
 					{
 						DrawSpace(LEFT_BORDER);
 
-						using(var scrollViewScope = EditorDisposables.ScrollViewScope(vector2, true))
+						using(var scrollViewScope = FoCsEditorDisposables.ScrollViewScope(vector2, true))
 						{
 							vector2 = scrollViewScope.scrollPosition;
-							using(var changeCheckScope = EditorDisposables.ChangeCheck())
+							using(var changeCheckScope = FoCsEditorDisposables.ChangeCheck())
 							{
 							var unityDefProp = true;
 								foreach(var property in Asset.Properties())
@@ -104,12 +104,12 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			private void DrawFooter()
 			{
-				using(EditorDisposables.VerticalScope())
+				using(FoCsEditorDisposables.VerticalScope())
 				{
 					if(FoCsGUILayout.Button("Force save"))
 						EditorUtility.SetDirty(Asset.targetObject);
 
-					using(EditorDisposables.HorizontalScope(GUI.skin.box))
+					using(FoCsEditorDisposables.HorizontalScope(GUI.skin.box))
 					{
 						EditorGUILayout.
 								HelpBox("Warning, This window has not been tested for all the settings being validated.\nIt is still recommended to use the Unity settings windows.",
@@ -121,13 +121,13 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 			private void DrawListProperty(SerializedProperty itr)
 			{
 				var ReorderableListProperty = GetReorderableList(itr);
-				using(EditorDisposables.VerticalScope(GUI.skin.box))
+				using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
 					ReorderableListProperty.HandleDrawing();
 			}
 
 			private static void DrawSingleProperty(SerializedProperty itr)
 			{
-				using(EditorDisposables.HorizontalScope(GUI.skin.box))
+				using(FoCsEditorDisposables.HorizontalScope(GUI.skin.box))
 					EditorGUILayout.PropertyField(itr, true);
 			}
 

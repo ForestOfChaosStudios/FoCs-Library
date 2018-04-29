@@ -26,13 +26,13 @@ namespace ForestOfChaosLib.Animation
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var scope = EditorDisposables.RectHorizontalScope(8, position))
+			using(var scope = FoCsEditorDisposables.RectHorizontalScope(8, position))
 			{
 
 				EditorGUI.LabelField(scope.GetNext(), label);
 				scope.GetNext();
 
-				using(EditorDisposables.Indent(-1))
+				using(FoCsEditorDisposables.Indent(-1))
 				{
 					EditorGUI.LabelField(scope.GetNext(), KEY_LABEL);
 					EditorGUI.PropertyField(scope.GetNext(), property.FindPropertyRelative(KEY), GUIContent.none);

@@ -23,7 +23,7 @@ namespace ForestOfChaosLib.Attributes
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var cc = EditorDisposables.ChangeCheck())
+			using(var cc = FoCsEditorDisposables.ChangeCheck())
 			{
 				GetAttribute.CallSetter = FoCsGUI.DrawPropertyWithMenu(position,
 																		 property,

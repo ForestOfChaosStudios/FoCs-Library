@@ -23,14 +23,14 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 			property.isExpanded = EditorGUI.Foldout(rect2, property.isExpanded, "");
 			rect2 = rect;
 
-			using(var ChangeCheck = EditorDisposables.ChangeCheck())
+			using(var ChangeCheck = FoCsEditorDisposables.ChangeCheck())
 			{
 				var col = EditorGUI.ColorField(rect2, new GUIContent(property.displayName, property.displayName), colour);
 
 				colour.SetColor(col);
 				if(!property.isExpanded)
 					return;
-				using(EditorDisposables.Indent())
+				using(FoCsEditorDisposables.Indent())
 				{
 					rect.y += 1 + SingleLine;
 					var A = EditorGUI.IntField(rect, new GUIContent("Alpha", "Alpha"), colour.A);

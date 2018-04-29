@@ -46,11 +46,11 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 				enableDictionary.TryGetValue(key.ToggleName, out value);
 
-				using(EditorDisposables.Indent())
+				using(FoCsEditorDisposables.Indent())
 				{
-					using(EditorDisposables.VerticalScope())
+					using(FoCsEditorDisposables.VerticalScope())
 					{
-						using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
+						using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
 						{
 							var @event = FoCsGUILayout.Toggle(value,
 														value?
@@ -78,7 +78,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				{
 					EditorGUILayout.LabelField($"Children [{assets.Length - 1}]");
 
-					using(EditorDisposables.VerticalScope(GUI.skin.box))
+					using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
 					{
 						var rect = EditorGUILayout.GetControlRect(true, StandardLine, EditorStyles.toolbarButton);
 
@@ -92,9 +92,9 @@ namespace ForestOfChaosLib.AdvVar.Editor
 							showChildrenSettings = !showChildrenSettings;
 						if(!showChildrenSettings)
 							return;
-						using(EditorDisposables.VerticalScope())
+						using(FoCsEditorDisposables.VerticalScope())
 						{
-							using(EditorDisposables.Indent())
+							using(FoCsEditorDisposables.Indent())
 							{
 								for(var i = 0; i < assets.Length; i++)
 								{
@@ -121,13 +121,13 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		private void DrawChildObject(Object obj, int index)
 		{
-			using(EditorDisposables.HorizontalScope())
+			using(FoCsEditorDisposables.HorizontalScope())
 			{
 				FoCsGUILayout.Label($"[{index}] {obj.GetType().Name}", GUILayout.Width(Screen.width / 4f));
 
-				using(var changeCheckScope = EditorDisposables.ChangeCheck())
+				using(var changeCheckScope = FoCsEditorDisposables.ChangeCheck())
 				{
-					using(EditorDisposables.IndentSet(0))
+					using(FoCsEditorDisposables.IndentSet(0))
 						obj.name = EditorGUILayout.DelayedTextField(obj.name);
 
 					if(changeCheckScope.changed)
@@ -155,10 +155,10 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		private void DrawAddTypeButton(Type type)
 		{
-			using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
+			using(FoCsEditorDisposables.HorizontalScope())
 			{
-				FoCsGUILayout.Label(type.Name, EditorStyles.toolbarButton);
-				var @event = FoCsGUILayout.Button("Add New", EditorStyles.toolbarButton);
+				//FoCsGUILayout.Label(type.Name, EditorStyles.toolbarButton);
+				var @event = FoCsGUILayout.Button($"{type.Name} Add New", GUI.skin.button);
 				if(@event.AsButtonLeftClick)
 				{
 					SubmitStringWindow.SetUpInstance(new CreateArgs
@@ -169,6 +169,8 @@ namespace ForestOfChaosLib.AdvVar.Editor
 														 Data = $"New {type.Name}",
 														 SubmitMessage = $"Create new {type.Name}",
 														 OnSubmit = OnCreateSubmit,
+														 SubmitAnotherMessage = $"Create new {type.Name} & Add Another",
+														 OnSubmitAnother = OnCreateSubmit,
 														 OnCancel = OnCreateCancel,
 														 target = target,
 														 type = type

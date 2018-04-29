@@ -12,7 +12,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 	{
 		public override void DrawGUI()
 		{
-			using(EditorDisposables.DisabledScope(!Application.isPlaying))
+			using(FoCsEditorDisposables.DisabledScope(!Application.isPlaying))
 			{
 				var @event = FoCsGUILayout.Button("Trigger Event");
 				if(@event.AsButtonLeftClick)

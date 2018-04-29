@@ -9,7 +9,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 	/// <summary>
 	///     Every public method returns a IDisposable implementing object, most of them are for editor layout formatting
 	/// </summary>
-	public class EditorDisposables
+	public class FoCsEditorDisposables
 	{
 		public static ActionOnDispose Action(Action action) => new ActionOnDispose(action);
 

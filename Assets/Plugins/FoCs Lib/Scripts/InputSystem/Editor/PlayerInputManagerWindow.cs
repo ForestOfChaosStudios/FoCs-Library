@@ -31,7 +31,7 @@ namespace ForestOfChaosLib.InputManager.Editor
 				return;
 			//Vertical Scope
 			////An Indented way of using Unitys Scopes
-			using(EditorDisposables.VerticalScope(GUI.skin.box))
+			using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
 			{
 				foreach(var input in AdvInputManager.Instance.AxisReferences)
 				{
@@ -42,13 +42,13 @@ namespace ForestOfChaosLib.InputManager.Editor
 
 		private static void DrawInput(InputAxis input)
 		{
-			using(EditorDisposables.HorizontalScope(GUI.skin.box))
+			using(FoCsEditorDisposables.HorizontalScope(GUI.skin.box))
 			{
 				EditorGUILayout.LabelField($"Axis: {input.Axis}");
 				EditorGUILayout.LabelField($"Inverted: {input.ValueInverted}");
 				var barSize = EditorGUILayout.BeginHorizontal();
 				GUILayout.Space(32);
-				using(EditorDisposables.VerticalScope(GUI.skin.box))
+				using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
 				{
 					GUILayout.Space(16);
 					EditorGUI.ProgressBar(barSize, (input.Value + 1) * 0.5f, $"Value: {input.Value}");

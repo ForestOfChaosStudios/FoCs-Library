@@ -21,15 +21,15 @@ namespace ForestOfChaosLib.Editor
 
 		public static Vector3 DrawVector3(GUIContent label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn,out bool GUIChanged)
 		{
-			using(EditorDisposables.HorizontalScope())
+			using(FoCsEditorDisposables.HorizontalScope())
 			{
-				using(var cc = EditorDisposables.ChangeCheck())
+				using(var cc = FoCsEditorDisposables.ChangeCheck())
 				{
 					vec = EditorGUILayout.Vector3Field(label, vec);
 					GUIChanged = cc.changed;
 				}
 				var cachedGuiColor = GUI.color;
-				using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
+				using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
 				{
 					if(GUILayout.Button(ResetContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
 					{
@@ -64,7 +64,7 @@ namespace ForestOfChaosLib.Editor
 				if(GUILayout.Button(CP_CopyContent, EditorStyles.toolbarButton))
 					CopyPasteUtility.Copy(obj);
 				var isType = CopyPasteUtility.IsTypeInBuffer(obj);
-				using(EditorDisposables.ColorChanger(isType?
+				using(FoCsEditorDisposables.ColorChanger(isType?
 														 GUI.color :
 														 Color.red))
 				{
@@ -99,7 +99,7 @@ namespace ForestOfChaosLib.Editor
 																							CopyPasteUtility.CopyBuffer.Length));
 
 				var isType = CopyPasteUtility.IsTypeInBuffer(obj);
-				using(EditorDisposables.ColorChanger(isType?
+				using(FoCsEditorDisposables.ColorChanger(isType?
 														 GUI.color :
 														 Color.red))
 				{

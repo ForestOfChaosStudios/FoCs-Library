@@ -125,7 +125,7 @@ namespace ForestOfChaosLib.Editor
 
 		public void HandleDrawing()
 		{
-			using(EditorDisposables.VerticalScope())
+			using(FoCsEditorDisposables.VerticalScope())
 			{
 				CheckLimiter();
 				if(Animate)
@@ -361,7 +361,7 @@ namespace ForestOfChaosLib.Editor
 				x -= 25f;
 
 
-			using(EditorDisposables.IndentSet(0))
+			using(FoCsEditorDisposables.IndentSet(0))
 			{
 				_property.isExpanded = EditorGUI.ToggleLeft(rect.SetWidth(x - 10),
 															$"{_property.displayName}\t[{_property.arraySize}]",
@@ -371,7 +371,7 @@ namespace ForestOfChaosLib.Editor
 																GUIStyle.none);
 			}
 
-			using(EditorDisposables.DisabledScope(!_property.isExpanded))
+			using(FoCsEditorDisposables.DisabledScope(!_property.isExpanded))
 			{
 				var rect2 = new Rect(x, rect.y, xMax - x, rect.height);
 
@@ -426,8 +426,8 @@ namespace ForestOfChaosLib.Editor
 
 		private void FooterLimiterGUI(Rect rect)
 		{
-			var horScope = EditorDisposables.RectHorizontalScope(11, rect.ChangeX(5).MoveWidth(-16));
-			using (EditorDisposables.DisabledScope(!Limiter.CanDecrease()))
+			var horScope = FoCsEditorDisposables.RectHorizontalScope(11, rect.ChangeX(5).MoveWidth(-16));
+			using (FoCsEditorDisposables.DisabledScope(!Limiter.CanDecrease()))
 			{
 				if (FoCsGUI.Button(horScope.GetNext(), ListStyles.UpArrow, ListStyles.PreButton))
 					Limiter.ChangeRange(-5);
@@ -440,7 +440,7 @@ namespace ForestOfChaosLib.Editor
 			var shortLabel = $"{(minString.Length + maxString.Length < 5 ? "Index" : "I")}: {minString}-{maxString}";
 			var toolTip = $"Viewable Indices: Min:{minString} Max:{maxString}";
 			FoCsGUI.Button(horScope.GetNext(5).ChangeY(-3), new GUIContent(shortLabel, toolTip), ListStyles.MiniLabel);
-			using (EditorDisposables.DisabledScope(!Limiter.CanIncrease()))
+			using (FoCsEditorDisposables.DisabledScope(!Limiter.CanIncrease()))
 			{
 				if (FoCsGUI.Button(horScope.GetNext(), ListStyles.DownArrow, ListStyles.PreButton))
 					Limiter.ChangeRange(5);
@@ -451,7 +451,7 @@ namespace ForestOfChaosLib.Editor
 
 		private void FooterAddGUI(Rect addButtonRect)
 		{
-			using (EditorDisposables.DisabledScope((List.onCanAddCallback != null) && !List.onCanAddCallback(List)))
+			using (FoCsEditorDisposables.DisabledScope((List.onCanAddCallback != null) && !List.onCanAddCallback(List)))
 			{
 				if (GUI.Button(addButtonRect,
 							  List.onAddDropdownCallback == null ?
@@ -474,7 +474,7 @@ namespace ForestOfChaosLib.Editor
 
 		private void FooterRemoveGUI(Rect removeButtonRect)
 		{
-			using (EditorDisposables.DisabledScope((List.index < 0) ||
+			using (FoCsEditorDisposables.DisabledScope((List.index < 0) ||
 																  (List.index >= List.count) ||
 																  ((List.onCanRemoveCallback != null) && !List.onCanRemoveCallback(List))))
 			{

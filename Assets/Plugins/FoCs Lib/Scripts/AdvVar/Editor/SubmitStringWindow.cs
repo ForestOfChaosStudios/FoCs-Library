@@ -43,18 +43,24 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				EditorGUI.FocusTextInControl(GUI_SELECTION_LABEL);
 				notSelectedLabel = true;
 			}
-			using(EditorDisposables.HorizontalScope())
+			using(FoCsEditorDisposables.HorizontalScope())
 			{
 				if(FoCsGUILayout.Button(currentArguments.SubmitMessage))
 				{
 					currentArguments.OnSubmit.Trigger(currentArguments);
 					Close();
 				}
+
 				if(FoCsGUILayout.Button(currentArguments.CancelMessage))
 				{
 					currentArguments.OnCancel.Trigger(currentArguments);
 					Close();
 				}
+			}
+
+			if(FoCsGUILayout.Button(currentArguments.SubmitAnotherMessage))
+			{
+				currentArguments.OnSubmitAnother.Trigger(currentArguments);
 			}
 		}
 
@@ -67,6 +73,10 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 			public Action<SubmitStringArguments> OnSubmit;
 			public string SubmitMessage;
+
+			public Action<SubmitStringArguments> OnSubmitAnother;
+			public string SubmitAnotherMessage;
+
 			public string Title;
 			public string WindowTitle;
 		}
