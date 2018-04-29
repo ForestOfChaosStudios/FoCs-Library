@@ -28,14 +28,14 @@ namespace ForestOfChaosLib.Curves.Editor
 
 		public override void OnSceneGUI()
 		{
-			using(var cc = EditorDisposables.ChangeCheck())
+			using(var cc = FoCsEditorDisposables.ChangeCheck())
 			{
 				if(Curve == null)
 					return;
 				var pos = Curve.CurvePositions;
 				for(var i = 0; i < pos.Count; i++)
 				{
-					using(var undoCheck = EditorDisposables.ChangeCheck())
+					using(var undoCheck = FoCsEditorDisposables.ChangeCheck())
 					{
 						if(!Curve.UseGlobalSpace)
 						{

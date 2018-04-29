@@ -33,7 +33,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			}
 			else
 			{
-				using(EditorDisposables.DisabledScope(true))
+				using(FoCsEditorDisposables.DisabledScope(true))
 					EditorGUI.PropertyField(position, property, label);
 			}
 		}

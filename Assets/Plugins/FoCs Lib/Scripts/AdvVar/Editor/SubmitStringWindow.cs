@@ -43,7 +43,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				EditorGUI.FocusTextInControl(GUI_SELECTION_LABEL);
 				notSelectedLabel = true;
 			}
-			using(EditorDisposables.HorizontalScope())
+			using(FoCsEditorDisposables.HorizontalScope())
 			{
 				if(FoCsGUILayout.Button(currentArguments.SubmitMessage))
 				{

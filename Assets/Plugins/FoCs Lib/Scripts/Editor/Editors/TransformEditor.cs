@@ -24,7 +24,7 @@ namespace ForestOfChaosLib.Editor.Editors
 			var transform = Target;
 
 			DoDrawHeader();
-			using(EditorDisposables.Indent())
+			using(FoCsEditorDisposables.Indent())
 			{
 				EditorGUILayout.LabelField(transform.parent == null?
 											   "Transform" :
@@ -50,7 +50,7 @@ namespace ForestOfChaosLib.Editor.Editors
 					Undo.RecordObject(transform, "localScale Changed");
 					transform.localScale = localScale;
 				}
-				using(EditorDisposables.VerticalScope())
+				using(FoCsEditorDisposables.VerticalScope())
 				{
 					if(scaleToggle = EditorGUILayout.Foldout(scaleToggle, "Scale Options"))
 						ScaleBtnsEnabled();
@@ -61,7 +61,7 @@ namespace ForestOfChaosLib.Editor.Editors
 
 		protected override void DoDrawHeader()
 		{
-			using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
+			using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
 			{
 				var transform = Target;
 				if(GUILayout.Button(ResetContent, EditorStyles.toolbarButton))
@@ -81,7 +81,7 @@ namespace ForestOfChaosLib.Editor.Editors
 		private void ScaleBtnsEnabled()
 		{
 			ScaleArea();
-			using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
+			using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
 			{
 				ScaleBtn(0.5f);
 				ScaleBtn(1);
@@ -111,7 +111,7 @@ namespace ForestOfChaosLib.Editor.Editors
 		{
 			var transform = Target;
 
-			using(EditorDisposables.HorizontalScope(EditorStyles.toolbar))
+			using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
 			{
 				var content = new GUIContent("Scale amount", "Set amount to uniformly scale the object");
 				scaleAmount = EditorGUILayout.FloatField(content, scaleAmount, EditorStyles.toolbarTextField);
