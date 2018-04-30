@@ -12,7 +12,7 @@ namespace ForestOfChaosLib.InputManager.Editor
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
 		private static void Init()
 		{
-			GetWindow();
+			GetWindowAndOpenTab();
 			window.titleContent.text = Title;
 		}
 

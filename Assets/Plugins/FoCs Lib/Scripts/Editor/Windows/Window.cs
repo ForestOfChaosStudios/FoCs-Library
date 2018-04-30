@@ -7,18 +7,32 @@ namespace ForestOfChaosLib.Editor.Windows
 	/// <summary>
 	/// [MenuItem("Tools/Forest Of Chaos/Example Window")]
 	/// private static void Init(){
-	/// GetWindow();
+	///		GetWindowAndOpenTab();
 	/// }
 	/// </summary>
-	/// <typeparam name="T">Class name of type that inherets directly from this class, for a static ref to its self</typeparam>
+	/// <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
 	public abstract class Window<T>: EditorWindow where T: EditorWindow
 	{
 		protected static T window;
 
 		protected static EditorWindow GetWindow()
 		{
-			// Get existing open window or if none, make a new one:
-			return window = GetWindow<T>();
+			window = FindObjectOfType<T>() ?? CreateInstance<T>();
+			return window;
+		}
+
+		protected static EditorWindow GetWindowAndOpenTab()
+		{
+			window = FindObjectOfType<T>() ?? CreateInstance<T>();
+			window.ShowTab();
+			return window;
+		}
+
+		protected static EditorWindow GetWindowAndOpenUtility()
+		{
+			window = FindObjectOfType<T>() ?? CreateInstance<T>();
+			window.ShowUtility();
+			return window;
 		}
 
 		protected virtual void OnGUI()
@@ -37,9 +51,7 @@ namespace ForestOfChaosLib.Editor.Windows
 		protected abstract void DrawGUI();
 
 		protected virtual void Update()
-		{
-			//Repaint();
-		}
+		{ }
 
 		public static void DrawSpace()
 		{

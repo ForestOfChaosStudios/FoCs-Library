@@ -14,7 +14,7 @@ namespace ForestOfChaosLib.Editor.Windows
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + "WIP/Built-in styles and icons")]
 		public static void ShowWindow()
 		{
-			GetWindow();
+			GetWindowAndOpenTab();
 			window.Show();
 		}
 

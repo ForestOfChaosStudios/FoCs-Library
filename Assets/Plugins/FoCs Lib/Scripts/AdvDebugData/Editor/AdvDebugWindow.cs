@@ -13,7 +13,7 @@ namespace ForestOfChaosLib.AdvDebug
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + WINDOW_NAME)]
 		private static void Init()
 		{
-			GetWindow();
+			GetWindowAndOpenTab();
 			window.titleContent.text = WINDOW_NAME;
 		}
 
@@ -29,10 +29,10 @@ namespace ForestOfChaosLib.AdvDebug
 
 		private static void DrawField(KeyValuePair<string, AdvDebug.DictionaryData> data)
 		{
-			using(EditorDisposables.VerticalScope(GUI.skin.box))
+			using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
 			{
 				EditorGUILayout.LabelField(data.Key);
-				using(EditorDisposables.HorizontalScope())
+				using(FoCsEditorDisposables.HorizontalScope())
 				{
 					DrawData(data.Value);
 					var tempData = data.Value.previousData;
@@ -50,7 +50,7 @@ namespace ForestOfChaosLib.AdvDebug
 
 		private static void DrawData(AdvDebug.DictionaryData data)
 		{
-			using(EditorDisposables.VerticalScope())
+			using(FoCsEditorDisposables.VerticalScope())
 			{
 				EditorGUILayout.LabelField(data.Value);
 				EditorGUILayout.LabelField($"Time: {data.Time}");

@@ -11,10 +11,10 @@ public class StringReferenceEditor: FoCsEditor
 {
 	public override void OnInspectorGUI()
 	{
-		using(EditorDisposables.Indent())
+		using(FoCsEditorDisposables.Indent())
 		{
 			DoDrawHeader();
-			using(var changeCheckScope = EditorDisposables.ChangeCheck())
+			using(var changeCheckScope = FoCsEditorDisposables.ChangeCheck())
 			{
 				var cachedGuiColor = GUI.color;
 				serializedObject.Update();

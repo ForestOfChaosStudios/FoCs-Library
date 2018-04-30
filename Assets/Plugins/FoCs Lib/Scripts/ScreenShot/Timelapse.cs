@@ -1,85 +1,73 @@
 ﻿using System;
 using System.Collections;
-using ForestOfChaosLib.GamePhysics;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ForestOfChaosLib.Screenshot
+namespace ForestOfChaosLib.ScreenCap
 {
 	public class Timelapse
 	{
 		private TimelapseArgs Args;
-		private GameObject obj;
+		private static GameObject obj;
+		private static FoCsBehavior com;
+
 		private float WaitTime;
 		private int Times;
 		private DateTime Start;
 
-		public DateTime TimeRemaining
-		{
-			get { return (Start.AddSeconds(WaitTime * (Times - 1)) - Start.TimeOfDay); }
-		}
+		public DateTime TimeRemaining => (Start.AddSeconds(WaitTime * (Times - 1)) - Start.TimeOfDay);
 
 		public int ShootsTaken { get; private set; }
+
+		private Coroutine Routine;
+		public bool Capping = true;
 
 		public Timelapse(float waitTime, int times, ScreenShotArgs myArgs)
 		{
 			Start = DateTime.Now;
 			Args = new TimelapseArgs(myArgs, Start);
-			obj = GameObject.Find("Timelapse_OBJ");
+
+			if(obj == null)
+				obj = GameObject.Find("Timelapse_OBJ");
 			if(obj == null)
 				obj = new GameObject("Timelapse_OBJ");
+
+			if(com == null)
+				com = obj.GetComponent<FoCsBehavior>();
+			if(com == null)
+				com = obj.AddComponent<FoCsBehavior>();
+
 			WaitTime = waitTime;
 			Times = times;
-			obj.AddComponent<FoCsBehavior>().StartCoroutine(TakeImage());
+			Routine = com.StartCoroutine(TakeImage());
+		}
+
+		public void Stop()
+		{
+			Capping = false;
+			com.StopCoroutine(Routine);
 		}
 
 		public IEnumerator TakeImage()
 		{
-			bool loop = true;
-
-			while(loop)
+			while(Capping)
 			{
-				Screenshot.TakeScreenShot(Args);
+				ScreenCap.TakeScreenShot(Args);
 				ShootsTaken++;
 				Args.LoopCount++;
 				var waiter = new WaitForSeconds(WaitTime);
 				yield return waiter;
-				if(Times != 0)
+				if(Times >= 1)
 				{
 					if(Times == 1)
 					{
 						yield return waiter;
-						Screenshot.TakeScreenShot(Args);
-						loop = false;
+						ScreenCap.TakeScreenShot(Args);
 						Object.Destroy(obj);
 						yield break;
 					}
 					Times--;
 				}
-			}
-		}
-
-		public class TimelapseArgs: ScreenShotArgs
-		{
-			private DateTime Start;
-			public int LoopCount = 0;
-
-			public TimelapseArgs(ScreenShotArgs args, DateTime start): base(args)
-			{
-				Start = start;
-			}
-
-			public override string GetFullFileName()
-			{
-				if(string.IsNullOrEmpty(fileName))
-				{
-					var strPath = "";
-
-					strPath = string.Format("{0}/Timelapse[{3:yyyy-MM-dd(hh-mm-ss)}][{1}x{2}]px_Frame_{4}.png", Path, FrameWidth, FrameHeight, Start, LoopCount);
-
-					return strPath;
-				}
-				return string.Format(fileName, LoopCount);
 			}
 		}
 	}

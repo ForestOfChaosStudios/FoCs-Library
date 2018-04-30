@@ -136,7 +136,7 @@ namespace ForestOfChaosLib.Editor.ImGUI
 			var rectWidth = position.x + (position.width - (MENU_BUTTON_SIZE * (EditorGUI.indentLevel + 1)));
 			var menuRect = new Rect(rectWidth, position.y, position.width - rectWidth, position.height);
 
-			using(EditorDisposables.DisabledScope(disabled))
+			using(FoCsEditorDisposables.DisabledScope(disabled))
 				EditorGUI.PropertyField(propRect, property, label);
 
 			var index = EditorGUI.Popup(menuRect, GUIContent.none, active, Options, FoCsGUIStyles.InLineOptionsMenu);

@@ -10,7 +10,7 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef.Editor
 	{
 		public override void OnInspectorGUI()
 		{
-			using(EditorDisposables.HorizontalScope(GUI.skin.box))
+			using(FoCsEditorDisposables.HorizontalScope(GUI.skin.box))
 				EditorGUILayout.LabelField($"Has reference: {Target.HasReference}");
 		}
 	}
