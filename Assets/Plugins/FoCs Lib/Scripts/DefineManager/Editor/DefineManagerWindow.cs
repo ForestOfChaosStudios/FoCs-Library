@@ -21,7 +21,7 @@ namespace ForestOfChaosLib.Editor.EditorWindows
 		private static void Init()
 		{
 			// Get existing open window or if none, make a new one:
-			GetWindow();
+			GetWindowAndOpenTab();
 			window.titleContent = new GUIContent(WindowTitle);
 
 			InitList();

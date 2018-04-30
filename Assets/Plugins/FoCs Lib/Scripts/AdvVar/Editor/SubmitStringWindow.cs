@@ -19,7 +19,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		private static void Init()
 		{
-			GetWindow();
+			GetWindowAndOpenUtility();
 		}
 
 		public static void SetUpInstance(SubmitStringArguments Args)

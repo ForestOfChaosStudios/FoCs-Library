@@ -31,11 +31,11 @@ namespace ForestOfChaosLib.Editor.Windows
 
 		private static List<string> DataList = new List<string>();
 
-		[MenuItem(FileStrings.FORESTOFCHAOS_SYSTEMS_ + WindowTitle)]
+		//[MenuItem(FileStrings.FORESTOFCHAOS_SYSTEMS_ + WindowTitle)]
 		private static void Init()
 		{
 			// Get existing open window or if none, make a new one:
-			GetWindow();
+			GetWindowAndOpenTab();
 			window.titleContent = new GUIContent(WindowTitle);
 
 			window.Show();

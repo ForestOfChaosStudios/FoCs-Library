@@ -13,7 +13,7 @@ namespace ForestOfChaosLib.AdvDebug
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + WINDOW_NAME)]
 		private static void Init()
 		{
-			GetWindow();
+			GetWindowAndOpenTab();
 			window.titleContent.text = WINDOW_NAME;
 		}
 
