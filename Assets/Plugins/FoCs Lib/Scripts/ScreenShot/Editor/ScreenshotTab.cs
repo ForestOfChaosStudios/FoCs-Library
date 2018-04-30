@@ -1,214 +1,160 @@
-using ForestOfChaosLib.Editor.ImGUI;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
-using UCamera = UnityEngine.Camera;
 
-//TODO: Move this to usable in gameplay, by making a non editor script, that this calls
 namespace ForestOfChaosLib.ScreenCap
 {
 	public class ScreenshotTab: Tab<ScreenCapWindow>
 	{
-		private int HighResWidth = 1920;
-		private int HighResHeight = 1080;
-		private int scale = 1;
-		private bool unityCapping = true;
-		public UCamera myCamera;
-
-		private static string defaultPath = "";
-
-		private static string path = "";
-
-		private static string filename = "";
-
-
-		private static bool isTransparent;
-
 		public override string TabName => "Screenshot";
+		protected ScreenCapWindow Owner;
 
 		public override void DrawTab(Window<ScreenCapWindow> owner)
 		{
-			CheckPath();
-			using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
-			{
-				if(FoCsGUILayout.Toggle(unityCapping,"Use Unity Capture", EditorStyles.toolbarButton))
-				{
-					unityCapping = true;
-				}
-				if(FoCsGUILayout.Toggle(!unityCapping,"Capture From Camera", EditorStyles.toolbarButton))
-				{
-					unityCapping = false;
-				}
-			}
+			Owner = owner as ScreenCapWindow;
 
 			using(FoCsEditorDisposables.HorizontalScope())
 			{
-				using(FoCsEditorDisposables.HorizontalScope(GUILayout.Width(50f)))
-				{
-					EditorGUILayout.Space();
-				}
+				//using(FoCsEditorDisposables.HorizontalScope(GUILayout.Width(50f)))
+				//{
+				//	EditorGUILayout.Space();
+				//}
 				using(FoCsEditorDisposables.VerticalScope())
 				{
-					if(unityCapping)
-						UnityCap();
-					else
-						CameraCap();
-
+					DrawVariables();
 					using(FoCsEditorDisposables.HorizontalScope())
 					{
 						DrawTakeImageGUI();
 					}
 				}
-				using(FoCsEditorDisposables.HorizontalScope(GUILayout.Width(50f)))
-				{
-					EditorGUILayout.Space();
-				}
+				//using(FoCsEditorDisposables.HorizontalScope(GUILayout.Width(50f)))
+				//{
+				//	EditorGUILayout.Space();
+				//}
 			}
 		}
 
-		private void UnityCap()
+		private void DrawVariables()
 		{
 			DrawScale();
-			FileName();
+
+			//DrawFilePathGUI();
+			DrawPathUI();
+			DrawFileUI();
+			DrawOtherVars();
+			UpdateArgs();
+			DrawPathAndFileUI();
 		}
 
-		private void CameraCap()
+		public virtual void DrawOtherVars()
 		{
-			DrawResolutionGUI();
-			FileName();
-			DrawCameraOptionsGUI();
-
-			DrawFilePathGUI();
-
-			EditorGUILayout.LabelField($"Screenshot will be taken at {HighResWidth * scale} x {HighResHeight * scale} px", EditorStyles.boldLabel);
+			
 		}
 
-		private static void CheckPath()
+		private void DrawPathAndFileUI()
 		{
-			if(path == "")
+			EditorGUILayout.LabelField($"File will be saved as \"{args.GetFileNameAndPath()}\"");
+		}
+
+		private void DrawPathUI()
+		{
+			using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
 			{
-				path = defaultPath = Application.persistentDataPath + @"/Screenshots";
+				EditorGUILayout.LabelField("Path");
+				Owner.path = EditorGUILayout.TextField(Owner.path, GUILayout.ExpandWidth(true));
 			}
+			PathButtons();
 		}
 
-		private static void FileName()
+		private void DrawFileUI()
 		{
 			using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
 			{
 				EditorGUILayout.LabelField("File Name (Leave blank for name to be the date/time)");
-				filename = EditorGUILayout.TextField(filename, GUILayout.ExpandWidth(true));
+				Owner.filename = EditorGUILayout.TextField(Owner.filename, GUILayout.ExpandWidth(true));
 			}
 		}
 
-		private static void DrawFilePathGUI()
+		private void DrawFilePathGUI()
 		{
-			using(FoCsEditorDisposables.HorizontalScope())
+			using (FoCsEditorDisposables.HorizontalScope())
 			{
 				GUILayout.Label("Save Path", EditorStyles.boldLabel);
 			}
 
-			EditorGUILayout.TextField(path, GUILayout.ExpandWidth(true));
+			EditorGUILayout.TextField(Owner.path, GUILayout.ExpandWidth(true));
 
-			using(FoCsEditorDisposables.HorizontalScope())
-			{
-				if(GUILayout.Button("Browse"))
-					path = EditorUtility.SaveFolderPanel("Path to Save Images", path, Application.dataPath);
-				if(GUILayout.Button("Default", GUILayout.Width(120)))
-					path = defaultPath;
-			}
+			PathButtons();
 		}
 
-		private void DrawCameraOptionsGUI()
+		private void PathButtons()
 		{
-			GUILayout.Label("Select Camera", EditorStyles.boldLabel);
-
-			myCamera = EditorGUILayout.ObjectField(myCamera, typeof(UCamera), true, null) as UCamera ?? UCamera.main;
-
-			isTransparent = EditorGUILayout.Toggle("Transparent Background", isTransparent);
-		}
-
-		private void DrawResolutionGUI()
-		{
-			EditorGUILayout.LabelField("Resolution", EditorStyles.boldLabel);
 			using (FoCsEditorDisposables.HorizontalScope())
 			{
-				HighResWidth = EditorGUILayout.IntField("Width", HighResWidth);
-				HighResHeight = EditorGUILayout.IntField("Height", HighResHeight);
+				if (GUILayout.Button("Browse"))
+					Owner.path = EditorUtility.SaveFolderPanel("Path to Save Images", Owner.path, Application.dataPath);
+				if (GUILayout.Button("Default", GUILayout.Width(120)))
+					Owner.path = Owner.defaultPath;
 			}
-			DrawImageSizeGUI();
-			DrawScale();
 		}
 
 		private void DrawScale()
 		{
-			scale = EditorGUILayout.IntSlider("Scale", scale, 0, 8);
-		}
-
-		private void DrawImageSizeGUI()
-		{
-			using(FoCsEditorDisposables.HorizontalScope())
-			{
-				if(GUILayout.Button("Set To Screen Size"))
-				{
-					HighResHeight = (int)Handles.GetMainGameViewSize().y;
-					HighResWidth = (int)Handles.GetMainGameViewSize().x;
-				}
-
-				if(GUILayout.Button("Default Size"))
-				{
-					HighResHeight = 1080;
-					HighResWidth = 1920;
-					scale = 1;
-				}
-			}
+			Owner.scale = EditorGUILayout.IntSlider("Scale", Owner.scale, 0, 8);
 		}
 
 		private void DrawTakeImageGUI()
 		{
-			if(GUILayout.Button("Take Screenshot", GUILayout.MinHeight(40)))
+			using(FoCsEditorDisposables.DisabledScope(!Application.isPlaying))
 			{
-				if(path == "")
+				if(GUILayout.Button("Take Screenshot", GUILayout.MinHeight(40)))
 				{
-					path = EditorUtility.SaveFolderPanel("Path to Save Images", path, Application.persistentDataPath);
-					Debug.Log("Path Set");
-					TakeScreenShot();
-				}
-				else
-				{
-					TakeScreenShot();
+					if(Owner.path == "")
+					{
+						Owner.path = EditorUtility.SaveFolderPanel("Path to Save Images", Owner.path, Application.persistentDataPath);
+						Debug.Log("Path Set");
+						TakeScreenShot();
+					}
+					else
+					{
+						TakeScreenShot();
+					}
 				}
 			}
 
 			if(GUILayout.Button("Open Folder", GUILayout.MaxWidth(100), GUILayout.MinHeight(40)))
 			{
-				if(unityCapping)
-					Application.OpenURL("file://" + Application.persistentDataPath);
-				else
-					Application.OpenURL("file://" + path);
+				//Application.OpenURL("file://" + Owner.path);
+				Application.OpenURL("file://" + Owner.path);
 			}
 		}
 
-		private void TakeScreenShot()
+		ScreenShotArgs args;
+		protected virtual void TakeScreenShot()
 		{
-			var args = new ScreenShotArgs
-					   {
-						   UseUnityCap = unityCapping,
-						   fileName = filename,
-						   FrameWidth = HighResWidth,
-						   FrameHeight = HighResHeight,
-						   Path = path,
-						   ClearBackground = isTransparent,
-						   ResolutionMultiplier = scale
-					   };
-			if(myCamera == null)
-				myCamera = UCamera.main;
-			if(myCamera == null)
-				myCamera = Object.FindObjectOfType<UCamera>();
-
-			args.Cam = myCamera;
+			BuildArgs();
 
 			ScreenCap.TakeScreenShot(args);
+		}
+
+		private void BuildArgs()
+		{
+			args = new ScreenShotArgs
+				   {
+					   fileName = Owner.filename,
+					   Path = Owner.path,
+					   ResolutionMultiplier = Owner.scale
+				   };
+		}
+
+		private void UpdateArgs()
+		{
+			if(args == null)
+				BuildArgs();
+			args.fileName = Owner.filename;
+			args.Path = Owner.path;
+			args.ResolutionMultiplier = Owner.scale;
 		}
 	}
 }

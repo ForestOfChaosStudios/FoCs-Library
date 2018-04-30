@@ -2,7 +2,7 @@
 
 public class TimelapseArgs: ScreenShotArgs
 {
-	private DateTime Start;
+	private readonly DateTime Start;
 	public int LoopCount = 0;
 
 	public TimelapseArgs(ScreenShotArgs args, DateTime start)
@@ -17,10 +17,23 @@ public class TimelapseArgs: ScreenShotArgs
 		{
 			var strPath = "";
 
-			strPath = string.Format("{0}/Timelapse[{3:yyyy-MM-dd(hh-mm-ss)}][{1}x{2}]px_Frame_{4}.png", Path, FrameWidth, FrameHeight, Start, LoopCount);
+			strPath = $"{Path}/Timelapse[{Start:yyyy-MM-dd(hh-mm-ss)}]Frame_{LoopCount}.png";
 
 			return strPath;
 		}
-		return string.Format(fileName, LoopCount);
+		return $"{fileName}_Frame_{LoopCount}.png";
+	}
+
+	public override string GetFileNameAndPath()
+	{
+		if(string.IsNullOrEmpty(fileName))
+		{
+			var strPath = "";
+
+			strPath = $"{Path}/Screenshot[{DateTime.Now:yyyy-MM-dd(hh-mm-ss)}].png";
+
+			return strPath;
+		}
+		return $"{Path}/{fileName}_Frame_{LoopCount}.png";
 	}
 }
