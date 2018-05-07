@@ -20,7 +20,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 			yield return iterator.Copy();
 			do
 			{
-				if(property.depth == iterator.depth)
+				if(property.depth >= iterator.depth)
 					yield break;
 				yield return iterator.Copy();
 			}

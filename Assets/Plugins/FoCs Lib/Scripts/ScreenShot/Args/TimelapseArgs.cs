@@ -1,39 +1,42 @@
 ﻿using System;
 
-public class TimelapseArgs: ScreenShotArgs
+namespace ForestOfChaosLib.ScreenCap
 {
-	private readonly DateTime Start;
-	public int LoopCount = 0;
-
-	public TimelapseArgs(ScreenShotArgs args, DateTime start)
-		: base(args)
+	public class TimelapseArgs: ScreenShotArgs
 	{
-		Start = start;
-	}
+		private readonly DateTime Start;
+		public int LoopCount = 0;
 
-	public override string GetFileName()
-	{
-		if(string.IsNullOrEmpty(fileName))
+		public TimelapseArgs(ScreenShotArgs args, DateTime start)
+			: base(args)
 		{
-			var strPath = "";
-
-			strPath = $"{Path}/Timelapse[{Start:yyyy-MM-dd(hh-mm-ss)}]Frame_{LoopCount}.png";
-
-			return strPath;
+			Start = start;
 		}
-		return $"{fileName}_Frame_{LoopCount}.png";
-	}
 
-	public override string GetFileNameAndPath()
-	{
-		if(string.IsNullOrEmpty(fileName))
+		public override string GetFileName()
 		{
-			var strPath = "";
+			if(string.IsNullOrEmpty(fileName))
+			{
+				var strPath = "";
 
-			strPath = $"{Path}/Screenshot[{DateTime.Now:yyyy-MM-dd(hh-mm-ss)}].png";
+				strPath = $"{Path}/Timelapse[{Start:yyyy-MM-dd(hh-mm-ss)}]Frame_{LoopCount}.png";
 
-			return strPath;
+				return strPath;
+			}
+			return $"{fileName}_Frame_{LoopCount}.png";
 		}
-		return $"{Path}/{fileName}_Frame_{LoopCount}.png";
+
+		public override string GetFileNameAndPath()
+		{
+			if(string.IsNullOrEmpty(fileName))
+			{
+				var strPath = "";
+
+				strPath = $"{Path}/Screenshot[{DateTime.Now:yyyy-MM-dd(hh-mm-ss)}].png";
+
+				return strPath;
+			}
+			return $"{Path}/{fileName}_Frame_{LoopCount}.png";
+		}
 	}
 }

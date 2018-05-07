@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using ForestOfChaosLib.Editor.ImGUI;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
+using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
 
 namespace ForestOfChaosLib.Editor.UnitySettings
 {
@@ -54,7 +54,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			private readonly SerializedObject Asset;
 
-			private readonly Dictionary<string, ReorderableListProperty> reorderableLists = new Dictionary<string, ReorderableListProperty>(1);
+			private readonly Dictionary<string, RLP> reorderableLists = new Dictionary<string, RLP>(1);
 
 			private Vector2 vector2 = Vector2.zero;
 
@@ -68,19 +68,19 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			public override void DrawTab(Window<AdvancedUnitySettingsWindow> owner)
 			{
-				using(FoCsEditorDisposables.HorizontalScope(GUI.skin.box))
+				using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
 					EditorGUILayout.LabelField(TabName);
-				using(FoCsEditorDisposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
+				using(FoCsEditor.Disposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
 				{
 					Asset.Update();
-					using(FoCsEditorDisposables.HorizontalScope())
+					using(FoCsEditor.Disposables.HorizontalScope())
 					{
 						DrawSpace(LEFT_BORDER);
 
-						using(var scrollViewScope = FoCsEditorDisposables.ScrollViewScope(vector2, true))
+						using(var scrollViewScope = FoCsEditor.Disposables.ScrollViewScope(vector2, true))
 						{
 							vector2 = scrollViewScope.scrollPosition;
-							using(var changeCheckScope = FoCsEditorDisposables.ChangeCheck())
+							using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
 							{
 							var unityDefProp = true;
 								foreach(var property in Asset.Properties())
@@ -104,12 +104,12 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			private void DrawFooter()
 			{
-				using(FoCsEditorDisposables.VerticalScope())
+				using(FoCsEditor.Disposables.VerticalScope())
 				{
-					if(FoCsGUILayout.Button("Force save"))
+					if(FoCsGUI.Layout.Button("Force save"))
 						EditorUtility.SetDirty(Asset.targetObject);
 
-					using(FoCsEditorDisposables.HorizontalScope(GUI.skin.box))
+					using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
 					{
 						EditorGUILayout.
 								HelpBox("Warning, This window has not been tested for all the settings being validated.\nIt is still recommended to use the Unity settings windows.",
@@ -121,13 +121,13 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 			private void DrawListProperty(SerializedProperty itr)
 			{
 				var ReorderableListProperty = GetReorderableList(itr);
-				using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
+				using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
 					ReorderableListProperty.HandleDrawing();
 			}
 
 			private static void DrawSingleProperty(SerializedProperty itr)
 			{
-				using(FoCsEditorDisposables.HorizontalScope(GUI.skin.box))
+				using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
 					EditorGUILayout.PropertyField(itr, true);
 			}
 
@@ -139,16 +139,16 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 					DrawSingleProperty(itr);
 			}
 
-			private ReorderableListProperty GetReorderableList(SerializedProperty property)
+			private RLP GetReorderableList(SerializedProperty property)
 			{
 				var id = property.propertyPath + "-" + property.name;
-				ReorderableListProperty ret;
+				RLP ret;
 				if(reorderableLists.TryGetValue(id, out ret))
 				{
 					ret.Property = property;
 					return ret;
 				}
-				ret = new ReorderableListProperty(property);
+				ret = new RLP(property);
 				reorderableLists.Add(id, ret);
 				return ret;
 			}

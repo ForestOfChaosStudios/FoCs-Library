@@ -1,5 +1,4 @@
 using ForestOfChaosLib.Editor;
-using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.FoCsUI.Button;
 using UnityEditor;
 using UnityEngine;
@@ -12,7 +11,7 @@ namespace ForestOfChaosLib.FoCsUI.Editor
 	{
 		public override void DrawGUI()
 		{
-			using(FoCsEditorDisposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 			{
 				if(GUILayout.Button("Add Object Name ID"))
 				{

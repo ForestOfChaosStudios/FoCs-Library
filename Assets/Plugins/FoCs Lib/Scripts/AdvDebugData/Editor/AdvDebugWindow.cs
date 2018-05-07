@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ForestOfChaosLib.Editor;
-using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
@@ -29,10 +28,10 @@ namespace ForestOfChaosLib.AdvDebug
 
 		private static void DrawField(KeyValuePair<string, AdvDebug.DictionaryData> data)
 		{
-			using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
+			using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
 			{
 				EditorGUILayout.LabelField(data.Key);
-				using(FoCsEditorDisposables.HorizontalScope())
+				using(FoCsEditor.Disposables.HorizontalScope())
 				{
 					DrawData(data.Value);
 					var tempData = data.Value.previousData;
@@ -50,7 +49,7 @@ namespace ForestOfChaosLib.AdvDebug
 
 		private static void DrawData(AdvDebug.DictionaryData data)
 		{
-			using(FoCsEditorDisposables.VerticalScope())
+			using(FoCsEditor.Disposables.VerticalScope())
 			{
 				EditorGUILayout.LabelField(data.Value);
 				EditorGUILayout.LabelField($"Time: {data.Time}");

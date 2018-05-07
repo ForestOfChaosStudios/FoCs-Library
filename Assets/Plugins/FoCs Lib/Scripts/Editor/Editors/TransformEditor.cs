@@ -1,12 +1,11 @@
-using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLib.Editor.Editors
+namespace ForestOfChaosLib.Editor
 {
 	[CustomEditor(typeof(Transform))]
-	public class TransformEditor: FoCsEditor<Transform>
+	internal class TransformEditor: FoCsEditor<Transform>
 	{
 		private static bool scaleToggle;
 		private static float scaleAmount = 1;
@@ -24,7 +23,7 @@ namespace ForestOfChaosLib.Editor.Editors
 			var transform = Target;
 
 			DoDrawHeader();
-			using(FoCsEditorDisposables.Indent())
+			using(Disposables.Indent())
 			{
 				EditorGUILayout.LabelField(transform.parent == null?
 											   "Transform" :
@@ -50,7 +49,7 @@ namespace ForestOfChaosLib.Editor.Editors
 					Undo.RecordObject(transform, "localScale Changed");
 					transform.localScale = localScale;
 				}
-				using(FoCsEditorDisposables.VerticalScope())
+				using(Disposables.VerticalScope())
 				{
 					if(scaleToggle = EditorGUILayout.Foldout(scaleToggle, "Scale Options"))
 						ScaleBtnsEnabled();
@@ -61,7 +60,7 @@ namespace ForestOfChaosLib.Editor.Editors
 
 		protected override void DoDrawHeader()
 		{
-			using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
+			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
 				var transform = Target;
 				if(GUILayout.Button(ResetContent, EditorStyles.toolbarButton))
@@ -81,7 +80,7 @@ namespace ForestOfChaosLib.Editor.Editors
 		private void ScaleBtnsEnabled()
 		{
 			ScaleArea();
-			using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
+			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
 				ScaleBtn(0.5f);
 				ScaleBtn(1);
@@ -111,7 +110,7 @@ namespace ForestOfChaosLib.Editor.Editors
 		{
 			var transform = Target;
 
-			using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
+			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
 				var content = new GUIContent("Scale amount", "Set amount to uniformly scale the object");
 				scaleAmount = EditorGUILayout.FloatField(content, scaleAmount, EditorStyles.toolbarTextField);

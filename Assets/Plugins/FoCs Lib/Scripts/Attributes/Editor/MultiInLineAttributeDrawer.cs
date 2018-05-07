@@ -10,9 +10,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 	{
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(FoCsEditorDisposables.LabelFieldSetWidth((position.width / GetAttribute.totalAmount) * 0.5f))
+			using(FoCsEditor.Disposables.LabelFieldSetWidth((position.width / GetAttribute.totalAmount) * 0.5f))
 			{
-				using(var scope = FoCsEditorDisposables.RectHorizontalScope(GetAttribute.totalAmount, position))
+				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(GetAttribute.totalAmount, position))
 				{
 					for(var i = 0; i < GetAttribute.index; i++)
 						scope.GetNext();

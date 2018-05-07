@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ForestOfChaosLib.Editor.ImGUI
+namespace ForestOfChaosLib.Editor
 {
 	public class FoCsGUIData : FoCsScriptableObject
 	{

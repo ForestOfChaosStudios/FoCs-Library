@@ -1,6 +1,5 @@
-﻿using ForestOfChaosLib.Editor.ImGUI;
+﻿using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.PropertyDrawers;
-using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEditor.PostProcessing;
 using UnityEngine;
@@ -23,7 +22,7 @@ namespace ForestOfChaosLib.Attributes
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var cc = FoCsEditorDisposables.ChangeCheck())
+			using(var cc = FoCsEditor.Disposables.ChangeCheck())
 			{
 				GetAttribute.CallSetter = FoCsGUI.DrawPropertyWithMenu(position,
 																		 property,

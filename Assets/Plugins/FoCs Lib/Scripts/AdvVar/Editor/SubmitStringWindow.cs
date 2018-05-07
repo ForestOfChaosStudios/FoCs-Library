@@ -1,7 +1,6 @@
 ﻿using System;
-using ForestOfChaosLib.Editor.ImGUI;
-using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
@@ -43,22 +42,22 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				EditorGUI.FocusTextInControl(GUI_SELECTION_LABEL);
 				notSelectedLabel = true;
 			}
-			using(FoCsEditorDisposables.HorizontalScope())
+			using(FoCsEditor.Disposables.HorizontalScope())
 			{
-				if(FoCsGUILayout.Button(currentArguments.SubmitMessage))
+				if(FoCsGUI.Layout.Button(currentArguments.SubmitMessage))
 				{
 					currentArguments.OnSubmit.Trigger(currentArguments);
 					Close();
 				}
 
-				if(FoCsGUILayout.Button(currentArguments.CancelMessage))
+				if(FoCsGUI.Layout.Button(currentArguments.CancelMessage))
 				{
 					currentArguments.OnCancel.Trigger(currentArguments);
 					Close();
 				}
 			}
 
-			if(FoCsGUILayout.Button(currentArguments.SubmitAnotherMessage))
+			if(FoCsGUI.Layout.Button(currentArguments.SubmitAnotherMessage))
 			{
 				currentArguments.OnSubmitAnother.Trigger(currentArguments);
 			}

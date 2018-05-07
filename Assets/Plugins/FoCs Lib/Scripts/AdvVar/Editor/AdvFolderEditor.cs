@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using ForestOfChaosLib.AdvVar.Base;
 using ForestOfChaosLib.Editor;
-using ForestOfChaosLib.Editor.ImGUI;
 using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -46,13 +45,13 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 				enableDictionary.TryGetValue(key.ToggleName, out value);
 
-				using(FoCsEditorDisposables.Indent())
+				using(Disposables.Indent())
 				{
-					using(FoCsEditorDisposables.VerticalScope())
+					using(Disposables.VerticalScope())
 					{
-						using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
+						using(Disposables.HorizontalScope(EditorStyles.toolbar))
 						{
-							var @event = FoCsGUILayout.Toggle(value,
+							var @event = FoCsGUI.Layout.Toggle(value,
 														value?
 															$"Hide {key.ToggleName}" :
 															$" {key.ToggleName}",
@@ -78,7 +77,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				{
 					EditorGUILayout.LabelField($"Children [{assets.Length - 1}]");
 
-					using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
+					using(Disposables.VerticalScope(GUI.skin.box))
 					{
 						var rect = EditorGUILayout.GetControlRect(true, StandardLine, EditorStyles.toolbarButton);
 
@@ -92,9 +91,9 @@ namespace ForestOfChaosLib.AdvVar.Editor
 							showChildrenSettings = !showChildrenSettings;
 						if(!showChildrenSettings)
 							return;
-						using(FoCsEditorDisposables.VerticalScope())
+						using(Disposables.VerticalScope())
 						{
-							using(FoCsEditorDisposables.Indent())
+							using(Disposables.Indent())
 							{
 								for(var i = 0; i < assets.Length; i++)
 								{
@@ -121,13 +120,13 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		private void DrawChildObject(Object obj, int index)
 		{
-			using(FoCsEditorDisposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 			{
-				FoCsGUILayout.Label($"[{index}] {obj.GetType().Name}", GUILayout.Width(Screen.width / 4f));
+				FoCsGUI.Layout.Label($"[{index}] {obj.GetType().Name}", GUILayout.Width(Screen.width / 4f));
 
-				using(var changeCheckScope = FoCsEditorDisposables.ChangeCheck())
+				using(var changeCheckScope = Disposables.ChangeCheck())
 				{
-					using(FoCsEditorDisposables.IndentSet(0))
+					using(Disposables.IndentSet(0))
 						obj.name = EditorGUILayout.DelayedTextField(obj.name);
 
 					if(changeCheckScope.changed)
@@ -137,7 +136,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 					}
 				}
 
-				var event2 = FoCsGUILayout.Button(FoCsGUIStyles.CrossCircle, GUILayout.Width(FoCsGUIStyles.CrossCircle.fixedWidth));
+				var event2 = FoCsGUI.Layout.Button(Styles.CrossCircle, GUILayout.Width(Styles.CrossCircle.fixedWidth));
 				if(event2.AsButtonLeftClick)
 				{
 					if(EditorUtility.DisplayDialog("Delete Child", $"Delete {obj.name}", "Yes Delete", "No Cancel"))
@@ -155,10 +154,10 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		private void DrawAddTypeButton(Type type)
 		{
-			using(FoCsEditorDisposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 			{
 				//FoCsGUILayout.Label(type.Name, EditorStyles.toolbarButton);
-				var @event = FoCsGUILayout.Button($"{type.Name} Add New", GUI.skin.button);
+				var @event = FoCsGUI.Layout.Button($"{type.Name} Add New", GUI.skin.button);
 				if(@event.AsButtonLeftClick)
 				{
 					SubmitStringWindow.SetUpInstance(new CreateArgs

@@ -1,12 +1,11 @@
 using System;
-using ForestOfChaosLib.Interfaces;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEngine;
 using UButton = UnityEngine.UI.Button;
 
 namespace ForestOfChaosLib.FoCsUI.Button
 {
-	public abstract class ButtonComponentBase: FoCsBehavior, IEventListening
+	public abstract class ButtonComponentBase: FoCsBehavior
 	{
 		public Action onMouseClick = () => { };
 		public abstract UButton Button { get; }

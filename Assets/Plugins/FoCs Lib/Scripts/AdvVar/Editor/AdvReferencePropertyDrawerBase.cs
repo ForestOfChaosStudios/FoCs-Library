@@ -1,8 +1,6 @@
 ﻿using ForestOfChaosLib.AdvVar.Base;
 using ForestOfChaosLib.Editor;
-using ForestOfChaosLib.Editor.ImGUI;
 using ForestOfChaosLib.Editor.PropertyDrawers.Types;
-using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
@@ -32,7 +30,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			var ConstantValue = property.FindPropertyRelative(CONSTANT_VALUE_STR);
 			var Variable = property.FindPropertyRelative(VARIABLE_STR);
 
-			using(var changeCheckScope = FoCsEditorDisposables.ChangeCheck())
+			using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
 			{
 				UseConstant.boolValue = FoCsGUI.DrawPropertyWithMenu(position.SetHeight(SingleLinePlusPadding),
 																	 UseConstant.boolValue?
@@ -63,9 +61,9 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				if(foldOut)
 				{
 					DrawSurroundingBox(position);
-					using(FoCsEditorDisposables.Indent())
+					using(FoCsEditor.Disposables.Indent())
 					{
-						using(var changeCheckScope = FoCsEditorDisposables.ChangeCheck())
+						using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
 						{
 							var next = iterator.NextVisible(true);
 

@@ -42,20 +42,20 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			var m_Value = new EditorEntry($"{(ValueInverted.Property.boolValue? "Non Inverted " : "")}Value", property.FindPropertyRelative("m_Value"));
 			var m_DeadZone = new EditorEntry("DeadZone", property.FindPropertyRelative("m_DeadZone"));
 
-			using(FoCsEditorDisposables.Indent(-1))
+			using(FoCsEditor.Disposables.Indent(-1))
 			{
-				using(var verticalScope = FoCsEditorDisposables.RectVerticalScope(3, wholePosition))
+				using(var verticalScope = FoCsEditor.Disposables.RectVerticalScope(3, wholePosition))
 				{
-					using(var horizontalScope = FoCsEditorDisposables.RectHorizontalScope(2, verticalScope.GetNext()))
+					using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
 					{
-						using(FoCsEditorDisposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
+						using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
 						{
 							Axis.Draw(horizontalScope.GetNext());
 							var array = ReadInputManager.GetAxisNames();
 							var num = -1;
 							if(array.Contains(Axis.Property.stringValue))
 								num = array.ToList().IndexOf(Axis.Property.stringValue);
-							using(var cc = FoCsEditorDisposables.ChangeCheck())
+							using(var cc = FoCsEditor.Disposables.ChangeCheck())
 							{
 								var index = EditorGUI.Popup(horizontalScope.GetNext(), PopupContent, num, array.Select(a => new GUIContent(a)).ToArray());
 								if(cc.changed && array.InRange(index))
@@ -63,23 +63,23 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 							}
 						}
 					}
-					using(var horizontalScope = FoCsEditorDisposables.RectHorizontalScope(2, verticalScope.GetNext()))
+					using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
 					{
-						using(FoCsEditorDisposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
+						using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
 						{
 							ProgressBar(horizontalScope.GetNext(), m_Value);
 							m_Value.Draw(horizontalScope.GetNext());
 						}
 					}
-					using(var horizontalScope = FoCsEditorDisposables.RectHorizontalScope(2, verticalScope.GetNext()))
+					using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
 					{
-						using(FoCsEditorDisposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
+						using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
 						{
 							m_DeadZone.Draw(horizontalScope.GetNext());
 
-							using(var horizontalScope2 = FoCsEditorDisposables.RectHorizontalScope(2, horizontalScope.GetNext()))
+							using(var horizontalScope2 = FoCsEditor.Disposables.RectHorizontalScope(2, horizontalScope.GetNext()))
 							{
-								using(FoCsEditorDisposables.LabelFieldSetWidth(horizontalScope2.FirstRect.width * LABEL_SIZE))
+								using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope2.FirstRect.width * LABEL_SIZE))
 								{
 									ValueInverted.Draw(horizontalScope2.GetNext());
 									OnlyButton.Draw(horizontalScope2.GetNext());
@@ -93,7 +93,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		private static void ProgressBar(Rect pos, EditorEntry m_Value)
 		{
-			using(var horizontalScope = FoCsEditorDisposables.RectHorizontalScope(2, pos))
+			using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, pos))
 			{
 				EditorGUI.LabelField(horizontalScope.GetNext(), ProgressBarContent);
 				FoCsEditorUtilities.DrawSplitProgressBar(horizontalScope.GetNext(), m_Value.Property.floatValue);
