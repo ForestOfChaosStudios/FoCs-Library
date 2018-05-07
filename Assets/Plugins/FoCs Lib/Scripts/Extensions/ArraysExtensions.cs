@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using ForestOfChaosLib.Types;
-using ForestOfChaosLib.Extensions;
 
-namespace ForestOfChaosLib.Generics
+namespace ForestOfChaosLib.Extensions
 {
 	public static class ArraysExtensions
 	{

@@ -5,12 +5,11 @@ using UButton = UnityEngine.UI.Button;
 
 namespace ForestOfChaosLib.FoCsUI.Button
 {
-	public abstract class ButtonComponentBase: FoCsBehavior
+	public abstract class FoCsButton: FoCsBehavior
 	{
 		public Action onMouseClick = () => { };
-		public abstract UButton Button { get; }
-		public abstract string ButtonText { get; set; }
-		public abstract GameObject ButtonGO { get; }
+		public UButton Button;
+		public abstract string Text { get; set; }
 		public abstract GameObject TextGO { get; }
 
 		public bool Interactable
@@ -26,13 +25,13 @@ namespace ForestOfChaosLib.FoCsUI.Button
 
 		public void OnEnable()
 		{
-			//if(Button)
+			if(Button)
 				Button.onClick.AddListener(MouseClick);
 		}
 
 		public void OnDisable()
 		{
-			//if(Button)
+			if(Button)
 				Button.onClick.RemoveListener(MouseClick);
 		}
 	}

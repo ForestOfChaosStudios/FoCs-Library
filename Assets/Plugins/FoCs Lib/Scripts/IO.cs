@@ -3,9 +3,9 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace ForestOfChaosLib.IO
+namespace ForestOfChaosLib
 {
-	public static class SavingLoading
+	public static class IO
 	{
 		public const string FILE_EXT = "FoCsdat";
 
@@ -16,17 +16,15 @@ namespace ForestOfChaosLib.IO
 
 		public static void LoadGameDataUnityFile<T>(string name, out T data, Func<T> defaultDataCtor, string extn, bool saveIfNotExist = true)
 		{
-			//Does space magic if file exists 
 			var filepath = $"{Application.persistentDataPath}/{name}.{extn}";
-			if(File.Exists(filepath)) //Does the file exist 
+			if(File.Exists(filepath))
 			{
-				//Space Magic 
 				var bf = new BinaryFormatter();
-				var file = File.Open(filepath, //Name file 
+				var file = File.Open(filepath,
 									 FileMode.Open);
-				//Debug.Log("Loaded : " + filepath);
+				Debug.Log("Loaded : " + filepath);
 				data = (T)bf.Deserialize(file);
-				file.Close(); //End file 
+				file.Close();
 			}
 			else
 			{
@@ -43,29 +41,26 @@ namespace ForestOfChaosLib.IO
 
 		public static void SaveGameDataUnityFile<T>(string name, T data, string extn)
 		{
-			//Space Magic 
 			var bf = new BinaryFormatter();
 			var filepath = $"{Application.persistentDataPath}/{name}.{extn}";
-			var file = File.Open(filepath, //Name file 
-								 FileMode.OpenOrCreate //How to open file 
+			var file = File.Open(filepath,
+								 FileMode.OpenOrCreate
 								);
-			//Debug.Log("Saved : " + filepath);
-			bf.Serialize(file, data); //Magic happens 
-			file.Close(); //End file 
+			Debug.Log("Saved : " + filepath);
+			bf.Serialize(file, data);
+			file.Close();
 		}
 
 		public static void LoadGameDataFilepath<T>(string filepath, out T data, Func<T> defaultDataCtor, bool saveIfNotExist = true)
 		{
-			//Does space magic if file exists 
-			if(File.Exists(filepath)) //Does the file exist 
+			if(File.Exists(filepath))
 			{
-				//Space Magic 
 				var bf = new BinaryFormatter();
-				var file = File.Open(filepath, //Name file 
+				var file = File.Open(filepath,
 									 FileMode.Open);
-				//Debug.Log("Loaded : " + filepath);
+				Debug.Log("Loaded : " + filepath);
 				data = (T)bf.Deserialize(file);
-				file.Close(); //End file 
+				file.Close();
 			}
 			else
 			{
@@ -77,14 +72,13 @@ namespace ForestOfChaosLib.IO
 
 		public static void SaveGameDataFilepath<T>(string filepath, T data)
 		{
-			//Space Magic 
 			var bf = new BinaryFormatter();
-			var file = File.Open(filepath, //Name file 
-								 FileMode.OpenOrCreate //How to open file 
+			var file = File.Open(filepath,
+								 FileMode.OpenOrCreate 
 								);
-			//Debug.Log("Saved : " + filepath);
-			bf.Serialize(file, data); //Magic happens 
-			file.Close(); //End file 
+			Debug.Log("Saved : " + filepath);
+			bf.Serialize(file, data);
+			file.Close();
 		}
 
 		public static string LoadStringUnityFile(string name)
@@ -94,11 +88,10 @@ namespace ForestOfChaosLib.IO
 
 		public static string LoadStringUnityFile(string name, string extn)
 		{
-			//Does space magic if file exists 
 			var filepath = $"{Application.persistentDataPath}/{name}.{extn}";
 
-			//Debug.Log("Loaded : " + filepath);
-			if(File.Exists(filepath)) //Does the file exist
+			Debug.Log("Loaded : " + filepath);
+			if(File.Exists(filepath))
 				return File.ReadAllText(filepath);
 
 			return "";
@@ -112,20 +105,19 @@ namespace ForestOfChaosLib.IO
 		public static void SaveStringUnityFile(string name, string data, string extn)
 		{
 			var filepath = $"{Application.persistentDataPath}/{name}.{extn}";
-			//Debug.Log("Saved : " + filepath);
+			Debug.Log("Saved : " + filepath);
 
 			File.WriteAllText(filepath, data);
 		}
 
 		public static string LoadStringFilepath(string filepath)
 		{
-			//Does space magic if file exists 
-			if(File.Exists(filepath)) //Does the file exist
+			if(File.Exists(filepath))
 			{
 				Debug.Log("Loaded : " + filepath);
 				return File.ReadAllText(filepath);
 			}
-			//Debug.Log("Failed to Load : " + filepath);
+			Debug.Log("Failed to Load : " + filepath);
 			return "";
 		}
 

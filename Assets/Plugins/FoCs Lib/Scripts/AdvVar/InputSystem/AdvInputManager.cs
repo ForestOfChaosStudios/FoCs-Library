@@ -6,7 +6,7 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 	public class AdvInputManager: Singleton<AdvInputManager>
 	{
 		public AdvInputAxisReference[] AxisReferences;
-		public Vector2Variable MousePosition;
+		public Vector2Variable MousePosition = Vector2.zero;
 
 		public void Update()
 		{

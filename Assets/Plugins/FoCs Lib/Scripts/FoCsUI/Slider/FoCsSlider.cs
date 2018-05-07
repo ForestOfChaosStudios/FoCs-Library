@@ -5,7 +5,7 @@ using USlider = UnityEngine.UI.Slider;
 
 namespace ForestOfChaosLib.FoCsUI.Slider
 {
-	public class SliderEvent: FoCsBehavior
+	public class FoCsSlider: FoCsBehavior
 	{
 		public USlider slider;
 

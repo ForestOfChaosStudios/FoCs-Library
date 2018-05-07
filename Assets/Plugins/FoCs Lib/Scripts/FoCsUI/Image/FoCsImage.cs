@@ -4,11 +4,10 @@ using UImage = UnityEngine.UI.Image;
 
 namespace ForestOfChaosLib.FoCsUI.Image
 {
-	public abstract class ImageComponentBase: FoCs2DBehavior
+	public abstract class FoCsImage: FoCs2DBehavior
 	{
-		public abstract UImage Image { get; }
-		public abstract string ImageText { get; set; }
-		public abstract GameObject ImageGO { get; }
+		public UImage Image;
+		public abstract string Text { get; set; }
 		public abstract GameObject TextGO { get; }
 
 		public Action onMouseClick;

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ForestOfChaosLib.Utilities.Enums;
-using ForestOfChaosLib.Components;
 using UnityEngine;
 
 namespace ForestOfChaosLib.FoCsUI.Slider

@@ -1,11 +1,10 @@
 using System;
-using ForestOfChaosLib.Components;
 using ForestOfChaosLib.Extensions;
 using UnityEngine;
 
 namespace ForestOfChaosLib.FoCsUI.InputField
 {
-	public abstract class InputFieldEventBase: FoCsBehavior
+	public abstract class FoCsInputField: FoCsBehavior
 	{
 		public abstract string InputFieldText { get; set; }
 		public abstract GameObject InputFieldGO { get; }
