@@ -1,9 +1,8 @@
 using System.Linq;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Editor.UnitySettings;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.InputManager;
-using ForestOfChaosLib.UnityScriptsExtensions;
 using UnityEditor;
 using UnityEngine;
 

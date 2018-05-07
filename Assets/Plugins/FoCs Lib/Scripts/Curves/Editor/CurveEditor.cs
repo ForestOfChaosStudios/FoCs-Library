@@ -2,8 +2,7 @@
 using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Maths;
-using ForestOfChaosLib.CSharpExtensions;
-using ForestOfChaosLib.UnityScriptsExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 

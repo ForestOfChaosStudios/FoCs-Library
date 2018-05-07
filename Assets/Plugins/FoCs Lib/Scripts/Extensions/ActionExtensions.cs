@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ForestOfChaosLib.CSharpExtensions
+namespace ForestOfChaosLib.Extensions
 {
-	public static class EventsExtensions
+	public static class ActionExtensions
 	{
 		public static void Trigger(this Action action)
 		{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ForestOfChaosLib.Editor.Tools;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 
 namespace ForestOfChaosLib.Editor

@@ -1,6 +1,6 @@
 ﻿using System;
 using ForestOfChaosLib.Attributes;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.Base

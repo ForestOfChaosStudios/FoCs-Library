@@ -1,6 +1,6 @@
 using System;
 using ForestOfChaosLib.Components;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEngine;
 
 namespace ForestOfChaosLib.FoCsUI.InputField

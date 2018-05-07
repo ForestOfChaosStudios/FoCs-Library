@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace ForestOfChaosLib.CSharpExtensions
+namespace ForestOfChaosLib.Extensions
 {
 	public static class MethodInfoUtil
 	{

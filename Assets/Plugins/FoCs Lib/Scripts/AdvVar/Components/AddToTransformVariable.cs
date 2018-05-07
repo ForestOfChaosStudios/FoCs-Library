@@ -1,8 +1,6 @@
-﻿using ForestOfChaosLib.Interfaces;
-
-namespace ForestOfChaosLib.AdvVar.Components
+﻿namespace ForestOfChaosLib.AdvVar.Components
 {
-	public class AddToTransformVariable: FoCsBehavior, IEventListening
+	public class AddToTransformVariable: FoCsBehavior
 	{
 		public TransformReference TransformReference;
 		public bool RemoveOnDisable = true;

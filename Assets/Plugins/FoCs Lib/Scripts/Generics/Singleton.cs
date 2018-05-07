@@ -1,5 +1,5 @@
 using System;
-using ForestOfChaosLib.UnityScriptsExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Generics

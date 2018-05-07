@@ -1,4 +1,4 @@
-﻿using ForestOfChaosLib.UnityScriptsExtensions;
+﻿using ForestOfChaosLib.Extensions;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Utilities

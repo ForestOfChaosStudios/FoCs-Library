@@ -1,7 +1,7 @@
 ﻿using System;
 using ForestOfChaosLib.Editor.ImGUI;
 using ForestOfChaosLib.Editor.Utilities;
-using ForestOfChaosLib.UnityScriptsExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEditorInternal;

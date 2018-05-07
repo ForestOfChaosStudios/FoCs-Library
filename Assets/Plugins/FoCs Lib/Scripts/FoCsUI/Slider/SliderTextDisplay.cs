@@ -1,5 +1,5 @@
 ﻿using ForestOfChaosLib.Components;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using TMPro;
 
 namespace ForestOfChaosLib.FoCsUI.Slider

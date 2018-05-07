@@ -4,7 +4,7 @@ using System.Linq;
 using URandom = UnityEngine.Random;
 using SRandom = System.Random;
 
-namespace ForestOfChaosLib.CSharpExtensions
+namespace ForestOfChaosLib.Extensions
 {
 	public static class ListExtenstions
 	{

@@ -1,10 +1,8 @@
-﻿using ForestOfChaosLib.Interfaces;
-using ForestOfChaosLib.Components;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
 
 namespace ForestOfChaosLib.AdvVar.Events
 {
-	public class AdvEventListener: FoCsBehavior, IEventListening
+	public class AdvEventListener: FoCsBehavior
 	{
 		public AdvEvent Event;
 		public UnityEvent Response;

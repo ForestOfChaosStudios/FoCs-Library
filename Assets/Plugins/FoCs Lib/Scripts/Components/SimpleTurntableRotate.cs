@@ -1,9 +1,8 @@
-using ForestOfChaosLib.Interfaces;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
-	public class SimpleTurntableRotate: FoCsBehavior, IUpdate
+	public class SimpleTurntableRotate: FoCsBehavior
 	{
 		public Vector3 rotateAngle;
 		public Space transformSpace;

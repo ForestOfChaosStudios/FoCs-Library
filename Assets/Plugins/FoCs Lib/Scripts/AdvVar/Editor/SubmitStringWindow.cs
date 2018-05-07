@@ -1,7 +1,7 @@
 ﻿using System;
-using ForestOfChaosLib.CSharpExtensions;
 using ForestOfChaosLib.Editor.ImGUI;
 using ForestOfChaosLib.Editor.Utilities;
+using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Editor.Windows;
 using UnityEditor;
 using UnityEngine;

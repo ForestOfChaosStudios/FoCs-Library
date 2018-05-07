@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ForestOfChaosLib.CSharpExtensions
+namespace ForestOfChaosLib.Extensions
 {
 	public static class StringExtensions
 	{

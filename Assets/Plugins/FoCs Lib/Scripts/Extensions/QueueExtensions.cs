@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ForestOfChaosLib.CSharpExtensions
+namespace ForestOfChaosLib.Extensions
 {
 	public static class QueueExtensions
 	{

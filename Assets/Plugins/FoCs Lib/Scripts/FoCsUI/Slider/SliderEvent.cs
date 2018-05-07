@@ -1,6 +1,6 @@
 using System;
 using ForestOfChaosLib.AdvVar;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using USlider = UnityEngine.UI.Slider;
 
 namespace ForestOfChaosLib.FoCsUI.Slider

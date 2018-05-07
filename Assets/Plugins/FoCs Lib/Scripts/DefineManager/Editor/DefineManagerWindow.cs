@@ -2,7 +2,7 @@
 using System.IO;
 using ForestOfChaosLib.Editor.Tools;
 using ForestOfChaosLib.Editor.Windows;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;

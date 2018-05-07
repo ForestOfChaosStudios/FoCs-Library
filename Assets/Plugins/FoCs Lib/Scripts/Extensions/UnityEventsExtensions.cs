@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ForestOfChaosLib.Editor
+namespace ForestOfChaosLib.Extensions
 {
 	public static class UnityEventsExtensions
 	{

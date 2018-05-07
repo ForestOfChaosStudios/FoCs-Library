@@ -1,6 +1,6 @@
 ﻿using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.PropertyDrawers;
-using ForestOfChaosLib.UnityScriptsExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 

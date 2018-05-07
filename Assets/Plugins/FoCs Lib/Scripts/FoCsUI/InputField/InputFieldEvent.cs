@@ -1,11 +1,10 @@
 using ForestOfChaosLib.Attributes;
-using ForestOfChaosLib.Interfaces;
 using UnityEngine;
 using UInputField = UnityEngine.UI.InputField;
 
 namespace ForestOfChaosLib.FoCsUI.InputField
 {
-	public class InputFieldEvent: InputFieldEventBase, IEventListening
+	public class InputFieldEvent: InputFieldEventBase
 	{
 		[NoFoldout]
 		public InputFieldData MyInputField;

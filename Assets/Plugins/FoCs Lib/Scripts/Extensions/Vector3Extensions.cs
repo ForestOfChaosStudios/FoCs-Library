@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ForestOfChaosLib.UnityScriptsExtensions
+namespace ForestOfChaosLib.Extensions
 {
 	public static class Vector3Extensions
 	{
@@ -117,6 +117,11 @@ namespace ForestOfChaosLib.UnityScriptsExtensions
 		public static Vector3 Copy(this Vector3 vec)
 		{
 			return vec;
+		}
+
+		public static Quaternion GetQuaternion(this Vector3 v3)
+		{
+			return Quaternion.Euler(v3);
 		}
 	}
 }

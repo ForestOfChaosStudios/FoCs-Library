@@ -1,5 +1,5 @@
 using System;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 

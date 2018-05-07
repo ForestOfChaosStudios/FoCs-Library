@@ -1,11 +1,10 @@
 ﻿using System;
-using ForestOfChaosLib.Interfaces;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
-	public class OnTrigger2DEvents: FoCsBehavior, IOnTrigger2D
+	public class OnTrigger2DEvents: FoCsBehavior
 	{
 		public event Action<Collider2D> OnTrigEnter;
 		public event Action<Collider2D> OnTrigStay;

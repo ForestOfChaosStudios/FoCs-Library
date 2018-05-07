@@ -1,11 +1,10 @@
 using ForestOfChaosLib.Attributes;
-using ForestOfChaosLib.Interfaces;
 using TMPro;
 using UnityEngine;
 
 namespace ForestOfChaosLib.FoCsUI.InputField
 {
-	public class InputFieldEvent_TMP: InputFieldEventBase, IEventListening
+	public class InputFieldEvent_TMP: InputFieldEventBase
 	{
 		[NoFoldout]
 		public InputFieldData_TMP MyInputField;

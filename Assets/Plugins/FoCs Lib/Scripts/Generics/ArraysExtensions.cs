@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ForestOfChaosLib.Types;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 
 namespace ForestOfChaosLib.Generics
 {

@@ -1,5 +1,5 @@
 ﻿using ForestOfChaosLib.Types;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
 using UnityEngine;
 

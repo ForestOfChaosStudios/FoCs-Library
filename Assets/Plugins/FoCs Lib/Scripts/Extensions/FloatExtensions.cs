@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ForestOfChaosLib.CSharpExtensions
+namespace ForestOfChaosLib.Extensions
 {
 	public static class FloatExtensions
 	{

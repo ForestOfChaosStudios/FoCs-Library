@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ForestOfChaosLib.UnityScriptsExtensions
+namespace ForestOfChaosLib.Extensions
 {
     public static class Vector2Extensions
     {
