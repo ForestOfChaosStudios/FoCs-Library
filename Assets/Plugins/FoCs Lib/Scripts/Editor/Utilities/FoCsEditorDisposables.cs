@@ -60,6 +60,16 @@ namespace ForestOfChaosLib.Editor
 			public static GUILayout.VerticalScope VerticalScope(GUIStyle skinBox, params GUILayoutOption[] options) => new GUILayout.VerticalScope(skinBox, options);
 			#endregion
 
+			#region AreaScope
+			public static GUILayout.AreaScope AreaScope(Rect rect) => new GUILayout.AreaScope(rect);
+			public static GUILayout.AreaScope AreaScope(Rect rect, string content) => new GUILayout.AreaScope(rect, content);
+			public static GUILayout.AreaScope AreaScope(Rect rect, string content, GUIStyle style) => new GUILayout.AreaScope(rect, content, style);
+			public static GUILayout.AreaScope AreaScope(Rect rect, GUIContent content) => new GUILayout.AreaScope(rect, content);
+			public static GUILayout.AreaScope AreaScope(Rect rect, GUIContent content, GUIStyle style) => new GUILayout.AreaScope(rect, content, style);
+			public static GUILayout.AreaScope AreaScope(Rect rect, Texture texture) => new GUILayout.AreaScope(rect, texture);
+			public static GUILayout.AreaScope AreaScope(Rect rect, Texture texture, GUIStyle style) => new GUILayout.AreaScope(rect, texture, style);
+			#endregion
+
 			#region ScrollViewScope
 			public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos) => new EditorGUILayout.ScrollViewScope(scrollPos);
 
