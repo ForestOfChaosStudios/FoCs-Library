@@ -16,11 +16,25 @@ namespace ForestOfChaosLib.Editor
 			private static ReorderableList.Defaults s_Defaults;
 			private SerializedProperty _property;
 			public bool Animate;
+
+			private static bool limitingEnabled = true;
+
+			public static bool LimitingEnabled
+			{
+				get
+				{
+					return limitingEnabled;
+				}
+				set
+				{
+					limitingEnabled = value;
+					OnLimitingChange.Trigger();
+				}
+			}
+
+			private static Action OnLimitingChange;
 			public ListLimiter Limiter;
 
-			/// <summary>
-			///     ref http://va.lent.in/unity-make-your-lists-functional-with-reorderablelist/
-			/// </summary>
 			public ReorderableList List { get; private set; }
 
 			public AnimBool IsExpanded { get; set; }
@@ -48,7 +62,7 @@ namespace ForestOfChaosLib.Editor
 									 speed = 1f
 								 };
 				}
-				CreateList();
+				InitList();
 			}
 
 			public ReorderableListProperty(
@@ -68,23 +82,30 @@ namespace ForestOfChaosLib.Editor
 									 speed = 1f
 								 };
 				}
-				CreateList(dragAble, displayHeader, displayAdd, displayRemove);
+				InitList(dragAble, displayHeader, displayAdd, displayRemove);
 			}
 
 			~ReorderableListProperty()
 			{
 				_property = null;
 				List = null;
+				OnLimitingChange -= ChangeLimiting;
 			}
 
-			private void CreateList(bool dragAble = true, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true)
+			private void ChangeLimiting()
 			{
-				List = new ReorderableList(Property.serializedObject, Property, dragAble, displayHeader, displayAdd, displayRemove);
+				Limiter = null;
+			}
+
+			private void InitList(bool dragable = true, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true)
+			{
+				OnLimitingChange += ChangeLimiting;
+				List = new ReorderableList(Property.serializedObject, Property, dragable, displayHeader, displayAdd, displayRemove);
 				List.drawHeaderCallback += OnListDrawHeaderCallback;
 				List.onCanRemoveCallback += OnListOnCanRemoveCallback;
 				List.drawElementCallback += DrawElement;
 				List.elementHeightCallback += OnListElementHeightCallback;
-				//TODO Impliment limited view of lists, eg only show index 50-100, and buttons to move limits
+				//TODO Implement limited view of lists, eg only show index 50-100, and buttons to move limits
 				List.drawFooterCallback += OnListDrawFooterCallback;
 				List.showDefaultBackground = true;
 
@@ -93,13 +114,8 @@ namespace ForestOfChaosLib.Editor
 
 			private void CheckLimiter()
 			{
-				if(List.serializedProperty.arraySize >= ListLimiter.TOTAL_VISIBLE_COUNT)
-				{
-					if(Limiter == null)
-						Limiter = ListLimiter.GetLimiter(this);
-				}
-				else
-					Limiter = null;
+				if((Limiter == null) && LimitingEnabled)
+					Limiter = ListLimiter.GetLimiter(this);
 			}
 
 			private void DrawElement(Rect rect, int index, bool active, bool focused)
@@ -127,7 +143,7 @@ namespace ForestOfChaosLib.Editor
 
 			public void HandleDrawing()
 			{
-				using(FoCsEditor.Disposables.VerticalScope())
+				using(Disposables.VerticalScope())
 				{
 					CheckLimiter();
 					if(Animate)
@@ -135,12 +151,13 @@ namespace ForestOfChaosLib.Editor
 						IsExpanded.target = Property.isExpanded;
 						if((!IsExpanded.value && !IsExpanded.isAnimating) || (!IsExpanded.value && IsExpanded.isAnimating))
 							DrawDefaultHeader();
-
 						else
 						{
-							if(EditorGUILayout.BeginFadeGroup(IsExpanded.faded))
-								List.DoLayoutList();
-							EditorGUILayout.EndFadeGroup();
+							using(var fg = Disposables.FadeGroupScope(IsExpanded.faded))
+							{
+								if(fg.visible)
+									List.DoLayoutList();
+							}
 						}
 					}
 					else
@@ -234,12 +251,6 @@ namespace ForestOfChaosLib.Editor
 
 				public static readonly GUIContent IconToolbarPlusMore = EditorGUIUtility.IconContent("Toolbar Plus More", "Choose to add to list");
 				public static readonly GUIContent IconToolbarMinus = EditorGUIUtility.IconContent("Toolbar Minus", "Remove selection from list");
-
-				public static readonly GUIContent UpArrow = new GUIContent(FoCsEditor.Styles.FoCsGUIData.UpArrow, "Increase Displayed Index 5");
-				public static readonly GUIContent Up2Arrow = new GUIContent(FoCsEditor.Styles.FoCsGUIData.Up2Arrow, "Increase Displayed Index 10");
-
-				public static readonly GUIContent DownArrow = new GUIContent(FoCsEditor.Styles.FoCsGUIData.DownArrow, "Decrease Displayed Index 5");
-				public static readonly GUIContent Down2Arrow = new GUIContent(FoCsEditor.Styles.FoCsGUIData.Down2Arrow, "Decrease Displayed Index 10");
 
 				private static GUIStyle miniLabel;
 
@@ -363,7 +374,7 @@ namespace ForestOfChaosLib.Editor
 					x -= 25f;
 
 
-				using(FoCsEditor.Disposables.IndentSet(0))
+				using(Disposables.IndentSet(0))
 				{
 					_property.isExpanded = EditorGUI.ToggleLeft(rect.SetWidth(x - 10),
 																$"{_property.displayName}\t[{_property.arraySize}]",
@@ -373,7 +384,7 @@ namespace ForestOfChaosLib.Editor
 																	GUIStyle.none);
 				}
 
-				using(FoCsEditor.Disposables.DisabledScope(!_property.isExpanded))
+				using(Disposables.DisabledScope(!_property.isExpanded))
 				{
 					var rect2 = new Rect(x, rect.y, xMax - x, rect.height);
 
@@ -428,13 +439,27 @@ namespace ForestOfChaosLib.Editor
 
 			private void FooterLimiterGUI(Rect rect)
 			{
-				var horScope = FoCsEditor.Disposables.RectHorizontalScope(11, rect.ChangeX(5).MoveWidth(-16));
-				using(FoCsEditor.Disposables.DisabledScope(!Limiter.CanDecrease()))
+				var minAmount = 1;
+				var maxAmount = 5;
+
+				//if(Event.current.shift)
+				//{
+				//	minAmount = 10;
+				//	maxAmount = 25;
+				//}
+
+				var upArrow    = new GUIContent("", $"Increase Displayed Index {minAmount}");
+				var up2Arrow   = new GUIContent("", $"Increase Displayed Index {maxAmount}");
+				var downArrow  = new GUIContent("", $"Decrease Displayed Index {minAmount}");
+				var down2Arrow = new GUIContent("", $"Decrease Displayed Index {maxAmount}");
+
+				var horScope = Disposables.RectHorizontalScope(11, rect.ChangeX(5).MoveWidth(-16));
+				using(Disposables.DisabledScope(!Limiter.CanDecrease()))
 				{
-					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.UpArrow, ListStyles.PreButton))
-						Limiter.ChangeRange(-5);
-					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.Up2Arrow, ListStyles.PreButton))
-						Limiter.ChangeRange(-10);
+					if(FoCsGUI.Button(horScope.GetNext(), upArrow, FoCsGUI.Styles.UpArrow))
+						Limiter.ChangeRange(-minAmount);
+					if(FoCsGUI.Button(horScope.GetNext(), up2Arrow, FoCsGUI.Styles.Up2Arrow))
+						Limiter.ChangeRange(-maxAmount);
 				}
 				var minString = Limiter.Min.ToString();
 				var maxString = Limiter.Max.ToString();
@@ -442,18 +467,18 @@ namespace ForestOfChaosLib.Editor
 				var shortLabel = $"{(minString.Length + maxString.Length < 5? "Index" : "I")}: {minString}-{maxString}";
 				var toolTip = $"Viewable Indices: Min:{minString} Max:{maxString}";
 				FoCsGUI.Button(horScope.GetNext(5).ChangeY(-3), new GUIContent(shortLabel, toolTip), ListStyles.MiniLabel);
-				using(FoCsEditor.Disposables.DisabledScope(!Limiter.CanIncrease()))
+				using(Disposables.DisabledScope(!Limiter.CanIncrease()))
 				{
-					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.DownArrow, ListStyles.PreButton))
-						Limiter.ChangeRange(5);
-					if(FoCsGUI.Button(horScope.GetNext(), ListStyles.Down2Arrow, ListStyles.PreButton))
-						Limiter.ChangeRange(10);
+					if(FoCsGUI.Button(horScope.GetNext(), downArrow, FoCsGUI.Styles.DownArrow))
+						Limiter.ChangeRange(minAmount);
+					if(FoCsGUI.Button(horScope.GetNext(), down2Arrow, FoCsGUI.Styles.Down2Arrow))
+						Limiter.ChangeRange(maxAmount);
 				}
 			}
 
 			private void FooterAddGUI(Rect addButtonRect)
 			{
-				using(FoCsEditor.Disposables.DisabledScope((List.onCanAddCallback != null) && !List.onCanAddCallback(List)))
+				using(Disposables.DisabledScope((List.onCanAddCallback != null) && !List.onCanAddCallback(List)))
 				{
 					if(GUI.Button(addButtonRect,
 								  List.onAddDropdownCallback == null?
@@ -476,7 +501,7 @@ namespace ForestOfChaosLib.Editor
 
 			private void FooterRemoveGUI(Rect removeButtonRect)
 			{
-				using(FoCsEditor.Disposables.DisabledScope((List.index < 0) ||
+				using(Disposables.DisabledScope((List.index < 0) ||
 														   (List.index >= List.count) ||
 														   ((List.onCanRemoveCallback != null) && !List.onCanRemoveCallback(List))))
 				{
