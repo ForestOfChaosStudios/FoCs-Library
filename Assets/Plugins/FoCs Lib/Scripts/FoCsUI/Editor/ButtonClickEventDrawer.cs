@@ -9,8 +9,9 @@ namespace ForestOfChaosLib.FoCsUI.Editor
 	[CanEditMultipleObjects]
 	public class ButtonClickEventBaseDrawer: FoCsEditor
 	{
-		public override void DrawGUI()
+		public override void OnInspectorGUI()
 		{
+			base.OnInspectorGUI();
 			using(Disposables.HorizontalScope())
 			{
 				if(GUILayout.Button("Add Object Name ID"))

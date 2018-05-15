@@ -38,8 +38,6 @@ public class StringReferenceEditor: FoCsEditor
 			}
 
 			EditorGUILayout.GetControlRect(false, FoCsEditorUtilities.Padding);
-
-			DrawGUI();
 		}
 	}
 

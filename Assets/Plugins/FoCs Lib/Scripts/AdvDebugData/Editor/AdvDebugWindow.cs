@@ -6,17 +6,18 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvDebug
 {
-	public class AdvDebugWindow: Window<AdvDebugWindow>
+	[FoCsWindow]
+	public class AdvDebugWindow: FoCsWindow<AdvDebugWindow>
 	{
 		private const string WINDOW_NAME = "AdvDebugWindow";
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + WINDOW_NAME)]
 		private static void Init()
 		{
-			GetWindowAndOpenTab();
-			window.titleContent.text = WINDOW_NAME;
+			GetWindowAndShow();
+			Window.titleContent.text = WINDOW_NAME;
 		}
 
-		protected override void DrawGUI()
+		protected override void OnGUI()
 		{
 			EditorGUILayout.LabelField($"Time: {Time.time}");
 
@@ -56,7 +57,7 @@ namespace ForestOfChaosLib.AdvDebug
 			}
 		}
 
-		protected override void Update()
+		protected void Update()
 		{
 			if(Application.isPlaying)
 				Repaint();

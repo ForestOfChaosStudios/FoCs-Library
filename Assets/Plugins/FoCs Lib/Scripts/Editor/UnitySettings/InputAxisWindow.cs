@@ -5,18 +5,18 @@ using UnityEditor;
 
 namespace ForestOfChaosLib.InputManager.Editor
 {
-	public class InputAxisWindow: Window<InputAxisWindow>
+	public class InputAxisWindow: FoCsWindow<InputAxisWindow>
 	{
 		private const string Title = "InputAxisWindow";
 
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
 		private static void Init()
 		{
-			GetWindowAndOpenTab();
-			window.titleContent.text = Title;
+			GetWindowAndShow();
+			Window.titleContent.text = Title;
 		}
 
-		protected override void DrawGUI()
+		protected override void OnGUI()
 		{
 			foreach(var axisName in ReadInputManager.GetAxisProperties())
 			{

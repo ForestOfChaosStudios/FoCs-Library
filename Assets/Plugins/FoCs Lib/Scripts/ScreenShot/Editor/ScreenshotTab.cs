@@ -10,7 +10,7 @@ namespace ForestOfChaosLib.ScreenCap
 		public override string TabName => "Screenshot";
 		protected ScreenCapWindow Owner;
 
-		public override void DrawTab(Window<ScreenCapWindow> owner)
+		public override void DrawTab(FoCsWindow<ScreenCapWindow> owner)
 		{
 			Owner = owner as ScreenCapWindow;
 

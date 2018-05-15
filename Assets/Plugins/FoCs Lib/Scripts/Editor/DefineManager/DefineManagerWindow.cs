@@ -9,7 +9,8 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.EditorWindows
 {
-	public class DefineManagerWindow: Window<DefineManagerWindow>
+	[FoCsWindow]
+	public class DefineManagerWindow: FoCsWindow<DefineManagerWindow>
 	{
 		private const string WindowTitle = "Define Manager";
 		private static ReorderableList tagReorderableList;
@@ -21,11 +22,11 @@ namespace ForestOfChaosLib.Editor.EditorWindows
 		private static void Init()
 		{
 			// Get existing open window or if none, make a new one:
-			GetWindowAndOpenTab();
-			window.titleContent = new GUIContent(WindowTitle);
+			GetWindowAndShow();
+			Window.titleContent = new GUIContent(WindowTitle);
 
 			InitList();
-			window.Show();
+			Window.Show();
 		}
 
 		private static void InitList()
@@ -86,9 +87,9 @@ namespace ForestOfChaosLib.Editor.EditorWindows
 			#endregion ReorderableListInits
 		}
 
-		protected override void DrawGUI()
+		protected override void OnGUI()
 		{
-			GUILayout.Label("Please note it is not recomended to change entries you yourself did not add.", EditorStyles.boldLabel);
+			GUILayout.Label("Please note it is not recommended to change entries you yourself did not add.", EditorStyles.boldLabel);
 
 			DrawTags();
 			if(GUILayout.Button("Write defines to disk", GUILayout.Height(32)))
@@ -110,7 +111,7 @@ namespace ForestOfChaosLib.Editor.EditorWindows
 			}
 			else
 			{
-				defineRLIsExpanded = EditorGUILayout.ToggleLeft(string.Format("Defines\t[{0}]", DataList.Count), defineRLIsExpanded, EditorStyles.boldLabel);
+				defineRLIsExpanded = EditorGUILayout.ToggleLeft($"Defines\t[{DataList.Count}]", defineRLIsExpanded, EditorStyles.boldLabel);
 			}
 		}
 

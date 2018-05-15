@@ -20,8 +20,9 @@ namespace ForestOfChaosLib.Curves.Editor
 			Curve = target as T;
 		}
 
-		public override void DrawGUI()
+		public override void OnInspectorGUI()
 		{
+			base.OnInspectorGUI();
 			resolution = EditorGUILayout.Slider(new GUIContent("Resolution", "The Curve Display Resolution"), resolution, 0.01f, 0.5f);
 		}
 

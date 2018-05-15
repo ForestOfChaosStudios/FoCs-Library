@@ -7,6 +7,7 @@ using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
 
 namespace ForestOfChaosLib.Editor.UnitySettings
 {
+	[FoCsWindow]
 	public class AdvancedUnitySettingsWindow: TabedWindow<AdvancedUnitySettingsWindow>
 	{
 		private const string Title = "Advanced Unity Settings Window";
@@ -26,8 +27,8 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
 		private static void Init()
 		{
-			GetWindowAndOpenTab();
-			window.titleContent.text = Title;
+			GetWindowAndShow();
+			Window.titleContent.text = Title;
 		}
 
 		private void OnEnable()
@@ -66,7 +67,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 				Asset = asset;
 			}
 
-			public override void DrawTab(Window<AdvancedUnitySettingsWindow> owner)
+			public override void DrawTab(FoCsWindow<AdvancedUnitySettingsWindow> owner)
 			{
 				using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
 					EditorGUILayout.LabelField(TabName);
@@ -106,7 +107,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 			{
 				using(FoCsEditor.Disposables.VerticalScope())
 				{
-					if(FoCsGUI.Layout.Button("Force save"))
+					if(FoCsGUI.AutoRect.Button("Force save"))
 						EditorUtility.SetDirty(Asset.targetObject);
 
 					using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
