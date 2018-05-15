@@ -4,14 +4,13 @@ using System.Linq;
 using System.Reflection;
 using ForestOfChaosLib.AdvVar.Base;
 using ForestOfChaosLib.Editor;
-using ForestOfChaosLib.Editor.Utilities;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace ForestOfChaosLib.AdvVar.Editor
 {
-	//TODO: look into making this editor better!!!
 	[CustomEditor(typeof(AdvFolder))]
 	[CanEditMultipleObjects]
 	public class AdvFolderEditor: FoCsEditor
@@ -21,11 +20,12 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		private bool showChildrenSettings = true;
 
-		public override bool ShowCopyPasteButtons => false;
+		private int ActiveTab = 0;
+		private AdvFolderNameAttribute ActiveTabName;
 
 		public override void OnInspectorGUI()
 		{
-			if(serializedObject.isEditingMultipleObjects)
+			if (serializedObject.isEditingMultipleObjects)
 			{
 				EditorGUILayout.HelpBox("Editing Multiple Objects Is Not Permitted!", MessageType.Warning);
 				return;
@@ -33,78 +33,87 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 			EditorGUILayout.HelpBox("These options will add child assets to the current asset, this is done to help with sorting of the huge amount of Scriptable Objects this system could generate.",
 									MessageType.Info);
-			if(typeDictionary == null)
+			if (typeDictionary == null)
 				typeDictionary = GetDictionaryTypes();
-			var nameList = typeDictionary.Keys.ToList();
 
-			for(var i = 0; i < nameList.Count; i++)
-			{
-				var key = nameList[i];
+			DrawMenuTabs();
 
-				bool value;
+			DrawTypeTabs();
+			DoPadding();
+			DrawChildrenGUI();
+		}
 
-				enableDictionary.TryGetValue(key.ToggleName, out value);
-
-				using(Disposables.Indent())
-				{
-					using(Disposables.VerticalScope())
-					{
-						using(Disposables.HorizontalScope(EditorStyles.toolbar))
-						{
-							var @event = FoCsGUI.Layout.Toggle(value,
-														value?
-															$"Hide {key.ToggleName}" :
-															$" {key.ToggleName}",
-														EditorStyles.toolbarButton);
-
-						if(@event)
-							value = !value;
-						}
-						if(value)
-						{
-							foreach (var type in typeDictionary[key])
-									DrawAddTypeButton(type);
-							DoPadding();
-						}
-					}
-				}
-				enableDictionary[key.ToggleName] = value;
-			}
-
+		private void DrawChildrenGUI()
+		{
+			using(Disposables.Indent())
 			{
 				var assets = AssetDatabase.LoadAllAssetsAtPath(AssetPath());
 				if(assets.Length > 1)
 				{
-					EditorGUILayout.LabelField($"Children [{assets.Length - 1}]");
-
+					using(Disposables.HorizontalScope(EditorStyles.toolbar))
+						showChildrenSettings = EditorGUILayout.Foldout(showChildrenSettings, $"Children [{assets.Length - 1}]");
+					if(!showChildrenSettings)
+						return;
 					using(Disposables.VerticalScope(GUI.skin.box))
 					{
-						var rect = EditorGUILayout.GetControlRect(true, StandardLine, EditorStyles.toolbarButton);
-
-						var @event = FoCsGUI.Button(rect,
-													showChildrenSettings?
-														"Hide Children Settings" :
-														"Edit Children",
-													EditorStyles.toolbarButton);
-
-						if(@event.AsButtonLeftClick)
-							showChildrenSettings = !showChildrenSettings;
-						if(!showChildrenSettings)
-							return;
-						using(Disposables.VerticalScope())
+						for(var i = 0; i < assets.Length; i++)
 						{
-							using(Disposables.Indent())
-							{
-								for(var i = 0; i < assets.Length; i++)
-								{
-									var obj = assets[i];
-									if(!obj)
-										continue;
-									if(AssetDatabase.IsSubAsset(obj))
-										DrawChildObject(obj, i);
-								}
-							}
+							var obj = assets[i];
+							if(!obj)
+								continue;
+							if(AssetDatabase.IsSubAsset(obj))
+								DrawChildObject(obj, i);
 						}
+					}
+				}
+			}
+		}
+
+		private void DrawTypeTabs()
+		{
+			EditorGUILayout.LabelField("Type of Scriptable Object to add", EditorStyles.boldLabel);
+			foreach (var type in typeDictionary[ActiveTabName])
+				DrawAddTypeButton(type);
+		}
+
+		private void DrawMenuTabs()
+		{
+			EditorGUILayout.LabelField("Categories of Scriptable Objects that can be added", EditorStyles.boldLabel);
+
+			var width = (Screen.width / 180) + 1;
+			var nameList = typeDictionary.Keys.ToList();
+			for(var i = 0; i < nameList.Count; i += width)
+			{
+				if(!nameList.InRange(i))
+					break;
+				using(Disposables.HorizontalScope(EditorStyles.toolbar))
+				{
+					for(var j = 0; j < width; j += 1)
+					{
+						var index = i + j;
+						if(!nameList.InRange(index))
+							break;
+						var key = nameList[index];
+
+
+						bool value;
+
+						enableDictionary.TryGetValue(key.ToggleName, out value);
+
+						var @event = FoCsGUI.Layout.Toggle(ActiveTab == index, key.ToggleName.SplitCamelCase(), FoCsGUI.Styles.UnitySkins.ToolbarButton);
+
+						if(@event)
+						{
+							ActiveTab = index;
+							ActiveTabName = key;
+							Repaint();
+							return;
+						}
+						if(ActiveTab == index)
+						{
+							ActiveTabName = key;
+						}
+						enableDictionary[key.ToggleName] = value;
 					}
 				}
 			}
@@ -122,7 +131,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 		{
 			using(Disposables.HorizontalScope())
 			{
-				FoCsGUI.Layout.Label($"[{index}] {obj.GetType().Name}", GUILayout.Width(Screen.width / 4f));
+				FoCsGUI.AutoRect.Label($"[{index}] {obj.GetType().Name.SplitCamelCase()}", GUILayout.Width(Screen.width / 4f));
 
 				using(var changeCheckScope = Disposables.ChangeCheck())
 				{
@@ -136,8 +145,8 @@ namespace ForestOfChaosLib.AdvVar.Editor
 					}
 				}
 
-				var event2 = FoCsGUI.Layout.Button(Styles.CrossCircle, GUILayout.Width(Styles.CrossCircle.fixedWidth));
-				if(event2.AsButtonLeftClick)
+				var event2 = FoCsGUI.Layout.Button(FoCsGUI.Styles.CrossCircle, GUILayout.Width(FoCsGUI.Styles.CrossCircle.fixedWidth));
+				if(event2.LeftClick)
 				{
 					if(EditorUtility.DisplayDialog("Delete Child", $"Delete {obj.name}", "Yes Delete", "No Cancel"))
 					{
@@ -154,27 +163,26 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		private void DrawAddTypeButton(Type type)
 		{
-			using(Disposables.HorizontalScope())
+			FoCsGUI.GUIEvent @event;
+			//using(Disposables.HorizontalScope())
+				@event = FoCsGUI.Layout.Button(type.Name.SplitCamelCase());
+			if(@event.LeftClick)
 			{
-				//FoCsGUILayout.Label(type.Name, EditorStyles.toolbarButton);
-				var @event = FoCsGUI.Layout.Button($"{type.Name} Add New", GUI.skin.button);
-				if(@event.AsButtonLeftClick)
-				{
-					SubmitStringWindow.SetUpInstance(new CreateArgs
-													 {
-														 Title = $"Enter Name of the new {type.Name}",
-														 WindowTitle = "Enter Name",
-														 CancelMessage = "Cancel",
-														 Data = $"New {type.Name}",
-														 SubmitMessage = $"Create new {type.Name}",
-														 OnSubmit = OnCreateSubmit,
-														 SubmitAnotherMessage = $"Create new {type.Name} & Add Another",
-														 OnSubmitAnother = OnCreateSubmit,
-														 OnCancel = OnCreateCancel,
-														 target = target,
-														 type = type
-													 });
-				}
+				SubmitStringWindow.SetUpInstance(new CreateArgs
+												 {
+													 Title = $"Enter Name of the new {type.Name}",
+													 WindowTitle = "Enter Name",
+													 CancelMessage = "Cancel",
+													 Data = $"New {type.Name}",
+													 SubmitMessage = $"Create new {type.Name}",
+													 OnSubmit = OnCreateSubmit,
+													 HasAnotherButton = true,
+													 SubmitAnotherMessage = $"Create new {type.Name} & Add Another",
+													 OnSubmitAnother = OnCreateSubmit,
+													 OnCancel = OnCreateCancel,
+													 target = target,
+													 type = type
+												 });
 			}
 		}
 
