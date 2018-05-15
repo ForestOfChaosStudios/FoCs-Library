@@ -6,7 +6,8 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.InputManager.Editor
 {
-	public class PlayerInputManagerWindow: Window<PlayerInputManagerWindow>
+	[FoCsWindow]
+	public class PlayerInputManagerWindow: FoCsWindow<PlayerInputManagerWindow>
 	{
 		public const string InputManagerEnumName = "PlayerInputManagerEnum";
 
@@ -16,15 +17,15 @@ namespace ForestOfChaosLib.InputManager.Editor
 		private static void Init()
 		{
 			GetWindow();
-			window.titleContent.text = Title;
+			Window.titleContent.text = Title;
 		}
 
-		protected override void Update()
+		protected void Update()
 		{
 			Repaint();
 		}
 
-		protected override void DrawGUI()
+		protected override void OnGUI()
 		{
 			if(AdvInputManager.InstanceNull)
 				return;
