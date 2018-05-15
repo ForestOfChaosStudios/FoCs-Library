@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.ScreenCap
 {
+	[FoCsWindow]
 	public class ScreenCapWindow: TabedWindow<ScreenCapWindow>
 	{
 		public int scale = 1;
@@ -25,19 +26,13 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private const string Title = "Screen Capture Window";
 
+		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
 		private static void Init()
 		{
-			GetWindowAndOpenTab();
-			window.titleContent.text = Title;
-		}
-
-		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
-		private static void OpenWind()
-		{
 			GetWindow();
-			window.minSize = new Vector2(400,220);
-
-			window.ShowUtility();
+			Window.minSize = new Vector2(400,220);
+			Window.titleContent = new GUIContent(Title);
+			Window.ShowUtility();
 		}
 	}
 }

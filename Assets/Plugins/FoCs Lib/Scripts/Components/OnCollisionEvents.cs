@@ -1,11 +1,10 @@
 ﻿using System;
-using ForestOfChaosLib.Interfaces;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
-	public class OnCollisionEvents: FoCsBehavior, IOnCollision
+	public class OnCollisionEvents: FoCsBehavior
 	{
 		public event Action<Collision> OnCollEnter;
 		public event Action<Collision> OnCollStay;

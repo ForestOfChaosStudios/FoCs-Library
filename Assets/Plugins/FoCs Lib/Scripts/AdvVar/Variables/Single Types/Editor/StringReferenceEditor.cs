@@ -1,6 +1,5 @@
 ﻿using ForestOfChaosLib.AdvVar;
 using ForestOfChaosLib.Editor;
-using ForestOfChaosLib.Editor.ImGUI;
 using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -11,10 +10,10 @@ public class StringReferenceEditor: FoCsEditor
 {
 	public override void OnInspectorGUI()
 	{
-		using(FoCsEditorDisposables.Indent())
+		using(Disposables.Indent())
 		{
-			DoDrawHeader();
-			using(var changeCheckScope = FoCsEditorDisposables.ChangeCheck())
+			DrawCopyPasteButtonsHeader();
+			using(var changeCheckScope = Disposables.ChangeCheck())
 			{
 				var cachedGuiColor = GUI.color;
 				serializedObject.Update();
@@ -39,8 +38,6 @@ public class StringReferenceEditor: FoCsEditor
 			}
 
 			EditorGUILayout.GetControlRect(false, FoCsEditorUtilities.Padding);
-
-			DrawGUI();
 		}
 	}
 

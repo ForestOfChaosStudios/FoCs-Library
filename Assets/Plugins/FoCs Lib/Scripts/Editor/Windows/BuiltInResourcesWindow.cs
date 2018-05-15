@@ -2,20 +2,20 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using ForestOfChaosLib.Editor;
 
 //TODO: EDIT more to look and feel like my own window, this was just to quickly find an icon I needed for the localizion window.
 //Found at http://wiki.unity3d.com/index.php/Show_Built_In_Resources
 
 namespace ForestOfChaosLib.Editor.Windows
 {
-	public class BuiltInResourcesWindow: Window<BuiltInResourcesWindow>
+	[FoCsWindow]
+	public class BuiltInResourcesWindow: FoCsWindow<BuiltInResourcesWindow>
 	{
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + "WIP/Built-in styles and icons")]
 		public static void ShowWindow()
 		{
-			GetWindowAndOpenTab();
-			window.Show();
+			GetWindowAndShow();
+			Window.Show();
 		}
 
 		private struct Drawing
@@ -38,7 +38,7 @@ namespace ForestOfChaosLib.Editor.Windows
 
 		//Vector2 scrollPos = Vector2.zero;
 
-		protected override void DrawGUI()
+		protected override void OnGUI()
 		{
 			if(position.width != _oldPosition.width && Event.current.type == EventType.Layout)
 			{

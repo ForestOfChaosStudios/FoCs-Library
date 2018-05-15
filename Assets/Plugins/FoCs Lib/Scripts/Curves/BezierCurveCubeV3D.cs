@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ForestOfChaosLib.Maths;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Curves

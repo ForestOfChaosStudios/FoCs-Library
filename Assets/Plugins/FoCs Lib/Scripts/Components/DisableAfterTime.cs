@@ -1,10 +1,9 @@
 ﻿using System.Collections;
-using ForestOfChaosLib.Interfaces;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
-	public class DisableAfterTime: FoCsBehavior, IOnEnable
+	public class DisableAfterTime: FoCsBehavior
 	{
 		public float lifeTime = 1f; //My lifetime
 

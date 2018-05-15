@@ -8,7 +8,7 @@ using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using RLP = ForestOfChaosLib.Editor.ReorderableListProperty;
+using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
 
 //Based off of the CustomBaseEditor available at
 //https://gist.github.com/t0chas/34afd1e4c9bc28649311
@@ -16,7 +16,7 @@ namespace ForestOfChaosLib.Editor
 {
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(object), true, isFallback = true)]
-	public class FoCsEditor: UnityEditor.Editor
+	public partial class FoCsEditor: UnityEditor.Editor
 	{
 		public enum DefaultPropertyType
 		{
@@ -57,10 +57,11 @@ namespace ForestOfChaosLib.Editor
 		public override void OnInspectorGUI()
 		{
 			GUIChanged = false;
-			using(FoCsEditorDisposables.Indent())
+			if(ShowCopyPasteButtons)
+				DrawCopyPasteButtonsHeader();
+			using(Disposables.Indent())
 			{
-				DoDrawHeader();
-				using(var changeCheckScope = FoCsEditorDisposables.ChangeCheck())
+				using(var changeCheckScope = Disposables.ChangeCheck())
 				{
 					var cachedGuiColor = GUI.color;
 					serializedObject.Update();
@@ -76,31 +77,22 @@ namespace ForestOfChaosLib.Editor
 						GUIChanged = true;
 					}
 				}
-				EditorGUILayout.GetControlRect(false, FoCsEditorUtilities.Padding); 
-				DrawGUI();
 			}
+
 		}
 
 		protected void DrawCopyPasteButtons()
 		{
-			if(ShowCopyPasteButtons)
-				EditorHelpers.CopyPastObjectButtons(serializedObject);
+			EditorHelpers.CopyPastObjectButtons(serializedObject);
 		}
 
-		protected virtual void DoDrawHeader()
+		protected void DrawCopyPasteButtonsHeader()
 		{
-			using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
+			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
 				DrawCopyPasteButtons();
 			}
 		}
-
-		/// <summary>
-		///     This is drawn after the OnInspectorGUI, this allows, you to add your own functionality without overriding it as
-		///     well.
-		/// </summary>
-		public virtual void DrawGUI()
-		{ }
 
 		public virtual void OnSceneGUI()
 		{ }
@@ -165,7 +157,7 @@ namespace ForestOfChaosLib.Editor
 
 		public void HandleArray(SerializedProperty property)
 		{
-			using(FoCsEditorDisposables.Indent(0))
+			using(Disposables.Indent(0))
 			{
 				var listData = GetReorderableList(property);
 				var height = listData.GetTotalHeight();

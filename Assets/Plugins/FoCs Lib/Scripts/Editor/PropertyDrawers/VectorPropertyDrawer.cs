@@ -1,5 +1,5 @@
 using ForestOfChaosLib.Editor.Utilities;
-using ForestOfChaosLib.UnityScriptsExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 
@@ -35,7 +35,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			else
 			{
 				EditorGUI.LabelField(position, label);
-				using(FoCsEditorDisposables.IndentSet(0))
+				using(FoCsEditor.Disposables.IndentSet(0))
 				{
 					var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
 					DoFieldsDraw(pos, property);
@@ -45,9 +45,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		private static void DoFieldsDraw(Rect position, SerializedProperty property)
 		{
-			using(FoCsEditorDisposables.LabelSetWidth(LABEL_WIDTH))
+			using(FoCsEditor.Disposables.LabelSetWidth(LABEL_WIDTH))
 			{
-				using(var scope = FoCsEditorDisposables.RectHorizontalScope(2, position))
+				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(2, position))
 				{
 					property.Next(true);
 					EditorGUI.PropertyField(scope.GetNext().MoveWidth(-2), property, X_Content);
@@ -74,7 +74,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			else
 			{
 				EditorGUI.LabelField(position, label);
-				using(FoCsEditorDisposables.IndentSet(0))
+				using(FoCsEditor.Disposables.IndentSet(0))
 				{
 					var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
 					DoFieldsDraw(pos, property);
@@ -84,9 +84,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		private static void DoFieldsDraw(Rect position, SerializedProperty property)
 		{
-			using(FoCsEditorDisposables.LabelSetWidth(LABEL_WIDTH))
+			using(FoCsEditor.Disposables.LabelSetWidth(LABEL_WIDTH))
 			{
-				using(var scope = FoCsEditorDisposables.RectHorizontalScope(3, position))
+				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(3, position))
 				{
 					property.Next(true);
 					EditorGUI.PropertyField(scope.GetNext(), property, X_Content);
@@ -116,7 +116,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			else
 			{
 				EditorGUI.LabelField(position, label);
-				using(FoCsEditorDisposables.IndentSet(0))
+				using(FoCsEditor.Disposables.IndentSet(0))
 				{
 					var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
 					DoFieldsDraw(pos, property);
@@ -126,9 +126,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		private static void DoFieldsDraw(Rect position, SerializedProperty property)
 		{
-			using(FoCsEditorDisposables.LabelSetWidth(LABEL_WIDTH))
+			using(FoCsEditor.Disposables.LabelSetWidth(LABEL_WIDTH))
 			{
-				using(var scope = FoCsEditorDisposables.RectHorizontalScope(4, position))
+				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(4, position))
 				{
 					property.Next(true);
 					EditorGUI.PropertyField(scope.GetNext(), property, X_Content);

@@ -1,5 +1,5 @@
-﻿using ForestOfChaosLib.Editor.PropertyDrawers;
-using ForestOfChaosLib.Editor.Utilities;
+﻿using ForestOfChaosLib.Editor;
+using ForestOfChaosLib.Editor.PropertyDrawers;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,13 +26,13 @@ namespace ForestOfChaosLib.Animation
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var scope = FoCsEditorDisposables.RectHorizontalScope(8, position))
+			using(var scope = FoCsEditor.Disposables.RectHorizontalScope(8, position))
 			{
 
 				EditorGUI.LabelField(scope.GetNext(), label);
 				scope.GetNext();
 
-				using(FoCsEditorDisposables.Indent(-1))
+				using(FoCsEditor.Disposables.Indent(-1))
 				{
 					EditorGUI.LabelField(scope.GetNext(), KEY_LABEL);
 					EditorGUI.PropertyField(scope.GetNext(), property.FindPropertyRelative(KEY), GUIContent.none);

@@ -1,4 +1,3 @@
-using ForestOfChaosLib.Editor.ImGUI;
 using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -6,7 +5,7 @@ using Obj = UnityEngine.Object;
 
 namespace ForestOfChaosLib.Editor
 {
-	public class EditorHelpers: UnityEditor.Editor
+	public class EditorHelpers: FoCsEditor
 	{
 		private static readonly GUIContent CP_CopyContent = new GUIContent("Copy Data", "Copies the data.");
 		private static readonly GUIContent CP_EditorCopyContent = new GUIContent("(Editor) Copy Data", "Copies the data.");
@@ -21,15 +20,15 @@ namespace ForestOfChaosLib.Editor
 
 		public static Vector3 DrawVector3(GUIContent label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn,out bool GUIChanged)
 		{
-			using(FoCsEditorDisposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 			{
-				using(var cc = FoCsEditorDisposables.ChangeCheck())
+				using(var cc = Disposables.ChangeCheck())
 				{
 					vec = EditorGUILayout.Vector3Field(label, vec);
 					GUIChanged = cc.changed;
 				}
 				var cachedGuiColor = GUI.color;
-				using(FoCsEditorDisposables.HorizontalScope(EditorStyles.toolbar))
+				using(Disposables.HorizontalScope(EditorStyles.toolbar))
 				{
 					if(GUILayout.Button(ResetContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
 					{
@@ -64,7 +63,7 @@ namespace ForestOfChaosLib.Editor
 				if(GUILayout.Button(CP_CopyContent, EditorStyles.toolbarButton))
 					CopyPasteUtility.Copy(obj);
 				var isType = CopyPasteUtility.IsTypeInBuffer(obj);
-				using(FoCsEditorDisposables.ColorChanger(isType?
+				using(Disposables.ColorChanger(isType?
 														 GUI.color :
 														 Color.red))
 				{
@@ -99,7 +98,7 @@ namespace ForestOfChaosLib.Editor
 																							CopyPasteUtility.CopyBuffer.Length));
 
 				var isType = CopyPasteUtility.IsTypeInBuffer(obj);
-				using(FoCsEditorDisposables.ColorChanger(isType?
+				using(Disposables.ColorChanger(isType?
 														 GUI.color :
 														 Color.red))
 				{

@@ -2,8 +2,7 @@
 using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Maths;
-using ForestOfChaosLib.CSharpExtensions;
-using ForestOfChaosLib.UnityScriptsExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,21 +20,22 @@ namespace ForestOfChaosLib.Curves.Editor
 			Curve = target as T;
 		}
 
-		public override void DrawGUI()
+		public override void OnInspectorGUI()
 		{
+			base.OnInspectorGUI();
 			resolution = EditorGUILayout.Slider(new GUIContent("Resolution", "The Curve Display Resolution"), resolution, 0.01f, 0.5f);
 		}
 
 		public override void OnSceneGUI()
 		{
-			using(var cc = FoCsEditorDisposables.ChangeCheck())
+			using(var cc = Disposables.ChangeCheck())
 			{
 				if(Curve == null)
 					return;
 				var pos = Curve.CurvePositions;
 				for(var i = 0; i < pos.Count; i++)
 				{
-					using(var undoCheck = FoCsEditorDisposables.ChangeCheck())
+					using(var undoCheck = Disposables.ChangeCheck())
 					{
 						if(!Curve.UseGlobalSpace)
 						{

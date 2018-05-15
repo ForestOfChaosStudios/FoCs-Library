@@ -1,5 +1,5 @@
 ﻿using ForestOfChaosLib.Editor.Utilities;
-using ForestOfChaosLib.UnityScriptsExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using (var changeCheckScope = FoCsEditorDisposables.ChangeCheck())
+			using (var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
 			{
 				EditorGUI.PropertyField(position.SetHeight(SingleLine), property);
 				if ((changeCheckScope.changed) && (property.objectReferenceValue != null))
@@ -36,9 +36,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 			if (!foldOut)
 				return;
 			DrawSurroundingBox(position);
-			using (var changeCheckScope = FoCsEditorDisposables.ChangeCheck())
+			using (var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
 			{
-				using (FoCsEditorDisposables.Indent())
+				using (FoCsEditor.Disposables.Indent())
 				{
 					var drawPos = position.MoveY(SingleLinePlusPadding).MoveHeight(-SingleLinePlusPadding);
 					do

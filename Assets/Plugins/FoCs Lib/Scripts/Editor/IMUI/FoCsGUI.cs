@@ -1,21 +1,20 @@
-﻿using ForestOfChaosLib.Editor.Utilities;
-using ForestOfChaosLib.UnityScriptsExtensions;
+﻿using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLib.Editor.ImGUI
+namespace ForestOfChaosLib.Editor
 {
-	public class FoCsGUI
+	public static partial class FoCsGUI
 	{
 		#region Label
-		public static GUIStyle LabelStyle { get; } = GUI.skin.label;
+		public static GUIStyle LabelStyle { get; } = Styles.UnitySkins.Label;
 
-		private static FoCsGUIEvent LabelMaster(Rect rect, GUIContent guiContent, GUIStyle style)
+		private static GUIEvent LabelMaster(Rect rect, GUIContent guiContent, GUIStyle style)
 		{
 			var e = Event.current;
 			var e1 = new Event(e);
 
-			var data = new FoCsGUIEvent
+			var data = new GUIEvent
 					   {
 						   Event = e1,
 						   Rect = rect
@@ -26,35 +25,35 @@ namespace ForestOfChaosLib.Editor.ImGUI
 		}
 
 		#region NoLabel
-		public static FoCsGUIEvent Label(Rect rect) => LabelMaster(rect, GUIContent.none, LabelStyle);
-		public static FoCsGUIEvent Label(Rect rect, GUIStyle style) => LabelMaster(rect, GUIContent.none, style);
+		public static GUIEvent Label(Rect rect) => LabelMaster(rect, GUIContent.none, LabelStyle);
+		public static GUIEvent Label(Rect rect, GUIStyle style) => LabelMaster(rect, GUIContent.none, style);
 		#endregion
 
 		#region StringLabel
-		public static FoCsGUIEvent Label(Rect rect, string label) => LabelMaster(rect, new GUIContent(label), LabelStyle);
-		public static FoCsGUIEvent Label(Rect rect, string label, GUIStyle style) => LabelMaster(rect, new GUIContent(label), style);
+		public static GUIEvent Label(Rect rect, string label) => LabelMaster(rect, new GUIContent(label), LabelStyle);
+		public static GUIEvent Label(Rect rect, string label, GUIStyle style) => LabelMaster(rect, new GUIContent(label), style);
 		#endregion
 
 		#region GUIContentLabel
-		public static FoCsGUIEvent Label(Rect rect, GUIContent guiContent) => LabelMaster(rect, guiContent, LabelStyle);
-		public static FoCsGUIEvent Label(Rect rect, GUIContent guiContent, GUIStyle style) => LabelMaster(rect, guiContent, style);
+		public static GUIEvent Label(Rect rect, GUIContent guiContent) => LabelMaster(rect, guiContent, LabelStyle);
+		public static GUIEvent Label(Rect rect, GUIContent guiContent, GUIStyle style) => LabelMaster(rect, guiContent, style);
 		#endregion
 
 		#region Texture
-		public static FoCsGUIEvent Label(Rect rect, Texture texture) => LabelMaster(rect, new GUIContent(texture), LabelStyle);
-		public static FoCsGUIEvent Label(Rect rect, Texture texture, GUIStyle style) => LabelMaster(rect, new GUIContent(texture), style);
+		public static GUIEvent Label(Rect rect, Texture texture) => LabelMaster(rect, new GUIContent(texture), LabelStyle);
+		public static GUIEvent Label(Rect rect, Texture texture, GUIStyle style) => LabelMaster(rect, new GUIContent(texture), style);
 		#endregion
 		#endregion
 
 		#region Button
-		public static GUIStyle ButtonStyle { get; } = GUI.skin.button;
+		public static GUIStyle ButtonStyle { get; } = Styles.UnitySkins.Button;
 
-		private static FoCsGUIEvent ButtonMaster(Rect rect, GUIContent guiContent, GUIStyle style)
+		private static GUIEvent ButtonMaster(Rect rect, GUIContent guiContent, GUIStyle style)
 		{
 			var e = Event.current;
 			var e1 = new Event(e);
 
-			var data = new FoCsGUIEvent
+			var data = new GUIEvent
 					   {
 						   Event = e1,
 						   Rect = rect
@@ -65,35 +64,35 @@ namespace ForestOfChaosLib.Editor.ImGUI
 		}
 
 		#region NoLabel
-		public static FoCsGUIEvent Button(Rect rect) => ButtonMaster(rect, GUIContent.none, ButtonStyle);
-		public static FoCsGUIEvent Button(Rect rect, GUIStyle style) => ButtonMaster(rect, GUIContent.none, style);
+		public static GUIEvent Button(Rect rect) => ButtonMaster(rect, GUIContent.none, ButtonStyle);
+		public static GUIEvent Button(Rect rect, GUIStyle style) => ButtonMaster(rect, GUIContent.none, style);
 		#endregion
 
 		#region StringLabel
-		public static FoCsGUIEvent Button(Rect rect, string label) => ButtonMaster(rect, new GUIContent(label), ButtonStyle);
-		public static FoCsGUIEvent Button(Rect rect, string label, GUIStyle style) => ButtonMaster(rect, new GUIContent(label), style);
+		public static GUIEvent Button(Rect rect, string label) => ButtonMaster(rect, new GUIContent(label), ButtonStyle);
+		public static GUIEvent Button(Rect rect, string label, GUIStyle style) => ButtonMaster(rect, new GUIContent(label), style);
 		#endregion
 
 		#region GUIContentLabel
-		public static FoCsGUIEvent Button(Rect rect, GUIContent guiContent) => ButtonMaster(rect, guiContent, ButtonStyle);
-		public static FoCsGUIEvent Button(Rect rect, GUIContent guiContent, GUIStyle style) => ButtonMaster(rect, guiContent, style);
+		public static GUIEvent Button(Rect rect, GUIContent guiContent) => ButtonMaster(rect, guiContent, ButtonStyle);
+		public static GUIEvent Button(Rect rect, GUIContent guiContent, GUIStyle style) => ButtonMaster(rect, guiContent, style);
 		#endregion
 
 		#region Texture
-		public static FoCsGUIEvent Toggle(Rect rect, Texture texture) => ButtonMaster(rect, new GUIContent(texture), ButtonStyle);
-		public static FoCsGUIEvent Toggle(Rect rect, Texture texture, GUIStyle style) => ButtonMaster(rect, new GUIContent(texture), style);
+		public static GUIEvent Toggle(Rect rect, Texture texture) => ButtonMaster(rect, new GUIContent(texture), ButtonStyle);
+		public static GUIEvent Toggle(Rect rect, Texture texture, GUIStyle style) => ButtonMaster(rect, new GUIContent(texture), style);
 		#endregion
 		#endregion
 
 		#region Toggle
-		public static GUIStyle ToggleStyle { get; } = GUI.skin.toggle;
+		public static GUIStyle ToggleStyle { get; } = Styles.UnitySkins.Toggle;
 
-		public static FoCsGUIEvent ToggleMaster(Rect rect, bool toggle, GUIContent guiContent, GUIStyle style)
+		public static GUIEvent ToggleMaster(Rect rect, bool toggle, GUIContent guiContent, GUIStyle style)
 		{
 			var e = Event.current;
 			var e1 = new Event(e);
 
-			var data = new FoCsGUIEvent
+			var data = new GUIEvent
 					   {
 						   Event = e1,
 						   Rect = rect
@@ -104,23 +103,62 @@ namespace ForestOfChaosLib.Editor.ImGUI
 		}
 
 		#region NoLabel
-		public static FoCsGUIEvent Toggle(Rect rect, bool toggle) => ToggleMaster(rect, toggle, GUIContent.none, ToggleStyle);
-		public static FoCsGUIEvent Toggle(Rect rect, bool toggle, GUIStyle style) => ToggleMaster(rect, toggle, GUIContent.none, style);
+		public static GUIEvent Toggle(Rect rect, bool toggle) => ToggleMaster(rect, toggle, GUIContent.none, ToggleStyle);
+		public static GUIEvent Toggle(Rect rect, bool toggle, GUIStyle style) => ToggleMaster(rect, toggle, GUIContent.none, style);
 		#endregion
 
 		#region StringLabel
-		public static FoCsGUIEvent Toggle(Rect rect, bool toggle, string label) => ToggleMaster(rect, toggle, new GUIContent(label), ToggleStyle);
-		public static FoCsGUIEvent Toggle(Rect rect, bool toggle, string label, GUIStyle style) => ToggleMaster(rect, toggle, new GUIContent(label), style);
+		public static GUIEvent Toggle(Rect rect, bool toggle, string label) => ToggleMaster(rect, toggle, new GUIContent(label), ToggleStyle);
+		public static GUIEvent Toggle(Rect rect, bool toggle, string label, GUIStyle style) => ToggleMaster(rect, toggle, new GUIContent(label), style);
 		#endregion
 
 		#region GUIContentLabel
-		public static FoCsGUIEvent Toggle(Rect rect, bool toggle, GUIContent guiContent) => ToggleMaster(rect, toggle, guiContent, ToggleStyle);
-		public static FoCsGUIEvent Toggle(Rect rect, bool toggle, GUIContent guiContent, GUIStyle style) => ToggleMaster(rect, toggle, guiContent, style);
+		public static GUIEvent Toggle(Rect rect, bool toggle, GUIContent guiContent) => ToggleMaster(rect, toggle, guiContent, ToggleStyle);
+		public static GUIEvent Toggle(Rect rect, bool toggle, GUIContent guiContent, GUIStyle style) => ToggleMaster(rect, toggle, guiContent, style);
 		#endregion
 
 		#region Texture
-		public static FoCsGUIEvent Toggle(Rect rect, bool toggle, Texture texture) => ToggleMaster(rect, toggle, new GUIContent(texture), ToggleStyle);
-		public static FoCsGUIEvent Toggle(Rect rect, bool toggle, Texture texture, GUIStyle style) => ToggleMaster(rect, toggle, new GUIContent(texture), style);
+		public static GUIEvent Toggle(Rect rect, bool toggle, Texture texture) => ToggleMaster(rect, toggle, new GUIContent(texture), ToggleStyle);
+		public static GUIEvent Toggle(Rect rect, bool toggle, Texture texture, GUIStyle style) => ToggleMaster(rect, toggle, new GUIContent(texture), style);
+		#endregion
+		#endregion
+
+		#region Foldout
+		public static GUIStyle FoldoutStyle { get; } = Styles.UnitySkins.Foldout;
+
+		public static GUIEvent FoldoutMaster(Rect rect, bool foldout, GUIContent guiContent, GUIStyle style)
+		{
+			var e = Event.current;
+			var e1 = new Event(e);
+
+			var data = new GUIEvent
+					   {
+						   Event = e1,
+						   Rect = rect
+					   };
+
+			EditorGUI.Foldout(rect, foldout, guiContent, style);
+			return data;
+		}
+
+		#region NoLabel
+		public static GUIEvent Foldout(Rect rect, bool foldout) => FoldoutMaster(rect, foldout, GUIContent.none, FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, GUIStyle style) => FoldoutMaster(rect, foldout, GUIContent.none, style);
+		#endregion
+
+		#region StringLabel
+		public static GUIEvent Foldout(Rect rect, bool foldout, string label) => FoldoutMaster(rect, foldout, new GUIContent(label), FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, string label, GUIStyle style) => FoldoutMaster(rect, foldout, new GUIContent(label), style);
+		#endregion
+
+		#region GUIContentLabel
+		public static GUIEvent Foldout(Rect rect, bool foldout, GUIContent guiContent) => FoldoutMaster(rect, foldout, guiContent, FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, GUIContent guiContent, GUIStyle style) => FoldoutMaster(rect, foldout, guiContent, style);
+		#endregion
+
+		#region Texture
+		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture) => FoldoutMaster(rect, foldout, new GUIContent(texture), FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture, GUIStyle style) => FoldoutMaster(rect, foldout, new GUIContent(texture), style);
 		#endregion
 		#endregion
 
@@ -136,10 +174,10 @@ namespace ForestOfChaosLib.Editor.ImGUI
 			var rectWidth = position.x + (position.width - (MENU_BUTTON_SIZE * (EditorGUI.indentLevel + 1)));
 			var menuRect = new Rect(rectWidth, position.y, position.width - rectWidth, position.height);
 
-			using(FoCsEditorDisposables.DisabledScope(disabled))
+			using(FoCsEditor.Disposables.DisabledScope(disabled))
 				EditorGUI.PropertyField(propRect, property, label);
 
-			var index = EditorGUI.Popup(menuRect, GUIContent.none, active, Options, FoCsGUIStyles.InLineOptionsMenu);
+			var index = EditorGUI.Popup(menuRect, GUIContent.none, active, Options, Styles.InLineOptionsMenu);
 			return index;
 		}
 		#endregion

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Windows
 {
+	//[FoCsWindow]
 	public class EnumCreaterTester: EnumCreatorWindow<EnumCreaterTester>
 	{
 		protected override string EnumName
@@ -35,14 +35,14 @@ namespace ForestOfChaosLib.Editor.Windows
 		private static void Init()
 		{
 			// Get existing open window or if none, make a new one:
-			GetWindowAndOpenTab();
-			window.titleContent = new GUIContent(WindowTitle);
+			GetWindowAndShow();
+			Window.titleContent = new GUIContent(WindowTitle);
 
-			window.Show();
-			window.InitList();
+			Window.Show();
+			Window.InitList();
 		}
 
-		protected override void DrawGUI()
+		protected override void OnGUI()
 		{
 			DrawList();
 			if(GUILayout.Button("Write Tags to disk", GUILayout.Height(32)))

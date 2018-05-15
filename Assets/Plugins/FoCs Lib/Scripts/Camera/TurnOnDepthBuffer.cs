@@ -1,11 +1,9 @@
-using ForestOfChaosLib.Interfaces;
-using ForestOfChaosLib.Components;
 using UnityEngine;
 using UCamera = UnityEngine.Camera;
 
 namespace ForestOfChaosLib.Camera
 {
-	public class TurnOnDepthBuffer: FoCsBehavior, IStart
+	public class TurnOnDepthBuffer: FoCsBehavior
 	{
 		public void Start()
 		{

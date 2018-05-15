@@ -19,7 +19,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 				EditorGUI.LabelField(rect, label);
 				rect.y += SingleLine;
 			}
-			using(FoCsEditorDisposables.Indent())
+			using(FoCsEditor.Disposables.Indent())
 			{
 				foreach(var child in serializedProperty.GetChildren())
 				{

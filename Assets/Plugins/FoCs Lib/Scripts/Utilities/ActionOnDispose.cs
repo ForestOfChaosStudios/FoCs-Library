@@ -1,5 +1,5 @@
 ﻿using System;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 
 namespace ForestOfChaosLib.Utilities
 {

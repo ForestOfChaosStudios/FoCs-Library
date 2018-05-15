@@ -1,4 +1,4 @@
-using ForestOfChaosLib.Editor.Utilities;
+using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
@@ -10,28 +10,20 @@ namespace ForestOfChaosLib.ScreenCap
 		public override string TabName => "Screenshot";
 		protected ScreenCapWindow Owner;
 
-		public override void DrawTab(Window<ScreenCapWindow> owner)
+		public override void DrawTab(FoCsWindow<ScreenCapWindow> owner)
 		{
 			Owner = owner as ScreenCapWindow;
 
-			using(FoCsEditorDisposables.HorizontalScope())
+			using(FoCsEditor.Disposables.HorizontalScope())
 			{
-				//using(FoCsEditorDisposables.HorizontalScope(GUILayout.Width(50f)))
-				//{
-				//	EditorGUILayout.Space();
-				//}
-				using(FoCsEditorDisposables.VerticalScope())
+				using(FoCsEditor.Disposables.VerticalScope())
 				{
 					DrawVariables();
-					using(FoCsEditorDisposables.HorizontalScope())
+					using(FoCsEditor.Disposables.HorizontalScope())
 					{
 						DrawTakeImageGUI();
 					}
 				}
-				//using(FoCsEditorDisposables.HorizontalScope(GUILayout.Width(50f)))
-				//{
-				//	EditorGUILayout.Space();
-				//}
 			}
 		}
 
@@ -59,7 +51,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void DrawPathUI()
 		{
-			using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
+			using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
 			{
 				EditorGUILayout.LabelField("Path");
 				Owner.path = EditorGUILayout.TextField(Owner.path, GUILayout.ExpandWidth(true));
@@ -69,7 +61,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void DrawFileUI()
 		{
-			using(FoCsEditorDisposables.VerticalScope(GUI.skin.box))
+			using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
 			{
 				EditorGUILayout.LabelField("File Name (Leave blank for name to be the date/time)");
 				Owner.filename = EditorGUILayout.TextField(Owner.filename, GUILayout.ExpandWidth(true));
@@ -78,7 +70,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void DrawFilePathGUI()
 		{
-			using (FoCsEditorDisposables.HorizontalScope())
+			using (FoCsEditor.Disposables.HorizontalScope())
 			{
 				GUILayout.Label("Save Path", EditorStyles.boldLabel);
 			}
@@ -90,7 +82,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void PathButtons()
 		{
-			using (FoCsEditorDisposables.HorizontalScope())
+			using (FoCsEditor.Disposables.HorizontalScope())
 			{
 				if (GUILayout.Button("Browse"))
 					Owner.path = EditorUtility.SaveFolderPanel("Path to Save Images", Owner.path, Application.dataPath);
@@ -106,7 +98,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void DrawTakeImageGUI()
 		{
-			using(FoCsEditorDisposables.DisabledScope(!Application.isPlaying))
+			using(FoCsEditor.Disposables.DisabledScope(!Application.isPlaying))
 			{
 				if(GUILayout.Button("Take Screenshot", GUILayout.MinHeight(40)))
 				{

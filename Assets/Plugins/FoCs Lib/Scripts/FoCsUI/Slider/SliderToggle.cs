@@ -1,12 +1,12 @@
 ﻿using System;
-using ForestOfChaosLib.CSharpExtensions;
+using ForestOfChaosLib.Extensions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.PostProcessing;
 
 namespace ForestOfChaosLib.FoCsUI.Slider
 {
-	public class SliderToggle: SliderEvent, IPointerClickHandler, IEventSystemHandler
+	public class SliderToggle: FoCsSlider, IPointerClickHandler
 	{
 		public Action<bool> OnToggle;
 
@@ -54,7 +54,6 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 		public void OnPointerClick(PointerEventData eventData)
 		{
 			Toggle();
-			//Debug.Log(nameof(OnPointerClick));
 		}
 	}
 }

@@ -1,6 +1,4 @@
 using ForestOfChaosLib.Attributes;
-using ForestOfChaosLib.Editor.ImGUI;
-using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -33,7 +31,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			}
 			else
 			{
-				using(FoCsEditorDisposables.DisabledScope(true))
+				using(FoCsEditor.Disposables.DisabledScope(true))
 					EditorGUI.PropertyField(position, property, label);
 			}
 		}

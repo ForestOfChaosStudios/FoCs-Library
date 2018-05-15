@@ -1,11 +1,12 @@
 ﻿using ForestOfChaosLib.Editor.PropertyDrawers;
+using ForestOfChaosLib.Grid;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLib.Grid.Editor
+namespace ForestOfChaosLib.Editor
 {
 	[CustomPropertyDrawer(typeof(GridPosition))]
-	public class GridPositionPropertyDrawer: FoCsPropertyDrawer
+	internal class GridPositionPropertyDrawer: FoCsPropertyDrawer
 	{
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) =>
 				Vector2PropEditor.Draw(position, property.FindPropertyRelative("Position"), label);
