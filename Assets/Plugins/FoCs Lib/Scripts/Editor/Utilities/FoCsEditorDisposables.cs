@@ -94,6 +94,10 @@ namespace ForestOfChaosLib.Editor
 			public static RectHorizontalScope RectHorizontalScope(int count, Rect rect) => new RectHorizontalScope(count, rect);
 			public static RectVerticalScope RectVerticalScope(int count, Rect rect) => new RectVerticalScope(count, rect);
 			#endregion
+
+			#region FadeGroup
+			public static EditorGUILayout.FadeGroupScope FadeGroupScope(float value) => new EditorGUILayout.FadeGroupScope(value);
+			#endregion
 		}
 	}
 }
