@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Windows
 {
-	public abstract class TabedWindow<T>: Window<T> where T: EditorWindow
+	public abstract class TabedWindow<T>: FoCsWindow<T> where T: EditorWindow
 	{
 		public int activeTab = 0;
 
@@ -19,7 +19,7 @@ namespace ForestOfChaosLib.Editor.Windows
 		public float TitleBarLabelWidth = 100;
 		public float TitleBarLabelWidthTotal => TitleBarScrollable? TitleBarLabelWidth + 20 : TitleBarLabelWidth;
 
-		protected override void DrawGUI()
+		protected override void OnGUI()
 		{
 			switch(TitleBarPosition)
 			{

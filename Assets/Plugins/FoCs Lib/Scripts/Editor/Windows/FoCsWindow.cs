@@ -11,47 +11,51 @@ namespace ForestOfChaosLib.Editor.Windows
 	/// }
 	/// </summary>
 	/// <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
-	public abstract class Window<T>: EditorWindow where T: EditorWindow
+	public abstract class FoCsWindow<T>: EditorWindow where T: EditorWindow
 	{
-		protected static T window;
+		private static T window;
 
-		protected static EditorWindow GetWindow()
+		protected static T Window
 		{
+			get { return window ?? (window = GetWindow()); }
+		}
+
+
+		protected static T GetWindow()
+		{
+			if(window != null)
+				return window;
+
 			window = FindObjectOfType<T>() ?? CreateInstance<T>();
 			return window;
 		}
 
-		protected static EditorWindow GetWindowAndOpenTab()
+		protected static T GetWindowAndShow()
 		{
-			window = FindObjectOfType<T>() ?? CreateInstance<T>();
-			window.ShowTab();
+			GetWindow();
+			if(window)
+				window.Close();
+			window.Show();
+			window.Focus();
 			return window;
 		}
 
-		protected static EditorWindow GetWindowAndOpenUtility()
+		protected static T GetWindowAndOpenUtility()
 		{
-			window = FindObjectOfType<T>() ?? CreateInstance<T>();
+			GetWindow();
+			//if(window)
+			//	window.Close();
 			window.ShowUtility();
+			window.Focus();
 			return window;
 		}
 
-		protected virtual void OnGUI()
-		{
-			if(window == null)
-				GetWindow();
-
-			DrawGUI();
-		}
+		protected abstract void OnGUI();
 
 		protected static void DrawReorderableList(ReorderableList list)
 		{
 			list.DoLayoutList();
 		}
-
-		protected abstract void DrawGUI();
-
-		protected virtual void Update()
-		{ }
 
 		public static void DrawSpace()
 		{
