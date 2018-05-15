@@ -12,7 +12,7 @@ public class StringReferenceEditor: FoCsEditor
 	{
 		using(Disposables.Indent())
 		{
-			DoDrawHeader();
+			DrawCopyPasteButtonsHeader();
 			using(var changeCheckScope = Disposables.ChangeCheck())
 			{
 				var cachedGuiColor = GUI.color;

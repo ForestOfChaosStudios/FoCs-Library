@@ -57,7 +57,8 @@ namespace ForestOfChaosLib.Editor
 		public override void OnInspectorGUI()
 		{
 			GUIChanged = false;
-			DoDrawHeader();
+			if(ShowCopyPasteButtons)
+				DrawCopyPasteButtonsHeader();
 			using(Disposables.Indent())
 			{
 				using(var changeCheckScope = Disposables.ChangeCheck())
@@ -76,9 +77,8 @@ namespace ForestOfChaosLib.Editor
 						GUIChanged = true;
 					}
 				}
-				EditorGUILayout.GetControlRect(false, FoCsEditorUtilities.Padding); 
-				DrawGUI();
 			}
+
 		}
 
 		protected void DrawCopyPasteButtons()
@@ -86,23 +86,13 @@ namespace ForestOfChaosLib.Editor
 			EditorHelpers.CopyPastObjectButtons(serializedObject);
 		}
 
-		protected virtual void DoDrawHeader()
+		protected void DrawCopyPasteButtonsHeader()
 		{
-			if(ShowCopyPasteButtons)
+			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
-				using(Disposables.HorizontalScope(EditorStyles.toolbar))
-				{
-					DrawCopyPasteButtons();
-				}
+				DrawCopyPasteButtons();
 			}
 		}
-
-		/// <summary>
-		///     This is drawn after the OnInspectorGUI, this allows, you to add your own functionality without overriding it as
-		///     well.
-		/// </summary>
-		public virtual void DrawGUI()
-		{ }
 
 		public virtual void OnSceneGUI()
 		{ }

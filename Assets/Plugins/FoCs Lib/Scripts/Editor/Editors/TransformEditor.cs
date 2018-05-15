@@ -58,7 +58,7 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		protected override void DoDrawHeader()
+		protected void DoDrawHeader()
 		{
 			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
