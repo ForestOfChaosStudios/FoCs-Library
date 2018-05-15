@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.Editor
 {
-//TODO : Make this window better, GE add the ability to add extra functionality eg submit more data
-	public class SubmitStringWindow: Window<SubmitStringWindow>
+	//TODO : Make this window better, GE add the ability to add extra functionality eg submit more data
+	public class SubmitStringWindow: FoCsWindow<SubmitStringWindow>
 	{
 		private const string GUI_SELECTION_LABEL = "SubmitStringWindowDataField";
 
@@ -24,12 +24,12 @@ namespace ForestOfChaosLib.AdvVar.Editor
 		public static void SetUpInstance(SubmitStringArguments Args)
 		{
 			Init();
-			window.titleContent.text = Args.WindowTitle;
-			window.currentArguments = Args;
+			Window.titleContent.text = Args.WindowTitle;
+			Window.currentArguments = Args;
 			notSelectedLabel = false;
 		}
 
-		protected override void DrawGUI()
+		protected override void OnGUI()
 		{
 			if(currentArguments == null)
 				return;
@@ -44,20 +44,23 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			}
 			using(FoCsEditor.Disposables.HorizontalScope())
 			{
-				if(FoCsGUI.Layout.Button(currentArguments.SubmitMessage))
+				if(FoCsGUI.AutoRect.Button(currentArguments.SubmitMessage))
 				{
 					currentArguments.OnSubmit.Trigger(currentArguments);
 					Close();
+					EndWindows();
 				}
 
-				if(FoCsGUI.Layout.Button(currentArguments.CancelMessage))
+				if(FoCsGUI.AutoRect.Button(currentArguments.CancelMessage))
 				{
 					currentArguments.OnCancel.Trigger(currentArguments);
 					Close();
+					EndWindows();
 				}
 			}
-
-			if(FoCsGUI.Layout.Button(currentArguments.SubmitAnotherMessage))
+			if(!currentArguments.HasAnotherButton)
+				return;
+			if(FoCsGUI.AutoRect.Button(currentArguments.SubmitAnotherMessage))
 			{
 				currentArguments.OnSubmitAnother.Trigger(currentArguments);
 			}
@@ -70,11 +73,12 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			public string Data;
 			public Action<SubmitStringArguments> OnCancel;
 
-			public Action<SubmitStringArguments> OnSubmit;
 			public string SubmitMessage;
+			public Action<SubmitStringArguments> OnSubmit;
 
-			public Action<SubmitStringArguments> OnSubmitAnother;
+			public bool HasAnotherButton = false;
 			public string SubmitAnotherMessage;
+			public Action<SubmitStringArguments> OnSubmitAnother;
 
 			public string Title;
 			public string WindowTitle;
