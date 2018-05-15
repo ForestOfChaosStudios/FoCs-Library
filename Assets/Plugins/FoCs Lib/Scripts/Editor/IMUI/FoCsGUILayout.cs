@@ -1,5 +1,4 @@
-﻿using ForestOfChaosLib.Editor.Utilities;
-using UnityEditor;
+﻿﻿using ForestOfChaosLib.Editor.Utilities;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
@@ -7,7 +6,7 @@ namespace ForestOfChaosLib.Editor
 	// ReSharper disable once MismatchedFileName
 	public static partial class FoCsGUI
 	{
-		public class Layout
+		public static  class Layout
 		{
 			#region Label
 			private static GUIEvent LabelMaster(GUIContent guiContent, GUIStyle style) => LabelMaster(guiContent, style, FoCsEditorUtilities.SingleLine);
@@ -17,13 +16,13 @@ namespace ForestOfChaosLib.Editor
 
 			private static GUIEvent LabelMaster(GUIContent guiContent, GUIStyle style, float height)
 			{
-				var rect = EditorGUILayout.GetControlRect(guiContent != GUIContent.none, height, style);
+				var rect = GUILayoutUtility.GetRect(0, height, style, GUILayout.ExpandWidth(true));
 				return FoCsGUI.Label(rect, guiContent, style);
 			}
 
 			private static GUIEvent LabelMaster(GUIContent guiContent, GUIStyle style, float height, params GUILayoutOption[] options)
 			{
-				var rect = EditorGUILayout.GetControlRect(guiContent != GUIContent.none, height, style, options);
+				var rect = GUILayoutUtility.GetRect(0, height, style, options);
 				return FoCsGUI.Label(rect, guiContent, style);
 			}
 
@@ -68,8 +67,7 @@ namespace ForestOfChaosLib.Editor
 
 			public static GUIEvent Label(GUIContent guiContent, params GUILayoutOption[] options) => LabelMaster(guiContent, LabelStyle, options);
 
-			public static GUIEvent Label(GUIContent guiContent, float height, params GUILayoutOption[] options) =>
-					LabelMaster(guiContent, LabelStyle, height, options);
+			public static GUIEvent Label(GUIContent guiContent, float height, params GUILayoutOption[] options) => LabelMaster(guiContent, LabelStyle, height, options);
 
 			public static GUIEvent Label(GUIContent guiContent, GUIStyle style, params GUILayoutOption[] options) => LabelMaster(guiContent, style, options);
 
@@ -104,13 +102,13 @@ namespace ForestOfChaosLib.Editor
 
 			private static GUIEvent ButtonMaster(GUIContent guiContent, GUIStyle style, float height)
 			{
-				var rect = EditorGUILayout.GetControlRect(guiContent != GUIContent.none, height, style);
+				var rect = GUILayoutUtility.GetRect(0, height, style, GUILayout.ExpandWidth(true));
 				return FoCsGUI.Button(rect, guiContent, style);
 			}
 
 			private static GUIEvent ButtonMaster(GUIContent guiContent, GUIStyle style, float height, params GUILayoutOption[] options)
 			{
-				var rect = EditorGUILayout.GetControlRect(guiContent != GUIContent.none, height, style, options);
+				var rect = GUILayoutUtility.GetRect(0, height, style, options);
 				return FoCsGUI.Button(rect, guiContent, style);
 			}
 
@@ -176,8 +174,7 @@ namespace ForestOfChaosLib.Editor
 			public static GUIEvent Button(Texture texture, float height, params GUILayoutOption[] options) =>
 					ButtonMaster(new GUIContent(texture), ButtonStyle, height, options);
 
-			public static GUIEvent Button(Texture texture, GUIStyle style, params GUILayoutOption[] options) =>
-					ButtonMaster(new GUIContent(texture), style, options);
+			public static GUIEvent Button(Texture texture, GUIStyle style, params GUILayoutOption[] options) => ButtonMaster(new GUIContent(texture), style, options);
 
 			public static GUIEvent Button(Texture texture, GUIStyle style, float height, params GUILayoutOption[] options) =>
 					ButtonMaster(new GUIContent(texture), style, height, options);
@@ -193,13 +190,13 @@ namespace ForestOfChaosLib.Editor
 
 			private static GUIEvent ToggleMaster(bool toggle, GUIContent guiContent, GUIStyle style, float height)
 			{
-				var rect = EditorGUILayout.GetControlRect(guiContent != GUIContent.none, height, style);
+				var rect = GUILayoutUtility.GetRect(0, height, style, GUILayout.ExpandWidth(true));
 				return FoCsGUI.Toggle(rect, toggle, guiContent, style);
 			}
 
 			private static GUIEvent ToggleMaster(bool toggle, GUIContent guiContent, GUIStyle style, float height, params GUILayoutOption[] options)
 			{
-				var rect = EditorGUILayout.GetControlRect(guiContent != GUIContent.none, height, style, options);
+				var rect = GUILayoutUtility.GetRect(0, height, style, options);
 				return FoCsGUI.Toggle(rect, toggle, guiContent, style);
 			}
 
@@ -254,10 +251,10 @@ namespace ForestOfChaosLib.Editor
 			public static GUIEvent Toggle(bool toggle, GUIContent guiContent, float height, params GUILayoutOption[] options) =>
 					ToggleMaster(toggle, guiContent, ToggleStyle, height, options);
 
-			public static GUIEvent Button(bool toggle, GUIContent guiContent, GUIStyle style, params GUILayoutOption[] options) =>
+			public static GUIEvent Toggle(bool toggle, GUIContent guiContent, GUIStyle style, params GUILayoutOption[] options) =>
 					ToggleMaster(toggle, guiContent, style, options);
 
-			public static GUIEvent Button(bool toggle, GUIContent guiContent, GUIStyle style, float height, params GUILayoutOption[] options) =>
+			public static GUIEvent Toggle(bool toggle, GUIContent guiContent, GUIStyle style, float height, params GUILayoutOption[] options) =>
 					ToggleMaster(toggle, guiContent, style, height, options);
 			#endregion
 
@@ -266,9 +263,7 @@ namespace ForestOfChaosLib.Editor
 			public static GUIEvent Toggle(bool toggle, Texture texture, float height) => ToggleMaster(toggle, new GUIContent(texture), ToggleStyle, height);
 
 			public static GUIEvent Toggle(bool toggle, Texture texture, GUIStyle style) => ToggleMaster(toggle, new GUIContent(texture), style);
-
-			public static GUIEvent Toggle(bool toggle, Texture texture, GUIStyle style, float height) =>
-					ToggleMaster(toggle, new GUIContent(texture), style, height);
+			public static GUIEvent Toggle(bool toggle, Texture texture, GUIStyle style, float height) => ToggleMaster(toggle, new GUIContent(texture), style, height);
 
 			public static GUIEvent Toggle(bool toggle, Texture texture, params GUILayoutOption[] options) =>
 					ToggleMaster(toggle, new GUIContent(texture), ToggleStyle, options);
@@ -281,6 +276,104 @@ namespace ForestOfChaosLib.Editor
 
 			public static GUIEvent Toggle(bool toggle, Texture texture, GUIStyle style, float height, params GUILayoutOption[] options) =>
 					ToggleMaster(toggle, new GUIContent(texture), style, height, options);
+			#endregion
+			#endregion
+
+			#region Foldout
+			private static GUIEvent FoldoutMaster(bool foldout, GUIContent guiContent, GUIStyle style) =>
+					FoldoutMaster(foldout, guiContent, style, FoCsEditorUtilities.SingleLine);
+
+			private static GUIEvent FoldoutMaster(bool foldout, GUIContent guiContent, GUIStyle style, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, guiContent, style, FoCsEditorUtilities.SingleLine, options);
+
+			private static GUIEvent FoldoutMaster(bool foldout, GUIContent guiContent, GUIStyle style, float height)
+			{
+				var rect = GUILayoutUtility.GetRect(0, height, style, GUILayout.ExpandWidth(true));
+				return FoCsGUI.Foldout(rect, foldout, guiContent, style);
+			}
+
+			private static GUIEvent FoldoutMaster(bool foldout, GUIContent guiContent, GUIStyle style, float height, params GUILayoutOption[] options)
+			{
+				var rect = GUILayoutUtility.GetRect(0, height, style, options);
+				return FoCsGUI.Foldout(rect, foldout, guiContent, style);
+			}
+
+			#region NoLabel
+			public static GUIEvent Foldout(bool foldout) => FoldoutMaster(foldout, GUIContent.none, FoldoutStyle);
+			public static GUIEvent Foldout(bool foldout, float height) => FoldoutMaster(foldout, GUIContent.none, FoldoutStyle, height);
+
+			public static GUIEvent Foldout(bool foldout, GUIStyle style) => FoldoutMaster(foldout, GUIContent.none, style);
+			public static GUIEvent Foldout(bool foldout, GUIStyle style, float height) => FoldoutMaster(foldout, GUIContent.none, style, height);
+
+			public static GUIEvent Foldout(bool foldout, params GUILayoutOption[] options) => FoldoutMaster(foldout, GUIContent.none, FoldoutStyle, options);
+
+			public static GUIEvent Foldout(bool foldout, float height, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, GUIContent.none, FoldoutStyle, height, options);
+
+			public static GUIEvent Foldout(bool foldout, GUIStyle style, params GUILayoutOption[] options) => FoldoutMaster(foldout, GUIContent.none, style, options);
+
+			public static GUIEvent Foldout(bool foldout, GUIStyle style, float height, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, GUIContent.none, style, height, options);
+			#endregion
+
+			#region StringLabel
+			public static GUIEvent Foldout(bool foldout, string label) => FoldoutMaster(foldout, new GUIContent(label), FoldoutStyle);
+			public static GUIEvent Foldout(bool foldout, string label, float height) => FoldoutMaster(foldout, new GUIContent(label), FoldoutStyle, height);
+
+			public static GUIEvent Foldout(bool foldout, string label, GUIStyle style) => FoldoutMaster(foldout, new GUIContent(label), style);
+			public static GUIEvent Foldout(bool foldout, string label, GUIStyle style, float height) => FoldoutMaster(foldout, new GUIContent(label), style, height);
+
+			public static GUIEvent Foldout(bool foldout, string label, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, new GUIContent(label), FoldoutStyle, options);
+
+			public static GUIEvent Foldout(bool foldout, string label, float height, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, new GUIContent(label), FoldoutStyle, height, options);
+
+			public static GUIEvent Foldout(bool foldout, string label, GUIStyle style, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, new GUIContent(label), style, options);
+
+			public static GUIEvent Foldout(bool foldout, string label, GUIStyle style, float height, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, new GUIContent(label), style, height, options);
+			#endregion
+
+			#region GUIContentLabel
+			public static GUIEvent Foldout(bool foldout, GUIContent guiContent) => FoldoutMaster(foldout, guiContent, FoldoutStyle);
+			public static GUIEvent Foldout(bool foldout, GUIContent guiContent, float height) => FoldoutMaster(foldout, guiContent, FoldoutStyle, height);
+
+			public static GUIEvent Foldout(bool foldout, GUIContent guiContent, GUIStyle style) => FoldoutMaster(foldout, guiContent, style);
+			public static GUIEvent Foldout(bool foldout, GUIContent guiContent, GUIStyle style, float height) => FoldoutMaster(foldout, guiContent, style, height);
+
+			public static GUIEvent Foldout(bool foldout, GUIContent guiContent, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, guiContent, FoldoutStyle, options);
+
+			public static GUIEvent Foldout(bool foldout, GUIContent guiContent, float height, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, guiContent, FoldoutStyle, height, options);
+
+			public static GUIEvent Foldout(bool foldout, GUIContent guiContent, GUIStyle style, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, guiContent, style, options);
+
+			public static GUIEvent Foldout(bool foldout, GUIContent guiContent, GUIStyle style, float height, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, guiContent, style, height, options);
+			#endregion
+
+			#region Texture
+			public static GUIEvent Foldout(bool foldout, Texture texture) => FoldoutMaster(foldout, new GUIContent(texture), FoldoutStyle);
+			public static GUIEvent Foldout(bool foldout, Texture texture, float height) => FoldoutMaster(foldout, new GUIContent(texture), FoldoutStyle, height);
+
+			public static GUIEvent Foldout(bool foldout, Texture texture, GUIStyle style) => FoldoutMaster(foldout, new GUIContent(texture), style);
+			public static GUIEvent Foldout(bool foldout, Texture texture, GUIStyle style, float height) => FoldoutMaster(foldout, new GUIContent(texture), style, height);
+
+			public static GUIEvent Foldout(bool foldout, Texture texture, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, new GUIContent(texture), FoldoutStyle, options);
+
+			public static GUIEvent Foldout(bool foldout, Texture texture, float height, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, new GUIContent(texture), FoldoutStyle, height, options);
+
+			public static GUIEvent Foldout(bool foldout, Texture texture, GUIStyle style, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, new GUIContent(texture), style, options);
+
+			public static GUIEvent Foldout(bool foldout, Texture texture, GUIStyle style, float height, params GUILayoutOption[] options) =>
+					FoldoutMaster(foldout, new GUIContent(texture), style, height, options);
 			#endregion
 			#endregion
 		}

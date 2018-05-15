@@ -13,9 +13,9 @@ namespace ForestOfChaosLib.Editor
 
 			public bool EventOccurredInRect => Rect.Contains(Event.mousePosition);
 
-			public bool AsButtonLeftClick => EventIsMouse0InRect;
+			public bool LeftClick => EventIsMouse0InRect;
 
-			public bool AsButtonRightClick => EventIsMouse1InRect;
+			public bool RightClick => EventIsMouse1InRect;
 
 			public bool EventIsMouse0 => (Event.type == EventType.MouseUp) && (Event.button == 0);
 
@@ -24,6 +24,8 @@ namespace ForestOfChaosLib.Editor
 			public bool EventIsMouse0InRect => EventIsMouse0 && EventOccurredInRect;
 
 			public bool EventIsMouse1InRect => EventIsMouse1 && EventOccurredInRect;
+
+			public bool Pressed => this;
 
 			public static implicit operator bool(GUIEvent input)
 			{

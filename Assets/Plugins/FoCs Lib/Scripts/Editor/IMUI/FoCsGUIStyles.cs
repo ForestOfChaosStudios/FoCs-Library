@@ -4,104 +4,29 @@ using UnityEngine;
 namespace ForestOfChaosLib.Editor
 {
 	// ReSharper disable once MismatchedFileName
-	public partial class FoCsEditor
+	public partial class FoCsGUI
 	{
-		[InitializeOnLoad]
-		public static class Styles
+		public static partial class Styles
 		{
-			public static FoCsGUIData FoCsGUIData { get; }
+			public static SkinRef unitySkins;
+			public static SkinRef UnitySkins => unitySkins ?? (unitySkins = new SkinRef());
 
-			static Styles()
+			public static Texture2D GetTexture(string search) => GetAsset<Texture2D>(search);
+
+			public static T GetAsset<T>(string search)
+				where T: Object
 			{
-				EditorHelpers.CreateAndCheckFolder(FOLDER, DIR);
-				FoCsGUIData = (FoCsGUIData)EditorGUIUtility.Load(FILE_PATH_NAME);
-				if(FoCsGUIData != null)
-					return;
-				FoCsGUIData = CreateInstance<FoCsGUIData>();
-
-				AssetDatabase.CreateAsset(FoCsGUIData, FILE_PATH_NAME);
-				AssetDatabase.SaveAssets();
-			}
-
-
-			internal const string FILE_PATH_NAME = PATH + "\\" + SkinFileName + SkinFileExt;
-
-
-			internal const string SkinFileName = "FoCsEditorData";
-
-			internal const string SkinFileExt = ".asset";
-
-
-			internal const string PATH = FOLDER + "\\" + DIR;
-			internal const string FOLDER = "Assets";
-			internal const string DIR = "Editor Default Resources";
-
-			private static GUIStyle _InLineOptionsMenu;
-
-			private static GUIStyle _ButtonNoOutline;
-
-			private static GUIStyle _CrossCircle;
-
-			public static GUIStyle InLineOptionsMenu
-			{
-				get
+				var results = AssetDatabase.FindAssets(search);
+				foreach(var guid in results)
 				{
-					if(_InLineOptionsMenu != null)
-						return _InLineOptionsMenu;
-					_InLineOptionsMenu = new GUIStyle("Icon.TrackOptions")
-										 {
-											 overflow =
-											 {
-												 top = -4,
-												 bottom = 4
-											 }
-										 };
-					return _InLineOptionsMenu;
-				}
-			}
+					var obj = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid));
 
-			public static GUIStyle ButtonNoOutline
-			{
-				get
-				{
-					if(_ButtonNoOutline != null)
-						return _ButtonNoOutline;
-					_ButtonNoOutline = new GUIStyle(UnityEngine.GUI.skin.button)
-									   {
-										   normal =
-										   {
-											   background = null
-										   },
-										   active =
-										   {
-											   background = null
-										   },
-										   focused =
-										   {
-											   background = null
-										   },
-										   hover =
-										   {
-											   background = null
-										   }
-									   };
-					return _ButtonNoOutline;
+					if(obj != null)
+					{
+						return obj;
+					}
 				}
-			}
-
-			public static GUIStyle CrossCircle
-			{
-				get
-				{
-					if(_CrossCircle != null)
-						return _CrossCircle;
-					_CrossCircle = new GUIStyle("TL SelectionBarCloseButton")
-								   {
-									   fixedHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing,
-									   fixedWidth = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing
-								   };
-					return _CrossCircle;
-				}
+				return null;
 			}
 		}
 	}

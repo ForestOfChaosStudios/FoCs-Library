@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
 {
-	// ReSharper disable once MismatchedFileName
 	public static partial class FoCsGUI
 	{
 		#region Label
-		public static GUIStyle LabelStyle { get; } = GUI.skin.label;
+		public static GUIStyle LabelStyle { get; } = Styles.UnitySkins.Label;
 
 		private static GUIEvent LabelMaster(Rect rect, GUIContent guiContent, GUIStyle style)
 		{
@@ -47,7 +46,7 @@ namespace ForestOfChaosLib.Editor
 		#endregion
 
 		#region Button
-		public static GUIStyle ButtonStyle { get; } = GUI.skin.button;
+		public static GUIStyle ButtonStyle { get; } = Styles.UnitySkins.Button;
 
 		private static GUIEvent ButtonMaster(Rect rect, GUIContent guiContent, GUIStyle style)
 		{
@@ -86,7 +85,7 @@ namespace ForestOfChaosLib.Editor
 		#endregion
 
 		#region Toggle
-		public static GUIStyle ToggleStyle { get; } = UnityEngine.GUI.skin.toggle;
+		public static GUIStyle ToggleStyle { get; } = Styles.UnitySkins.Toggle;
 
 		public static GUIEvent ToggleMaster(Rect rect, bool toggle, GUIContent guiContent, GUIStyle style)
 		{
@@ -124,6 +123,45 @@ namespace ForestOfChaosLib.Editor
 		#endregion
 		#endregion
 
+		#region Foldout
+		public static GUIStyle FoldoutStyle { get; } = Styles.UnitySkins.Foldout;
+
+		public static GUIEvent FoldoutMaster(Rect rect, bool foldout, GUIContent guiContent, GUIStyle style)
+		{
+			var e = Event.current;
+			var e1 = new Event(e);
+
+			var data = new GUIEvent
+					   {
+						   Event = e1,
+						   Rect = rect
+					   };
+
+			EditorGUI.Foldout(rect, foldout, guiContent, style);
+			return data;
+		}
+
+		#region NoLabel
+		public static GUIEvent Foldout(Rect rect, bool foldout) => FoldoutMaster(rect, foldout, GUIContent.none, FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, GUIStyle style) => FoldoutMaster(rect, foldout, GUIContent.none, style);
+		#endregion
+
+		#region StringLabel
+		public static GUIEvent Foldout(Rect rect, bool foldout, string label) => FoldoutMaster(rect, foldout, new GUIContent(label), FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, string label, GUIStyle style) => FoldoutMaster(rect, foldout, new GUIContent(label), style);
+		#endregion
+
+		#region GUIContentLabel
+		public static GUIEvent Foldout(Rect rect, bool foldout, GUIContent guiContent) => FoldoutMaster(rect, foldout, guiContent, FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, GUIContent guiContent, GUIStyle style) => FoldoutMaster(rect, foldout, guiContent, style);
+		#endregion
+
+		#region Texture
+		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture) => FoldoutMaster(rect, foldout, new GUIContent(texture), FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture, GUIStyle style) => FoldoutMaster(rect, foldout, new GUIContent(texture), style);
+		#endregion
+		#endregion
+
 		#region Other
 		private const float MENU_BUTTON_SIZE = 16f;
 
@@ -139,7 +177,7 @@ namespace ForestOfChaosLib.Editor
 			using(FoCsEditor.Disposables.DisabledScope(disabled))
 				EditorGUI.PropertyField(propRect, property, label);
 
-			var index = EditorGUI.Popup(menuRect, GUIContent.none, active, Options, FoCsEditor.Styles.InLineOptionsMenu);
+			var index = EditorGUI.Popup(menuRect, GUIContent.none, active, Options, Styles.InLineOptionsMenu);
 			return index;
 		}
 		#endregion
