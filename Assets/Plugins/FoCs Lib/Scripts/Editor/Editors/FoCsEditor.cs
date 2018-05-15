@@ -57,9 +57,9 @@ namespace ForestOfChaosLib.Editor
 		public override void OnInspectorGUI()
 		{
 			GUIChanged = false;
+			DoDrawHeader();
 			using(Disposables.Indent())
 			{
-				DoDrawHeader();
 				using(var changeCheckScope = Disposables.ChangeCheck())
 				{
 					var cachedGuiColor = GUI.color;
@@ -83,15 +83,17 @@ namespace ForestOfChaosLib.Editor
 
 		protected void DrawCopyPasteButtons()
 		{
-			if(ShowCopyPasteButtons)
-				EditorHelpers.CopyPastObjectButtons(serializedObject);
+			EditorHelpers.CopyPastObjectButtons(serializedObject);
 		}
 
 		protected virtual void DoDrawHeader()
 		{
-			using(Disposables.HorizontalScope(EditorStyles.toolbar))
+			if(ShowCopyPasteButtons)
 			{
-				DrawCopyPasteButtons();
+				using(Disposables.HorizontalScope(EditorStyles.toolbar))
+				{
+					DrawCopyPasteButtons();
+				}
 			}
 		}
 
