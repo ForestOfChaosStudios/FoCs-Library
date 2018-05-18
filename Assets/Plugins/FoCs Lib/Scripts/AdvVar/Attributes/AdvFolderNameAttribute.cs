@@ -7,7 +7,7 @@ namespace ForestOfChaosLib.AdvVar
 		private readonly InternalNames _InternalNames;
 		public string ToggleName;
 
-		public AdvFolderNameAttribute()
+		internal AdvFolderNameAttribute()
 		{
 			ToggleName = "";
 			_InternalNames = InternalNames.Other;
