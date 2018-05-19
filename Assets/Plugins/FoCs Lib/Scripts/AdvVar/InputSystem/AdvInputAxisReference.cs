@@ -120,5 +120,7 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 		{
 			Value.CallEventsCustomValue(key, deadZone);
 		}
+
+		public static implicit operator float(AdvInputAxisReference input) => input.Value;
 	}
 }
