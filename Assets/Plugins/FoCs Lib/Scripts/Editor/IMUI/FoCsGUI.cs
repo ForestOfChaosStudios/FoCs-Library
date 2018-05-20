@@ -1,165 +1,256 @@
 ﻿using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
+using GUICon = UnityEngine.GUIContent;
+using eInt = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<int>;
+using eBool = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<bool>;
+using eFloat = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<float>;
+using eString = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<string>;
 
 namespace ForestOfChaosLib.Editor
 {
 	public static partial class FoCsGUI
 	{
+		internal static GUIStyle LabelStyle { get; } = Styles.UnitySkins.Label;
+		internal static GUIStyle ToggleStyle { get; } = Styles.UnitySkins.Toggle;
+		internal static GUIStyle ButtonStyle { get; } = Styles.UnitySkins.Button;
+		internal static GUIStyle FoldoutStyle { get; } = Styles.UnitySkins.Foldout;
+		internal static GUIStyle TextFieldStyle { get; } = Styles.UnitySkins.TextField_Editor;
+		internal static GUIStyle NumberFieldStyle { get; } = Styles.UnitySkins.NumberField;
+		internal static GUIStyle TextAreaStyle { get; } = Styles.UnitySkins.TextArea_Editor;
+
 		#region Label
-		public static GUIStyle LabelStyle { get; } = Styles.UnitySkins.Label;
-
-		private static GUIEvent LabelMaster(Rect rect, GUIContent guiContent, GUIStyle style)
+		private static GUIEvent LabelMaster(Rect rect, GUICon guiCon, GUIStyle style)
 		{
-			var e = Event.current;
-			var e1 = new Event(e);
-
 			var data = new GUIEvent
 					   {
-						   Event = e1,
+						   Event = new Event(Event.current),
 						   Rect = rect
 					   };
 
-			GUI.Label(rect, guiContent, style);
+			GUI.Label(rect, guiCon, style);
 			return data;
 		}
 
 		#region NoLabel
-		public static GUIEvent Label(Rect rect) => LabelMaster(rect, GUIContent.none, LabelStyle);
-		public static GUIEvent Label(Rect rect, GUIStyle style) => LabelMaster(rect, GUIContent.none, style);
+		public static GUIEvent Label(Rect rect) => LabelMaster(rect, GUICon.none, LabelStyle);
+		public static GUIEvent Label(Rect rect, GUIStyle style) => LabelMaster(rect, GUICon.none, style);
 		#endregion
 
 		#region StringLabel
-		public static GUIEvent Label(Rect rect, string label) => LabelMaster(rect, new GUIContent(label), LabelStyle);
-		public static GUIEvent Label(Rect rect, string label, GUIStyle style) => LabelMaster(rect, new GUIContent(label), style);
+		public static GUIEvent Label(Rect rect, string label) => LabelMaster(rect, new GUICon(label), LabelStyle);
+		public static GUIEvent Label(Rect rect, string label, GUIStyle style) => LabelMaster(rect, new GUICon(label), style);
 		#endregion
 
-		#region GUIContentLabel
-		public static GUIEvent Label(Rect rect, GUIContent guiContent) => LabelMaster(rect, guiContent, LabelStyle);
-		public static GUIEvent Label(Rect rect, GUIContent guiContent, GUIStyle style) => LabelMaster(rect, guiContent, style);
+		#region GUIConLabel
+		public static GUIEvent Label(Rect rect, GUICon guiCon) => LabelMaster(rect, guiCon, LabelStyle);
+		public static GUIEvent Label(Rect rect, GUICon guiCon, GUIStyle style) => LabelMaster(rect, guiCon, style);
 		#endregion
 
 		#region Texture
-		public static GUIEvent Label(Rect rect, Texture texture) => LabelMaster(rect, new GUIContent(texture), LabelStyle);
-		public static GUIEvent Label(Rect rect, Texture texture, GUIStyle style) => LabelMaster(rect, new GUIContent(texture), style);
+		public static GUIEvent Label(Rect rect, Texture texture) => LabelMaster(rect, new GUICon(texture), LabelStyle);
+		public static GUIEvent Label(Rect rect, Texture texture, GUIStyle style) => LabelMaster(rect, new GUICon(texture), style);
 		#endregion
 		#endregion
 
 		#region Button
-		public static GUIStyle ButtonStyle { get; } = Styles.UnitySkins.Button;
-
-		private static GUIEvent ButtonMaster(Rect rect, GUIContent guiContent, GUIStyle style)
+		private static eBool ButtonMaster(Rect rect, GUICon guiCon, GUIStyle style)
 		{
-			var e = Event.current;
-			var e1 = new Event(e);
-
-			var data = new GUIEvent
+			var data = new eBool
 					   {
-						   Event = e1,
+						   Event = new Event(Event.current),
 						   Rect = rect
 					   };
-
-			GUI.Button(rect, guiContent, style);
+			data.Value = GUI.Button(rect, guiCon, style);
 			return data;
 		}
 
 		#region NoLabel
-		public static GUIEvent Button(Rect rect) => ButtonMaster(rect, GUIContent.none, ButtonStyle);
-		public static GUIEvent Button(Rect rect, GUIStyle style) => ButtonMaster(rect, GUIContent.none, style);
+		public static eBool Button(Rect rect) => ButtonMaster(rect, GUICon.none, ButtonStyle);
+		public static eBool Button(Rect rect, GUIStyle style) => ButtonMaster(rect, GUICon.none, style);
 		#endregion
 
 		#region StringLabel
-		public static GUIEvent Button(Rect rect, string label) => ButtonMaster(rect, new GUIContent(label), ButtonStyle);
-		public static GUIEvent Button(Rect rect, string label, GUIStyle style) => ButtonMaster(rect, new GUIContent(label), style);
+		public static eBool Button(Rect rect, string label) => ButtonMaster(rect, new GUICon(label), ButtonStyle);
+		public static eBool Button(Rect rect, string label, GUIStyle style) => ButtonMaster(rect, new GUICon(label), style);
 		#endregion
 
-		#region GUIContentLabel
-		public static GUIEvent Button(Rect rect, GUIContent guiContent) => ButtonMaster(rect, guiContent, ButtonStyle);
-		public static GUIEvent Button(Rect rect, GUIContent guiContent, GUIStyle style) => ButtonMaster(rect, guiContent, style);
+		#region GUIConLabel
+		public static eBool Button(Rect rect, GUICon guiCon) => ButtonMaster(rect, guiCon, ButtonStyle);
+		public static eBool Button(Rect rect, GUICon guiCon, GUIStyle style) => ButtonMaster(rect, guiCon, style);
 		#endregion
 
 		#region Texture
-		public static GUIEvent Toggle(Rect rect, Texture texture) => ButtonMaster(rect, new GUIContent(texture), ButtonStyle);
-		public static GUIEvent Toggle(Rect rect, Texture texture, GUIStyle style) => ButtonMaster(rect, new GUIContent(texture), style);
+		public static eBool Toggle(Rect rect, Texture texture) => ButtonMaster(rect, new GUICon(texture), ButtonStyle);
+		public static eBool Toggle(Rect rect, Texture texture, GUIStyle style) => ButtonMaster(rect, new GUICon(texture), style);
 		#endregion
 		#endregion
 
 		#region Toggle
-		public static GUIStyle ToggleStyle { get; } = Styles.UnitySkins.Toggle;
-
-		public static GUIEvent ToggleMaster(Rect rect, bool toggle, GUIContent guiContent, GUIStyle style)
+		public static eBool ToggleMaster(Rect rect, bool toggle, GUICon guiCon, GUIStyle style)
 		{
-			var e = Event.current;
-			var e1 = new Event(e);
-
-			var data = new GUIEvent
+			var data = new eBool
 					   {
-						   Event = e1,
+						   Event = new Event(Event.current),
 						   Rect = rect
 					   };
-
-			GUI.Toggle(rect, toggle, guiContent, style);
+			data.Value = GUI.Toggle(rect, toggle, guiCon, style);
 			return data;
 		}
 
 		#region NoLabel
-		public static GUIEvent Toggle(Rect rect, bool toggle) => ToggleMaster(rect, toggle, GUIContent.none, ToggleStyle);
-		public static GUIEvent Toggle(Rect rect, bool toggle, GUIStyle style) => ToggleMaster(rect, toggle, GUIContent.none, style);
+		public static eBool Toggle(Rect rect, bool toggle) => ToggleMaster(rect, toggle, GUICon.none, ToggleStyle);
+		public static eBool Toggle(Rect rect, bool toggle, GUIStyle style) => ToggleMaster(rect, toggle, GUICon.none, style);
 		#endregion
 
 		#region StringLabel
-		public static GUIEvent Toggle(Rect rect, bool toggle, string label) => ToggleMaster(rect, toggle, new GUIContent(label), ToggleStyle);
-		public static GUIEvent Toggle(Rect rect, bool toggle, string label, GUIStyle style) => ToggleMaster(rect, toggle, new GUIContent(label), style);
+		public static eBool Toggle(Rect rect, bool toggle, string label) => ToggleMaster(rect, toggle, new GUICon(label), ToggleStyle);
+		public static eBool Toggle(Rect rect, bool toggle, string label, GUIStyle style) => ToggleMaster(rect, toggle, new GUICon(label), style);
 		#endregion
 
-		#region GUIContentLabel
-		public static GUIEvent Toggle(Rect rect, bool toggle, GUIContent guiContent) => ToggleMaster(rect, toggle, guiContent, ToggleStyle);
-		public static GUIEvent Toggle(Rect rect, bool toggle, GUIContent guiContent, GUIStyle style) => ToggleMaster(rect, toggle, guiContent, style);
+		#region GUIConLabel
+		public static eBool Toggle(Rect rect, bool toggle, GUICon guiCon) => ToggleMaster(rect, toggle, guiCon, ToggleStyle);
+		public static eBool Toggle(Rect rect, bool toggle, GUICon guiCon, GUIStyle style) => ToggleMaster(rect, toggle, guiCon, style);
 		#endregion
 
 		#region Texture
-		public static GUIEvent Toggle(Rect rect, bool toggle, Texture texture) => ToggleMaster(rect, toggle, new GUIContent(texture), ToggleStyle);
-		public static GUIEvent Toggle(Rect rect, bool toggle, Texture texture, GUIStyle style) => ToggleMaster(rect, toggle, new GUIContent(texture), style);
+		public static eBool Toggle(Rect rect, bool toggle, Texture texture) => ToggleMaster(rect, toggle, new GUICon(texture), ToggleStyle);
+		public static eBool Toggle(Rect rect, bool toggle, Texture texture, GUIStyle style) => ToggleMaster(rect, toggle, new GUICon(texture), style);
 		#endregion
 		#endregion
 
 		#region Foldout
-		public static GUIStyle FoldoutStyle { get; } = Styles.UnitySkins.Foldout;
-
-		public static GUIEvent FoldoutMaster(Rect rect, bool foldout, GUIContent guiContent, GUIStyle style)
+		public static GUIEvent FoldoutMaster(Rect rect, bool foldout, GUICon guiCon, GUIStyle style)
 		{
-			var e = Event.current;
-			var e1 = new Event(e);
+			var data = new GUIEvent{Rect = rect};
 
-			var data = new GUIEvent
-					   {
-						   Event = e1,
-						   Rect = rect
-					   };
-
-			EditorGUI.Foldout(rect, foldout, guiContent, style);
+			EditorGUI.Foldout(rect, foldout, guiCon, style);
 			return data;
 		}
 
 		#region NoLabel
-		public static GUIEvent Foldout(Rect rect, bool foldout) => FoldoutMaster(rect, foldout, GUIContent.none, FoldoutStyle);
-		public static GUIEvent Foldout(Rect rect, bool foldout, GUIStyle style) => FoldoutMaster(rect, foldout, GUIContent.none, style);
+		public static GUIEvent Foldout(Rect rect, bool foldout) => FoldoutMaster(rect, foldout, GUICon.none, FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, GUIStyle style) => FoldoutMaster(rect, foldout, GUICon.none, style);
 		#endregion
 
 		#region StringLabel
-		public static GUIEvent Foldout(Rect rect, bool foldout, string label) => FoldoutMaster(rect, foldout, new GUIContent(label), FoldoutStyle);
-		public static GUIEvent Foldout(Rect rect, bool foldout, string label, GUIStyle style) => FoldoutMaster(rect, foldout, new GUIContent(label), style);
+		public static GUIEvent Foldout(Rect rect, bool foldout, string label) => FoldoutMaster(rect, foldout, new GUICon(label), FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, string label, GUIStyle style) => FoldoutMaster(rect, foldout, new GUICon(label), style);
 		#endregion
 
-		#region GUIContentLabel
-		public static GUIEvent Foldout(Rect rect, bool foldout, GUIContent guiContent) => FoldoutMaster(rect, foldout, guiContent, FoldoutStyle);
-		public static GUIEvent Foldout(Rect rect, bool foldout, GUIContent guiContent, GUIStyle style) => FoldoutMaster(rect, foldout, guiContent, style);
+		#region GUIConLabel
+		public static GUIEvent Foldout(Rect rect, bool foldout, GUICon guiCon) => FoldoutMaster(rect, foldout, guiCon, FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, GUICon guiCon, GUIStyle style) => FoldoutMaster(rect, foldout, guiCon, style);
 		#endregion
 
 		#region Texture
-		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture) => FoldoutMaster(rect, foldout, new GUIContent(texture), FoldoutStyle);
-		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture, GUIStyle style) => FoldoutMaster(rect, foldout, new GUIContent(texture), style);
+		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture) => FoldoutMaster(rect, foldout, new GUICon(texture), FoldoutStyle);
+		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture, GUIStyle style) => FoldoutMaster(rect, foldout, new GUICon(texture), style);
 		#endregion
+		#endregion
+
+		#region IntField
+		private static eInt IntFieldMaster(Rect rect, GUICon guiCon, int value, GUIStyle style)
+		{
+
+			var data = new eInt
+					   {
+						   Event = new Event(Event.current),
+						   Rect = rect
+					   };
+			data.Value = EditorGUI.IntField(rect, guiCon, value, style);
+
+			return data;
+		}
+
+		#region NoLabel
+		public static eInt IntField(Rect rect, int value) => IntFieldMaster(rect, GUICon.none, value, NumberFieldStyle);
+		public static eInt IntField(Rect rect, int value, GUIStyle style) => IntFieldMaster(rect, GUICon.none, value, style);
+		#endregion
+
+		#region StringLabel
+		public static eInt IntField(Rect rect, string label, int value) => IntFieldMaster(rect, new GUICon(label), value, NumberFieldStyle);
+		public static eInt IntField(Rect rect, string label, int value, GUIStyle style) => IntFieldMaster(rect, new GUICon(label), value, style);
+		#endregion
+
+		#region GUIConLabel
+		public static eInt IntField(Rect rect, GUICon guiCon, int value) => IntFieldMaster(rect, guiCon, value, NumberFieldStyle);
+		public static eInt IntField(Rect rect, GUICon guiCon, int value, GUIStyle style) => IntFieldMaster(rect, guiCon, value, style);
+		#endregion
+		#endregion
+
+		#region FloatField
+
+		private static eFloat FloatFieldMaster(Rect rect, GUICon guiCon, float value, GUIStyle style)
+		{
+			var data = new eFloat
+					   {
+						   Event = new Event(Event.current),
+						   Rect = rect
+					   };
+			data.Value = EditorGUI.FloatField(rect, guiCon, value, style);
+			return data;
+		}
+
+		#region NoLabel
+		public static eFloat FloatField(Rect rect, float value) => FloatFieldMaster(rect, GUICon.none, value, NumberFieldStyle);
+		public static eFloat FloatField(Rect rect, float value, GUIStyle style) => FloatFieldMaster(rect, GUICon.none, value, style);
+		#endregion
+
+		#region StringLabel
+		public static eFloat FloatField(Rect rect, string label, float value) => FloatFieldMaster(rect, new GUICon(label), value, NumberFieldStyle);
+		public static eFloat FloatField(Rect rect, string label, float value, GUIStyle style) => FloatFieldMaster(rect, new GUICon(label), value, style);
+		#endregion
+
+		#region GUIConLabel
+		public static eFloat FloatField(Rect rect, GUICon guiCon, float value) => FloatFieldMaster(rect, guiCon, value, NumberFieldStyle);
+		public static eFloat FloatField(Rect rect, GUICon guiCon, float value, GUIStyle style) => FloatFieldMaster(rect, guiCon, value, style);
+		#endregion
+		#endregion
+
+		#region TextField
+		private static eString TextFieldMaster(Rect rect, GUICon guiCon, string value, GUIStyle style)
+		{
+			var data = new eString
+					   {
+						   Event = new Event(Event.current),
+						   Rect = rect
+					   };
+			data.Value = EditorGUI.TextField(rect, guiCon, value, style);
+			return data;
+		}
+
+		#region NoLabel
+		public static eString TextField(Rect rect, string value) => TextFieldMaster(rect, GUICon.none, value, TextFieldStyle);
+		public static eString TextField(Rect rect, string value, GUIStyle style) => TextFieldMaster(rect, GUICon.none, value, style);
+		#endregion
+
+		#region StringLabel
+		public static eString TextField(Rect rect, string label, string value) => TextFieldMaster(rect, new GUICon(label), value, TextFieldStyle);
+		public static eString TextField(Rect rect, string label, string value, GUIStyle style) => TextFieldMaster(rect, new GUICon(label), value, style);
+		#endregion
+
+		#region GUIConLabel
+		public static eString TextField(Rect rect, GUICon guiCon, string value) => TextFieldMaster(rect, guiCon, value, TextFieldStyle);
+		public static eString TextField(Rect rect, GUICon guiCon, string value, GUIStyle style) => TextFieldMaster(rect, guiCon, value, style);
+		#endregion
+		#endregion
+
+		#region TextArea
+		private static eString TextAreaMaster(Rect rect, string value, GUIStyle style)
+		{
+			var data = new eString
+					   {
+						   Event = new Event(Event.current),
+						   Rect = rect
+					   };
+			data.Value = EditorGUI.TextArea(rect, value, style);
+
+			return data;
+		}
+
+		public static eString TextArea(Rect rect, string value) => TextAreaMaster(rect, value, TextAreaStyle);
+		public static eString TextArea(Rect rect, string value, GUIStyle style) => TextAreaMaster(rect, value, style);
 		#endregion
 
 		#region Other
