@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using ForestOfChaosLib.Editor.Windows;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
 {
-	public class FoCsControlPanel: FoCsWindow<FoCsControlPanel>
+	public partial class FoCsControlPanel: FoCsWindow<FoCsControlPanel>
 	{
 		private const string SHORT_TITLE = "Control Panel";
 		private const string TITLE = "FoCs " + SHORT_TITLE;
@@ -19,7 +20,7 @@ namespace ForestOfChaosLib.Editor
 		private static List<Type> WindowList => windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false));
 
 		private static List<Type> tabList;
-		private static List<Type> TabList => tabList ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTab>(false));
+		private static List<Type> TabList => tabList ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTabAttribute>(false));
 		private static int ActiveTab = 0;
 
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + SHORT_TITLE)]
@@ -37,10 +38,24 @@ namespace ForestOfChaosLib.Editor
 			{
 				using(FoCsEditor.Disposables.VerticalScope(GUILayout.Width(200)))
 				{
-					DrawWindowButton();
+					DrawWindowButtons();
 				}
 				using(FoCsEditor.Disposables.VerticalScope())
 				{
+					using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+					{
+						DrawTabButtons();
+					}
+					if(TabList.InRange(ActiveTab))
+					{
+						TabList[ActiveTab].
+								GetMethod("DrawGUI")?.
+								Invoke(null,
+									   new object[]
+									   {
+										   this
+									   });
+					}
 				}
 			}
 		}
