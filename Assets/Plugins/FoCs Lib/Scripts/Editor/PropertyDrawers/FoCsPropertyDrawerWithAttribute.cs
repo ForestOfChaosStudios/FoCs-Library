@@ -1,4 +1,3 @@
-using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,13 +5,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 {
 	public class FoCsPropertyDrawer: PropertyDrawer
 	{
-	/// <summary>
-	/// Returns 
-	/// </summary>
-		public static float SingleLine { get; } = FoCsEditorUtilities.SingleLine;
-		public static float Padding { get; } = FoCsEditorUtilities.Padding;
-		public static float SingleLinePlusPadding { get; } = FoCsEditorUtilities.SingleLinePlusPadding;
-		public static float IndentSize { get; } = FoCsEditorUtilities.IndentSize;
+		public static float SingleLine { get; } = FoCsGUI.Utilities.SingleLine;
+		public static float Padding { get; } = FoCsGUI.Utilities.Padding;
+		public static float SingleLinePlusPadding { get; } = FoCsGUI.Utilities.SingleLinePlusPadding;
+		public static float IndentSize { get; } = FoCsGUI.Utilities.IndentSize;
 
 		public static float PropertyHeight(SerializedProperty property, GUIContent label) => EditorGUI.GetPropertyHeight(property, label);
 

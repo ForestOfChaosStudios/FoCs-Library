@@ -1,5 +1,4 @@
 ﻿using System;
-using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
@@ -217,9 +216,9 @@ namespace ForestOfChaosLib.Editor
 			public float GetTotalHeight()
 			{
 				if(!Property.isExpanded)
-					return List.headerHeight + FoCsEditorUtilities.Padding;
+					return List.headerHeight + FoCsGUI.Utilities.Padding;
 
-				var height = List.headerHeight + List.footerHeight + 4 + FoCsEditorUtilities.Padding;
+				var height = List.headerHeight + List.footerHeight + 4 + FoCsGUI.Utilities.Padding;
 
 				if(Property.isExpanded && (List.serializedProperty.arraySize == 0))
 					return List.elementHeight + height;

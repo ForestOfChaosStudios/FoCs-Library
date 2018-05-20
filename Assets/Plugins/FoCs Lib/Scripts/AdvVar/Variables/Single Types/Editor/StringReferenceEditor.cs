@@ -37,7 +37,7 @@ public class StringReferenceEditor: FoCsEditor
 				}
 			}
 
-			EditorGUILayout.GetControlRect(false, FoCsEditorUtilities.Padding);
+			EditorGUILayout.GetControlRect(false, FoCsGUI.Utilities.Padding);
 		}
 	}
 
