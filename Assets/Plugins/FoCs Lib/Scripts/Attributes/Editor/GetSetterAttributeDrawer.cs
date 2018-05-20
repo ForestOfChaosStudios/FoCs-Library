@@ -30,7 +30,7 @@ namespace ForestOfChaosLib.Attributes
 																		 OPTIONS_ARRAY,
 																		 GetAttribute.CallSetter?
 																			 0 :
-																			 1) ==
+																			 1).Value ==
 										  0;
 
 				if(cc.changed)

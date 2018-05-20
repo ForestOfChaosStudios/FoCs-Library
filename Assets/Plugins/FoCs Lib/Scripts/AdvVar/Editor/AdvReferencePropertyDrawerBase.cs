@@ -40,7 +40,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 																	 OPTIONS_ARRAY,
 																	 UseConstant.boolValue?
 																		 0 :
-																		 1) ==
+																		 1).Value ==
 										0;
 				if(changeCheckScope.changed && Variable.objectReferenceValue)
 					serializedObject = new SerializedObject(Variable.objectReferenceValue);

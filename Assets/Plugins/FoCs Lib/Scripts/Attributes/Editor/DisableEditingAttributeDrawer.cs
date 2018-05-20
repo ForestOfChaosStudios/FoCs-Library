@@ -26,7 +26,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 																						OPTIONS_ARRAY,
 																						GetAttribute.CurrentlyEditable?
 																							0 :
-																							1) ==
+																							1).Value ==
 												 0;
 			}
 			else
