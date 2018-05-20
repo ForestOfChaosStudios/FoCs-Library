@@ -5,7 +5,7 @@ namespace ForestOfChaosLib.Editor
 	// ReSharper disable once MismatchedFileName
 	public static partial class FoCsGUI
 	{
-		public struct GUIEvent
+		public class GUIEvent
 		{
 			public Event Event;
 			public Rect Rect;
