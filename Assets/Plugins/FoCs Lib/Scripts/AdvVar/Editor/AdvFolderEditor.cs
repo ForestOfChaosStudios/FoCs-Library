@@ -131,7 +131,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 		{
 			using(Disposables.HorizontalScope())
 			{
-				FoCsGUI.AutoRect.Label($"[{index}] {obj.GetType().Name.SplitCamelCase()}", GUILayout.Width(Screen.width / 4f));
+				FoCsGUI.Layout.Label($"[{index}] {obj.GetType().Name.SplitCamelCase()}", GUILayout.Width(Screen.width / 4f));
 
 				using(var changeCheckScope = Disposables.ChangeCheck())
 				{

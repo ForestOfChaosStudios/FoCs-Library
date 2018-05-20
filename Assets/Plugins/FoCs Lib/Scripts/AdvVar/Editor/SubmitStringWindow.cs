@@ -44,14 +44,14 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			}
 			using(FoCsEditor.Disposables.HorizontalScope())
 			{
-				if(FoCsGUI.AutoRect.Button(currentArguments.SubmitMessage))
+				if(FoCsGUI.Layout.Button(currentArguments.SubmitMessage))
 				{
 					currentArguments.OnSubmit.Trigger(currentArguments);
 					Close();
 					EndWindows();
 				}
 
-				if(FoCsGUI.AutoRect.Button(currentArguments.CancelMessage))
+				if(FoCsGUI.Layout.Button(currentArguments.CancelMessage))
 				{
 					currentArguments.OnCancel.Trigger(currentArguments);
 					Close();
@@ -60,7 +60,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			}
 			if(!currentArguments.HasAnotherButton)
 				return;
-			if(FoCsGUI.AutoRect.Button(currentArguments.SubmitAnotherMessage))
+			if(FoCsGUI.Layout.Button(currentArguments.SubmitAnotherMessage))
 			{
 				currentArguments.OnSubmitAnother.Trigger(currentArguments);
 			}

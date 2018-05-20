@@ -107,7 +107,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 			{
 				using(FoCsEditor.Disposables.VerticalScope())
 				{
-					if(FoCsGUI.AutoRect.Button("Force save"))
+					if(FoCsGUI.Layout.Button("Force save"))
 						EditorUtility.SetDirty(Asset.targetObject);
 
 					using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))

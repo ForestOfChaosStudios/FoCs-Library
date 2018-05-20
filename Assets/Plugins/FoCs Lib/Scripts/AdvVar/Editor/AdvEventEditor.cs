@@ -13,7 +13,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			base.OnInspectorGUI();
 			using(Disposables.DisabledScope(!Application.isPlaying))
 			{
-				var @event = FoCsGUI.AutoRect.Button("Trigger Event");
+				var @event = FoCsGUI.Layout.Button("Trigger Event");
 				if(@event.LeftClick)
 					Target.Trigger();
 			}
