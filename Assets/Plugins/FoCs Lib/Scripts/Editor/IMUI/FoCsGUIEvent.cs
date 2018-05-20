@@ -9,7 +9,6 @@ namespace ForestOfChaosLib.Editor
 		{
 			public Event Event;
 			public Rect Rect;
-			public bool? ForcePressed;
 
 			public bool EventOccurredInRect => Rect.Contains(Event.mousePosition);
 
@@ -29,8 +28,6 @@ namespace ForestOfChaosLib.Editor
 
 			public static implicit operator bool(GUIEvent input)
 			{
-				if(input.ForcePressed.HasValue)
-					return input.ForcePressed.Value;
 				return input.EventIsMouse0InRect;
 			}
 
@@ -42,8 +39,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				var data = new GUIEvent
 						   {
-							   Event = new Event(Event.current),
-							   ForcePressed = null
+							   Event = new Event(Event.current)
 						   };
 
 				if(data.Event.type == EventType.repaint)
@@ -55,22 +51,8 @@ namespace ForestOfChaosLib.Editor
 			{
 				var data = new GUIEvent
 						   {
-							   Event = new Event(Event.current),
-							   ForcePressed = null
+							   Event = new Event(Event.current)
 						   };
-				return data;
-			}
-
-			public static GUIEvent Create(bool pressed)
-			{
-				var data = new GUIEvent
-						   {
-							   Event = new Event(Event.current),
-							   ForcePressed = pressed
-						   };
-
-				if(data.Event.type == EventType.repaint)
-					data.Rect = GUILayoutUtility.GetLastRect();
 				return data;
 			}
 
@@ -79,7 +61,6 @@ namespace ForestOfChaosLib.Editor
 				var data = new GUIEvent<T>
 						   {
 							   Event = new Event(Event.current),
-							   ForcePressed = null,
 							   Value = val
 						   };
 
@@ -94,33 +75,6 @@ namespace ForestOfChaosLib.Editor
 						   {
 							   Event = new Event(Event.current),
 							   Rect = rect,
-							   ForcePressed = null,
-							   Value = val
-						   };
-				return data;
-			}
-
-			public static GUIEvent<T> Create<T>(bool pressed, T val)
-			{
-				var data = new GUIEvent<T>
-						   {
-							   Event = new Event(Event.current),
-							   ForcePressed = pressed,
-							   Value = val
-						   };
-
-				if(data.Event.type == EventType.repaint)
-					data.Rect = GUILayoutUtility.GetLastRect();
-				return data;
-			}
-
-			public static GUIEvent<T> Create<T>(bool pressed, Rect rect, T val)
-			{
-				var data = new GUIEvent<T>
-						   {
-							   Event = new Event(Event.current),
-							   Rect = rect,
-							   ForcePressed = pressed,
 							   Value = val
 						   };
 				return data;
