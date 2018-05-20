@@ -41,13 +41,6 @@ namespace ForestOfChaosLib.Editor
 				}
 				using(FoCsEditor.Disposables.VerticalScope())
 				{
-					using(FoCsEditor.Disposables.HorizontalScope())
-						DrawButton();
-					DrawButton();
-					using(FoCsEditor.Disposables.VerticalScope(GUILayout.ExpandHeight(true)))
-					{ }
-					using(FoCsEditor.Disposables.HorizontalScope())
-						DrawUISettings();
 				}
 			}
 		}
@@ -74,13 +67,6 @@ namespace ForestOfChaosLib.Editor
 			{
 				Repaint();
 			}
-		}
-
-		private static void DrawButton()
-		{
-			FoCsGUI.Layout.Button("Thin",     FoCsGUI.Styles.ButtonThin    , GUILayout.Height(32));
-			FoCsGUI.Layout.Button("Thick",    FoCsGUI.Styles.ButtonThick   , GUILayout.Height(32));
-			FoCsGUI.Layout.Button("Detailed", FoCsGUI.Styles.ButtonDetailed, GUILayout.Height(32));
 		}
 
 		private static void DrawWindowButtons()
