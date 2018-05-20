@@ -256,10 +256,8 @@ namespace ForestOfChaosLib.Editor
 		#region Other
 		private const float MENU_BUTTON_SIZE = 16f;
 
-		public static int DrawPropertyWithMenu(Rect position, SerializedProperty property, GUIContent label, GUIContent[] Options, int active) =>
-				DrawDisabledPropertyWithMenu(false, position, property, label, Options, active);
-
-		public static int DrawDisabledPropertyWithMenu(bool disabled, Rect position, SerializedProperty property, GUIContent label, GUIContent[] Options, int active)
+		public static eInt DrawPropertyWithMenu(Rect position, SerializedProperty property, GUICon label, GUICon[] Options, int active) => DrawDisabledPropertyWithMenu(false, position, property, label, Options, active);
+		public static eInt DrawDisabledPropertyWithMenu(bool disabled, Rect position, SerializedProperty property, GUICon label, GUICon[] Options, int active)
 		{
 			var propRect = position.SetWidth(position.width - MENU_BUTTON_SIZE - 2).MoveHeight(-2);
 			var rectWidth = position.x + (position.width - (MENU_BUTTON_SIZE * (EditorGUI.indentLevel + 1)));
@@ -267,17 +265,15 @@ namespace ForestOfChaosLib.Editor
 			if(property.hasVisibleChildren)
 			{
 				using(FoCsEditor.Disposables.DisabledScope(disabled))
-				{
 					EditorGUI.PropertyField(propRect, property, label, true);
-				}
 			}
 			else
 			{
 				using(FoCsEditor.Disposables.DisabledScope(disabled))
 					EditorGUI.PropertyField(propRect, property, label);
 			}
-			var index = EditorGUI.Popup(menuRect, GUIContent.none, active, Options, Styles.InLineOptionsMenu);
-			return index;
+			var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);
+			return GUIEvent.Create(position, index);
 		}
 		#endregion
 	}
