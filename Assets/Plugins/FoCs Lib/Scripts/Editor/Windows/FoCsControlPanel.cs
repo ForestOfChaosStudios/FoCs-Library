@@ -14,6 +14,14 @@ namespace ForestOfChaosLib.Editor
 
 		public static GUISkin skin;
 
+
+		private static List<Type> windowList;
+		private static List<Type> WindowList => windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false));
+
+		private static List<Type> tabList;
+		private static List<Type> TabList => tabList ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTab>(false));
+		private static int ActiveTab = 0;
+
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + SHORT_TITLE)]
 		private static void Init()
 		{
@@ -75,10 +83,9 @@ namespace ForestOfChaosLib.Editor
 			FoCsGUI.Layout.Button("Detailed", FoCsGUI.Styles.ButtonDetailed, GUILayout.Height(32));
 		}
 
-		private static void DrawWindowButton()
+		private static void DrawWindowButtons()
 		{
-			var windows = GetTypesWith<FoCsWindowAttribute>(false);
-			foreach(var key in windows)
+			foreach(var key in WindowList)
 			{
 				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
 				{
@@ -91,16 +98,22 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private static List<Type> GetTypesWith<TAttribute>(bool inherit)
-			where TAttribute: Attribute
+		private static void DrawTabButtons()
 		{
-			var list = new List<Type>();
-			foreach(var t in typeof(TAttribute).Assembly.GetTypes())
+			var index = 0;
+			foreach(var key in TabList)
 			{
-				if(t.IsDefined(typeof(TAttribute), inherit))
-					list.Add(t);
+				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+				{
+					var @event = FoCsGUI.Layout.Toggle(ActiveTab == index, key.Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
+					if(@event.Value)
+					{
+						ActiveTab = index;
+						Window.ShowNotification(new GUIContent($"Clicked: {key.Name.SplitCamelCase()}"));
+					}
+				}
+				++index;
 			}
-			return list;
 		}
 	}
 }

@@ -5,6 +5,7 @@ using System.Reflection;
 using ForestOfChaosLib.AdvVar.Base;
 using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -225,7 +226,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		public static SortedDictionary<AdvFolderNameAttribute, List<Type>> GetDictionaryTypes()
 		{
-			var types = GetTypesWith<AdvFolderNameAttribute, ScriptableObject>(false);
+			var types = ReflectionUtilities.GetTypesWith<AdvFolderNameAttribute, ScriptableObject>(false);
 
 			var finalList = new SortedDictionary<AdvFolderNameAttribute, List<Type>>();
 
@@ -250,36 +251,6 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				}
 			}
 			return finalList;
-		}
-
-		private static List<Type> GetTypesWith<TAttribute>(bool inherit)
-			where TAttribute: Attribute
-		{
-			var list = new List<Type>();
-			foreach(var t in typeof(TAttribute).Assembly.GetTypes())
-			{
-				if(t.IsDefined(typeof(TAttribute), inherit))
-					list.Add(t);
-			}
-			return list;
-		}
-
-		private static List<Type> GetTypesWith<TAttribute, TInherit>(bool inherit)
-			where TAttribute: Attribute
-		{
-			var assembliesList = AppDomain.CurrentDomain.GetAssemblies();
-
-			var list = new List<Type>();
-
-			foreach(var assembly in assembliesList)
-			{
-				foreach(var t in assembly.GetTypes())
-				{
-					if(t.IsDefined(typeof(TAttribute), inherit) && t.IsSubclassOf(typeof(TInherit)))
-						list.Add(t);
-				}
-			}
-			return list;
 		}
 
 		private class Args: SubmitStringWindow.SubmitStringArguments
