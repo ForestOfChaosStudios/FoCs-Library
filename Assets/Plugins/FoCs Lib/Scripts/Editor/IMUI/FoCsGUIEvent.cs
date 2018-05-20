@@ -58,8 +58,6 @@ namespace ForestOfChaosLib.Editor
 							   Event = new Event(Event.current),
 							   ForcePressed = null
 						   };
-				if(data.Event.type == EventType.repaint)
-					data.Rect = GUILayoutUtility.GetLastRect();
 				return data;
 			}
 
@@ -75,6 +73,63 @@ namespace ForestOfChaosLib.Editor
 					data.Rect = GUILayoutUtility.GetLastRect();
 				return data;
 			}
+
+			public static GUIEvent<T> Create<T>(T val)
+			{
+				var data = new GUIEvent<T>
+						   {
+							   Event = new Event(Event.current),
+							   ForcePressed = null,
+							   Value = val
+						   };
+
+				if(data.Event.type == EventType.repaint)
+					data.Rect = GUILayoutUtility.GetLastRect();
+				return data;
+			}
+
+			public static GUIEvent<T> Create<T>(Rect rect, T val)
+			{
+				var data = new GUIEvent<T>
+						   {
+							   Event = new Event(Event.current),
+							   Rect = rect,
+							   ForcePressed = null,
+							   Value = val
+						   };
+				return data;
+			}
+
+			public static GUIEvent<T> Create<T>(bool pressed, T val)
+			{
+				var data = new GUIEvent<T>
+						   {
+							   Event = new Event(Event.current),
+							   ForcePressed = pressed,
+							   Value = val
+						   };
+
+				if(data.Event.type == EventType.repaint)
+					data.Rect = GUILayoutUtility.GetLastRect();
+				return data;
+			}
+
+			public static GUIEvent<T> Create<T>(bool pressed, Rect rect, T val)
+			{
+				var data = new GUIEvent<T>
+						   {
+							   Event = new Event(Event.current),
+							   Rect = rect,
+							   ForcePressed = pressed,
+							   Value = val
+						   };
+				return data;
+			}
+		}
+
+		public class GUIEvent<T>: GUIEvent
+		{
+			public T Value;
 		}
 	}
 }
