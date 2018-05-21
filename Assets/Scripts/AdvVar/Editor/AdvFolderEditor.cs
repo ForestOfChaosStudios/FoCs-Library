@@ -83,6 +83,8 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 			var width = (Screen.width / 180) + 1;
 			var nameList = typeDictionary.Keys.ToList();
+			if(!nameList.InRange(ActiveTab))
+				ActiveTab = 0;
 			for(var i = 0; i < nameList.Count; i += width)
 			{
 				if(!nameList.InRange(i))
@@ -92,10 +94,10 @@ namespace ForestOfChaosLib.AdvVar.Editor
 					for(var j = 0; j < width; j += 1)
 					{
 						var index = i + j;
+
 						if(!nameList.InRange(index))
 							break;
 						var key = nameList[index];
-
 
 						bool value;
 
@@ -103,7 +105,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 						var @event = FoCsGUI.Layout.Toggle(ActiveTab == index, key.ToggleName.SplitCamelCase(), FoCsGUI.Styles.UnitySkins.ToolbarButton);
 
-						if(@event)
+						if(@event.Pressed)
 						{
 							ActiveTab = index;
 							ActiveTabName = key;
