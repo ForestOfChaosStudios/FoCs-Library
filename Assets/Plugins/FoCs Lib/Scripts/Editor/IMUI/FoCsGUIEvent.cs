@@ -24,12 +24,7 @@ namespace ForestOfChaosLib.Editor
 
 			public bool EventIsMouse1InRect => EventIsMouse1 && EventOccurredInRect;
 
-			public bool Pressed => this;
-
-			public static implicit operator bool(GUIEvent input)
-			{
-				return input.EventIsMouse0InRect;
-			}
+			public bool Pressed => EventIsMouse0InRect;
 
 			public static implicit operator Event(GUIEvent input) => input.Event;
 
@@ -84,6 +79,8 @@ namespace ForestOfChaosLib.Editor
 		public class GUIEvent<T>: GUIEvent
 		{
 			public T Value;
+
+			public static implicit operator T(GUIEvent<T> input) => input.Value;
 		}
 	}
 }

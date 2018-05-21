@@ -451,6 +451,15 @@ namespace ForestOfChaosLib.Editor
 			public static eString TextArea(string value, GUIStyle style, float height, params GUILayOpt[] options) => TextAreaMaster(value, style, height, options);
 			#endregion
 			#endregion
+
+			#region HelpBox
+			public static GUIEvent ErrorBox   (string text) => FoCsGUI.ErrorBox   (GUILayoutUtility.GetRect(0,Utilities.SingleLine * 2.5f, Styles.UnitySkins.HelpBox, null), text);
+			public static GUIEvent InfoBox    (string text) => FoCsGUI.InfoBox    (GUILayoutUtility.GetRect(0,Utilities.SingleLine * 2.5f, Styles.UnitySkins.HelpBox, null), text);
+			public static GUIEvent WarningBox (string text) => FoCsGUI.WarningBox (GUILayoutUtility.GetRect(0,Utilities.SingleLine * 2.5f, Styles.UnitySkins.HelpBox, null), text);
+			public static GUIEvent HelpBox    (string text) => FoCsGUI.HelpBox    (GUILayoutUtility.GetRect(0,Utilities.SingleLine * 2.5f, Styles.UnitySkins.HelpBox, null), text);
+			#endregion
 		}
+
+
 	}
 }

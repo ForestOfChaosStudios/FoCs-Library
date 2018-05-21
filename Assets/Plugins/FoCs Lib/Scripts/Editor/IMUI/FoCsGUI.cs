@@ -11,13 +11,13 @@ namespace ForestOfChaosLib.Editor
 {
 	public static partial class FoCsGUI
 	{
-		internal static GUIStyle LabelStyle { get; } = Styles.UnitySkins.Label;
-		internal static GUIStyle ToggleStyle { get; } = Styles.UnitySkins.Toggle;
-		internal static GUIStyle ButtonStyle { get; } = Styles.UnitySkins.Button;
-		internal static GUIStyle FoldoutStyle { get; } = Styles.UnitySkins.Foldout;
-		internal static GUIStyle TextFieldStyle { get; } = Styles.UnitySkins.TextField_Editor;
+		internal static GUIStyle LabelStyle       { get; } = Styles.UnitySkins.Label;
+		internal static GUIStyle ToggleStyle      { get; } = Styles.UnitySkins.Toggle;
+		internal static GUIStyle ButtonStyle      { get; } = Styles.UnitySkins.Button;
+		internal static GUIStyle FoldoutStyle     { get; } = Styles.UnitySkins.Foldout;
+		internal static GUIStyle TextFieldStyle   { get; } = Styles.UnitySkins.TextField_Editor;
 		internal static GUIStyle NumberFieldStyle { get; } = Styles.UnitySkins.NumberField;
-		internal static GUIStyle TextAreaStyle { get; } = Styles.UnitySkins.TextArea_Editor;
+		internal static GUIStyle TextAreaStyle    { get; } = Styles.UnitySkins.TextArea_Editor;
 
 		#region Label
 		private static GUIEvent LabelMaster(Rect rect, GUICon guiCon, GUIStyle style)
@@ -251,6 +251,25 @@ namespace ForestOfChaosLib.Editor
 
 		public static eString TextArea(Rect rect, string value) => TextAreaMaster(rect, value, TextAreaStyle);
 		public static eString TextArea(Rect rect, string value, GUIStyle style) => TextAreaMaster(rect, value, style);
+		#endregion
+
+		#region HelpBox
+		private static GUIEvent HelpBoxMaster(Rect rect, string text, MessageType type)
+		{
+			var data = new GUIEvent
+					   {
+						   Event = new Event(Event.current),
+						   Rect = rect
+					   };
+			EditorGUI.HelpBox(rect, text, type);
+
+			return data;
+		}
+
+		public static GUIEvent ErrorBox   (Rect rect, string text) => HelpBoxMaster(rect, text, MessageType.Error);
+		public static GUIEvent InfoBox    (Rect rect, string text) => HelpBoxMaster(rect, text, MessageType.Info);
+		public static GUIEvent WarningBox (Rect rect, string text) => HelpBoxMaster(rect, text, MessageType.Warning);
+		public static GUIEvent HelpBox    (Rect rect, string text) => HelpBoxMaster(rect, text, MessageType.None);
 		#endregion
 
 		#region Other
