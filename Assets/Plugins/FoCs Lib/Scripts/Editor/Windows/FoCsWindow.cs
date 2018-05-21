@@ -33,8 +33,6 @@ namespace ForestOfChaosLib.Editor.Windows
 		protected static T GetWindowAndShow()
 		{
 			GetWindow();
-			if(window)
-				window.Close();
 			window.Show();
 			window.Focus();
 			return window;
@@ -43,8 +41,6 @@ namespace ForestOfChaosLib.Editor.Windows
 		protected static T GetWindowAndOpenUtility()
 		{
 			GetWindow();
-			//if(window)
-			//	window.Close();
 			window.ShowUtility();
 			window.Focus();
 			return window;

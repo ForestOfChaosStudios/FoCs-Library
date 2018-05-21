@@ -12,10 +12,9 @@ namespace ForestOfChaosLib.Editor.Windows
 	public class BuiltInResourcesWindow: FoCsWindow<BuiltInResourcesWindow>
 	{
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + "WIP/Built-in styles and icons")]
-		public static void ShowWindow()
+		internal static void Init()
 		{
 			GetWindowAndShow();
-			Window.Show();
 		}
 
 		private struct Drawing

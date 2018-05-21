@@ -19,14 +19,12 @@ namespace ForestOfChaosLib.Editor.EditorWindows
 		private static List<string> DataList = new List<string>();
 
 		[MenuItem(FileStrings.FORESTOFCHAOS_SYSTEMS_ + WindowTitle)]
-		private static void Init()
+		internal static void Init()
 		{
 			// Get existing open window or if none, make a new one:
 			GetWindowAndShow();
 			Window.titleContent = new GUIContent(WindowTitle);
-
 			InitList();
-			Window.Show();
 		}
 
 		private static void InitList()

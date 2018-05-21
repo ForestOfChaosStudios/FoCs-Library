@@ -27,12 +27,11 @@ namespace ForestOfChaosLib.ScreenCap
 		private const string Title = "Screen Capture Window";
 
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
-		private static void Init()
+		internal static void Init()
 		{
-			GetWindow();
+			GetWindowAndOpenUtility();
 			Window.minSize = new Vector2(400,220);
 			Window.titleContent = new GUIContent(Title);
-			Window.ShowUtility();
 		}
 	}
 }

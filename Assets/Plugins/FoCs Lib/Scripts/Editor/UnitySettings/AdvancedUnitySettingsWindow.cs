@@ -25,7 +25,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 		}
 
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
-		private static void Init()
+		internal static void Init()
 		{
 			GetWindowAndShow();
 			Window.titleContent.text = Title;

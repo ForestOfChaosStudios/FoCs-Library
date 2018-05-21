@@ -11,7 +11,7 @@ namespace ForestOfChaosLib.AdvDebug
 	{
 		private const string WINDOW_NAME = "AdvDebugWindow";
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + WINDOW_NAME)]
-		private static void Init()
+		internal static void Init()
 		{
 			GetWindowAndShow();
 			Window.titleContent.text = WINDOW_NAME;

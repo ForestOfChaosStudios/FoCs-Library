@@ -14,9 +14,9 @@ namespace ForestOfChaosLib.InputManager.Editor
 		private const string Title = "Input Manager";
 
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + "Player Input Manager Window")]
-		private static void Init()
+		internal static void Init()
 		{
-			GetWindow();
+			GetWindowAndShow();
 			Window.titleContent.text = Title;
 		}
 

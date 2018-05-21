@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using ForestOfChaosLib.Editor.Windows;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
@@ -21,14 +22,18 @@ namespace ForestOfChaosLib.Editor
 
 		private static List<Type> tabList;
 		private static List<Type> TabList => tabList ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTabAttribute>(false));
-		private static int ActiveTab = 0;
+
+		private static int ActiveTab
+		{
+			get { return EditorPrefs.GetInt("FoCsCP.ActiveIndex"); }
+			set { EditorPrefs.SetInt("FoCsCP.ActiveIndex", value); }
+		}
 
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + SHORT_TITLE)]
 		private static void Init()
 		{
-			GetWindow();
+			GetWindowAndShow();
 			Window.titleContent = new GUIContent(TITLE);
-			Window.Show();
 		}
 
 		protected override void OnGUI()
@@ -60,22 +65,6 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private static void DrawUISettings()
-		{
-			if(FoCsGUI.Layout.Button("Get", FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32)))
-			{
-				if(skin)
-				{ }
-			}
-
-			if(FoCsGUI.Layout.Button("Set", FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32)))
-			{
-				if(skin)
-					skin.customStyles = FoCsGUI.Styles.StylesArray;
-			}
-			skin = (GUISkin)EditorGUILayout.ObjectField(skin, typeof(GUISkin), false);
-		}
-
 		private void Update()
 		{
 			if(mouseOverWindow)
@@ -91,9 +80,11 @@ namespace ForestOfChaosLib.Editor
 				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
 				{
 					var @event = FoCsGUI.Layout.Button(key.Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
-					if(@event)
+					if(@event.Value)
 					{
 						Window.ShowNotification(new GUIContent($"Clicked: {key.Name.SplitCamelCase()}"));
+						key.GetMethod("Init", BindingFlags.NonPublic | BindingFlags.Static)?.Invoke(null, null);
+						//var otherWin = GetWindow(key);
 					}
 				}
 			}
@@ -107,7 +98,7 @@ namespace ForestOfChaosLib.Editor
 				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
 				{
 					var @event = FoCsGUI.Layout.Toggle(ActiveTab == index, key.Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
-					if(@event.Value)
+					if(@event)
 					{
 						ActiveTab = index;
 						Window.ShowNotification(new GUIContent($"Clicked: {key.Name.SplitCamelCase()}"));
