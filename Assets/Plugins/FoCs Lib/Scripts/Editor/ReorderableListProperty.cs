@@ -16,17 +16,12 @@ namespace ForestOfChaosLib.Editor
 			private SerializedProperty _property;
 			public bool Animate;
 
-			private static bool limitingEnabled = true;
-
 			public static bool LimitingEnabled
 			{
-				get
-				{
-					return limitingEnabled;
-				}
+				get { return EditorPrefs.GetInt("FoCsRLP.LimitingEnabled") == 0; }
 				set
 				{
-					limitingEnabled = value;
+					EditorPrefs.SetInt("FoCsRLP.LimitingEnabled", value ? 0 : 1);
 					OnLimitingChange.Trigger();
 				}
 			}
@@ -276,7 +271,31 @@ namespace ForestOfChaosLib.Editor
 
 			public class ListLimiter
 			{
-				public const int TOTAL_VISIBLE_COUNT = 25;
+				private static int _TOTAL_VISIBLE_COUNT
+				{
+					get
+					{
+						var num = Mathf.Clamp(EditorPrefs.GetInt("FoCsRLP._TOTAL_VISIBLE_COUNT"), 0, int.MaxValue);
+
+						if(num == 0)
+							return _TOTAL_VISIBLE_COUNT = 25;
+						return num;
+					}
+					set { EditorPrefs.SetInt("FoCsRLP._TOTAL_VISIBLE_COUNT", Mathf.Clamp(value, 0, int.MaxValue)); }
+				}
+
+				public static int TOTAL_VISIBLE_COUNT
+				{
+					get { return _TOTAL_VISIBLE_COUNT; }
+					set
+					{
+						_TOTAL_VISIBLE_COUNT = value;
+						ChangeCount.Trigger();
+					}
+				}
+
+				private static Action ChangeCount;
+
 
 				private int _max;
 				private int _min;
@@ -295,21 +314,36 @@ namespace ForestOfChaosLib.Editor
 					set { _max = Math.Min(Count, value); }
 				}
 
-				public bool ShowElement(int index) => (index >= Min) && (index < Max);
+				public bool ShowElement(int index)
+				{
+					//CheckUpdate();
+					return (index >= Min) && (index < Max);
+				}
 
 				public static ListLimiter GetLimiter(ReorderableListProperty listProperty) => new ListLimiter
 																							  {
 																								  MyListProperty = listProperty,
-																								  _min = 0,
-																								  _max = TOTAL_VISIBLE_COUNT
+																								  Min = 0,
+																								  Max = TOTAL_VISIBLE_COUNT
 																							  };
 
-				public bool CanDecrease() => _min > 0;
+				public bool CanDecrease()
+				{
+					CheckUpdate();
+					return _min > 0;
+				}
 
-				public bool CanIncrease() => _max < Count;
+				public bool CanIncrease()
+				{
+					CheckUpdate();
+					return _max < Count;
+				}
 
 				public void ChangeRange(int amount)
 				{
+					if(amount != 0)
+						CheckUpdate();
+					//Debug.Log($"Change Amount: {amount}");
 					var newMin = Min + amount;
 					var newMax = newMin + TOTAL_VISIBLE_COUNT;
 					if((newMax < Count) && (newMin >= 0))
@@ -341,6 +375,28 @@ namespace ForestOfChaosLib.Editor
 				{
 					Max = Count;
 					Min = Max - TOTAL_VISIBLE_COUNT;
+				}
+
+				private bool Update;
+				public void UpdateRange()
+				{
+					Update = true;
+				}
+
+				private void CheckUpdate()
+				{
+					if(Update)
+						ChangeRange(0);
+				}
+
+				private ListLimiter()
+				{
+					ChangeCount += UpdateRange;
+				}
+
+				~ListLimiter()
+				{
+					ChangeCount -= UpdateRange;
 				}
 			}
 
