@@ -43,3 +43,6 @@ Assets/Editor Default Resources\.meta
 \[RawAssets\]/
 
 \[RawAssets\]\.meta
+
+*Thumbs\.db
+*Thumbs\.db.meta
