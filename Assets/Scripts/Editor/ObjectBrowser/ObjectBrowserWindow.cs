@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.Windows;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
@@ -30,11 +29,20 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 		private int activeIndex = 0;
 		private string search = "";
 
+		private string Search
+		{
+			get { return search; }
+			set { EditorPrefs.SetString("FoCsOB.Search", search = value); }
+		}
+
 		private List<Object> FoundObjects = new List<Object>();
 
 		private void OnEnable()
 		{
+			Search = EditorPrefs.GetString("FoCsOB.Search");
 			TypeList = ReflectionUtilities.GetInheritedClasses<ScriptableObject>();
+			TypeList.AddRange(ReflectionUtilities.GetInheritedClasses<MonoBehaviour>());
+
 			for(var i = TypeList.Count - 1; i >= 0; i--)
 			{
 				if(TypeList[i].IsGenericType ||
@@ -67,7 +75,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			{
 				for(var i = 0; i < TypeList.Count; i++)
 				{
-					if(search.IsNullOrEmpty())
+					if(Search.IsNullOrEmpty())
 					{
 						var @event = FoCsGUI.Layout.Toggle(activeIndex == i, TypeList[i].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton);
 						if(@event.Pressed)
@@ -76,7 +84,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 					}
 					else
 					{
-						if(!TypeList[i].Name.ToLower().Contains(search.ToLower()))
+						if(!TypeList[i].Name.ToLower().Contains(Search.ToLower()))
 							continue;
 						var @event = FoCsGUI.Layout.Toggle(activeIndex == i, TypeList[i].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton);
 						if(@event.Pressed)

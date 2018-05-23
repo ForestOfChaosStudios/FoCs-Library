@@ -47,8 +47,8 @@ namespace ForestOfChaosLib.Utilities
 			return list;
 		}
 
-		public static List<Type> GetInheritedClasses<TInherit>()
-			where TInherit: class
+		public static List<Type> GetInheritedClasses<TInherit>() => GetInheritedClasses(typeof(TInherit));
+		public static List<Type> GetInheritedClasses(Type TInherit)
 		{
 			var assembliesList = AppDomain.CurrentDomain.GetAssemblies();
 
@@ -58,11 +58,10 @@ namespace ForestOfChaosLib.Utilities
 			{
 				foreach(var t in assembly.GetTypes())
 				{
-					if(t.IsSubclassOf(typeof(TInherit)))
-					{
-						if(!list.Contains(t))
-							list.Add(t);
-					}
+					if(!t.IsSubclassOf(TInherit))
+						continue;
+					if(!list.Contains(t))
+						list.Add(t);
 				}
 			}
 			return list;
