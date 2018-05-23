@@ -86,6 +86,16 @@ namespace ForestOfChaosLib.Editor
 					{
 						handleScrollWheel = handleScrollWheel
 					};
+
+			public static EditorGUILayout.ScrollViewScope ScrollViewScope(
+					Vector2 scrollPos,
+					bool handleScrollWheel,
+					bool alwaysShowHorizontal,
+					bool alwaysShowVertical,
+					params GUILayoutOption[] options) => new EditorGUILayout.ScrollViewScope(scrollPos, alwaysShowHorizontal, alwaysShowVertical, options)
+														 {
+															 handleScrollWheel = handleScrollWheel
+														 };
 			#endregion
 			#endregion
 			#endregion
