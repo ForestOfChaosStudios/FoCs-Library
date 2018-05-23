@@ -129,12 +129,15 @@ namespace ForestOfChaosLib.Editor
 			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
 				var transform = Target;
-				if(GUILayout.Button(ResetContent, EditorStyles.toolbarButton))
+				var resetBtn = FoCsGUI.Layout.Button(ResetContent, EditorStyles.toolbarButton);
+				var resetLocalBtn = FoCsGUI.Layout.Button(ResetLocalContent, EditorStyles.toolbarButton);
+
+				if(resetBtn)
 				{
 					Undo.RecordObject(transform, "ResetPosRotScale");
 					transform.ResetPosRotScale();
 				}
-				if(GUILayout.Button(ResetLocalContent, EditorStyles.toolbarButton))
+				if(resetLocalBtn)
 				{
 					Undo.RecordObject(transform, "ResetLocalPosRotScale");
 					transform.ResetLocalPosRotScale();

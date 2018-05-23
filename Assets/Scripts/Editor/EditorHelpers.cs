@@ -60,12 +60,12 @@ namespace ForestOfChaosLib.Editor
 
 			if(canCopy)
 			{
-				if(GUILayout.Button(CP_CopyContent, EditorStyles.toolbarButton))
-					CopyPasteUtility.Copy(obj);
 				var isType = CopyPasteUtility.IsTypeInBuffer(obj);
+				FoCsGUI.GUIEvent<bool> pasteEvent;
+				var copyEvent = FoCsGUI.Layout.Button(CP_CopyContent, EditorStyles.toolbarButton);
 				using(Disposables.ColorChanger(isType?
-														 GUI.color :
-														 Color.red))
+												   GUI.color :
+												   Color.red))
 				{
 					var PasteContent = new GUIContent("Paste Data",
 													  "Pastes the data.\n" +
@@ -77,39 +77,48 @@ namespace ForestOfChaosLib.Editor
 					if(!isType)
 						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;
 
-					if(GUILayout.Button(PasteContent, EditorStyles.toolbarButton))
-					{
-						Undo.RecordObject(obj, "Before Paste Settings");
-						CopyPasteUtility.Paste(ref obj);
-					}
-
-					return obj;
+					pasteEvent = FoCsGUI.Layout.Button(PasteContent, EditorStyles.toolbarButton);
 				}
+
+				if(copyEvent)
+					CopyPasteUtility.Copy(obj);
+				if(pasteEvent)
+				{
+					Undo.RecordObject(obj, "Before Paste Settings");
+					CopyPasteUtility.Paste(ref obj);
+				}
+
+				return obj;
+
 			}
 			if(canEditorCopy)
 			{
-				if(GUILayout.Button(CP_EditorCopyContent, EditorStyles.toolbarButton))
-					CopyPasteUtility.EditorCopy(obj);
-				var PasteContent = new GUIContent("(Editor) Paste Data",
-												  "Pastes the data.\n" +
-												  CopyPasteUtility.CopyBuffer.Substring(0,
-																						CopyPasteUtility.CopyBuffer.Length >= 2048?
-																							2048 :
-																							CopyPasteUtility.CopyBuffer.Length));
-
 				var isType = CopyPasteUtility.IsTypeInBuffer(obj);
+				FoCsGUI.GUIEvent<bool> pasteEvent;
+				var copyEvent = FoCsGUI.Layout.Button(CP_EditorCopyContent, EditorStyles.toolbarButton);
 				using(Disposables.ColorChanger(isType?
-														 GUI.color :
-														 Color.red))
+												   GUI.color :
+												   Color.red))
 				{
+					var PasteContent = new GUIContent("Paste Data (Editor)",
+													  "Pastes the data.\n" +
+													  CopyPasteUtility.CopyBuffer.Substring(0,
+																							CopyPasteUtility.CopyBuffer.Length >= 2048?
+																								2048 :
+																								CopyPasteUtility.CopyBuffer.Length));
+
 					if(!isType)
 						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;
 
-					if(GUILayout.Button(PasteContent, EditorStyles.toolbarButton))
-					{
-						Undo.RecordObject(obj, "Before Paste Settings");
-						CopyPasteUtility.EditorPaste(ref obj);
-					}
+					pasteEvent = FoCsGUI.Layout.Button(PasteContent, EditorStyles.toolbarButton);
+				}
+
+				if(copyEvent)
+					CopyPasteUtility.EditorCopy(obj);
+				if(pasteEvent)
+				{
+					Undo.RecordObject(obj, "Before Paste Settings");
+					CopyPasteUtility.EditorPaste(ref obj);
 				}
 
 				return obj;
