@@ -38,7 +38,7 @@ namespace ForestOfChaosLib.Editor
 
 		protected override void OnGUI()
 		{
-			FoCsGUI.Layout.Label(TITLE, FoCsGUI.Styles.UnitySkins.BoldLabel);
+			FoCsGUI.Layout.Label(TITLE, FoCsGUI.Styles.Unity.BoldLabel);
 			using(FoCsEditor.Disposables.HorizontalScope())
 			{
 				using(FoCsEditor.Disposables.VerticalScope(GUILayout.Width(200)))

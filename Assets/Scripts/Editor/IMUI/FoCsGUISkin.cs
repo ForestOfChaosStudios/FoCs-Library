@@ -159,7 +159,7 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(toolbar != null)
 						return toolbar;
-					toolbar = new GUIStyle(UnitySkins.Toolbar)
+					toolbar = new GUIStyle(Unity.Toolbar)
 							  {
 								  fixedHeight = 0
 							  };
@@ -176,7 +176,7 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(toolbarButton != null)
 						return toolbarButton;
-					toolbarButton = new GUIStyle(UnitySkins.ToolbarButton)
+					toolbarButton = new GUIStyle(Unity.ToolbarButton)
 									{
 										fixedHeight = 0
 									};
@@ -193,7 +193,7 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(buttonDetailed != null)
 						return buttonDetailed;
-					buttonDetailed = new GUIStyle(UnitySkins.Button)
+					buttonDetailed = new GUIStyle(Unity.Button)
 									 {
 										 normal =
 										 {
@@ -221,7 +221,7 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(buttonThick != null)
 						return buttonThick;
-					buttonThick = new GUIStyle(UnitySkins.Button)
+					buttonThick = new GUIStyle(Unity.Button)
 								  {
 									  normal =
 									  {
@@ -249,7 +249,7 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(buttonThin != null)
 						return buttonThin;
-					buttonThin = new GUIStyle(UnitySkins.Button)
+					buttonThin = new GUIStyle(Unity.Button)
 								 {
 									 normal =
 									 {

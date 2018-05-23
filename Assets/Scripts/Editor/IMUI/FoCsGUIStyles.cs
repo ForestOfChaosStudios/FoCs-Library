@@ -9,7 +9,7 @@ namespace ForestOfChaosLib.Editor
 		public static partial class Styles
 		{
 			public static SkinRef unitySkins;
-			public static SkinRef UnitySkins => unitySkins ?? (unitySkins = new SkinRef());
+			public static SkinRef Unity => unitySkins ?? (unitySkins = new SkinRef());
 
 			public static Texture2D GetTexture(string search) => GetAsset<Texture2D>(search);
 

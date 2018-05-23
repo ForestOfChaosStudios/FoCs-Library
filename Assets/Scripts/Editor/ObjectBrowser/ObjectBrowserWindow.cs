@@ -88,7 +88,14 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.ExpandWidth(true)))
 			{
 				FoCsGUI.Layout.Label("Search", GUILayout.Width(60));
-				search = FoCsGUI.Layout.TextField(search, FoCsGUI.Styles.UnitySkins.ToolbarTextField, GUILayout.ExpandWidth(true));
+				using(var cc = FoCsEditor.Disposables.ChangeCheck())
+				{
+					var str = FoCsGUI.Layout.TextField(Search, FoCsGUI.Styles.Unity.ToolbarTextField, GUILayout.ExpandWidth(true));
+					if(!cc.changed)
+						return;
+					Search = str;
+					Repaint();
+				}
 			}
 		}
 
@@ -103,9 +110,9 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 		private void DrawInfo()
 		{
-			using(FoCsEditor.Disposables.VerticalScope(FoCsGUI.Styles.UnitySkins.Box))
+			using(FoCsEditor.Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box))
 			{
-				FoCsGUI.Layout.Label("Type Info", FoCsGUI.Styles.UnitySkins.BoldLabel);
+				FoCsGUI.Layout.Label("Type Info", FoCsGUI.Styles.Unity.BoldLabel);
 				using(FoCsEditor.Disposables.HorizontalScope())
 				{
 					FoCsGUI.Layout.Label("Assembly:");

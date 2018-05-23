@@ -103,7 +103,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 						enableDictionary.TryGetValue(key.ToggleName, out value);
 
-						var @event = FoCsGUI.Layout.Toggle(ActiveTab == index, key.ToggleName.SplitCamelCase(), FoCsGUI.Styles.UnitySkins.ToolbarButton);
+						var @event = FoCsGUI.Layout.Toggle(ActiveTab == index, key.ToggleName.SplitCamelCase(), FoCsGUI.Styles.Unity.ToolbarButton);
 
 						if(@event.Pressed)
 						{

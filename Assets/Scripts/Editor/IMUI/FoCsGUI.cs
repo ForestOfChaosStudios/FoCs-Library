@@ -11,13 +11,13 @@ namespace ForestOfChaosLib.Editor
 {
 	public static partial class FoCsGUI
 	{
-		internal static GUIStyle LabelStyle       { get; } = Styles.UnitySkins.Label;
-		internal static GUIStyle ToggleStyle      { get; } = Styles.UnitySkins.Toggle;
-		internal static GUIStyle ButtonStyle      { get; } = Styles.UnitySkins.Button;
-		internal static GUIStyle FoldoutStyle     { get; } = Styles.UnitySkins.Foldout;
-		internal static GUIStyle TextFieldStyle   { get; } = Styles.UnitySkins.TextField_Editor;
-		internal static GUIStyle NumberFieldStyle { get; } = Styles.UnitySkins.NumberField;
-		internal static GUIStyle TextAreaStyle    { get; } = Styles.UnitySkins.TextArea_Editor;
+		internal static GUIStyle LabelStyle       { get; } = Styles.Unity.Label;
+		internal static GUIStyle ToggleStyle      { get; } = Styles.Unity.Toggle;
+		internal static GUIStyle ButtonStyle      { get; } = Styles.Unity.Button;
+		internal static GUIStyle FoldoutStyle     { get; } = Styles.Unity.Foldout;
+		internal static GUIStyle TextFieldStyle   { get; } = Styles.Unity.TextField_Editor;
+		internal static GUIStyle NumberFieldStyle { get; } = Styles.Unity.NumberField;
+		internal static GUIStyle TextAreaStyle    { get; } = Styles.Unity.TextArea_Editor;
 
 		#region Label
 		private static GUIEvent LabelMaster(Rect rect, GUICon guiCon, GUIStyle style)
