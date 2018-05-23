@@ -2,7 +2,7 @@
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
-	public abstract class BaseSetRTRef<T, RT_T>: FoCsBehavior
+	public abstract class BaseSetRunTimeRef<T, RT_T>: FoCsBehavior
 		where RT_T: RunTimeRef<T> where T: class
 	{
 		public RT_T Ref;
@@ -29,7 +29,7 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 		}
 	}
 
-	public abstract class BaseSetRTRefWithField<T, RT_T>: BaseSetRTRef<T, RT_T>
+	public abstract class BaseSetRunTimeRefWithField<T, RT_T>: BaseSetRunTimeRef<T, RT_T>
 		where RT_T: RunTimeRef<T> where T: Object
 	{
 		[SerializeField] private T _referenceField;

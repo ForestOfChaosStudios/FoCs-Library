@@ -2,7 +2,7 @@
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
-	public class AddToRendererRTSet: BaseAddToRTSet<Renderer, RendererRTList>
+	public class AddToRendererRunTimeSet: BaseAddToRunTimeSet<Renderer, RendererRunTimeList>
 	{
 		[SerializeField] private Renderer _renderer;
 

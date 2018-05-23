@@ -5,6 +5,6 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 {
 	[Serializable]
 	[AdvFolderNameRunTime]
-	public class ComponentRTRef: RunTimeRef<Component>
+	public class GameObjectRunTimeList: RunTimeList<GameObject>
 	{ }
 }

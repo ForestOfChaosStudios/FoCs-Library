@@ -5,6 +5,6 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 {
 	[Serializable]
 	[AdvFolderNameRunTime]
-	public class RendererRTList: RunTimeList<Renderer>
+	public class RendererRunTimeList: RunTimeList<Renderer>
 	{ }
 }

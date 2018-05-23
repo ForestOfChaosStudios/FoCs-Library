@@ -1,10 +1,10 @@
 ﻿using System;
-using UCamera = UnityEngine.Camera;
+using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef
 {
 	[Serializable]
 	[AdvFolderNameRunTime]
-	public class CameraRTRef: RunTimeRef<UCamera>
+	public class RendererRunTimeRef: RunTimeRef<Renderer>
 	{ }
 }

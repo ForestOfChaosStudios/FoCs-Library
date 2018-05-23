@@ -5,6 +5,6 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 {
 	[Serializable]
 	[AdvFolderNameRunTime]
-	public class TransformRTList: RunTimeList<Transform>
+	public class TransformRunTimeRef: RunTimeRef<Transform>
 	{ }
 }

@@ -2,7 +2,7 @@
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
-	public class AddToTransformRTSet: BaseAddToRTSet<Transform, TransformRTList>
+	public class AddToTransformRunTimeSet: BaseAddToRunTimeSet<Transform, TransformRunTimeList>
 	{
 		public override Transform Value => Transform;
 	}

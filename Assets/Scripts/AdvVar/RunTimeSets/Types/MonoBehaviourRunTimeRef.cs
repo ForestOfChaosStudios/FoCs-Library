@@ -5,6 +5,6 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 {
 	[Serializable]
 	[AdvFolderNameRunTime]
-	public class RendererRTRef: RunTimeRef<Renderer>
+	public class MonoBehaviourRunTimeRef: RunTimeRef<MonoBehaviour>
 	{ }
 }

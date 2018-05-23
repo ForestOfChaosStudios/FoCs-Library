@@ -2,23 +2,23 @@
 {
 	public class SyncComponentActiveWithGameObject: FoCsBehavior
 	{
-		public MonoBehaviourRTRef MonoBehaviourRTRef;
+		public MonoBehaviourRunTimeRef MonoBehaviourRunTimeRef;
 
 		private void OnEnable()
 		{
-			if(MonoBehaviourRTRef)
+			if(MonoBehaviourRunTimeRef)
 			{
-				if(MonoBehaviourRTRef.Reference)
-					MonoBehaviourRTRef.Reference.enabled = true;
+				if(MonoBehaviourRunTimeRef.Reference)
+					MonoBehaviourRunTimeRef.Reference.enabled = true;
 			}
 		}
 
 		private void OnDisable()
 		{
-			if(MonoBehaviourRTRef)
+			if(MonoBehaviourRunTimeRef)
 			{
-				if(MonoBehaviourRTRef.Reference)
-					MonoBehaviourRTRef.Reference.enabled = false;
+				if(MonoBehaviourRunTimeRef.Reference)
+					MonoBehaviourRunTimeRef.Reference.enabled = false;
 			}
 		}
 	}
