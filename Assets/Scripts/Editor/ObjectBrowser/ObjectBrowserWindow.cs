@@ -25,17 +25,27 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 		private const float TYPE_WIDTH = 250;
 		private Vector2 typeScrollPos = Vector2.zero;
 
-		private List<Type> TypeList;
-		private int activeIndex = 0;
-		private string search = "";
+		private static List<Type> TypeList;
+		private static int activeIndex = 0;
+		private static string search = "";
 
-		private string Search
+		public static Type ActiveType
+		{
+			get
+			{
+				return TypeList[activeIndex];
+			}
+			set { activeIndex = TypeList.IndexOf(value); }
+		}
+
+		private static string Search
 		{
 			get { return search; }
 			set { EditorPrefs.SetString("FoCsOB.Search", search = value); }
 		}
 
-		private List<Object> FoundObjects = new List<Object>();
+		private List<Object> FoundSceneObjects = new List<Object>();
+		private List<Object> FoundAssetsObjects = new List<Object>();
 
 		private void OnEnable()
 		{
@@ -71,28 +81,39 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
 				FoCsGUI.Layout.Label("Type Selection", FoCsGUI.Styles.ToolbarButton);
 
-			using(var scroll = FoCsEditor.Disposables.ScrollViewScope(typeScrollPos, true))
+			using(var scroll = FoCsEditor.Disposables.ScrollViewScope(typeScrollPos, true, false, true))
 			{
 				for(var i = 0; i < TypeList.Count; i++)
 				{
 					if(Search.IsNullOrEmpty())
 					{
-						var @event = FoCsGUI.Layout.Toggle(activeIndex == i, TypeList[i].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton);
-						if(@event.Pressed)
-							activeIndex = i;
-						ChangeObjectType();
+						var @event = FoCsGUI.Layout.Toggle(activeIndex == i, TypeList[i].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.ExpandWidth(true));
+						TypePressed(i, @event);
 					}
 					else
 					{
-						if(!TypeList[i].Name.ToLower().Contains(Search.ToLower()))
+						if (!TypeList[i].Name.ToLower().Contains(Search.ToLower()))
 							continue;
-						var @event = FoCsGUI.Layout.Toggle(activeIndex == i, TypeList[i].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton);
-						if(@event.Pressed)
-							activeIndex = i;
+						var @event = FoCsGUI.Layout.Toggle(activeIndex == i, TypeList[i].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.ExpandWidth(true));
+						TypePressed(i, @event);
 					}
+					typeScrollPos = scroll.scrollPosition;
 				}
-				typeScrollPos = scroll.scrollPosition;
 			}
+			DrawSearchBox();
+		}
+
+		private void TypePressed(int i, FoCsGUI.GUIEvent<bool> @event)
+		{
+			if (@event.Pressed)
+			{
+				activeIndex = i;
+				ChangeObjectType();
+			}
+		}
+
+		private void DrawSearchBox()
+		{
 			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.ExpandWidth(true)))
 			{
 				FoCsGUI.Layout.Label("Search", GUILayout.Width(60));
@@ -111,16 +132,81 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 		{
 			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
 				FoCsGUI.Layout.Label(TypeList[activeIndex].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton);
-			using(FoCsEditor.Disposables.VerticalScope(GUILayout.ExpandHeight(true)))
-			{ }
+			using(FoCsEditor.Disposables.HorizontalScope(GUILayout.ExpandHeight(true)))
+			{
+				using (FoCsEditor.Disposables.VerticalScope(GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
+				{
+					using (FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+						FoCsGUI.Layout.Label("Scene Objects", FoCsGUI.Styles.ToolbarButton);
+					if (FoundSceneObjects.Count == 0)
+					{
+						FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name} In scene.");
+					}
+					else
+					{
+						foreach (var foundObject in FoundSceneObjects)
+							DrawFoundObject(foundObject);
+					}
+				}
+				DrawDivide();
+				using (FoCsEditor.Disposables.VerticalScope(GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
+				{
+					using (FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+						FoCsGUI.Layout.Label("Asset Library Objects", FoCsGUI.Styles.ToolbarButton);
+					if(FoundAssetsObjects.Count == 0)
+					{
+						FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name}. Can be found in the Assets Database.");
+					}
+					else
+					{
+						foreach(var foundObject in FoundAssetsObjects)
+							DrawFoundObject(foundObject);
+					}
+				}
+			}
 			DrawInfo();
 		}
 
-		private void DrawInfo()
+		private static void DrawDivide()
 		{
-			using(FoCsEditor.Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box))
+			using (FoCsEditor.Disposables.VerticalScope(GUILayout.ExpandHeight(true), GUILayout.Width(3)))
 			{
-				FoCsGUI.Layout.Label("Type Info", FoCsGUI.Styles.Unity.BoldLabel);
+				using (FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+					FoCsGUI.Layout.Label("", FoCsGUI.Styles.Toolbar);
+				using (FoCsEditor.Disposables.ColorChanger(Color.gray))
+				{
+					using (FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.ExpandHeight(true)))
+					{
+						FoCsGUI.Layout.Label("");
+					}
+				}
+			}
+		}
+
+		private static void DrawFoundObject(Object foundObject)
+		{
+			using(FoCsEditor.Disposables.HorizontalScope())
+			{
+				FoCsGUI.Layout.Label(foundObject.name);
+				var eventPingButton = FoCsGUI.Layout.Button(FoCsGUI.Styles.Find, GUILayout.Width(16));
+				FoCsGUI.Layout.Label("  ", GUILayout.Width(8));
+				if(eventPingButton.Pressed)
+					EditorGUIUtility.PingObject(foundObject);
+			}
+		}
+
+		private void Update()
+		{
+			if(mouseOverWindow)
+				Repaint();
+		}
+
+		private static void DrawInfo()
+		{
+			using(FoCsEditor.Disposables.VerticalScope())
+			{
+				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+					FoCsGUI.Layout.Label("Type Info", FoCsGUI.Styles.ToolbarButton);
 				using(FoCsEditor.Disposables.HorizontalScope())
 				{
 					FoCsGUI.Layout.Label("Assembly:");
@@ -135,7 +221,6 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 						if(baseType.IsGenericType)
 						{
-							//CopyPasteUtility.CopyBuffer = TypeList[activeIndex].BaseType.Name;
 							var genArg = new StringBuilder();
 							genArg.Append('<');
 							var genArgArray = baseType.GetGenericArguments();
@@ -158,6 +243,38 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 		}
 
 		private void ChangeObjectType()
-		{ }
+		{
+			SceneObjectChange();
+			AssetsObjectsChange();
+		}
+
+		private void AssetsObjectsChange()
+		{
+			if(FoundAssetsObjects == null)
+				FoundAssetsObjects = new List<Object>();
+			else
+				FoundAssetsObjects.Clear();
+			FoundAssetsObjects.AddRange(Resources.FindObjectsOfTypeAll(ActiveType));
+			for(var i = FoundAssetsObjects.Count - 1; i >= 0; i--)
+			{
+				if(!AssetDatabase.Contains(FoundAssetsObjects[i]))
+				{
+					FoundSceneObjects.Add(FoundAssetsObjects[i]);
+					FoundAssetsObjects.RemoveAt(i);
+				}
+			}
+
+			FoundAssetsObjects.TrimExcess();
+			FoundSceneObjects.TrimExcess();
+		}
+
+		private void SceneObjectChange()
+		{
+			if (FoundSceneObjects == null)
+				FoundSceneObjects = new List<Object>();
+			else
+				FoundSceneObjects.Clear();
+			//FoundSceneObjects.AddRange(FindObjectsOfType(ActiveType));
+		}
 	}
 }
