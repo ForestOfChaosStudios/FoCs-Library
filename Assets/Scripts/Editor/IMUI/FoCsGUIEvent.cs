@@ -12,19 +12,15 @@ namespace ForestOfChaosLib.Editor
 
 			public bool EventOccurredInRect => Rect.Contains(Event.mousePosition);
 
-			public bool LeftClick => EventIsMouse0InRect;
+			public bool EventIsMouseL => (Event.type == EventType.MouseUp) && (Event.button == 0);
 
-			public bool RightClick => EventIsMouse1InRect;
+			public bool EventIsMouseR => (Event.type == EventType.MouseUp) && (Event.button == 1);
 
-			public bool EventIsMouse0 => (Event.type == EventType.MouseUp) && (Event.button == 0);
+			public bool EventIsMouseLInRect => EventIsMouseL && EventOccurredInRect;
 
-			public bool EventIsMouse1 => (Event.type == EventType.MouseUp) && (Event.button == 1);
+			public bool EventIsMouseRInRect => EventIsMouseR && EventOccurredInRect;
 
-			public bool EventIsMouse0InRect => EventIsMouse0 && EventOccurredInRect;
-
-			public bool EventIsMouse1InRect => EventIsMouse1 && EventOccurredInRect;
-
-			public bool Pressed => EventIsMouse0InRect;
+			public virtual bool Pressed => EventIsMouseLInRect;
 
 			public static implicit operator Event(GUIEvent input) => input.Event;
 
@@ -74,6 +70,30 @@ namespace ForestOfChaosLib.Editor
 						   };
 				return data;
 			}
+
+			public static GUIEventBool Create(bool val)
+			{
+				var data = new GUIEventBool
+						   {
+							   Event = new Event(Event.current),
+							   Value = val
+						   };
+
+				if(data.Event.type == EventType.repaint)
+					data.Rect = GUILayoutUtility.GetLastRect();
+				return data;
+			}
+
+			public static GUIEventBool Create(Rect rect, bool val)
+			{
+				var data = new GUIEventBool
+						   {
+							   Event = new Event(Event.current),
+							   Rect = rect,
+							   Value = val
+						   };
+				return data;
+			}
 		}
 
 		public class GUIEvent<T>: GUIEvent
@@ -81,6 +101,11 @@ namespace ForestOfChaosLib.Editor
 			public T Value;
 
 			public static implicit operator T(GUIEvent<T> input) => input.Value;
+		}
+		public class GUIEventBool: GUIEvent<bool>
+		{
+			/// <inheritdoc />
+			public override bool Pressed => Value;
 		}
 	}
 }

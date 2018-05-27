@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using GUICon = UnityEngine.GUIContent;
 using eInt = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<int>;
-using eBool = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<bool>;
+using eBool = ForestOfChaosLib.Editor.FoCsGUI.GUIEventBool;
 using eFloat = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<float>;
 using eString = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<string>;
 
