@@ -7,6 +7,10 @@ using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using Disposables = ForestOfChaosLib.Editor.FoCsEditor.Disposables;
+
+using SearchCompo = UnityEngine.Component;
+using SearchAsset = UnityEngine.ScriptableObject;
 
 namespace ForestOfChaosLib.Editor.ObjectBrowser
 {
@@ -21,200 +25,341 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			GetWindowAndShow();
 			Window.titleContent.text = TITLE;
 		}
+		private const float TYPE_WIDTH = 350;
 
-		private const float TYPE_WIDTH = 250;
-		private Vector2 typeScrollPos = Vector2.zero;
+		private static Vector2 typeScrollPos = Vector2.zero;
+		private static Vector2 sceneScrollPos = Vector2.zero;
+		private static Vector2 assetsScrollPos = Vector2.zero;
 
 		private static List<Type> TypeList;
-		private static int activeIndex = 0;
-		private static string search = "";
+
+		private static List<Object> FoundSceneObjects = new List<Object>();
+		private static List<Object> FoundAssetsObjects = new List<Object>();
+
+		public static bool Enable_Compo = true;
+		public static bool Enable_Asset = true;
 
 		public static Type ActiveType
 		{
-			get
-			{
-				return TypeList[activeIndex];
-			}
-			set { activeIndex = TypeList.IndexOf(value); }
+			get { return TypeList[ActiveIndex]; }
+			set { ActiveIndex = TypeList.IndexOf(value); }
 		}
 
-		private static string Search
+		private static string typeSearch = "";
+
+		private static string TypeSearch
 		{
-			get { return search; }
-			set { EditorPrefs.SetString("FoCsOB.Search", search = value); }
+			get { return typeSearch; }
+			set { EditorPrefs.SetString("FoCsOB.TypeSearch", typeSearch = value); }
 		}
 
-		private List<Object> FoundSceneObjects = new List<Object>();
-		private List<Object> FoundAssetsObjects = new List<Object>();
+		private static string sceneSearch = "";
+
+		private static string SceneSearch
+		{
+			get { return sceneSearch; }
+			set { EditorPrefs.SetString("FoCsOB.SceneSearch", sceneSearch = value); }
+		}
+
+		private static string assetSearch = "";
+
+		private static string AssetSearch
+		{
+			get { return assetSearch; }
+			set { EditorPrefs.SetString("FoCsOB.AssetSearch", assetSearch = value); }
+		}
+
+		private static int activeIndex;
+
+		private static int ActiveIndex
+		{
+			get { return activeIndex; }
+			set { EditorPrefs.SetInt("FoCsOB.ActiveIndex", activeIndex = value); }
+		}
 
 		private void OnEnable()
 		{
-			Search = EditorPrefs.GetString("FoCsOB.Search");
-			TypeList = ReflectionUtilities.GetInheritedClasses<ScriptableObject>();
-			TypeList.AddRange(ReflectionUtilities.GetInheritedClasses<MonoBehaviour>());
+			SceneSearch = EditorPrefs.GetString("FoCsOB.SceneSearch");
+			AssetSearch = EditorPrefs.GetString("FoCsOB.AssetSearch");
+			TypeSearch = EditorPrefs.GetString("FoCsOB.TypeSearch");
+			activeIndex = EditorPrefs.GetInt("FoCsOB.ActiveIndex");
 
-			for(var i = TypeList.Count - 1; i >= 0; i--)
+			InitTypeList();
+		}
+
+		private static void InitTypeList()
+		{
+			TypeList = ReflectionUtilities.GetInheritedClasses<SearchAsset>();
+			TypeList.AddRange(ReflectionUtilities.GetInheritedClasses<SearchCompo>());
+			for (var i = TypeList.Count - 1; i >= 0; i--)
 			{
-				if(TypeList[i].IsGenericType ||
-				   TypeList[i].IsAbstract ||
-				   TypeList[i].Assembly == typeof(EditorWindow).Assembly ||
-				   TypeList[i].IsSubclassOf(typeof(UnityEditor.Editor)) ||
-				   TypeList[i].IsSubclassOf(typeof(EditorWindow)))
+				if (TypeList[i].IsGenericType || TypeList[i].IsAbstract || TypeList[i].Assembly == typeof(EditorWindow).Assembly || TypeList[i].IsSubclassOf(typeof(UnityEditor.Editor)) || TypeList[i].IsSubclassOf(typeof(EditorWindow)))
 					TypeList.RemoveAt(i);
 			}
+			TypeList.Add(typeof(GameObject));
 			TypeList.TrimExcess();
 		}
 
 		protected override void OnGUI()
 		{
-			using(FoCsEditor.Disposables.HorizontalScope())
+			using(var cc = Disposables.ChangeCheck())
 			{
-				using(FoCsEditor.Disposables.VerticalScope(GUILayout.Width(TYPE_WIDTH)))
-					DrawTypePanel();
-				using(FoCsEditor.Disposables.VerticalScope())
-					DrawObjectPanel();
+				using(Disposables.HorizontalScope())
+				{
+					using(Disposables.VerticalScope(GUILayout.Width(TYPE_WIDTH)))
+						DrawTypePanel();
+					using(Disposables.VerticalScope())
+						DrawObjectPanel();
+				}
+				if(cc.changed)
+					Repaint();
 			}
 		}
+
+		private static readonly GUILayoutOption[] ToggleOp =
+		{
+			GUILayout.ExpandWidth(true),
+			GUILayout.Height(18)
+		};
 
 		private void DrawTypePanel()
 		{
-			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-				FoCsGUI.Layout.Label("Type Selection", FoCsGUI.Styles.ToolbarButton);
-
-			using(var scroll = FoCsEditor.Disposables.ScrollViewScope(typeScrollPos, true, false, true))
+			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.Height(16)))
+				FoCsGUI.Layout.Label("Type Selection", FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
+			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, ToggleOp))
+			{
+				Enable_Compo = FoCsGUI.Layout.Toggle(Enable_Compo,
+													 !Enable_Compo?
+														 "Components Hidden" :
+														 "Components Shown",
+													 FoCsGUI.Styles.ToolbarButton,
+													 GUILayout.Height(21));
+				Enable_Asset = FoCsGUI.Layout.Toggle(Enable_Asset,
+													 !Enable_Asset?
+														 "Scriptable Objects Hidden" :
+														 "Scriptable Objects Shown",
+													 FoCsGUI.Styles.ToolbarButton,
+													 GUILayout.Height(21));
+			}
+			using(var scroll = Disposables.ScrollViewScope(typeScrollPos, true, false, true))
 			{
 				for(var i = 0; i < TypeList.Count; i++)
 				{
-					if(Search.IsNullOrEmpty())
-					{
-						var @event = FoCsGUI.Layout.Toggle(activeIndex == i, TypeList[i].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.ExpandWidth(true));
-						TypePressed(i, @event);
-					}
+					if(!Enable_Compo)
+						if(TypeList[i].IsSubclassOf(typeof(SearchCompo)))
+							continue;
+					if(!Enable_Asset)
+						if(TypeList[i].IsSubclassOf(typeof(SearchAsset)))
+							continue;
+					
+					if(TypeSearch.IsNullOrEmpty())
+						DrawTypeLabel(i);
 					else
 					{
-						if (!TypeList[i].Name.ToLower().Contains(Search.ToLower()))
+						if(!SearchString(TypeList[i].Name, TypeSearch))
 							continue;
-						var @event = FoCsGUI.Layout.Toggle(activeIndex == i, TypeList[i].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.ExpandWidth(true));
-						TypePressed(i, @event);
+						DrawTypeLabel(i);
 					}
-					typeScrollPos = scroll.scrollPosition;
 				}
+				typeScrollPos = scroll.scrollPosition;
 			}
-			DrawSearchBox();
+			DrawTypeSearchBox();
 		}
 
-		private void TypePressed(int i, FoCsGUI.GUIEvent<bool> @event)
+		private void DrawTypeLabel(int i)
 		{
-			if (@event.Pressed)
-			{
-				activeIndex = i;
-				ChangeObjectType();
-			}
+			var @event = FoCsGUI.Layout.Toggle(ActiveIndex == i, TypeList[i].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, ToggleOp);
+			TypePressed(i, @event);
 		}
 
-		private void DrawSearchBox()
+		private void TypePressed(int i, FoCsGUI.GUIEventBool @event)
 		{
-			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.ExpandWidth(true)))
+			if(!@event)
+				return;
+			ActiveIndex = i;
+			ChangeObjectType();
+		}
+
+		private void DrawTypeSearchBox()
+		{
+			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.ExpandWidth(true)))
 			{
 				FoCsGUI.Layout.Label("Search", GUILayout.Width(60));
-				using(var cc = FoCsEditor.Disposables.ChangeCheck())
+				using(var cc = Disposables.ChangeCheck())
 				{
-					var str = FoCsGUI.Layout.TextField(Search, FoCsGUI.Styles.Unity.ToolbarTextField, GUILayout.ExpandWidth(true));
+					var str = FoCsGUI.Layout.TextField(TypeSearch, GUILayout.ExpandWidth(true));
 					if(!cc.changed)
 						return;
-					Search = str;
+					TypeSearch = str;
 					Repaint();
+				}
+			}
+		}
+
+		private void DrawSceneSearchBox()
+		{
+			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, ToggleOp))
+			{
+				using(Disposables.HorizontalScope(FoCsGUI.Styles.ToolbarButton, ToggleOp))
+				{
+					FoCsGUI.Layout.Label("Current Loaded Scene Objects", GUILayout.Height(18));
+					FoCsGUI.Layout.Label("Search", GUILayout.Width(60), GUILayout.Height(18));
+					using(var cc = Disposables.ChangeCheck())
+					{
+						var str = FoCsGUI.Layout.TextField(SceneSearch, FoCsGUI.Styles.Unity.ToolbarTextField, GUILayout.Width((Screen.width * 0.3f) - 120));
+						if(!cc.changed)
+							return;
+						SceneSearch = str;
+						Repaint();
+					}
+				}
+			}
+		}
+
+		private void DrawAssetSearchBox()
+		{
+			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, ToggleOp))
+			{
+				using(Disposables.HorizontalScope(FoCsGUI.Styles.ToolbarButton, ToggleOp))
+				{
+					FoCsGUI.Layout.Label("Assets", GUILayout.Height(18));
+					FoCsGUI.Layout.Label("Search", GUILayout.Width(60), GUILayout.Height(18));
+					using(var cc = Disposables.ChangeCheck())
+					{
+						var str = FoCsGUI.Layout.TextField(AssetSearch, FoCsGUI.Styles.Unity.ToolbarTextField, GUILayout.Width((Screen.width * 0.3f) - 120));
+						if(!cc.changed)
+							return;
+						AssetSearch = str;
+						Repaint();
+					}
 				}
 			}
 		}
 
 		private void DrawObjectPanel()
 		{
-			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-				FoCsGUI.Layout.Label(TypeList[activeIndex].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton);
-			using(FoCsEditor.Disposables.HorizontalScope(GUILayout.ExpandHeight(true)))
+			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.Height(16)))
+				FoCsGUI.Layout.Label(TypeList[ActiveIndex].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
+			if(!Enable_Compo && !Enable_Asset)
 			{
-				using (FoCsEditor.Disposables.VerticalScope(GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
-				{
-					using (FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-						FoCsGUI.Layout.Label("Scene Objects", FoCsGUI.Styles.ToolbarButton);
-					if (FoundSceneObjects.Count == 0)
-					{
-						FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name} In scene.");
-					}
-					else
-					{
-						foreach (var foundObject in FoundSceneObjects)
-							DrawFoundObject(foundObject);
-					}
-				}
-				DrawDivide();
-				using (FoCsEditor.Disposables.VerticalScope(GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
-				{
-					using (FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-						FoCsGUI.Layout.Label("Asset Library Objects", FoCsGUI.Styles.ToolbarButton);
-					if(FoundAssetsObjects.Count == 0)
-					{
-						FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name}. Can be found in the Assets Database.");
-					}
-					else
-					{
-						foreach(var foundObject in FoundAssetsObjects)
-							DrawFoundObject(foundObject);
-					}
-				}
+				EditorGUILayout.GetControlRect(GUILayout.ExpandHeight(true));
+			}
+			else if(!Enable_Compo && Enable_Asset)
+				DrawFoundAsset(GUILayout.ExpandHeight(true));
+			else
+			{
+				DrawFoundScene(GUILayout.MinHeight((Screen.height * 0.4f) + 1), GUILayout.ExpandHeight(true));
+				DrawFoundAsset( /*GUILayout.MinHeight((Screen.height * 0.4f) + 1),*/ GUILayout.ExpandHeight(true));
 			}
 			DrawInfo();
 		}
 
-		private static void DrawDivide()
+		private void DrawFoundScene(params GUILayoutOption[] options)
 		{
-			using (FoCsEditor.Disposables.VerticalScope(GUILayout.ExpandHeight(true), GUILayout.Width(3)))
+			DrawSceneSearchBox();
+			using(var scroll = Disposables.ScrollViewScope(sceneScrollPos, true, options))
 			{
-				using (FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-					FoCsGUI.Layout.Label("", FoCsGUI.Styles.Toolbar);
-				using (FoCsEditor.Disposables.ColorChanger(Color.gray))
+				using(Disposables.VerticalScope())
 				{
-					using (FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.ExpandHeight(true)))
+					if(FoundSceneObjects.Count == 0)
+						FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name} In scene.");
+					else
 					{
-						FoCsGUI.Layout.Label("");
+						if(SceneSearch.IsNullOrEmpty())
+						{
+							foreach(var foundObject in FoundSceneObjects)
+								DrawFoundObject(foundObject);
+						}
+						else
+						{
+							foreach(var foundObject in FoundSceneObjects)
+							{
+								if(!SearchString(foundObject, SceneSearch))
+									continue;
+								DrawFoundObject(foundObject);
+							}
+						}
 					}
 				}
+				sceneScrollPos = scroll.scrollPosition;
 			}
 		}
+
+		private void DrawFoundAsset(params GUILayoutOption[] options)
+		{
+			DrawAssetSearchBox();
+			using(var scroll = Disposables.ScrollViewScope(assetsScrollPos, true, options))
+			{
+				using(Disposables.VerticalScope(GUILayout.ExpandHeight(true)))
+				{
+					if(FoundAssetsObjects.Count == 0)
+						FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name}. Can be found in the Assets Database.");
+					else
+					{
+						if(AssetSearch.IsNullOrEmpty())
+						{
+							foreach(var foundObject in FoundAssetsObjects)
+								DrawFoundObject(foundObject);
+						}
+						else
+						{
+							foreach(var foundObject in FoundAssetsObjects)
+							{
+								if(!SearchString(foundObject, AssetSearch))
+									continue;
+								DrawFoundObject(foundObject);
+							}
+						}
+					}
+				}
+				assetsScrollPos = scroll.scrollPosition;
+			}
+		}
+
+		private static bool SearchString(Object foundObject, string search) => SearchString(foundObject.name, search);
+		private static bool SearchString(string foundObject, string search) => foundObject.ToLower().Contains(search.ToLower());
+
+		private static readonly GUIContent PingContent = new GUIContent("", "Ping Object");
 
 		private static void DrawFoundObject(Object foundObject)
 		{
-			using(FoCsEditor.Disposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 			{
-				FoCsGUI.Layout.Label(foundObject.name);
-				var eventPingButton = FoCsGUI.Layout.Button(FoCsGUI.Styles.Find, GUILayout.Width(16));
+				var eventPingButton = FoCsGUI.Layout.Button(PingContent, FoCsGUI.Styles.Find, GUILayout.Width(16));
 				FoCsGUI.Layout.Label("  ", GUILayout.Width(8));
+				FoCsGUI.Layout.Button(foundObject.name, FoCsGUI.Styles.Unity.Label, GUILayout.Width(300));
+				FoCsGUI.Layout.Button($"Full Type: {foundObject.GetType().Name.SplitCamelCase()}", FoCsGUI.Styles.Unity.Label);
 				if(eventPingButton.Pressed)
 					EditorGUIUtility.PingObject(foundObject);
+				//TODO: Drag Drop Code
+				//if(labelEvent.EventIsMouse0 && labelEvent.Event.type == EventType.mouseDown)
+				//{
+				//	DragAndDrop.PrepareStartDrag();
+				//	DragAndDrop.objectReferences = new[]
+				//								   {
+				//									   foundObject
+				//								   };
+				//	DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
+				//	DragAndDrop.StartDrag($"FoCsOB.Drag({foundObject.name})");
+				//	Debug.Log(foundObject.name);
+				//}
 			}
-		}
-
-		private void Update()
-		{
-			if(mouseOverWindow)
-				Repaint();
 		}
 
 		private static void DrawInfo()
 		{
-			using(FoCsEditor.Disposables.VerticalScope())
+			using(Disposables.VerticalScope(GUILayout.MaxHeight(16 * 3)))
 			{
-				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-					FoCsGUI.Layout.Label("Type Info", FoCsGUI.Styles.ToolbarButton);
-				using(FoCsEditor.Disposables.HorizontalScope())
+				using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.Height(16)))
+					FoCsGUI.Layout.Label("Type Info", FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
+				using(Disposables.HorizontalScope())
 				{
 					FoCsGUI.Layout.Label("Assembly:");
-					FoCsGUI.Layout.Label(TypeList[activeIndex].Assembly.GetName().Name);
+					FoCsGUI.Layout.Label(TypeList[ActiveIndex].Assembly.GetName().Name);
 				}
-				using(FoCsEditor.Disposables.HorizontalScope())
+				using(Disposables.HorizontalScope())
 				{
-					var baseType = TypeList[activeIndex].BaseType;
+					var baseType = TypeList[ActiveIndex].BaseType;
 					if(baseType != null)
 					{
 						FoCsGUI.Layout.Label("Inherits from:");
@@ -231,11 +376,11 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 								genArg.Append(genArgArray[i].Name);
 							}
 							genArg.Append('>');
-							FoCsGUI.Layout.Label($"{TypeList[activeIndex].BaseType.Name.Replace("`1", "")}{genArg}");
+							FoCsGUI.Layout.Label($"{TypeList[ActiveIndex].BaseType.Name.Replace("`1", "")}{genArg}");
 						}
 						else
 						{
-							FoCsGUI.Layout.Label(TypeList[activeIndex].BaseType.Name.SplitCamelCase());
+							FoCsGUI.Layout.Label(TypeList[ActiveIndex].BaseType.Name.SplitCamelCase());
 						}
 					}
 				}
@@ -248,33 +393,56 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			AssetsObjectsChange();
 		}
 
-		private void AssetsObjectsChange()
+		private static void AssetsObjectsChange()
 		{
 			if(FoundAssetsObjects == null)
 				FoundAssetsObjects = new List<Object>();
 			else
 				FoundAssetsObjects.Clear();
-			FoundAssetsObjects.AddRange(Resources.FindObjectsOfTypeAll(ActiveType));
+			var guids = AssetDatabase.FindAssets($"t:{ActiveType.Name}", null);
+
+			foreach(var guid in guids)
+			{
+				var obj = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), null);
+				//if(obj != null)
+					FoundAssetsObjects.Add(obj);
+			}
+
+			//FoundAssetsObjects.AddRange(Resources.LoadAll<Object>(""));
+			//foreach(var o in Resources.FindObjectsOfTypeAll<Object>())
+			//{
+			//	if(!FoundAssetsObjects.Contains(o))
+			//		FoundAssetsObjects.Add(o);
+			//}
+
 			for(var i = FoundAssetsObjects.Count - 1; i >= 0; i--)
 			{
-				if(!AssetDatabase.Contains(FoundAssetsObjects[i]))
+				if(FoundAssetsObjects[i] == null)
 				{
-					FoundSceneObjects.Add(FoundAssetsObjects[i]);
 					FoundAssetsObjects.RemoveAt(i);
+					continue;
 				}
+				if(AssetDatabase.Contains(FoundAssetsObjects[i])) continue;
+
+				FoundSceneObjects.Add(FoundAssetsObjects[i]);
+				FoundAssetsObjects.RemoveAt(i);
 			}
+
+			FoundSceneObjects.Sort(Sorter);
+			FoundAssetsObjects.Sort(Sorter);
 
 			FoundAssetsObjects.TrimExcess();
 			FoundSceneObjects.TrimExcess();
 		}
 
-		private void SceneObjectChange()
+		private static int Sorter(Object x, Object y) => string.Compare(x.name, y.name, StringComparison.Ordinal);
+
+		private static void SceneObjectChange()
 		{
-			if (FoundSceneObjects == null)
+			if(FoundSceneObjects == null)
 				FoundSceneObjects = new List<Object>();
 			else
 				FoundSceneObjects.Clear();
-			//FoundSceneObjects.AddRange(FindObjectsOfType(ActiveType));
 		}
 	}
 }
