@@ -82,7 +82,7 @@ namespace ForestOfChaosLib.Editor
 					var @event = FoCsGUI.Layout.Button(key.Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
 					if(@event.Value)
 					{
-						Window.ShowNotification(new GUIContent($"Clicked: {key.Name.SplitCamelCase()}"));
+						//Window.ShowNotification(new GUIContent($"Clicked: {key.Name.SplitCamelCase()}"));
 						key.GetMethod("Init", BindingFlags.NonPublic | BindingFlags.Static)?.Invoke(null, null);
 						//var otherWin = GetWindow(key);
 					}
@@ -101,7 +101,7 @@ namespace ForestOfChaosLib.Editor
 					if(@event)
 					{
 						ActiveTab = index;
-						Window.ShowNotification(new GUIContent($"Clicked: {key.Name.SplitCamelCase()}"));
+						//Window.ShowNotification(new GUIContent($"Clicked: {key.Name.SplitCamelCase()}"));
 					}
 				}
 				++index;
