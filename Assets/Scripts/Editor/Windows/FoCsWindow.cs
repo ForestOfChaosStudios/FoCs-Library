@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Windows
 {
-	/// <summary>
-	/// [MenuItem("Tools/Forest Of Chaos/Example Window")]
-	/// private static void Init(){
-	///		GetWindowAndOpenTab();
-	/// }
-	/// </summary>
-	/// <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
+	/// <inheritdoc />
+	///  <summary>
+	///  [MenuItem("Tools/Forest Of Chaos/Example Window")]
+	///  private static void Init(){
+	/// 		GetWindowAndOpenTab();
+	///  }
+	///  </summary>
+	///  <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
 	public abstract class FoCsWindow<T>: EditorWindow where T: EditorWindow
 	{
 		private static T window;
