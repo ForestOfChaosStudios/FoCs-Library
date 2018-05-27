@@ -103,5 +103,10 @@ namespace ForestOfChaosLib.Extensions
         {
             return new Vector2(vec.x * other.x, vec.y * other.y);
         }
+
+        public static float RandomNumberXtoY(this Vector2 vec)
+        {
+            return Random.Range(vec.x, vec.x);
+        }
     }
 }
