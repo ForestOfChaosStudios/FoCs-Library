@@ -33,7 +33,7 @@ namespace ForestOfChaosLib.Editor
 								new KeyValuePair<GUIContent, Action> (new GUIContent("Hide Extra Options", "Hides Any Extra Options"), null),
 								new KeyValuePair<GUIContent, Action> (new GUIContent("Scale Options", "Scale Preset Options"), ScaleButtonsEnabled),
 								new KeyValuePair<GUIContent, Action> (new GUIContent("Global Transform Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions),
-								new KeyValuePair<GUIContent, Action> (new GUIContent("Local Transform Values", "Force Display of Local Transform Data"), DrawLocalTransformOptions), 
+								new KeyValuePair<GUIContent, Action> (new GUIContent("Local Transform Values", "Force Display of Local Transform Data"), DrawLocalTransformOptions),
 							};
 		}
 
@@ -54,7 +54,7 @@ namespace ForestOfChaosLib.Editor
 				{
 					for (int i = 0; i < TabName.Length; i++)
 					{
-						if (FoCsGUI.Layout.Toggle(TabNum == i, TabName[i].Key, FoCsGUI.Styles.ToolbarButton))
+						if (FoCsGUI.Layout.Toggle(TabNum == i, TabName[i].Key, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16)))
 						{
 							TabNum = i;
 						}
