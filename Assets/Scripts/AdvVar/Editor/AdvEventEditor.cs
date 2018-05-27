@@ -14,7 +14,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			using(Disposables.DisabledScope(!Application.isPlaying))
 			{
 				var @event = FoCsGUI.Layout.Button("Trigger Event");
-				if(@event.LeftClick)
+				if(@event)
 					Target.Trigger();
 			}
 		}

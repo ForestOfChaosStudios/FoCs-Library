@@ -16,7 +16,6 @@ namespace ForestOfChaosLib.AdvVar.Editor
 	[CanEditMultipleObjects]
 	public class AdvFolderEditor: FoCsEditor
 	{
-		private static readonly Dictionary<string, bool> enableDictionary = new Dictionary<string, bool>();
 		private static SortedDictionary<AdvFolderNameAttribute, List<Type>> typeDictionary;
 
 		private bool showChildrenSettings = true;
@@ -99,24 +98,22 @@ namespace ForestOfChaosLib.AdvVar.Editor
 							break;
 						var key = nameList[index];
 
-						bool value;
-
-						enableDictionary.TryGetValue(key.ToggleName, out value);
-
-						var @event = FoCsGUI.Layout.Toggle(ActiveTab == index, key.ToggleName.SplitCamelCase(), FoCsGUI.Styles.Unity.ToolbarButton);
-
-						if(@event.Pressed)
-						{
-							ActiveTab = index;
-							ActiveTabName = key;
-							Repaint();
-							return;
-						}
 						if(ActiveTab == index)
-						{
 							ActiveTabName = key;
+
+						using(var cc = Disposables.ChangeCheck())
+						{
+							var @event = FoCsGUI.Layout.Toggle(ActiveTab == index, key.ToggleName.SplitCamelCase(), FoCsGUI.Styles.Unity.ToolbarButton);
+							if(cc.changed && @event)
+							{
+								if(ActiveTab != index)
+								{
+									ActiveTab = index;
+									ActiveTabName = key;
+									Repaint();
+								}
+							}
 						}
-						enableDictionary[key.ToggleName] = value;
 					}
 				}
 			}
@@ -149,7 +146,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				}
 
 				var event2 = FoCsGUI.Layout.Button(FoCsGUI.Styles.CrossCircle, GUILayout.Width(FoCsGUI.Styles.CrossCircle.fixedWidth));
-				if(event2.LeftClick)
+				if(event2)
 				{
 					if(EditorUtility.DisplayDialog("Delete Child", $"Delete {obj.name}", "Yes Delete", "No Cancel"))
 					{
@@ -166,10 +163,9 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		private void DrawAddTypeButton(Type type)
 		{
-			FoCsGUI.GUIEvent @event;
 			//using(Disposables.HorizontalScope())
-				@event = FoCsGUI.Layout.Button(type.Name.SplitCamelCase());
-			if(@event.LeftClick)
+			var @event = FoCsGUI.Layout.Button(type.Name.SplitCamelCase());
+			if(@event)
 			{
 				SubmitStringWindow.SetUpInstance(new CreateArgs
 												 {
