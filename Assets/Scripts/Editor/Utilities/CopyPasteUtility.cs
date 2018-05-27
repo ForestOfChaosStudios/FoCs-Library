@@ -105,7 +105,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 		private const string NEEDLE = "\".*\":";
 
-		static bool IsValidObjectInBuffer()
+		private static bool IsValidObjectInBuffer()
 		{
 			return CopyBuffer.Contains(COPY_SPLIT_S);
 		}
