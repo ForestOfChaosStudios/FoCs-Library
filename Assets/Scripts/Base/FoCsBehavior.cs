@@ -13,35 +13,42 @@ namespace ForestOfChaosLib
 			set { m_Transform = value; }
 		}
 
-		public Quaternion Rotation
+		public virtual Quaternion Rotation
 		{
 			get { return Transform.rotation; }
 			set { Transform.rotation = value; }
 		}
 
-		public Vector3 EulerAngles
+		public virtual Vector3 EulerAngles
 		{
 			get { return Transform.eulerAngles; }
 			set { Transform.eulerAngles = value; }
 		}
 
-		public Vector3 LocalEulerAngles
+		public virtual Vector3 LocalEulerAngles
 		{
 			get { return Transform.localEulerAngles; }
 			set { Transform.localEulerAngles = value; }
 		}
 
-		public Vector3 Position
+		public virtual Vector3 Position
 		{
 			get { return Transform.position; }
 			set { Transform.position = value; }
 		}
 
-		public Vector3 LocalPosition
+		public virtual Vector3 LocalPosition
 		{
 			get { return Transform.localPosition; }
 			set { Transform.localPosition = value; }
 		}
+
+		public Vector3 Forward  => Transform.forward;
+		public Vector3 Backward => -Transform.forward;
+		public Vector3 Right    => Transform.right;
+		public Vector3 Left     => -Transform.right;
+		public Vector3 Up       => Transform.up;
+		public Vector3 Down     => -Transform.up;
 	}
 
 	public class FoCs2DBehavior: FoCsBe

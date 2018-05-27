@@ -49,13 +49,13 @@ namespace ForestOfChaosLib
 			set { Rigidbody.centerOfMass = value; }
 		}
 
-		public new Vector3 Position
+		public override Vector3 Position
 		{
 			get { return Rigidbody.position; }
 			set { Rigidbody.MovePosition(value); }
 		}
 
-		public new Quaternion Rotation
+		public override Quaternion Rotation
 		{
 			get { return Rigidbody.rotation; }
 			set { Rigidbody.MoveRotation(value); }
