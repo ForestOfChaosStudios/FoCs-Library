@@ -18,8 +18,17 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			{
 				EditorGUI.LabelField(rect, label);
 				rect.y += SingleLine;
+
+				using(FoCsEditor.Disposables.Indent())
+				{
+					foreach(var child in serializedProperty.GetChildren())
+					{
+						EditorGUI.PropertyField(rect, child, true);
+						rect.y += EditorGUI.GetPropertyHeight(child, GUIContent.none, true);
+					}
+				}
 			}
-			using(FoCsEditor.Disposables.Indent())
+			else
 			{
 				foreach(var child in serializedProperty.GetChildren())
 				{
