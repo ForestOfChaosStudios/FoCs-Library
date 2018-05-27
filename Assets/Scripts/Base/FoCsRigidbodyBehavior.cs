@@ -52,7 +52,13 @@ namespace ForestOfChaosLib
 		public new Vector3 Position
 		{
 			get { return Rigidbody.position; }
-			set { Rigidbody.position = value; }
+			set { Rigidbody.MovePosition(value); }
+		}
+
+		public new Quaternion Rotation
+		{
+			get { return Rigidbody.rotation; }
+			set { Rigidbody.MoveRotation(value); }
 		}
 	}
 
@@ -105,18 +111,19 @@ namespace ForestOfChaosLib
 
 		public new Vector3 Position
 		{
-			get { return Transform.position; }
+			get { return Rigidbody2D.position; }
 			set
 			{
-				Rigidbody2D.position = value;
-				Transform.position = value;
+				Rigidbody2D.MovePosition(value);
 			}
 		}
-
-		public Vector3 RBPosition
+		public new float Rotation
 		{
-			get { return Rigidbody2D.position; }
-			set { Rigidbody2D.position = value; }
+			get { return Rigidbody2D.rotation; }
+			set
+			{
+				Rigidbody2D.MoveRotation(value);
+			}
 		}
 	}
 }
