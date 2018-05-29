@@ -24,6 +24,6 @@ namespace ForestOfChaosLib.Extensions
 		public static float   Distance(this         Vector2 vec, Vector2 other) => Vector2.Distance(vec, other);
 		public static Vector2 Copy(this             Vector2 vec)                => vec;
 		public static Vector2 Multiply(this         Vector2 vec, Vector2 other) => new Vector2(vec.x * other.x, vec.y * other.y);
-		public static float   RandomNumberXtoY(this Vector2 vec) => Random.Range(vec.x, vec.y);
+		public static float   RandomRange(this Vector2 vec) => Random.Range(vec.x, vec.y);
 	}
 }
