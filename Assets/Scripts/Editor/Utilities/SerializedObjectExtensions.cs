@@ -9,6 +9,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 		{
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);
+
 			do
 				yield return iterator.Copy();
 			while(iterator.NextVisible(enterChildren));
@@ -18,14 +19,15 @@ namespace ForestOfChaosLib.Editor.Utilities
 		{
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);
-
 			var num = 0;
+
 			do
 			{
 				if(!FoCsEditor.IsPropertyHidden(iterator))
 					++num;
 			}
 			while(iterator.NextVisible(enterChildren));
+
 			return num;
 		}
 	}

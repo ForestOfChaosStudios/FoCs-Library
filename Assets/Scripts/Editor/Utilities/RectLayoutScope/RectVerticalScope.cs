@@ -5,14 +5,13 @@ namespace ForestOfChaosLib.Editor.Utilities
 {
 	public sealed class RectVerticalScope: RectLayoutScope
 	{
-		public RectVerticalScope(int count, Rect rect)
-			: base(count, rect)
-		{ }
+		public RectVerticalScope(int count, Rect rect): base(count, rect) { }
 
 		protected override Rect InitNextRect()
 		{
 			var lRect = Rect;
 			lRect.height = lRect.height / Count;
+
 			return lRect;
 		}
 
@@ -20,7 +19,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 		{
 			var nexRect = NextRect;
 			nexRect.y += nexRect.height;
-			NextRect = nexRect;
+			NextRect  =  nexRect;
 			++CurrentIndex;
 		}
 

@@ -3,7 +3,7 @@
 	public class AddToTransformVariable: FoCsBehavior
 	{
 		public TransformReference TransformReference;
-		public bool RemoveOnDisable = true;
+		public bool               RemoveOnDisable = true;
 
 		public void OnEnable()
 		{

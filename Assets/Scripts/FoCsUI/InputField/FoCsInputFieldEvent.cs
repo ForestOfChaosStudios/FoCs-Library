@@ -6,13 +6,8 @@ namespace ForestOfChaosLib.FoCsUI.InputField
 {
 	public class FoCsInputFieldEvent: FoCsInputField
 	{
-		[NoFoldout]
-		public UInputField InputField;
-
-		private void Reset()
-		{
-			InputField = GetComponentAdvanced<UInputField>();
-		}
+		[NoFoldout] public UInputField InputField;
+		private            void        Reset() { InputField = GetComponentAdvanced<UInputField>(); }
 
 		public void OnEnable()
 		{
@@ -34,15 +29,7 @@ namespace ForestOfChaosLib.FoCsUI.InputField
 			}
 		}
 
-		public override string InputFieldText
-		{
-			get { return InputField.text; }
-			set { InputField.text = value; }
-		}
-
-		public override GameObject InputFieldGO
-		{
-			get { return InputField.gameObject; }
-		}
+		public override string     InputFieldText { get { return InputField.text; } set { InputField.text = value; } }
+		public override GameObject InputFieldGO   { get { return InputField.gameObject; } }
 	}
 }

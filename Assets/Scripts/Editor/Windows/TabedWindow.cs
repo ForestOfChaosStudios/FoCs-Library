@@ -2,22 +2,19 @@
 using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
+using Disposables = ForestOfChaosLib.Editor.FoCsEditor.Disposables;
 
 namespace ForestOfChaosLib.Editor.Windows
 {
 	public abstract class TabedWindow<T>: FoCsWindow<T> where T: EditorWindow
 	{
-		public int activeTab = 0;
-
-		public abstract Tab<T>[] Tabs { get; }
-
-		public TitleBarPos TitleBarPosition = TitleBarPos.Top;
-		public bool TitleBarScrollable = false;
-
-		private Vector2 scrolPos = Vector2.zero;
-
-		public float TitleBarLabelWidth = 100;
-		public float TitleBarLabelWidthTotal => TitleBarScrollable? TitleBarLabelWidth + 20 : TitleBarLabelWidth;
+		public          int         activeTab = 0;
+		public abstract Tab<T>[]    Tabs { get; }
+		public          TitleBarPos TitleBarPosition   = TitleBarPos.Top;
+		public          bool        TitleBarScrollable = false;
+		private         Vector2     scrolPos           = Vector2.zero;
+		public          float       TitleBarLabelWidth = 100;
+		public          float       TitleBarLabelWidthTotal => TitleBarScrollable? TitleBarLabelWidth + 20 : TitleBarLabelWidth;
 
 		protected override void OnGUI()
 		{
@@ -25,17 +22,22 @@ namespace ForestOfChaosLib.Editor.Windows
 			{
 				case TitleBarPos.Top:
 					DrawTop();
+
 					break;
 				case TitleBarPos.Buttom:
 					DrawButtom();
+
 					break;
 				case TitleBarPos.Left:
 					DrawLeft();
+
 					break;
 				case TitleBarPos.Right:
 					DrawRight();
+
 					break;
 				default:
+
 					throw new ArgumentOutOfRangeException();
 			}
 		}
@@ -60,25 +62,28 @@ namespace ForestOfChaosLib.Editor.Windows
 		{
 			if(TitleBarScrollable)
 			{
-				using(new GUILayout.VerticalScope())
+				using(Disposables.VerticalScope())
 				{
-					using(var scrollViewScope = new EditorGUILayout.ScrollViewScope(scrolPos, GUILayout.ExpandWidth(true), GUILayout.Height(33)) {handleScrollWheel = true})
+					using(var scrollViewScope = Disposables.ScrollViewScope(scrolPos, true, GUILayout.ExpandWidth(true), GUILayout.Height(33)))
 					{
 						scrolPos = scrollViewScope.scrollPosition;
-						using(new GUILayout.HorizontalScope(EditorStyles.toolbar, GUILayout.ExpandWidth(true)))
+
+						using(Disposables.HorizontalScope(EditorStyles.toolbar, GUILayout.ExpandWidth(true)))
 							DrawHeaderGUI();
 					}
-					using(new GUILayout.VerticalScope(GUILayout.ExpandHeight(true)))
+
+					using(Disposables.VerticalScope(GUILayout.ExpandHeight(true)))
 						DrawActiveTab();
 				}
 			}
 			else
 			{
-				using(new GUILayout.VerticalScope())
+				using(Disposables.VerticalScope())
 				{
-					using(new GUILayout.HorizontalScope(EditorStyles.toolbar, GUILayout.ExpandWidth(true)))
+					using(Disposables.HorizontalScope(EditorStyles.toolbar, GUILayout.ExpandWidth(true)))
 						DrawHeaderGUI();
-					using(new GUILayout.VerticalScope(GUILayout.ExpandHeight(true)))
+
+					using(Disposables.VerticalScope(GUILayout.ExpandHeight(true)))
 						DrawActiveTab();
 				}
 			}
@@ -88,25 +93,28 @@ namespace ForestOfChaosLib.Editor.Windows
 		{
 			if(TitleBarScrollable)
 			{
-				using(new GUILayout.VerticalScope(GUILayout.ExpandHeight(true)))
+				using(Disposables.VerticalScope(GUILayout.ExpandHeight(true)))
 					DrawActiveTab();
-				using(new GUILayout.VerticalScope())
+
+				using(Disposables.VerticalScope())
 				{
-					using(var scrollViewScope = new EditorGUILayout.ScrollViewScope(scrolPos, GUILayout.ExpandWidth(true), GUILayout.Height(33)) {handleScrollWheel = true})
+					using(var scrollViewScope = Disposables.ScrollViewScope(scrolPos, true, GUILayout.ExpandWidth(true), GUILayout.Height(33)))
 					{
 						scrolPos = scrollViewScope.scrollPosition;
-						using(new GUILayout.HorizontalScope(EditorStyles.toolbar, GUILayout.ExpandWidth(true)))
+
+						using(Disposables.HorizontalScope(EditorStyles.toolbar, GUILayout.ExpandWidth(true)))
 							DrawHeaderGUI();
 					}
 				}
 			}
 			else
 			{
-				using(new GUILayout.VerticalScope())
+				using(Disposables.VerticalScope())
 				{
-					using(new GUILayout.VerticalScope(GUILayout.ExpandHeight(true)))
+					using(Disposables.VerticalScope(GUILayout.ExpandHeight(true)))
 						DrawActiveTab();
-					using(new GUILayout.HorizontalScope(EditorStyles.toolbar, GUILayout.ExpandWidth(true)))
+
+					using(Disposables.HorizontalScope(EditorStyles.toolbar, GUILayout.ExpandWidth(true)))
 						DrawHeaderGUI();
 				}
 			}
@@ -116,27 +124,28 @@ namespace ForestOfChaosLib.Editor.Windows
 		{
 			if(TitleBarScrollable)
 			{
-				using(new GUILayout.HorizontalScope(GUILayout.ExpandWidth(true)))
+				using(Disposables.HorizontalScope(GUILayout.ExpandWidth(true)))
 				{
-					using(var scrollViewScope =
-							new EditorGUILayout.ScrollViewScope(scrolPos, GUILayout.ExpandHeight(true), GUILayout.Width(TitleBarLabelWidthTotal)) {handleScrollWheel = true})
+					using(var scrollViewScope = Disposables.ScrollViewScope(scrolPos, true, GUILayout.ExpandHeight(true), GUILayout.Width(TitleBarLabelWidthTotal)))
 					{
-						using(new GUILayout.VerticalScope(GUILayout.Width(TitleBarLabelWidth)))
+						using(Disposables.VerticalScope(GUILayout.Width(TitleBarLabelWidth)))
 						{
 							scrolPos = scrollViewScope.scrollPosition;
 							DrawHeaderGUI();
 						}
 					}
+
 					DrawActiveTab();
 				}
 			}
 			else
 			{
-				using(new GUILayout.HorizontalScope())
+				using(Disposables.HorizontalScope())
 				{
-					using(new GUILayout.VerticalScope(EditorStyles.toolbar, GUILayout.Width(TitleBarLabelWidth)))
+					using(Disposables.VerticalScope(EditorStyles.toolbar, GUILayout.Width(TitleBarLabelWidth)))
 						DrawHeaderGUI();
-					using(new GUILayout.VerticalScope(GUILayout.ExpandWidth(true)))
+
+					using(Disposables.VerticalScope(GUILayout.ExpandWidth(true)))
 						DrawActiveTab();
 				}
 			}
@@ -146,14 +155,13 @@ namespace ForestOfChaosLib.Editor.Windows
 		{
 			if(TitleBarScrollable)
 			{
-				using(new GUILayout.HorizontalScope(GUILayout.ExpandWidth(true)))
+				using(Disposables.HorizontalScope(GUILayout.ExpandWidth(true)))
 				{
 					DrawActiveTab();
 
-					using(var scrollViewScope =
-							new EditorGUILayout.ScrollViewScope(scrolPos, GUILayout.ExpandHeight(true), GUILayout.Width(TitleBarLabelWidthTotal)) {handleScrollWheel = true})
+					using(var scrollViewScope = Disposables.ScrollViewScope(scrolPos, true, GUILayout.ExpandHeight(true), GUILayout.Width(TitleBarLabelWidthTotal)))
 					{
-						using(new GUILayout.VerticalScope(GUILayout.Width(TitleBarLabelWidth)))
+						using(Disposables.VerticalScope(GUILayout.Width(TitleBarLabelWidth)))
 						{
 							scrolPos = scrollViewScope.scrollPosition;
 							DrawHeaderGUI();
@@ -163,11 +171,12 @@ namespace ForestOfChaosLib.Editor.Windows
 			}
 			else
 			{
-				using(new GUILayout.HorizontalScope())
+				using(Disposables.HorizontalScope())
 				{
-					using(new GUILayout.VerticalScope(GUILayout.ExpandWidth(true)))
+					using(Disposables.VerticalScope(GUILayout.ExpandWidth(true)))
 						DrawActiveTab();
-					using(new GUILayout.VerticalScope(EditorStyles.toolbar, GUILayout.Width(TitleBarLabelWidth)))
+
+					using(Disposables.VerticalScope(EditorStyles.toolbar, GUILayout.Width(TitleBarLabelWidth)))
 						DrawHeaderGUI();
 				}
 			}

@@ -17,27 +17,25 @@ namespace ForestOfChaosLib.AdvVar.Editor
 	public class AdvFolderEditor: FoCsEditor
 	{
 		private static SortedDictionary<AdvFolderNameAttribute, List<Type>> typeDictionary;
-
-		private bool showChildrenSettings = true;
-
-		private int ActiveTab = 0;
-		private AdvFolderNameAttribute ActiveTabName;
+		private        bool                                                 showChildrenSettings = true;
+		private        int                                                  ActiveTab            = 0;
+		private        AdvFolderNameAttribute                               ActiveTabName;
 
 		public override void OnInspectorGUI()
 		{
-			if (serializedObject.isEditingMultipleObjects)
+			if(serializedObject.isEditingMultipleObjects)
 			{
 				EditorGUILayout.HelpBox("Editing Multiple Objects Is Not Permitted!", MessageType.Warning);
+
 				return;
 			}
 
-			EditorGUILayout.HelpBox("These options will add child assets to the current asset, this is done to help with sorting of the huge amount of Scriptable Objects this system could generate.",
-									MessageType.Info);
-			if (typeDictionary == null)
+			EditorGUILayout.HelpBox("These options will add child assets to the current asset, this is done to help with sorting of the huge amount of Scriptable Objects this system could generate.", MessageType.Info);
+
+			if(typeDictionary == null)
 				typeDictionary = GetDictionaryTypes();
 
 			DrawMenuTabs();
-
 			DrawTypeTabs();
 			DoPadding();
 			DrawChildrenGUI();
@@ -48,19 +46,24 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			using(Disposables.Indent())
 			{
 				var assets = AssetDatabase.LoadAllAssetsAtPath(AssetPath());
+
 				if(assets.Length > 1)
 				{
 					using(Disposables.HorizontalScope(EditorStyles.toolbar))
 						showChildrenSettings = EditorGUILayout.Foldout(showChildrenSettings, $"Children [{assets.Length - 1}]");
+
 					if(!showChildrenSettings)
 						return;
+
 					using(Disposables.VerticalScope(GUI.skin.box))
 					{
 						for(var i = 0; i < assets.Length; i++)
 						{
 							var obj = assets[i];
+
 							if(!obj)
 								continue;
+
 							if(AssetDatabase.IsSubAsset(obj))
 								DrawChildObject(obj, i);
 						}
@@ -72,22 +75,25 @@ namespace ForestOfChaosLib.AdvVar.Editor
 		private void DrawTypeTabs()
 		{
 			EditorGUILayout.LabelField("Type of Scriptable Object to add", EditorStyles.boldLabel);
-			foreach (var type in typeDictionary[ActiveTabName])
+
+			foreach(var type in typeDictionary[ActiveTabName])
 				DrawAddTypeButton(type);
 		}
 
 		private void DrawMenuTabs()
 		{
 			EditorGUILayout.LabelField("Categories of Scriptable Objects that can be added", EditorStyles.boldLabel);
-
-			var width = (Screen.width / 180) + 1;
+			var width    = (Screen.width / 180) + 1;
 			var nameList = typeDictionary.Keys.ToList();
+
 			if(!nameList.InRange(ActiveTab))
 				ActiveTab = 0;
+
 			for(var i = 0; i < nameList.Count; i += width)
 			{
 				if(!nameList.InRange(i))
 					break;
+
 				using(Disposables.HorizontalScope(EditorStyles.toolbar))
 				{
 					for(var j = 0; j < width; j += 1)
@@ -96,6 +102,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 						if(!nameList.InRange(index))
 							break;
+
 						var key = nameList[index];
 
 						if(ActiveTab == index)
@@ -104,11 +111,12 @@ namespace ForestOfChaosLib.AdvVar.Editor
 						using(var cc = Disposables.ChangeCheck())
 						{
 							var @event = FoCsGUI.Layout.Toggle(ActiveTab == index, key.ToggleName.SplitCamelCase(), FoCsGUI.Styles.Unity.ToolbarButton);
+
 							if(cc.changed && @event)
 							{
 								if(ActiveTab != index)
 								{
-									ActiveTab = index;
+									ActiveTab     = index;
 									ActiveTabName = key;
 									Repaint();
 								}
@@ -119,8 +127,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			}
 		}
 
-		private static void DoPadding(bool hasLabel = true) => DoPadding(EditorGUIUtility.standardVerticalSpacing, hasLabel);
-
+		private static void DoPadding(bool  hasLabel              = true) => DoPadding(EditorGUIUtility.standardVerticalSpacing, hasLabel);
 		private static void DoPadding(float height, bool hasLabel = true) => EditorGUILayout.GetControlRect(hasLabel, height);
 
 		//TODO: add Un Parent Button
@@ -146,6 +153,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				}
 
 				var event2 = FoCsGUI.Layout.Button(FoCsGUI.Styles.CrossCircle, GUILayout.Width(FoCsGUI.Styles.CrossCircle.fixedWidth));
+
 				if(event2)
 				{
 					if(EditorUtility.DisplayDialog("Delete Child", $"Delete {obj.name}", "Yes Delete", "No Cancel"))
@@ -154,10 +162,12 @@ namespace ForestOfChaosLib.AdvVar.Editor
 						EditorUtility.SetDirty(target);
 						AssetDatabase.ImportAsset(AssetPath(target));
 						Repaint();
+
 						return;
 					}
 				}
 			}
+
 			DoPadding(1, false);
 		}
 
@@ -165,46 +175,47 @@ namespace ForestOfChaosLib.AdvVar.Editor
 		{
 			//using(Disposables.HorizontalScope())
 			var @event = FoCsGUI.Layout.Button(type.Name.SplitCamelCase());
+
 			if(@event)
 			{
 				SubmitStringWindow.SetUpInstance(new CreateArgs
-												 {
-													 Title = $"Enter Name of the new {type.Name}",
-													 WindowTitle = "Enter Name",
-													 CancelMessage = "Cancel",
-													 Data = $"New {type.Name}",
-													 SubmitMessage = $"Create new {type.Name}",
-													 OnSubmit = OnCreateSubmit,
-													 HasAnotherButton = true,
-													 SubmitAnotherMessage = $"Create new {type.Name} & Add Another",
-													 OnSubmitAnother = OnCreateSubmit,
-													 OnCancel = OnCreateCancel,
-													 target = target,
-													 type = type
-												 });
+				{
+						Title                = $"Enter Name of the new {type.Name}",
+						WindowTitle          = "Enter Name",
+						CancelMessage        = "Cancel",
+						Data                 = $"New {type.Name}",
+						SubmitMessage        = $"Create new {type.Name}",
+						OnSubmit             = OnCreateSubmit,
+						HasAnotherButton     = true,
+						SubmitAnotherMessage = $"Create new {type.Name} & Add Another",
+						OnSubmitAnother      = OnCreateSubmit,
+						OnCancel             = OnCreateCancel,
+						target               = target,
+						type                 = type
+				});
 			}
 		}
 
 		private static void OnCreateSubmit(SubmitStringWindow.SubmitStringArguments obj)
 		{
 			var args = obj as CreateArgs;
+
 			if(args != null)
 			{
 				var sO = CreateInstance(args.type);
 				sO.name = args.Data;
 				AssetDatabase.AddObjectToAsset(sO, args.target);
-
 				EditorUtility.SetDirty(args.target);
 				AssetDatabase.ImportAsset(AssetPath(args.target));
 			}
 		}
 
-		private static void OnCreateCancel(SubmitStringWindow.SubmitStringArguments obj)
-		{ }
+		private static void OnCreateCancel(SubmitStringWindow.SubmitStringArguments obj) { }
 
 		private static void OnRenameSubmit(SubmitStringWindow.SubmitStringArguments obj)
 		{
 			var args = obj as Args;
+
 			if(args != null)
 			{
 				args.target.name = args.Data;
@@ -213,8 +224,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			}
 		}
 
-		private static void OnRenameCancel(SubmitStringWindow.SubmitStringArguments obj)
-		{ }
+		private static void OnRenameCancel(SubmitStringWindow.SubmitStringArguments obj) { }
 
 		private static void DrawDevOptions()
 		{
@@ -224,8 +234,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		public static SortedDictionary<AdvFolderNameAttribute, List<Type>> GetDictionaryTypes()
 		{
-			var types = ReflectionUtilities.GetTypesWith<AdvFolderNameAttribute, ScriptableObject>(false);
-
+			var types     = ReflectionUtilities.GetTypesWith<AdvFolderNameAttribute, ScriptableObject>(false);
 			var finalList = new SortedDictionary<AdvFolderNameAttribute, List<Type>>();
 
 			foreach(var type in types)
@@ -236,6 +245,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				{
 					if(finalList[attribute] == null)
 						finalList[attribute] = new List<Type>();
+
 					if(!finalList[attribute].Contains(type))
 						finalList[attribute].Add(type);
 				}
@@ -244,10 +254,11 @@ namespace ForestOfChaosLib.AdvVar.Editor
 					finalList.Add(attribute,
 								  new List<Type>
 								  {
-									  type
+										  type
 								  });
 				}
 			}
+
 			return finalList;
 		}
 

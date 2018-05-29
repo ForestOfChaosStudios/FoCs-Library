@@ -2,6 +2,5 @@
 
 namespace ForestOfChaosLib.Editor
 {
-	internal class FoCsWindowAttribute: Attribute
-	{ }
+	internal class FoCsWindowAttribute: Attribute { }
 }

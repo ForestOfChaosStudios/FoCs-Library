@@ -19,7 +19,7 @@ namespace ForestOfChaosLib.ScreenCap
 		private void OnEnable()
 		{
 			defaultPath = Application.streamingAssetsPath + "/../../";
-			path = Application.streamingAssetsPath + "/../../";
+			path        = Application.streamingAssetsPath + "/../../";
 		}
 
 		public override Tab<ScreenCapWindow>[] Tabs { get; } = {new ScreenshotTab(), new TimelapseTab(),};
@@ -30,7 +30,7 @@ namespace ForestOfChaosLib.ScreenCap
 		internal static void Init()
 		{
 			GetWindowAndOpenUtility();
-			Window.minSize = new Vector2(400,220);
+			Window.minSize      = new Vector2(400, 220);
 			Window.titleContent = new GUIContent(Title);
 		}
 	}

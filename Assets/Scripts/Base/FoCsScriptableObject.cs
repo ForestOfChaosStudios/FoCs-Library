@@ -2,6 +2,5 @@
 
 namespace ForestOfChaosLib
 {
-	public class FoCsScriptableObject: ScriptableObject
-	{ }
+	public class FoCsScriptableObject: ScriptableObject { }
 }

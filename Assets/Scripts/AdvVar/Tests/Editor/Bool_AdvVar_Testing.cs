@@ -11,17 +11,17 @@ namespace ForestOfChaosLib.AdvVar
 			var b = false;
 			var f = ScriptableObject.CreateInstance<BoolReference>();
 			f.OnValueChange += () => b = true;
-			f.Value = true;
+			f.Value         =  true;
 			Assert.True(b);
 		}
 
 		[Test(Author = "Jordan Miles", Description = "To Test the OnValueChanged Event")]
 		public static void Bool_Constant_OnChange_Event()
 		{
-			var b = false;
+			var          b = false;
 			BoolVariable f = false;
 			f.OnValueChange += () => b = true;
-			f.Value = true;
+			f.Value         =  true;
 			Assert.True(b);
 		}
 
@@ -29,13 +29,15 @@ namespace ForestOfChaosLib.AdvVar
 		public static void Bool_Global_OnChange_Event()
 		{
 			var b = false;
+
 			var f = new BoolVariable
-					{
-						UseConstant = false
-					};
-			f.InternalData.GlobalVariable = ScriptableObject.CreateInstance<BoolReference>();
-			f.OnValueChange += () => b = true;
-			f.Value = true;
+			{
+					UseConstant = false
+			};
+
+			f.InternalData.GlobalVariable =  ScriptableObject.CreateInstance<BoolReference>();
+			f.OnValueChange               += () => b = true;
+			f.Value                       =  true;
 			Assert.True(b);
 		}
 	}

@@ -2,6 +2,5 @@
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
-	public class SetCameraRunTimeRef: BaseSetRunTimeRefWithField<UCamera, CameraRunTimeRef>
-	{ }
+	public class SetCameraRunTimeRef: BaseSetRunTimeRefWithField<UCamera, CameraRunTimeRef> { }
 }

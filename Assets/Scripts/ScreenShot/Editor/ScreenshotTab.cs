@@ -7,8 +7,8 @@ namespace ForestOfChaosLib.ScreenCap
 {
 	public class ScreenshotTab: Tab<ScreenCapWindow>
 	{
-		public override string TabName => "Screenshot";
-		protected ScreenCapWindow Owner;
+		public override string          TabName => "Screenshot";
+		protected       ScreenCapWindow Owner;
 
 		public override void DrawTab(FoCsWindow<ScreenCapWindow> owner)
 		{
@@ -19,6 +19,7 @@ namespace ForestOfChaosLib.ScreenCap
 				using(FoCsEditor.Disposables.VerticalScope())
 				{
 					DrawVariables();
+
 					using(FoCsEditor.Disposables.HorizontalScope())
 					{
 						DrawTakeImageGUI();
@@ -39,15 +40,9 @@ namespace ForestOfChaosLib.ScreenCap
 			DrawPathAndFileUI();
 		}
 
-		public virtual void DrawOtherVars()
-		{
-			
-		}
+		public virtual void DrawOtherVars() { }
 
-		private void DrawPathAndFileUI()
-		{
-			EditorGUILayout.LabelField($"File will be saved as \"{args.GetFileNameAndPath()}\"");
-		}
+		private void DrawPathAndFileUI() { EditorGUILayout.LabelField($"File will be saved as \"{args.GetFileNameAndPath()}\""); }
 
 		private void DrawPathUI()
 		{
@@ -56,6 +51,7 @@ namespace ForestOfChaosLib.ScreenCap
 				EditorGUILayout.LabelField("Path");
 				Owner.path = EditorGUILayout.TextField(Owner.path, GUILayout.ExpandWidth(true));
 			}
+
 			PathButtons();
 		}
 
@@ -70,7 +66,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void DrawFilePathGUI()
 		{
-			using (FoCsEditor.Disposables.HorizontalScope())
+			using(FoCsEditor.Disposables.HorizontalScope())
 			{
 				GUILayout.Label("Save Path", EditorStyles.boldLabel);
 			}
@@ -82,19 +78,17 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void PathButtons()
 		{
-			using (FoCsEditor.Disposables.HorizontalScope())
+			using(FoCsEditor.Disposables.HorizontalScope())
 			{
-				if (GUILayout.Button("Browse"))
+				if(GUILayout.Button("Browse"))
 					Owner.path = EditorUtility.SaveFolderPanel("Path to Save Images", Owner.path, Application.dataPath);
-				if (GUILayout.Button("Default", GUILayout.Width(120)))
+
+				if(GUILayout.Button("Default", GUILayout.Width(120)))
 					Owner.path = Owner.defaultPath;
 			}
 		}
 
-		private void DrawScale()
-		{
-			Owner.scale = EditorGUILayout.IntSlider("Scale", Owner.scale, 0, 8);
-		}
+		private void DrawScale() { Owner.scale = EditorGUILayout.IntSlider("Scale", Owner.scale, 0, 8); }
 
 		private void DrawTakeImageGUI()
 		{
@@ -123,6 +117,7 @@ namespace ForestOfChaosLib.ScreenCap
 		}
 
 		ScreenShotArgs args;
+
 		protected virtual void TakeScreenShot()
 		{
 			BuildArgs();
@@ -133,19 +128,20 @@ namespace ForestOfChaosLib.ScreenCap
 		private void BuildArgs()
 		{
 			args = new ScreenShotArgs
-				   {
-					   fileName = Owner.filename,
-					   Path = Owner.path,
-					   ResolutionMultiplier = Owner.scale
-				   };
+			{
+					fileName             = Owner.filename,
+					Path                 = Owner.path,
+					ResolutionMultiplier = Owner.scale
+			};
 		}
 
 		private void UpdateArgs()
 		{
 			if(args == null)
 				BuildArgs();
-			args.fileName = Owner.filename;
-			args.Path = Owner.path;
+
+			args.fileName             = Owner.filename;
+			args.Path                 = Owner.path;
 			args.ResolutionMultiplier = Owner.scale;
 		}
 	}

@@ -1,5 +1,4 @@
-﻿using ForestOfChaosLib.Components;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ForestOfChaosLib.Camera.Effects
 {

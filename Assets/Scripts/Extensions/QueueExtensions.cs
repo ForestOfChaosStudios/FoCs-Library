@@ -10,6 +10,7 @@ namespace ForestOfChaosLib.Extensions
 			var item = queue.Dequeue();
 			//Re add
 			queue.Enqueue(item);
+
 			return item;
 		}
 	}

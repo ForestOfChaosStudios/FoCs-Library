@@ -5,11 +5,9 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 {
 	public abstract class RunTimeRef<T>: RunTimeRef
 	{
-		public Action OnBeforeValueChange = () => { };
-
-		public Action OnValueChange = () => { };
-
-		private T reference;
+		public  Action OnBeforeValueChange = () => { };
+		public  Action OnValueChange       = () => { };
+		private T      reference;
 
 		public T Reference
 		{

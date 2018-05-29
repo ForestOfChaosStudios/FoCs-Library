@@ -2,6 +2,5 @@
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
-	public class SetComponentRunTimeRef: BaseSetRunTimeRefWithField<Component, ComponentRunTimeRef>
-	{ }
+	public class SetComponentRunTimeRef: BaseSetRunTimeRefWithField<Component, ComponentRunTimeRef> { }
 }

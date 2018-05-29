@@ -11,15 +11,17 @@ namespace ForestOfChaosLib.Utilities.Enums
 	public static class Direction_LR_Helpers
 	{
 		public const Direction_LR FIRST = Direction_LR.Left;
-		public const Direction_LR LAST = Direction_LR.Right;
+		public const Direction_LR LAST  = Direction_LR.Right;
 
 		public static Direction_LR Next(this Direction_LR val)
 		{
 			switch(val)
 			{
 				case LAST:
+
 					return FIRST;
 				default:
+
 					return ++val;
 			}
 		}
@@ -29,8 +31,10 @@ namespace ForestOfChaosLib.Utilities.Enums
 			switch(val)
 			{
 				case FIRST:
+
 					return LAST;
 				default:
+
 					return --val;
 			}
 		}
@@ -40,17 +44,17 @@ namespace ForestOfChaosLib.Utilities.Enums
 			switch(val)
 			{
 				case Direction_LR.Left:
+
 					return Vector3.down * 90;
 				case Direction_LR.Right:
+
 					return Vector3.up * 90;
 				default:
+
 					return Vector3.zero;
 			}
 		}
 
-		public static void Rotate(this Transform transform, Direction_LR dir)
-		{
-			transform.Rotate(dir.EulerAngles());
-		}
+		public static void Rotate(this Transform transform, Direction_LR dir) { transform.Rotate(dir.EulerAngles()); }
 	}
 }

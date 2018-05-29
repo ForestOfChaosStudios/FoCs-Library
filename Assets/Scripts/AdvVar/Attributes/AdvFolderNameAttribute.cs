@@ -5,23 +5,23 @@ namespace ForestOfChaosLib.AdvVar
 	public class AdvFolderNameAttribute: Attribute, IComparable, IComparable<AdvFolderNameAttribute>
 	{
 		private readonly InternalNames _InternalNames;
-		public string ToggleName;
+		public           string        ToggleName;
 
 		internal AdvFolderNameAttribute()
 		{
-			ToggleName = "";
+			ToggleName     = "";
 			_InternalNames = InternalNames.Other;
 		}
 
 		public AdvFolderNameAttribute(string toggleName)
 		{
-			ToggleName = toggleName;
+			ToggleName     = toggleName;
 			_InternalNames = InternalNames.Other;
 		}
 
 		protected AdvFolderNameAttribute(InternalNames toggleName)
 		{
-			ToggleName = toggleName.ToString();
+			ToggleName     = toggleName.ToString();
 			_InternalNames = toggleName;
 		}
 
@@ -29,10 +29,13 @@ namespace ForestOfChaosLib.AdvVar
 		{
 			if(ReferenceEquals(null, obj))
 				return 1;
+
 			if(ReferenceEquals(this, obj))
 				return 0;
+
 			if(!(obj is AdvFolderNameAttribute))
 				throw new ArgumentException($"Object must be of type {nameof(AdvFolderNameAttribute)}");
+
 			return CompareTo((AdvFolderNameAttribute)obj);
 		}
 
@@ -40,10 +43,13 @@ namespace ForestOfChaosLib.AdvVar
 		{
 			if(ReferenceEquals(this, other))
 				return 0;
+
 			if(ReferenceEquals(null, other))
 				return 1;
+
 			if(other._InternalNames == InternalNames.Other)
 				return string.Compare(ToggleName, other.ToggleName, StringComparison.Ordinal);
+
 			return (int)_InternalNames.CompareTo(other._InternalNames);
 		}
 
@@ -59,54 +65,41 @@ namespace ForestOfChaosLib.AdvVar
 			Other
 		}
 	}
-	#region Internal Classes
+
+#region Internal Classes
 	internal class AdvFolderNameUnityAttribute: AdvFolderNameAttribute
 	{
-		public AdvFolderNameUnityAttribute()
-			: base(InternalNames.Unity)
-		{ }
+		public AdvFolderNameUnityAttribute(): base(InternalNames.Unity) { }
 	}
 
 	internal class AdvFolderNameUnityListsAttribute: AdvFolderNameAttribute
 	{
-		public AdvFolderNameUnityListsAttribute()
-			: base(InternalNames.UnityLists)
-		{ }
+		public AdvFolderNameUnityListsAttribute(): base(InternalNames.UnityLists) { }
 	}
 
 	internal class AdvFolderNameSystemAttribute: AdvFolderNameAttribute
 	{
-		public AdvFolderNameSystemAttribute()
-			: base(InternalNames.SystemTypes)
-		{ }
+		public AdvFolderNameSystemAttribute(): base(InternalNames.SystemTypes) { }
 	}
 
 	internal class AdvFolderNameSystemTypeListsAttribute: AdvFolderNameAttribute
 	{
-		public AdvFolderNameSystemTypeListsAttribute()
-			: base(InternalNames.SystemTypeLists)
-		{ }
+		public AdvFolderNameSystemTypeListsAttribute(): base(InternalNames.SystemTypeLists) { }
 	}
 
 	internal class AdvFolderNameForestOfChaosAttribute: AdvFolderNameAttribute
 	{
-		public AdvFolderNameForestOfChaosAttribute()
-			: base(InternalNames.ForestOfChaos)
-		{ }
+		public AdvFolderNameForestOfChaosAttribute(): base(InternalNames.ForestOfChaos) { }
 	}
 
 	internal class AdvFolderNameForestOfChaosListsAttribute: AdvFolderNameAttribute
 	{
-		public AdvFolderNameForestOfChaosListsAttribute()
-			: base(InternalNames.ForestOfChaosLists)
-		{ }
+		public AdvFolderNameForestOfChaosListsAttribute(): base(InternalNames.ForestOfChaosLists) { }
 	}
 
 	internal class AdvFolderNameRunTimeAttribute: AdvFolderNameAttribute
 	{
-		public AdvFolderNameRunTimeAttribute()
-			: base(InternalNames.RunTime)
-		{ }
+		public AdvFolderNameRunTimeAttribute(): base(InternalNames.RunTime) { }
 	}
-	#endregion
+#endregion
 }

@@ -7,7 +7,7 @@ namespace ForestOfChaosLib.Curves.Components
 	{
 		private void Reset()
 		{
-			Curve = new BezierCurveV3D();
+			Curve           = new BezierCurveV3D();
 			Curve.Positions = new List<Vector3>(BezierCurveQuadV3D.TOTAL_COUNT);
 		}
 	}

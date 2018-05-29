@@ -7,21 +7,20 @@ namespace ForestOfChaosLib.Editor.Utilities
 {
 	public abstract class RectLayoutScope: IDisposable, IEnumerable<Rect>
 	{
-		protected int CurrentIndex;
-		public int Count { get; }
-		public Rect Rect { get; }
-		public Rect? LastRect { get; protected set; }
-		public Rect FirstRect { get; protected set; }
-		protected Rect NextRect { get; set; }
-
+		protected int   CurrentIndex;
+		public    int   Count     { get; }
+		public    Rect  Rect      { get; }
+		public    Rect? LastRect  { get; protected set; }
+		public    Rect  FirstRect { get; protected set; }
+		protected Rect  NextRect  { get; set; }
 
 		protected RectLayoutScope(int count, Rect rect)
 		{
-			Count = count;
-			Rect = rect;
-			LastRect = null;
+			Count        = count;
+			Rect         = rect;
+			LastRect     = null;
 			CurrentIndex = 0;
-			FirstRect = NextRect = InitNextRect();
+			FirstRect    = NextRect = InitNextRect();
 		}
 
 		protected abstract Rect InitNextRect();
@@ -40,8 +39,10 @@ namespace ForestOfChaosLib.Editor.Utilities
 			LastRect = NextRect;
 			var retVal = NextRect;
 			DoNextRect();
+
 			return retVal;
 		}
+
 		/// <summary>
 		/// Gets the next rect in the layout with a size of "amount" elements
 		/// </summary>
@@ -54,9 +55,11 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 			LastRect = NextRect;
 			var retVal = NextRect;
-			for(int i = 0 ; i < amount; i++)
+
+			for(int i = 0; i < amount; i++)
 				DoNextRect();
-			return DoAmountRectCalculations(retVal,amount);
+
+			return DoAmountRectCalculations(retVal, amount);
 		}
 
 		public void Dispose()
@@ -71,12 +74,10 @@ namespace ForestOfChaosLib.Editor.Utilities
 			{
 				yield return GetNext();
 			}
+
 			yield break;
 		}
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+		IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 	}
 }

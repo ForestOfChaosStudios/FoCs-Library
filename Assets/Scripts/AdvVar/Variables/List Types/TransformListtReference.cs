@@ -4,12 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[Serializable]
-	[AdvFolderNameUnityLists]
-	public class TransformListReference: AdvListReference<Transform>
-	{ }
+	[Serializable] [AdvFolderNameUnityLists] public class TransformListReference: AdvListReference<Transform> { }
 
-	[Serializable]
-	public class TransformListVariable: AdvListVariable<Transform, TransformListReference>
-	{ }
+	[Serializable] public class TransformListVariable: AdvListVariable<Transform, TransformListReference> { }
 }

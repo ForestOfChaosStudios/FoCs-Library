@@ -4,12 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[Serializable]
-	[AdvFolderNameUnityLists]
-	public class GameObjectListReference: AdvListReference<GameObject>
-	{ }
+	[Serializable] [AdvFolderNameUnityLists] public class GameObjectListReference: AdvListReference<GameObject> { }
 
-	[Serializable]
-	public class GameObjectListVariable: AdvListVariable<GameObject, GameObjectListReference>
-	{ }
+	[Serializable] public class GameObjectListVariable: AdvListVariable<GameObject, GameObjectListReference> { }
 }

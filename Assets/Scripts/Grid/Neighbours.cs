@@ -9,16 +9,12 @@ namespace ForestOfChaosLib.Grid
 	public class Neighbours: IEnumerable<GridPosition>
 	{
 		[SerializeField] private GridPosition _center;
-		public bool AllowCorners = true;
+		public                   bool         AllowCorners = true;
 
 		/// 000
 		/// 010
 		/// 000
-		public GridPosition Center
-		{
-			get { return _center; }
-			set { _center = value; }
-		}
+		public GridPosition Center { get { return _center; } set { _center = value; } }
 
 		/// 000
 		/// 100
@@ -29,6 +25,7 @@ namespace ForestOfChaosLib.Grid
 			{
 				var retVal = Center;
 				retVal.X -= 1;
+
 				return retVal;
 			}
 		}
@@ -42,6 +39,7 @@ namespace ForestOfChaosLib.Grid
 			{
 				var retVal = Center;
 				retVal.X += 1;
+
 				return retVal;
 			}
 		}
@@ -55,6 +53,7 @@ namespace ForestOfChaosLib.Grid
 			{
 				var retVal = Center;
 				retVal.Y += 1;
+
 				return retVal;
 			}
 		}
@@ -68,6 +67,7 @@ namespace ForestOfChaosLib.Grid
 			{
 				var retVal = Center;
 				retVal.Y -= 1;
+
 				return retVal;
 			}
 		}
@@ -82,6 +82,7 @@ namespace ForestOfChaosLib.Grid
 				var retVal = Center;
 				retVal.Y += 1;
 				retVal.X -= 1;
+
 				return retVal;
 			}
 		}
@@ -96,6 +97,7 @@ namespace ForestOfChaosLib.Grid
 				var retVal = Center;
 				retVal.Y += 1;
 				retVal.X += 1;
+
 				return retVal;
 			}
 		}
@@ -110,6 +112,7 @@ namespace ForestOfChaosLib.Grid
 				var retVal = Center;
 				retVal.Y -= 1;
 				retVal.X -= 1;
+
 				return retVal;
 			}
 		}
@@ -124,6 +127,7 @@ namespace ForestOfChaosLib.Grid
 				var retVal = Center;
 				retVal.Y -= 1;
 				retVal.X += 1;
+
 				return retVal;
 			}
 		}
@@ -132,7 +136,9 @@ namespace ForestOfChaosLib.Grid
 		{
 			if(AllowCorners)
 				yield return UpLeft;
+
 			yield return Up;
+
 			if(AllowCorners)
 				yield return UpRight;
 
@@ -141,6 +147,7 @@ namespace ForestOfChaosLib.Grid
 
 			if(AllowCorners)
 				yield return DownLeft;
+
 			yield return Down;
 
 			if(AllowCorners)

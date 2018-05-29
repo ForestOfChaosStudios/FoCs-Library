@@ -20,13 +20,13 @@ namespace ForestOfChaosLib.Curves.Editor
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			var useGlobalSpaceProp = property.FindPropertyRelative("useGlobalSpace");
-			var positionsProp = property.FindPropertyRelative("Positions");
-			var useGlobalBoolRect = position;
+			var positionsProp      = property.FindPropertyRelative("Positions");
+			var useGlobalBoolRect  = position;
 			useGlobalBoolRect.height = SingleLine;
-			position = position.ChangeY(SingleLine);
+			position                 = position.ChangeY(SingleLine);
 			EditorGUI.PropertyField(useGlobalBoolRect, useGlobalSpaceProp);
-
 			var targ = property.GetTargetObjectOfProperty<ICurve>();
+
 			if(targ.IsFixedLength)
 			{
 				if(positionsProp.arraySize != targ.Length)
@@ -34,30 +34,24 @@ namespace ForestOfChaosLib.Curves.Editor
 			}
 
 			ListNullCheck(property);
-
 			list.HandleDrawing(position.ChangeX(16));
 		}
 
 		private void ListNullCheck(SerializedProperty property)
 		{
 			var targ = property.GetTargetObjectOfProperty<ICurve>();
+
 			if(list == null)
 			{
-				list = new RLP(property.FindPropertyRelative("Positions"));
+				list                       = new RLP(property.FindPropertyRelative("Positions"));
 				list.List.onCanAddCallback = reorderableList => !targ.IsFixedLength;
 			}
 		}
 	}
 
-	[CustomPropertyDrawer(typeof(BezierCurveV3D))]
-	public class BezierCurveV3DPropertyDrawer: CurvePropertyDrawer
-	{ }
+	[CustomPropertyDrawer(typeof(BezierCurveV3D))] public class BezierCurveV3DPropertyDrawer: CurvePropertyDrawer { }
 
-	[CustomPropertyDrawer(typeof(BezierCurveQuadV3D))]
-	public class BezierCurveQuadV3DPropertyDrawer: CurvePropertyDrawer
-	{ }
+	[CustomPropertyDrawer(typeof(BezierCurveQuadV3D))] public class BezierCurveQuadV3DPropertyDrawer: CurvePropertyDrawer { }
 
-	[CustomPropertyDrawer(typeof(BezierCurveCubeV3D))]
-	public class BezierCurveCubeV3DPropertyDrawer: CurvePropertyDrawer
-	{ }
+	[CustomPropertyDrawer(typeof(BezierCurveCubeV3D))] public class BezierCurveCubeV3DPropertyDrawer: CurvePropertyDrawer { }
 }

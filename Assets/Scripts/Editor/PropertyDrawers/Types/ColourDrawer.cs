@@ -1,5 +1,4 @@
-﻿using ForestOfChaosLib.Editor.Utilities;
-using ForestOfChaosLib.Types;
+﻿using ForestOfChaosLib.Types;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,25 +10,28 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			var rect = position;
-			rect.height = SingleLine;
-			rect.y += 1;
+			rect.height =  SingleLine;
+			rect.y      += 1;
 
 			var colour = GetOwner(property);
 
 			if(colour == null)
 				return;
+
 			var rect2 = rect;
-			rect2.width = IndentSize;
+			rect2.width         = IndentSize;
 			property.isExpanded = EditorGUI.Foldout(rect2, property.isExpanded, "");
-			rect2 = rect;
+			rect2               = rect;
 
 			using(var ChangeCheck = FoCsEditor.Disposables.ChangeCheck())
 			{
 				var col = EditorGUI.ColorField(rect2, new GUIContent(property.displayName, property.displayName), colour);
 
 				colour.SetColor(col);
+
 				if(!property.isExpanded)
 					return;
+
 				using(FoCsEditor.Disposables.Indent())
 				{
 					rect.y += 1 + SingleLine;
@@ -46,6 +48,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 					{
 						var colHSV = Random.ColorHSV();
 						colour.SetColor(colHSV);
+
 						return;
 					}
 
@@ -76,6 +79,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 						colour.B = 0;
 					else
 						colour.B = (byte)B;
+
 					if(ChangeCheck.changed)
 						Undo.RecordObject(property.serializedObject.targetObject, "ColourChange");
 				}
@@ -86,6 +90,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 		{
 			if(property.isExpanded)
 				return (EditorGUIUtility.singleLineHeight * 6) + 6;
+
 			return EditorGUIUtility.singleLineHeight;
 		}
 	}

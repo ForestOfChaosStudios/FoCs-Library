@@ -15,6 +15,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 		{
 			if(IsValid(prop))
 				return base.GetPropertyHeight(prop, label);
+
 			return base.GetPropertyHeight(prop, label) + helpHeight;
 		}
 
@@ -23,10 +24,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			var fieldPosition = position;
 			fieldPosition.height = textHeight;
 			DrawTextField(fieldPosition, prop, label);
-
 			var helpPosition = EditorGUI.IndentedRect(position);
-			helpPosition.y += textHeight;
-			helpPosition.height = helpHeight;
+			helpPosition.y      += textHeight;
+			helpPosition.height =  helpHeight;
 			DrawHelpBox(helpPosition, prop);
 		}
 
@@ -34,6 +34,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 		{
 			EditorGUI.BeginChangeCheck();
 			string value = EditorGUI.TextField(position, label, prop.stringValue);
+
 			if(EditorGUI.EndChangeCheck())
 				prop.stringValue = value;
 		}
@@ -42,12 +43,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 		{
 			if(IsValid(prop))
 				return;
+
 			EditorGUI.HelpBox(position, GetAttribute.helpMessage, MessageType.Error);
 		}
 
-		private bool IsValid(SerializedProperty prop)
-		{
-			return Regex.IsMatch(prop.stringValue, GetAttribute.pattern);
-		}
+		private bool IsValid(SerializedProperty prop) { return Regex.IsMatch(prop.stringValue, GetAttribute.pattern); }
 	}
 }

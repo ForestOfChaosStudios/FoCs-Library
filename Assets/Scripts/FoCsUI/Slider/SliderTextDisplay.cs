@@ -6,10 +6,9 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 	public class SliderTextDisplay: FoCsBehavior
 	{
 		public TextMeshProUGUI Text;
-		public FoCsSlider FoCsSlider;
-		public bool Percentage = true;
-
-		public string NumberFormat = "0%";
+		public FoCsSlider      FoCsSlider;
+		public bool            Percentage   = true;
+		public string          NumberFormat = "0%";
 
 		private void OnEnable()
 		{
@@ -28,14 +27,7 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 			}
 		}
 
-		private float GetPercentage(float f)
-		{
-			return (f - FoCsSlider.slider.minValue) / (FoCsSlider.slider.maxValue - FoCsSlider.slider.minValue);
-		}
-
-		private void OnDisable()
-		{
-			FoCsSlider.OnValueChanged -= OnValueChanged;
-		}
+		private float GetPercentage(float f) { return (f - FoCsSlider.slider.minValue) / (FoCsSlider.slider.maxValue - FoCsSlider.slider.minValue); }
+		private void  OnDisable()            { FoCsSlider.OnValueChanged -= OnValueChanged; }
 	}
 }

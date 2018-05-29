@@ -15,13 +15,13 @@ namespace ForestOfChaosLib.Attributes
 		public ConditionalHideAttribute(string conditionalSourceField)
 		{
 			ConditionalSourceField = conditionalSourceField;
-			HideInInspector = false;
+			HideInInspector        = false;
 		}
 
 		public ConditionalHideAttribute(string conditionalSourceField, bool hideInInspector)
 		{
 			ConditionalSourceField = conditionalSourceField;
-			HideInInspector = hideInInspector;
+			HideInInspector        = hideInInspector;
 		}
 	}
 }

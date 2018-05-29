@@ -2,6 +2,5 @@
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
-	public class SetMonoBehaviourRunTimeRef: BaseSetRunTimeRefWithField<MonoBehaviour, MonoBehaviourRunTimeRef>
-	{ }
+	public class SetMonoBehaviourRunTimeRef: BaseSetRunTimeRefWithField<MonoBehaviour, MonoBehaviourRunTimeRef> { }
 }

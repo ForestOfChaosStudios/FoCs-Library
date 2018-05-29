@@ -20,17 +20,10 @@ namespace ForestOfChaosLib.Types.EventVariable
 			}
 		}
 
-		public GenericEventVariable()
-		{ }
-
-		public GenericEventVariable(T data)
-		{
-			this.data = data;
-		}
-
+		public GenericEventVariable() { }
+		public GenericEventVariable(T data) { this.data = data; }
 		public event Action<T> OnBeforeChange;
 		public event Action<T> OnChange;
-
 		public static implicit operator T(GenericEventVariable<T> input) => input.Data;
 	}
 }

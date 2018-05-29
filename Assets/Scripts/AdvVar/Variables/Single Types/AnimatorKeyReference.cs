@@ -4,10 +4,7 @@ using ForestOfChaosLib.Animation;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[Serializable]
-	[AdvFolderNameForestOfChaos]
-	public class AnimatorKeyReference: AdvReference<AnimatorKey>
-	{ }
+	[Serializable] [AdvFolderNameForestOfChaos] public class AnimatorKeyReference: AdvReference<AnimatorKey> { }
 
 	[Serializable]
 	public class AnimatorKeyVariable: AdvVariable<AnimatorKey, AnimatorKeyReference>
@@ -15,10 +12,10 @@ namespace ForestOfChaosLib.AdvVar
 		public static implicit operator AnimatorKeyVariable(AnimatorKey input)
 		{
 			var fR = new AnimatorKeyVariable
-					 {
-						 UseConstant = true,
-						 Value = input
-					 };
+			{
+					UseConstant = true,
+					Value       = input
+			};
 
 			return fR;
 		}

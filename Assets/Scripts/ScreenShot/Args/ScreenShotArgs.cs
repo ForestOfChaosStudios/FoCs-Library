@@ -5,31 +5,29 @@ namespace ForestOfChaosLib.ScreenCap
 {
 	public class ScreenShotArgs
 	{
-		public int ResolutionMultiplier = 2;
-		public string fileName = "";
-
+		public int    ResolutionMultiplier = 2;
+		public string fileName             = "";
 #if UNITY_EDITOR
 		public string Path = Application.streamingAssetsPath + @"/../../../";
 #else
 		public string Path = Application.persistentDataPath + @"/Screenshots";
 #endif
-
-		public ScreenShotArgs()
-		{ }
+		public ScreenShotArgs() { }
 
 		public ScreenShotArgs(ScreenShotArgs other)
 		{
 			ResolutionMultiplier = other.ResolutionMultiplier;
-			fileName = other.fileName;
-			Path = other.Path;
+			fileName             = other.fileName;
+			Path                 = other.Path;
 		}
 
 		public static ScreenShotArgs GetUnityCap()
 		{
 			var screenShotArgs = new ScreenShotArgs
-								 {
-									 ResolutionMultiplier = 2
-								 };
+			{
+					ResolutionMultiplier = 2
+			};
+
 			return screenShotArgs;
 		}
 
@@ -41,6 +39,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 				return strPath;
 			}
+
 			return $"{fileName}.png";
 		}
 
@@ -52,6 +51,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 				return strPath;
 			}
+
 			return $"{Path}/{fileName}.png";
 		}
 	}

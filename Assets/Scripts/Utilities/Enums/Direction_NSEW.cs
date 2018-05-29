@@ -11,15 +11,17 @@
 	public static class Direction_NSEW_Helper
 	{
 		public const Direction_NSEW FIRST = Direction_NSEW.North;
-		public const Direction_NSEW LAST = Direction_NSEW.West;
+		public const Direction_NSEW LAST  = Direction_NSEW.West;
 
 		public static Direction_NSEW Next(this Direction_NSEW val)
 		{
 			switch(val)
 			{
 				case LAST:
+
 					return FIRST;
 				default:
+
 					return (++val);
 			}
 		}
@@ -29,8 +31,10 @@
 			switch(val)
 			{
 				case FIRST:
+
 					return LAST;
 				default:
+
 					return (--val);
 			}
 		}

@@ -2,13 +2,11 @@
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
-	public abstract class BaseSetRunTimeRef<T, RT_T>: FoCsBehavior
-		where RT_T: RunTimeRef<T> where T: class
+	public abstract class BaseSetRunTimeRef<T, RT_T>: FoCsBehavior where RT_T: RunTimeRef<T> where T: class
 	{
-		public RT_T Ref;
-		public bool RemoveOnDisable = true;
-
-		public abstract T Value { get; }
+		public          RT_T Ref;
+		public          bool RemoveOnDisable = true;
+		public abstract T    Value { get; }
 
 		public void OnEnable()
 		{
@@ -29,18 +27,11 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 		}
 	}
 
-	public abstract class BaseSetRunTimeRefWithField<T, RT_T>: BaseSetRunTimeRef<T, RT_T>
-		where RT_T: RunTimeRef<T> where T: Object
+	public abstract class BaseSetRunTimeRefWithField<T, RT_T>: BaseSetRunTimeRef<T, RT_T> where RT_T: RunTimeRef<T> where T: Object
 	{
 		[SerializeField] private T _referenceField;
-
-		public T ReferenceField
-		{
-			get { return _referenceField ?? (_referenceField = GetComponent<T>()); }
-			set { _referenceField = value; }
-		}
-
-		public override T Value => ReferenceField;
+		public                   T ReferenceField { get { return _referenceField ?? (_referenceField = GetComponent<T>()); } set { _referenceField = value; } }
+		public override          T Value          => ReferenceField;
 
 		private void Reset()
 		{

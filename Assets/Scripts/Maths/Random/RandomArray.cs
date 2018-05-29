@@ -2,12 +2,9 @@
 {
 	public static class RandomArray
 	{
-		public static T[] ShuffleArray<T>(this T[]array)
-		{
-			return ShuffleArray(array, RandomMaster.Random);
-		}
+		public static T[] ShuffleArray<T>(this T[] array) => ShuffleArray(array, RandomMaster.Random);
 
-		public static T[] ShuffleArray<T>(this T[]array, System.Random rng)
+		public static T[] ShuffleArray<T>(this T[] array, System.Random rng)
 		{
 			for(int i = array.Length - 1; i > 0; i--)
 			{
@@ -15,21 +12,22 @@
 				// Simple swap
 				var a = array[index];
 				array[index] = array[i];
-				array[i] = a;
+				array[i]     = a;
 			}
+
 			return array;
 		}
 
-		public static T[] ShuffleArrayUnity<T>(this T[]array)
+		public static T[] ShuffleArrayUnity<T>(this T[] array)
 		{
 			for(int i = array.Length - 1; i > 0; i--)
 			{
 				int index = UnityEngine.Random.Range(0, i + 1);
-
-				var a = array[index];
+				var a     = array[index];
 				array[index] = array[i];
-				array[i] = a;
+				array[i]     = a;
 			}
+
 			return array;
 		}
 	}

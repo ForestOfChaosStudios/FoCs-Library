@@ -3,10 +3,7 @@ using ForestOfChaosLib.AdvVar.Base;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[Serializable]
-	[AdvFolderNameSystem]
-	public class IntReference: AdvReference<int>
-	{ }
+	[Serializable] [AdvFolderNameSystem] public class IntReference: AdvReference<int> { }
 
 	[Serializable]
 	public class IntVariable: AdvVariable<int, IntReference>
@@ -14,10 +11,10 @@ namespace ForestOfChaosLib.AdvVar
 		public static implicit operator IntVariable(int input)
 		{
 			var fR = new IntVariable
-					 {
-						 UseConstant = true,
-						 Value = input
-					 };
+			{
+					UseConstant = true,
+					Value       = input
+			};
 
 			return fR;
 		}

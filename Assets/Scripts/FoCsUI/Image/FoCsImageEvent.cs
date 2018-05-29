@@ -9,12 +9,7 @@ namespace ForestOfChaosLib.FoCsUI.Image
 
 		public override string Text
 		{
-			get
-			{
-				return TextObj == null?
-					"" :
-					TextObj.text;
-			}
+			get { return TextObj == null? "" : TextObj.text; }
 			set
 			{
 				if(TextObj != null)
@@ -26,7 +21,7 @@ namespace ForestOfChaosLib.FoCsUI.Image
 
 		private void Reset()
 		{
-			Image = GetComponentAdvanced<UnityEngine.UI.Image>();
+			Image   = GetComponentAdvanced<UnityEngine.UI.Image>();
 			TextObj = GetComponentInChildrenAdvanced<Text>();
 		}
 	}

@@ -5,12 +5,8 @@ namespace ForestOfChaosLib.FoCsUI.InputField
 {
 	public class FoCsInputFieldEventTmp: FoCsInputField
 	{
-		public TMP_InputField InputField;
-
-		private void Reset()
-		{
-			InputField = GetComponentAdvanced<TMP_InputField>();
-		}
+		public  TMP_InputField InputField;
+		private void           Reset() { InputField = GetComponentAdvanced<TMP_InputField>(); }
 
 		public void OnEnable()
 		{
@@ -36,15 +32,7 @@ namespace ForestOfChaosLib.FoCsUI.InputField
 			}
 		}
 
-		public override string InputFieldText
-		{
-			get { return InputField.text; }
-			set { InputField.text = value; }
-		}
-
-		public override GameObject InputFieldGO
-		{
-			get { return InputField.gameObject; }
-		}
+		public override string     InputFieldText { get { return InputField.text; } set { InputField.text = value; } }
+		public override GameObject InputFieldGO   { get { return InputField.gameObject; } }
 	}
 }

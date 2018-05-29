@@ -3,10 +3,7 @@ using ForestOfChaosLib.AdvVar.Base;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[Serializable]
-	[AdvFolderNameSystem]
-	public class FloatReference: AdvReference<float>
-	{ }
+	[Serializable] [AdvFolderNameSystem] public class FloatReference: AdvReference<float> { }
 
 	[Serializable]
 	public class FloatVariable: AdvVariable<float, FloatReference>
@@ -14,10 +11,10 @@ namespace ForestOfChaosLib.AdvVar
 		public static implicit operator FloatVariable(float input)
 		{
 			var fR = new FloatVariable
-					 {
-						 UseConstant = true,
-						 Value = input
-					 };
+			{
+					UseConstant = true,
+					Value       = input
+			};
 
 			return fR;
 		}

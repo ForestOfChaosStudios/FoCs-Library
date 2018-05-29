@@ -14,15 +14,12 @@ namespace ForestOfChaosLib.AdvVar.Events
 				listeners[i].OnEventTriggered();
 		}
 
-		public void RegisterListener(AdvEventListener listner)
+		public void RegisterListener(AdvEventListener listener)
 		{
-			if(!listeners.Contains(listner))
-				listeners.Add(listner);
+			if(!listeners.Contains(listener))
+				listeners.Add(listener);
 		}
 
-		public void UnregisterListener(AdvEventListener listner)
-		{
-			listeners.Remove(listner);
-		}
+		public void UnRegisterListener(AdvEventListener listener) { listeners.Remove(listener); }
 	}
 }

@@ -6,14 +6,12 @@ namespace ForestOfChaosLib.Types.EventVariable.Editor
 {
 	public class GenericEventVariablePropertyDrawerer<T>: FoCsPropertyDrawer<GenericEventVariable<T>>
 	{
-		protected virtual bool NameInLine()
-		{
-			return true;
-		}
+		protected virtual bool NameInLine() { return true; }
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
 			property.Next(true);
+
 			return base.GetPropertyHeight(property, label);
 		}
 
@@ -25,51 +23,33 @@ namespace ForestOfChaosLib.Types.EventVariable.Editor
 		}
 	}
 
-	[CustomPropertyDrawer(typeof(BoolEventVariable))]
-	public class BoolEventVariablePropertyDrawerer: GenericEventVariablePropertyDrawerer<BoolEventVariable>
-	{ }
+	[CustomPropertyDrawer(typeof(BoolEventVariable))] public class BoolEventVariablePropertyDrawerer: GenericEventVariablePropertyDrawerer<BoolEventVariable> { }
 
-	[CustomPropertyDrawer(typeof(FloatEventVariable))]
-	public class FloatEventVariablePropertyDrawerer: GenericEventVariablePropertyDrawerer<FloatEventVariable>
-	{ }
+	[CustomPropertyDrawer(typeof(FloatEventVariable))] public class FloatEventVariablePropertyDrawerer: GenericEventVariablePropertyDrawerer<FloatEventVariable> { }
 
-	[CustomPropertyDrawer(typeof(IntEventVariable))]
-	public class IntEventVariablePropertyDrawerer: GenericEventVariablePropertyDrawerer<IntEventVariable>
-	{ }
+	[CustomPropertyDrawer(typeof(IntEventVariable))] public class IntEventVariablePropertyDrawerer: GenericEventVariablePropertyDrawerer<IntEventVariable> { }
 
 	[CustomPropertyDrawer(typeof(Vector2EventVariable))]
 	public class Vector2EventVariablePropertyDrawerer: GenericEventVariablePropertyDrawerer<Vector2EventVariable>
 	{
-		protected override bool NameInLine()
-		{
-			return false;
-		}
+		protected override bool NameInLine() => false;
 	}
 
 	[CustomPropertyDrawer(typeof(Vector3EventVariable))]
 	public class Vector3EventVariablePropertyDrawerer: GenericEventVariablePropertyDrawerer<Vector3EventVariable>
 	{
-		protected override bool NameInLine()
-		{
-			return false;
-		}
+		protected override bool NameInLine() => false;
 	}
 
 	[CustomPropertyDrawer(typeof(Vector4EventVariable))]
 	public class Vector4EventVariablePropertyDrawerer: GenericEventVariablePropertyDrawerer<Vector4EventVariable>
 	{
-		protected override bool NameInLine()
-		{
-			return false;
-		}
+		protected override bool NameInLine() => false;
 	}
 
 	[CustomPropertyDrawer(typeof(QuaternionEventVariable))]
 	public class QuaternionEventVariablePropertyDrawerer: GenericEventVariablePropertyDrawerer<QuaternionEventVariable>
 	{
-		protected override bool NameInLine()
-		{
-			return false;
-		}
+		protected override bool NameInLine() => false;
 	}
 }

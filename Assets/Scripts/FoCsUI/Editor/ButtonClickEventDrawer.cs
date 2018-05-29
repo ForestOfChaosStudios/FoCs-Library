@@ -12,15 +12,19 @@ namespace ForestOfChaosLib.FoCsUI.Editor
 		public override void OnInspectorGUI()
 		{
 			base.OnInspectorGUI();
+
 			using(Disposables.HorizontalScope())
 			{
 				if(GUILayout.Button("Add Object Name ID"))
 				{
 					var btn = (FoCsButton)serializedObject.targetObject;
+
 					if(!btn.Button.name.Contains("_btn"))
 						btn.Button.name += "_btn";
+
 					btn.TextGO.name = btn.Button.name.Replace("_btn", "") + "_text";
 				}
+
 				if(GUILayout.Button("Change Button Text to Button GO Name"))
 				{
 					var btn = (FoCsButton)serializedObject.targetObject;
@@ -32,11 +36,9 @@ namespace ForestOfChaosLib.FoCsUI.Editor
 
 	[CustomEditor(typeof(FoCsButtonClickEventTmp), true, isFallback = true)]
 	[CanEditMultipleObjects]
-	public class ButtonClickEvent_TMPDrawer: ButtonClickEventBaseDrawer
-	{ }
+	public class ButtonClickEvent_TMPDrawer: ButtonClickEventBaseDrawer { }
 
 	[CustomEditor(typeof(FoCsButtonClickEvent), true, isFallback = true)]
 	[CanEditMultipleObjects]
-	public class ButtonClickEventDrawer: ButtonClickEventBaseDrawer
-	{ }
+	public class ButtonClickEventDrawer: ButtonClickEventBaseDrawer { }
 }

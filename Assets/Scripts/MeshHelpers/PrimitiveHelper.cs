@@ -10,6 +10,7 @@ namespace ForestOfChaosLib.MeshHelpers
 		public static GameObject CreatePrimitive(PrimitiveType type, bool withCollider)
 		{
 			var go = GameObject.CreatePrimitive(type);
+
 			if(withCollider)
 			{
 				return go;
@@ -31,10 +32,10 @@ namespace ForestOfChaosLib.MeshHelpers
 		private static Mesh CreatePrimitiveMesh(PrimitiveType type)
 		{
 			GameObject gameObject = GameObject.CreatePrimitive(type);
-			Mesh mesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
+			Mesh       mesh       = gameObject.GetComponent<MeshFilter>().sharedMesh;
 			GameObject.Destroy(gameObject);
-
 			PrimitiveHelper.primitiveMeshes[type] = mesh;
+
 			return mesh;
 		}
 	}

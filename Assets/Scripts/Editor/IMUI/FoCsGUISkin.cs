@@ -16,14 +16,16 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(downArrow != null)
 						return downArrow;
+
 					downArrow = new GUIStyle("RL FooterButton")
-								{
-									normal = new GUIStyleState
-											 {
-												 background = GetTexture("FoCs_d_1_arrow")
-											 },
-									name = nameof(DownArrow)
-								};
+					{
+							normal = new GUIStyleState
+							{
+									background = GetTexture("FoCs_d_1_arrow")
+							},
+							name = nameof(DownArrow)
+					};
+
 					return downArrow;
 				}
 			}
@@ -36,14 +38,16 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(down2Arrow != null)
 						return down2Arrow;
+
 					down2Arrow = new GUIStyle("RL FooterButton")
-								 {
-									 normal = new GUIStyleState
-											  {
-												  background = GetTexture("FoCs_d_2_arrow")
-											  },
-									 name = nameof(Down2Arrow)
-								 };
+					{
+							normal = new GUIStyleState
+							{
+									background = GetTexture("FoCs_d_2_arrow")
+							},
+							name = nameof(Down2Arrow)
+					};
+
 					return down2Arrow;
 				}
 			}
@@ -56,14 +60,16 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(upArrow != null)
 						return upArrow;
+
 					upArrow = new GUIStyle("RL FooterButton")
-							  {
-								  normal = new GUIStyleState
-										   {
-											   background = GetTexture("FoCs_u_1_arrow")
-										   },
-								  name = nameof(UpArrow)
-							  };
+					{
+							normal = new GUIStyleState
+							{
+									background = GetTexture("FoCs_u_1_arrow")
+							},
+							name = nameof(UpArrow)
+					};
+
 					return upArrow;
 				}
 			}
@@ -76,14 +82,16 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(up2Arrow != null)
 						return up2Arrow;
+
 					up2Arrow = new GUIStyle("RL FooterButton")
-							   {
-								   normal = new GUIStyleState
-											{
-												background = GetTexture("FoCs_u_2_arrow")
-											},
-								   name = nameof(Up2Arrow)
-							   };
+					{
+							normal = new GUIStyleState
+							{
+									background = GetTexture("FoCs_u_2_arrow")
+							},
+							name = nameof(Up2Arrow)
+					};
+
 					return up2Arrow;
 				}
 			}
@@ -96,15 +104,17 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(inLineOptionsMenu != null)
 						return inLineOptionsMenu;
+
 					inLineOptionsMenu = new GUIStyle("Icon.TrackOptions")
-										{
-											overflow =
-											{
-												top = -4,
-												bottom = 4
-											},
-											name = nameof(InLineOptionsMenu)
-										};
+					{
+							overflow =
+							{
+									top    = -4,
+									bottom = 4
+							},
+							name = nameof(InLineOptionsMenu)
+					};
+
 					return inLineOptionsMenu;
 				}
 			}
@@ -117,26 +127,28 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(buttonNoOutline != null)
 						return buttonNoOutline;
+
 					buttonNoOutline = new GUIStyle(GUI.skin.button)
-									  {
-										  normal =
-										  {
-											  background = null
-										  },
-										  active =
-										  {
-											  background = null
-										  },
-										  focused =
-										  {
-											  background = null
-										  },
-										  hover =
-										  {
-											  background = null
-										  },
-										  name = nameof(ButtonNoOutline)
-									  };
+					{
+							normal =
+							{
+									background = null
+							},
+							active =
+							{
+									background = null
+							},
+							focused =
+							{
+									background = null
+							},
+							hover =
+							{
+									background = null
+							},
+							name = nameof(ButtonNoOutline)
+					};
+
 					return buttonNoOutline;
 				}
 			}
@@ -149,12 +161,14 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(crossCircle != null)
 						return crossCircle;
+
 					crossCircle = new GUIStyle("TL SelectionBarCloseButton")
-								  {
-									  fixedHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing,
-									  fixedWidth = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing,
-									  name = nameof(CrossCircle)
-								  };
+					{
+							fixedHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing,
+							fixedWidth  = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing,
+							name        = nameof(CrossCircle)
+					};
+
 					return crossCircle;
 				}
 			}
@@ -167,11 +181,13 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(toolbar != null)
 						return toolbar;
+
 					toolbar = new GUIStyle(Unity.Toolbar)
-							  {
-								  fixedHeight = 0,
-								  name = nameof(Toolbar)
-							  };
+					{
+							fixedHeight = 0,
+							name        = nameof(Toolbar)
+					};
+
 					return toolbar;
 				}
 			}
@@ -184,11 +200,13 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(toolbarButton != null)
 						return toolbarButton;
+
 					toolbarButton = new GUIStyle(Unity.ToolbarButton)
-									{
-										fixedHeight = 0,
-										name = nameof(ToolbarButton)
-									};
+					{
+							fixedHeight = 0,
+							name        = nameof(ToolbarButton)
+					};
+
 					return toolbarButton;
 				}
 			}
@@ -201,22 +219,24 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(buttonDetailed != null)
 						return buttonDetailed;
+
 					buttonDetailed = new GUIStyle(Unity.Button)
-									 {
-										 normal =
-										 {
-											 background = GetTexture("FoCs_panel_detailed")
-										 },
-										 hover =
-										 {
-											 background = GetTexture("FoCs_panel_detailed_hover")
-										 },
-										 active =
-										 {
-											 background = GetTexture("FoCs_panel_detailed_active")
-										 },
-										 name = nameof(ButtonDetailed)
-									 };
+					{
+							normal =
+							{
+									background = GetTexture("FoCs_panel_detailed")
+							},
+							hover =
+							{
+									background = GetTexture("FoCs_panel_detailed_hover")
+							},
+							active =
+							{
+									background = GetTexture("FoCs_panel_detailed_active")
+							},
+							name = nameof(ButtonDetailed)
+					};
+
 					return buttonDetailed;
 				}
 			}
@@ -229,22 +249,24 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(buttonThick != null)
 						return buttonThick;
+
 					buttonThick = new GUIStyle(Unity.Button)
-								  {
-									  normal =
-									  {
-										  background = GetTexture("FoCs_panel_thick")
-									  },
-									  hover =
-									  {
-										  background = GetTexture("FoCs_panel_thick_hover")
-									  },
-									  active =
-									  {
-										  background = GetTexture("FoCs_panel_thick_active")
-									  },
-									  name = nameof(ButtonThick)
-								  };
+					{
+							normal =
+							{
+									background = GetTexture("FoCs_panel_thick")
+							},
+							hover =
+							{
+									background = GetTexture("FoCs_panel_thick_hover")
+							},
+							active =
+							{
+									background = GetTexture("FoCs_panel_thick_active")
+							},
+							name = nameof(ButtonThick)
+					};
+
 					return buttonThick;
 				}
 			}
@@ -257,22 +279,24 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(buttonThin != null)
 						return buttonThin;
+
 					buttonThin = new GUIStyle(Unity.Button)
-								 {
-									 normal =
-									 {
-										 background = GetTexture("FoCs_panel_thin")
-									 },
-									 hover =
-									 {
-										 background = GetTexture("FoCs_panel_thin_hover")
-									 },
-									 active =
-									 {
-										 background = GetTexture("FoCs_panel_thin_active")
-									 },
-									 name = nameof(ButtonThin)
-								 };
+					{
+							normal =
+							{
+									background = GetTexture("FoCs_panel_thin")
+							},
+							hover =
+							{
+									background = GetTexture("FoCs_panel_thin_hover")
+							},
+							active =
+							{
+									background = GetTexture("FoCs_panel_thin_active")
+							},
+							name = nameof(ButtonThin)
+					};
+
 					return buttonThin;
 				}
 			}
@@ -285,42 +309,44 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(find != null)
 						return find;
+
 					find = new GUIStyle("RL FooterButton")
-						   {
-							   normal =
-							   {
-								   background = GetTexture("FoCs_find")
-							   },
-							   hover =
-							   {
-								   background = GetTexture("FoCs_find_hover")
-							   },
-							   active =
-							   {
-								   background = GetTexture("FoCs_find_active")
-							   },
-							   name = nameof(Find)
-						   };
+					{
+							normal =
+							{
+									background = GetTexture("FoCs_find")
+							},
+							hover =
+							{
+									background = GetTexture("FoCs_find_hover")
+							},
+							active =
+							{
+									background = GetTexture("FoCs_find_active")
+							},
+							name = nameof(Find)
+					};
 
 					return find;
 				}
 			}
 
-			public static GUIStyle[] StylesArray => new[]
-													  {
-														  DownArrow,
-														  Down2Arrow,
-														  UpArrow,
-														  Up2Arrow,
-														  InLineOptionsMenu,
-														  ButtonNoOutline,
-														  CrossCircle,
-														  Toolbar,
-														  ToolbarButton,
-														  ButtonDetailed,
-														  ButtonThick,
-														  ButtonThin
-													  };
+			public static GUIStyle[] StylesArray =>
+					new[]
+					{
+							DownArrow,
+							Down2Arrow,
+							UpArrow,
+							Up2Arrow,
+							InLineOptionsMenu,
+							ButtonNoOutline,
+							CrossCircle,
+							Toolbar,
+							ToolbarButton,
+							ButtonDetailed,
+							ButtonThick,
+							ButtonThin
+					};
 		}
 	}
 }

@@ -5,11 +5,10 @@ namespace ForestOfChaosLib.Utilities
 {
 	public static class ReflectionUtilities
 	{
-		public static List<Type> GetTypesWith<TAttribute>(bool inherit)
-			where TAttribute: Attribute
+		public static List<Type> GetTypesWith<TAttribute>(bool inherit) where TAttribute: Attribute
 		{
 			var assembliesList = AppDomain.CurrentDomain.GetAssemblies();
-			var list = new List<Type>();
+			var list           = new List<Type>();
 
 			foreach(var assembly in assembliesList)
 			{
@@ -26,12 +25,10 @@ namespace ForestOfChaosLib.Utilities
 			return list;
 		}
 
-		public static List<Type> GetTypesWith<TAttribute, TInherit>(bool inherit)
-			where TAttribute: Attribute
+		public static List<Type> GetTypesWith<TAttribute, TInherit>(bool inherit) where TAttribute: Attribute
 		{
 			var assembliesList = AppDomain.CurrentDomain.GetAssemblies();
-
-			var list = new List<Type>();
+			var list           = new List<Type>();
 
 			foreach(var assembly in assembliesList)
 			{
@@ -44,15 +41,16 @@ namespace ForestOfChaosLib.Utilities
 					}
 				}
 			}
+
 			return list;
 		}
 
 		public static List<Type> GetInheritedClasses<TInherit>() => GetInheritedClasses(typeof(TInherit));
+
 		public static List<Type> GetInheritedClasses(Type TInherit)
 		{
 			var assembliesList = AppDomain.CurrentDomain.GetAssemblies();
-
-			var list = new List<Type>();
+			var list           = new List<Type>();
 
 			foreach(var assembly in assembliesList)
 			{
@@ -60,10 +58,12 @@ namespace ForestOfChaosLib.Utilities
 				{
 					if(!t.IsSubclassOf(TInherit))
 						continue;
+
 					if(!list.Contains(t))
 						list.Add(t);
 				}
 			}
+
 			return list;
 		}
 	}

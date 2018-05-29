@@ -3,10 +3,7 @@ using ForestOfChaosLib.AdvVar.Base;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[Serializable]
-	[AdvFolderNameSystem]
-	public class BoolReference: AdvReference<bool>
-	{ }
+	[Serializable] [AdvFolderNameSystem] public class BoolReference: AdvReference<bool> { }
 
 	[Serializable]
 	public class BoolVariable: AdvVariable<bool, BoolReference>
@@ -14,10 +11,10 @@ namespace ForestOfChaosLib.AdvVar
 		public static implicit operator BoolVariable(bool input)
 		{
 			var fR = new BoolVariable
-					 {
-						 UseConstant = true,
-						 Value = input
-					 };
+			{
+					UseConstant = true,
+					Value       = input
+			};
 
 			return fR;
 		}

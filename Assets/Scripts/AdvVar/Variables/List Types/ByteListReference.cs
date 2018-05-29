@@ -3,12 +3,7 @@ using ForestOfChaosLib.AdvVar.Base;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[Serializable]
-	[AdvFolderNameSystemTypeLists]
-	public class ByteListReference: AdvListReference<byte>
-	{ }
+	[Serializable] [AdvFolderNameSystemTypeLists] public class ByteListReference: AdvListReference<byte> { }
 
-	[Serializable]
-	public class ByteListVariable: AdvListVariable<byte, ByteListReference>
-	{ }
+	[Serializable] public class ByteListVariable: AdvListVariable<byte, ByteListReference> { }
 }

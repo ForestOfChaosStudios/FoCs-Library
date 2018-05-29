@@ -13,6 +13,7 @@ public class StringReferenceEditor: FoCsEditor
 		using(Disposables.Indent())
 		{
 			DrawCopyPasteButtonsHeader();
+
 			using(var changeCheckScope = Disposables.ChangeCheck())
 			{
 				var cachedGuiColor = GUI.color;
@@ -21,6 +22,7 @@ public class StringReferenceEditor: FoCsEditor
 				foreach(var serializedProperty in serializedObject.Properties())
 				{
 					GUI.color = cachedGuiColor;
+
 					if(serializedProperty.name == "_value")
 					{
 						DoTextBox(serializedProperty);
@@ -44,6 +46,6 @@ public class StringReferenceEditor: FoCsEditor
 	private void DoTextBox(SerializedProperty serializedProperty)
 	{
 		EditorGUILayout.LabelField("Value");
-		serializedProperty.stringValue = EditorGUILayout.TextArea(serializedProperty.stringValue,GUILayout.Height(EditorGUIUtility.singleLineHeight * 5));
+		serializedProperty.stringValue = EditorGUILayout.TextArea(serializedProperty.stringValue, GUILayout.Height(EditorGUIUtility.singleLineHeight * 5));
 	}
 }

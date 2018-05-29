@@ -12,99 +12,42 @@ namespace ForestOfChaosLib.InputManager
 		/// </summary>
 		public string Axis;
 
-		public float Value
-		{
-			get
-			{
-				return ValueInverted?
-					m_Value :
-					-m_Value;
-			}
-			set
-			{
-				m_Value = ValueInverted?
-					value :
-					-value;
-			}
-		}
-
-		public float DeadZone
-		{
-			get { return m_DeadZone; }
-			set { m_DeadZone = value; }
-		}
-
-		[SerializeField]
-		private float m_Value;
-
-		[SerializeField]
-		private float m_DeadZone;
-
-		public KeyPosition KeyPos = KeyPosition.Up;
-
-		public bool ValueInverted;
-
-		public bool OnlyButton = false;
-
-		public Action OnKeyDown;
-		public Action OnKeyUp;
-		public Action OnKeyPositiveDown;
-		public Action OnKeyPositiveUp;
-		public Action OnKeyNegativeDown;
-		public Action OnKeyNegativeUp;
-		public Action OnKeyNoValue;
-		public Action<float> OnKey;
-		public Action<float> OnKeyNoDeadZone;
+		public                   float         Value    { get { return ValueInverted? m_Value : -m_Value; } set { m_Value    = ValueInverted? value : -value; } }
+		public                   float         DeadZone { get { return m_DeadZone; }                        set { m_DeadZone = value; } }
+		[SerializeField] private float         m_Value;
+		[SerializeField] private float         m_DeadZone;
+		public                   KeyPosition   KeyPos = KeyPosition.Up;
+		public                   bool          ValueInverted;
+		public                   bool          OnlyButton = false;
+		public                   Action        OnKeyDown;
+		public                   Action        OnKeyUp;
+		public                   Action        OnKeyPositiveDown;
+		public                   Action        OnKeyPositiveUp;
+		public                   Action        OnKeyNegativeDown;
+		public                   Action        OnKeyNegativeUp;
+		public                   Action        OnKeyNoValue;
+		public                   Action<float> OnKey;
+		public                   Action<float> OnKeyNoDeadZone;
 
 		public InputAxis(string axis, bool invert = false)
 		{
-			Axis = axis;
+			Axis          = axis;
 			ValueInverted = invert;
 		}
 
-		public static implicit operator float(InputAxis fp)
-		{
-			return fp.Value;
-		}
-
-		public static implicit operator string(InputAxis fp)
-		{
-			return fp.Axis;
-		}
-
-		public static implicit operator bool(InputAxis fp)
-		{
-			return fp.ValueInverted;
-		}
-
-		public static implicit operator InputAxis(string fp)
-		{
-			return new InputAxis(fp);
-		}
-
-		public bool InputInDeadZone()
-		{
-			return Math.Abs(Value) > m_DeadZone;
-		}
-
-		public bool InputInDeadZone(float deadZone)
-		{
-			return Math.Abs(Value) > deadZone;
-		}
-
-		public void CallEvents()
-		{
-			CallEvents(this, m_DeadZone);
-		}
-
-		public void CallEvents(float deadZone)
-		{
-			CallEvents(this, deadZone);
-		}
+		public static implicit operator float(InputAxis  fp) => fp.Value;
+		public static implicit operator string(InputAxis fp) => fp.Axis;
+		public static implicit operator bool(InputAxis   fp) => fp.ValueInverted;
+		public static implicit operator InputAxis(string fp) => new InputAxis(fp);
+		public                          bool InputInDeadZone() => Math.Abs(Value) > m_DeadZone;
+		public                          bool InputInDeadZone(float deadZone) => Math.Abs(Value) > deadZone;
+		public                          void CallEvents()                    { CallEvents(this, m_DeadZone); }
+		public                          void CallEvents(float deadZone)      { CallEvents(this, deadZone); }
 
 		public void UpdateData()
 		{
 			m_Value = Input.GetAxis(Axis);
+
 			if(Input.GetButtonUp(Axis))
 				KeyPos = KeyPosition.Up;
 			else if(Input.GetButtonDown(Axis))
@@ -125,10 +68,7 @@ namespace ForestOfChaosLib.InputManager
 			CallEvents(this, deadZone);
 		}
 
-		public static void CallEvents(InputAxis key)
-		{
-			CallEvents(key, key.m_DeadZone);
-		}
+		public static void CallEvents(InputAxis key) { CallEvents(key, key.m_DeadZone); }
 
 		public void CallEventsCustomValue(float key)
 		{
@@ -154,14 +94,18 @@ namespace ForestOfChaosLib.InputManager
 				{
 					case KeyPosition.Up:
 						KeyUp(key);
+
 						return;
 					case KeyPosition.Down:
 						KeyDown(key);
+
 						return;
 					case KeyPosition.Held:
 						KeyHeld(key);
+
 						return;
 				}
+
 				return;
 			}
 

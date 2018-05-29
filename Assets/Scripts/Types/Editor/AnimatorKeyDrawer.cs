@@ -8,21 +8,15 @@ namespace ForestOfChaosLib.Animation
 	[CustomPropertyDrawer(typeof(AnimatorKey))]
 	public class AnimatorKeyDrawer: FoCsPropertyDrawer<AnimatorKey>
 	{
-		private const string KEY = "Key";
-		private const string KEY_LABEL = "Key ID";
-
-		private const string KEY_TYPE = "KeyType";
+		private const string KEY            = "Key";
+		private const string KEY_LABEL      = "Key ID";
+		private const string KEY_TYPE       = "KeyType";
 		private const string KEY_TYPE_LABEL = "Key Type";
-
-		private const string LABEL = "Key Data";
-
-		private const string INT_DATA = "intData";
-
-		private const string FLOAT_DATA = "floatData";
-
-		private const string BOOL_DATA = "boolData";
-
-		private const string TRIGGER_DATA = "triggerData";
+		private const string LABEL          = "Key Data";
+		private const string INT_DATA       = "intData";
+		private const string FLOAT_DATA     = "floatData";
+		private const string BOOL_DATA      = "boolData";
+		private const string TRIGGER_DATA   = "triggerData";
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -40,7 +34,7 @@ namespace ForestOfChaosLib.Animation
 					EditorGUI.LabelField(scope.GetNext(), KEY_TYPE_LABEL);
 					EditorGUI.PropertyField(scope.GetNext(), property.FindPropertyRelative(KEY_TYPE), GUIContent.none);
 
-					var key = property.GetTargetObjectOfProperty<AnimatorKey>();
+					var key     = property.GetTargetObjectOfProperty<AnimatorKey>();
 					var typeStr = INT_DATA;
 
 					switch(key.KeyType)
@@ -62,6 +56,7 @@ namespace ForestOfChaosLib.Animation
 
 							break;
 					}
+
 					EditorGUI.LabelField(scope.GetNext(), LABEL);
 					EditorGUI.PropertyField(scope.GetNext(), property.FindPropertyRelative(typeStr), GUIContent.none);
 				}

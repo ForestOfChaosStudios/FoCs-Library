@@ -19,7 +19,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			//Check if we should draw the property
 			if(!GetAttribute.HideInInspector || enabled)
 			{
-				property.isExpanded = true;
+				property.isExpanded   =  true;
 				EditorGUI.indentLevel += 1;
 				EditorGUI.PropertyField(position, property, label, true);
 				EditorGUI.indentLevel -= 1;
@@ -37,9 +37,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 		{
 			bool enabled = true;
 			//Look for the sourcefield within the object that the property belongs to
-			string propertyPath = property.propertyPath; //returns the property path of the property we want to apply the attribute to
-			string conditionPath = propertyPath.Replace(property.name, condHAtt.ConditionalSourceField); //changes the path to the conditionalsource property path
-			var sourcePropertyValue = property.serializedObject.FindProperty(conditionPath);
+			string propertyPath        = property.propertyPath;                                                //returns the property path of the property we want to apply the attribute to
+			string conditionPath       = propertyPath.Replace(property.name, condHAtt.ConditionalSourceField); //changes the path to the conditionalsource property path
+			var    sourcePropertyValue = property.serializedObject.FindProperty(conditionPath);
 
 			if(sourcePropertyValue != null)
 			{
@@ -55,13 +55,14 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			var condHAtt = GetAttribute;
-			bool enabled = GetConditionalHideAttributeResult(condHAtt, property);
+			var  condHAtt = GetAttribute;
+			bool enabled  = GetConditionalHideAttributeResult(condHAtt, property);
 
 			if(!condHAtt.HideInInspector || enabled)
 			{
 				return EditorGUI.GetPropertyHeight(property, label);
 			}
+
 			return 0;
 		}
 	}

@@ -6,10 +6,11 @@ namespace ForestOfChaosLib.Editor.AssetPostProcessors
 	{
 		protected void OnPreprocessTexture()
 		{
-			var textureImporter = (TextureImporter) assetImporter;
+			var textureImporter = (TextureImporter)assetImporter;
+
 			if(textureImporter.assetPath.Contains("Editor Resources"))
 			{
-				textureImporter.textureType = TextureImporterType.GUI;
+				textureImporter.textureType    = TextureImporterType.GUI;
 				textureImporter.maxTextureSize = 128;
 			}
 			else if(textureImporter.assetPath.Contains("UI"))

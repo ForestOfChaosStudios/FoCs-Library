@@ -3,8 +3,5 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef
 {
-	[Serializable]
-	[AdvFolderNameRunTime]
-	public class RendererRunTimeList: RunTimeList<Renderer>
-	{ }
+	[Serializable] [AdvFolderNameRunTime] public class RendererRunTimeList: RunTimeList<Renderer> { }
 }

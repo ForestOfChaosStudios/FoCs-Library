@@ -10,6 +10,7 @@ namespace ForestOfChaosLib.AdvDebug
 	public class AdvDebugWindow: FoCsWindow<AdvDebugWindow>
 	{
 		private const string WINDOW_NAME = "AdvDebugWindow";
+
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + WINDOW_NAME)]
 		internal static void Init()
 		{
@@ -22,9 +23,7 @@ namespace ForestOfChaosLib.AdvDebug
 			EditorGUILayout.LabelField($"Time: {Time.time}");
 
 			foreach(var data in AdvDebug.DataDictionary)
-			{
 				DrawField(data);
-			}
 		}
 
 		private static void DrawField(KeyValuePair<string, AdvDebug.DictionaryData> data)
@@ -32,15 +31,15 @@ namespace ForestOfChaosLib.AdvDebug
 			using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
 			{
 				EditorGUILayout.LabelField(data.Key);
+
 				using(FoCsEditor.Disposables.HorizontalScope())
 				{
 					DrawData(data.Value);
 					var tempData = data.Value.previousData;
 
-					for(int i = 0; i < 5; i++)
+					for(var i = 0; i < 5; i++)
 					{
-						if(tempData == null)
-							break;
+						if(tempData == null) break;
 						DrawData(tempData);
 						tempData = tempData.previousData;
 					}
@@ -59,8 +58,7 @@ namespace ForestOfChaosLib.AdvDebug
 
 		protected void Update()
 		{
-			if(Application.isPlaying)
-				Repaint();
+			if(Application.isPlaying) Repaint();
 		}
 	}
 }

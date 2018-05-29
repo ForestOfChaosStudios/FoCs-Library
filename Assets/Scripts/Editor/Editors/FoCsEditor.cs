@@ -1,5 +1,4 @@
 //#define FoCsEditor_ANIMATED
-
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -25,23 +24,18 @@ namespace ForestOfChaosLib.Editor
 			Hidden
 		}
 
-		private Dictionary<string, ObjectReferenceDrawer> objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(10);
-		private Dictionary<string, RLP> reorderableLists = new Dictionary<string, RLP>(1);
-
-		public static float StandardLine => EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-
-		protected bool GUIChanged { get; private set; }
-
-		public virtual bool HideDefaultProperty => true;
-
-		public virtual bool ShowCopyPasteButtons => true;
-
-		public override bool UseDefaultMargins() => false;
+		private         Dictionary<string, ObjectReferenceDrawer> objectDrawers    = new Dictionary<string, ObjectReferenceDrawer>(10);
+		private         Dictionary<string, RLP>                   reorderableLists = new Dictionary<string, RLP>(1);
+		public static   float                                     StandardLine         => EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+		protected       bool                                      GUIChanged           { get; private set; }
+		public virtual  bool                                      HideDefaultProperty  => true;
+		public virtual  bool                                      ShowCopyPasteButtons => true;
+		public override bool                                      UseDefaultMargins()  => false;
 
 		protected virtual void OnEnable()
 		{
 			reorderableLists = new Dictionary<string, RLP>(1);
-			objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(10);
+			objectDrawers    = new Dictionary<string, ObjectReferenceDrawer>(10);
 		}
 
 		//Clean up after use
@@ -49,7 +43,6 @@ namespace ForestOfChaosLib.Editor
 		{
 			reorderableLists.Clear();
 			reorderableLists = null;
-
 			objectDrawers.Clear();
 			objectDrawers = null;
 		}
@@ -57,8 +50,10 @@ namespace ForestOfChaosLib.Editor
 		public override void OnInspectorGUI()
 		{
 			GUIChanged = false;
+
 			if(ShowCopyPasteButtons)
 				DrawCopyPasteButtonsHeader();
+
 			using(Disposables.Indent())
 			{
 				using(var changeCheckScope = Disposables.ChangeCheck())
@@ -71,6 +66,7 @@ namespace ForestOfChaosLib.Editor
 						GUI.color = cachedGuiColor;
 						HandleProperty(serializedProperty);
 					}
+
 					if(changeCheckScope.changed)
 					{
 						serializedObject.ApplyModifiedProperties();
@@ -78,13 +74,9 @@ namespace ForestOfChaosLib.Editor
 					}
 				}
 			}
-
 		}
 
-		protected void DrawCopyPasteButtons()
-		{
-			EditorHelpers.CopyPastObjectButtons(serializedObject);
-		}
+		protected void DrawCopyPasteButtons() { EditorHelpers.CopyPastObjectButtons(serializedObject); }
 
 		protected void DrawCopyPasteButtonsHeader()
 		{
@@ -94,18 +86,19 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		public virtual void OnSceneGUI()
-		{ }
+		public virtual void OnSceneGUI() { }
 
 		protected void HandleProperty(SerializedProperty property)
 		{
 			if(HideDefaultProperty)
 			{
 				var isDefaultScriptProperty = GetDefaultPropertyType(property);
+
 				if(isDefaultScriptProperty == DefaultPropertyType.Hidden)
 					return;
 
 				var cachedGUIEnabled = GUI.enabled;
+
 				if(isDefaultScriptProperty != DefaultPropertyType.NotDefault)
 					GUI.enabled = false;
 
@@ -130,10 +123,10 @@ namespace ForestOfChaosLib.Editor
 
 		private void HandleObjectReference(SerializedProperty property)
 		{
-			var drawer = GetObjectDrawer(property);
+			var drawer  = GetObjectDrawer(property);
 			var GuiCont = new GUIContent(property.displayName);
-			var height = drawer.GetPropertyHeight(property, GuiCont);
-			var rect = EditorGUILayout.GetControlRect(true, height);
+			var height  = drawer.GetPropertyHeight(property, GuiCont);
+			var rect    = EditorGUILayout.GetControlRect(true, height);
 			drawer.OnGUI(rect, property, GuiCont);
 		}
 
@@ -141,60 +134,56 @@ namespace ForestOfChaosLib.Editor
 		{
 			if(property.displayName.Equals("Object Hide Flags"))
 				return DefaultPropertyType.Hidden;
+
 			if(IsDefaultScriptProperty(property))
 				return DefaultPropertyType.Disabled;
+
 			return DefaultPropertyType.NotDefault;
 		}
 
-		public static bool IsDefaultScriptProperty(SerializedProperty property) => property.name.Equals("m_Script") &&
-																				   property.type.Equals("PPtr<MonoScript>") &&
-																				   (property.propertyType == SerializedPropertyType.ObjectReference) &&
-																				   property.propertyPath.Equals("m_Script");
+		public static bool IsDefaultScriptProperty(SerializedProperty property) =>
+				property.name.Equals("m_Script") && property.type.Equals("PPtr<MonoScript>") && (property.propertyType == SerializedPropertyType.ObjectReference) && property.propertyPath.Equals("m_Script");
 
-		public static bool IsPropertyHidden(SerializedProperty property) => GetDefaultPropertyType(property) != DefaultPropertyType.NotDefault;
-
-		protected bool PropertyIsArrayAndNotString(SerializedProperty property) => property.isArray && (property.propertyType != SerializedPropertyType.String);
+		public static bool IsPropertyHidden(SerializedProperty            property) => GetDefaultPropertyType(property) != DefaultPropertyType.NotDefault;
+		protected     bool PropertyIsArrayAndNotString(SerializedProperty property) => property.isArray && (property.propertyType != SerializedPropertyType.String);
 
 		public void HandleArray(SerializedProperty property)
 		{
 			using(Disposables.Indent(0))
 			{
 				var listData = GetReorderableList(property);
-				var height = listData.GetTotalHeight();
-				var rect = EditorGUILayout.GetControlRect(true, height);//.ChangeX(16);
+				var height   = listData.GetTotalHeight();
+				var rect     = EditorGUILayout.GetControlRect(true, height); //.ChangeX(16);
 				listData.HandleDrawing(rect);
 			}
 		}
 
 		protected object[] GetPropertyAttributes(SerializedProperty property) => GetPropertyAttributes<PropertyAttribute>(property);
 
-		protected object[] GetPropertyAttributes<T>(SerializedProperty property)
-			where T: Attribute
+		protected object[] GetPropertyAttributes<T>(SerializedProperty property) where T: Attribute
 		{
-			const BindingFlags bindingFlags = BindingFlags.GetField |
-											  BindingFlags.GetProperty |
-											  BindingFlags.IgnoreCase |
-											  BindingFlags.Instance |
-											  BindingFlags.NonPublic |
-											  BindingFlags.Public;
+			const BindingFlags bindingFlags = BindingFlags.GetField | BindingFlags.GetProperty | BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+
 			if(property.serializedObject.targetObject == null)
 				return null;
+
 			var targetType = property.serializedObject.targetObject.GetType();
-			var field = targetType.GetField(property.name, bindingFlags);
-			return field != null?
-				field.GetCustomAttributes(typeof(T), true) :
-				null;
+			var field      = targetType.GetField(property.name, bindingFlags);
+
+			return field != null? field.GetCustomAttributes(typeof(T), true) : null;
 		}
 
 		private ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property)
 		{
-			var id = $"{property.propertyPath}-{property.name}";
+			var                   id = $"{property.propertyPath}-{property.name}";
 			ObjectReferenceDrawer objDraw;
+
 			if(objectDrawers.TryGetValue(id, out objDraw))
 				return objDraw;
-			objDraw = new ObjectReferenceDrawer();
 
+			objDraw = new ObjectReferenceDrawer();
 			objectDrawers.Add(id, objDraw);
+
 			return objDraw;
 		}
 
@@ -202,9 +191,11 @@ namespace ForestOfChaosLib.Editor
 		{
 			var id = $"{property.propertyPath}-{property.name}";
 			RLP ret;
+
 			if(reorderableLists.TryGetValue(id, out ret))
 			{
 				ret.Property = property;
+
 				return ret;
 			}
 #if FoCsEditor_ANIMATED
@@ -212,8 +203,8 @@ namespace ForestOfChaosLib.Editor
 #else
 			ret = new RLP(property, true);
 #endif
-
 			reorderableLists.Add(id, ret);
+
 			return ret;
 		}
 
@@ -233,32 +224,25 @@ namespace ForestOfChaosLib.Editor
 		{
 			//From https://forum.unity.com/threads/how-to-get-the-local-identifier-in-file-for-scene-objects.265686/
 			var inspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
-
 			int localId;
+
 			{
-				var seriObject = new SerializedObject(target);
-
+				var seriObject             = new SerializedObject(target);
 				var inspectorModeInfoValue = inspectorModeInfo.GetValue(seriObject);
-
 				inspectorModeInfo.SetValue(seriObject, InspectorMode.Debug, null);
-
 				var localIdProp = seriObject.FindProperty("m_LocalIdentfierInFile"); //note the misspelling!
-
 				inspectorModeInfo.SetValue(seriObject, inspectorModeInfoValue, null);
-
 				localId = localIdProp.intValue;
 			}
 
 			return localId;
 		}
 
-		public string AssetPath() => AssetPath(target);
-
+		public        string AssetPath()              => AssetPath(target);
 		public static string AssetPath(Object target) => AssetDatabase.GetAssetPath(target);
 	}
 
-	public class FoCsEditor<T>: FoCsEditor
-		where T: Object
+	public class FoCsEditor<T>: FoCsEditor where T: Object
 	{
 		protected T Target => (T)target;
 	}

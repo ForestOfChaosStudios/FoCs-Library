@@ -8,35 +8,17 @@ namespace ForestOfChaosLib.Extensions
 {
 	public static class ListExtenstions
 	{
-		public static bool IsEmpty<T>(this List<T> list)
-		{
-			return list.Count == 0;
-		}
-
-		public static bool NotEmpty<T>(this List<T> list)
-		{
-			return list.Count > 0;
-		}
-
-		public static bool IsNullOrEmpty<T>(this List<T> list)
-		{
-			return list == null || list.Count == 0;
-		}
-
-		public static bool IsNullOrEmpty<T>(this T[] list)
-		{
-			return list == null || list.Length == 0;
-		}
-
-		public static IList<T> Clone<T>(this IList<T> listToClone) where T: ICloneable
-		{
-			return listToClone.Select(item => (T)item.Clone()).ToList();
-		}
+		public static bool     IsEmpty<T>(this       List<T>  list)                            => list.Count == 0;
+		public static bool     NotEmpty<T>(this      List<T>  list)                            => list.Count > 0;
+		public static bool     IsNullOrEmpty<T>(this List<T>  list)                            => list == null || list.Count  == 0;
+		public static bool     IsNullOrEmpty<T>(this T[]      list)                            => list == null || list.Length == 0;
+		public static IList<T> Clone<T>(this         IList<T> listToClone) where T: ICloneable => listToClone.Select(item => (T)item.Clone()).ToList();
 
 		public static bool InRange<T>(this List<T> list, int index)
 		{
 			if(list.IsNullOrEmpty())
 				return false;
+
 			return (index >= 0) && (index < list.Count);
 		}
 
@@ -44,6 +26,7 @@ namespace ForestOfChaosLib.Extensions
 		{
 			if(array.IsNullOrEmpty())
 				return false;
+
 			return (index >= 0) && (index < array.Length);
 		}
 
@@ -51,6 +34,7 @@ namespace ForestOfChaosLib.Extensions
 		{
 			if(array.IsNullOrEmpty())
 				return default(T);
+
 			return array[URandom.Range(0, array.Length - 1)];
 		}
 
@@ -58,6 +42,7 @@ namespace ForestOfChaosLib.Extensions
 		{
 			if(list.IsNullOrEmpty())
 				return default(T);
+
 			return list[URandom.Range(0, list.Count - 1)];
 		}
 
@@ -65,6 +50,7 @@ namespace ForestOfChaosLib.Extensions
 		{
 			if(array.IsNullOrEmpty())
 				return default(T);
+
 			return array[new SRandom().Next(0, array.Length - 1)];
 		}
 
@@ -72,6 +58,7 @@ namespace ForestOfChaosLib.Extensions
 		{
 			if(array.IsNullOrEmpty())
 				return default(T);
+
 			return array[new SRandom(seed).Next(0, array.Length - 1)];
 		}
 
@@ -79,6 +66,7 @@ namespace ForestOfChaosLib.Extensions
 		{
 			if(list.IsNullOrEmpty())
 				return default(T);
+
 			return list[new SRandom().Next(0, list.Count - 1)];
 		}
 
@@ -86,6 +74,7 @@ namespace ForestOfChaosLib.Extensions
 		{
 			if(list.IsNullOrEmpty())
 				return default(T);
+
 			return list[new SRandom(seed).Next(0, list.Count - 1)];
 		}
 	}

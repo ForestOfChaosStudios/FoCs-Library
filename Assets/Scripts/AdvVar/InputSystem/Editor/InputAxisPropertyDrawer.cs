@@ -11,18 +11,17 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 	[CustomPropertyDrawer(typeof(InputAxis))]
 	public class InputAxisPropertyDrawer: FoCsPropertyDrawer
 	{
-		internal const float LABEL_SIZE = 0.5f;
-		internal const float FIELD_SIZE = 1 - LABEL_SIZE;
-		internal static readonly GUIContent enableSyncAxisNamesGUIContent = new GUIContent("Enable Sync", "Enable Sync Axis Names");
-		internal static readonly GUIContent disableSyncAxisNamesGUIContent = new GUIContent("Disable Sync", "Disable Sync Axis Names");
-
-		internal static readonly GUIContent ProgressBarContent = new GUIContent("Current Value", "Shows what the current value of the Axis is.");
-		internal static readonly GUIContent PopupContent = new GUIContent("Input Axis", "Chose from the available Unity Input Axis values.");
+		internal const           float      LABEL_SIZE                     = 0.5f;
+		internal const           float      FIELD_SIZE                     = 1 - LABEL_SIZE;
+		internal static readonly GUIContent enableSyncAxisNamesGUIContent  = new GUIContent("Enable Sync",   "Enable Sync Axis Names");
+		internal static readonly GUIContent disableSyncAxisNamesGUIContent = new GUIContent("Disable Sync",  "Disable Sync Axis Names");
+		internal static readonly GUIContent ProgressBarContent             = new GUIContent("Current Value", "Shows what the current value of the Axis is.");
+		internal static readonly GUIContent PopupContent                   = new GUIContent("Input Axis",    "Chose from the available Unity Input Axis values.");
 
 		internal static readonly GUIContent[] OPTIONS_ARRAY =
 		{
-			enableSyncAxisNamesGUIContent,
-			disableSyncAxisNamesGUIContent
+				enableSyncAxisNamesGUIContent,
+				disableSyncAxisNamesGUIContent
 		};
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => EditorGUIUtility.singleLineHeight * 3;
@@ -32,15 +31,12 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			if(EditorGUI.indentLevel <= 1)
 				wholePosition = wholePosition.ChangeX(16f);
 
-
-			var axisProp = property.FindPropertyRelative("Axis");
-
-
-			var ValueInverted = new EditorEntry("Invert Result", property.FindPropertyRelative("ValueInverted"));
-			var OnlyButton = new EditorEntry("Only Button", property.FindPropertyRelative("OnlyButton"));
-			var Axis = new EditorEntry($"Axis: {axisProp.stringValue}", axisProp);
-			var m_Value = new EditorEntry($"{(ValueInverted.Property.boolValue? "Non Inverted " : "")}Value", property.FindPropertyRelative("m_Value"));
-			var m_DeadZone = new EditorEntry("DeadZone", property.FindPropertyRelative("m_DeadZone"));
+			var axisProp      = property.FindPropertyRelative("Axis");
+			var ValueInverted = new EditorEntry("Invert Result",                                                    property.FindPropertyRelative("ValueInverted"));
+			var OnlyButton    = new EditorEntry("Only Button",                                                      property.FindPropertyRelative("OnlyButton"));
+			var Axis          = new EditorEntry($"Axis: {axisProp.stringValue}",                                    axisProp);
+			var m_Value       = new EditorEntry($"{(ValueInverted.Property.boolValue? "Non Inverted " : "")}Value", property.FindPropertyRelative("m_Value"));
+			var m_DeadZone    = new EditorEntry("DeadZone",                                                         property.FindPropertyRelative("m_DeadZone"));
 
 			using(FoCsEditor.Disposables.Indent(-1))
 			{
@@ -52,17 +48,21 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 						{
 							Axis.Draw(horizontalScope.GetNext());
 							var array = ReadInputManager.GetAxisNames();
-							var num = -1;
+							var num   = -1;
+
 							if(array.Contains(Axis.Property.stringValue))
 								num = array.ToList().IndexOf(Axis.Property.stringValue);
+
 							using(var cc = FoCsEditor.Disposables.ChangeCheck())
 							{
 								var index = EditorGUI.Popup(horizontalScope.GetNext(), PopupContent, num, array.Select(a => new GUIContent(a)).ToArray());
+
 								if(cc.changed && array.InRange(index))
 									Axis.Property.stringValue = array[index];
 							}
 						}
 					}
+
 					using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
 					{
 						using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
@@ -71,6 +71,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 							m_Value.Draw(horizontalScope.GetNext());
 						}
 					}
+
 					using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
 					{
 						using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))

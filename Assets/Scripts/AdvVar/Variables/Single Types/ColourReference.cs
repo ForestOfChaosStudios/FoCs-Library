@@ -4,10 +4,7 @@ using ForestOfChaosLib.Types;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[Serializable]
-	[AdvFolderNameForestOfChaos]
-	public class ColourReference: AdvReference<Colour>
-	{ }
+	[Serializable] [AdvFolderNameForestOfChaos] public class ColourReference: AdvReference<Colour> { }
 
 	[Serializable]
 	public class ColourVariable: AdvVariable<Colour, ColourReference>
@@ -15,10 +12,10 @@ namespace ForestOfChaosLib.AdvVar
 		public static implicit operator ColourVariable(Colour input)
 		{
 			var fR = new ColourVariable
-					 {
-						 UseConstant = true,
-						 Value = input
-					 };
+			{
+					UseConstant = true,
+					Value       = input
+			};
 
 			return fR;
 		}

@@ -8,26 +8,19 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 	//The same Unity User "Sarkahn"
 	public class ReadInputManager
 	{
-		private static Object InputManagerAsset
-		{
-			get { return UnitySettingsReader.InputManager; }
-		}
-
-		public static SerializedObject GetInputAxisSerializedObject()
-		{
-			return new SerializedObject(InputManagerAsset);
-		}
+		private static Object           InputManagerAsset              { get { return UnitySettingsReader.InputManager; } }
+		public static  SerializedObject GetInputAxisSerializedObject() { return new SerializedObject(InputManagerAsset); }
 
 		public static SerializedProperty GetAxisArrayProperty()
 		{
 			var obj = GetInputAxisSerializedObject();
+
 			return obj.FindProperty("m_Axes");
 		}
 
 		public static SerializedProperty[] GetAxisProperties()
 		{
-			var obj = GetInputAxisSerializedObject();
-
+			var obj       = GetInputAxisSerializedObject();
 			var axisArray = obj.FindProperty("m_Axes");
 
 			if(axisArray.arraySize == 0)
@@ -37,6 +30,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			for(int i = 0; i < axisArray.arraySize; ++i)
 				returnVal[i] = axisArray.GetArrayElementAtIndex(i).Copy();
+
 			return returnVal;
 		}
 
@@ -55,6 +49,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 				var name = axis.FindPropertyRelative("m_Name").stringValue;
 				returnVal[i] = name;
 			}
+
 			return returnVal;
 		}
 	}

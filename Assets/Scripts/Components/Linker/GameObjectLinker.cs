@@ -2,6 +2,5 @@
 
 namespace ForestOfChaosLib.Components.Linker
 {
-	public class GameObjectLinker: EditorComponentLinker<GameObject>
-	{ }
+	public class GameObjectLinker: EditorComponentLinker<GameObject> { }
 }

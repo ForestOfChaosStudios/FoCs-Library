@@ -6,20 +6,20 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 {
 	public class SliderToggleGameObjectsActive: FoCsBehavior
 	{
-		public SliderToggle Toggle;
-
-		public List<GameObject> GameObjects2Toggle = new List<GameObject>();
-
-		public UnityTriggerTimes TriggerTimes = UnityTriggerTimes.OnEnable;
+		public SliderToggle      Toggle;
+		public List<GameObject>  GameObjects2Toggle = new List<GameObject>();
+		public UnityTriggerTimes TriggerTimes       = UnityTriggerTimes.OnEnable;
 
 		private void OnEnable()
 		{
 			if(Toggle == null)
 				Toggle = GetComponentInChildren<SliderToggle>();
+
 			if(Toggle == null)
 				return;
 
 			Toggle.OnToggle += OnToggle;
+
 			if(TriggerTimes == UnityTriggerTimes.OnEnable)
 				OnToggle(Toggle.Toggled);
 		}
@@ -36,14 +36,7 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 				go.SetActive(val);
 		}
 
-		private void OnDisable()
-		{
-			Toggle.OnToggle -= OnToggle;
-		}
-
-		private void Reset()
-		{
-			Toggle = GetComponentInChildren<SliderToggle>();
-		}
+		private void OnDisable() { Toggle.OnToggle -= OnToggle; }
+		private void Reset()     { Toggle          =  GetComponentInChildren<SliderToggle>(); }
 	}
 }

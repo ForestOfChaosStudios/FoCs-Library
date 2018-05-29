@@ -5,67 +5,49 @@ namespace ForestOfChaosLib.Base.HiddenClasses
 {
 	public partial class FoCsBe: MonoBehaviour
 	{
-		#region GetComponentAdvanced
+#region GetComponentAdvanced
 		/// <summary>
 		/// Its GetComponent, but also checks for attached Linkers
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public T GetComponentAdvanced<T>() where T: class
-		{
-			return gameObject.GetComponentAdvanced<T>();
-		}
+		public T GetComponentAdvanced<T>() where T: class => gameObject.GetComponentAdvanced<T>();
 
 		/// <summary>
 		/// Its GetComponentInChildren, but also checks for attached Linkers
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public T GetComponentInChildrenAdvanced<T>() where T: class
-		{
-			return gameObject.GetComponentInChildrenAdvanced<T>();
-		}
+		public T GetComponentInChildrenAdvanced<T>() where T: class => gameObject.GetComponentInChildrenAdvanced<T>();
 
 		/// <summary>
 		/// Its GetComponentInParent, but also checks for attached Linkers
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public T GetComponentInParentAdvanced<T>() where T: class
-		{
-			return gameObject.GetComponentInParentAdvanced<T>();
-		}
+		public T GetComponentInParentAdvanced<T>() where T: class => gameObject.GetComponentInParentAdvanced<T>();
 
 		/// <summary>
 		/// Its GetComponents, but also checks for attached Linkers
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public T[] GetComponentsAdvanced<T>() where T: class
-		{
-			return gameObject.GetComponentsAdvanced<T>();
-		}
+		public T[] GetComponentsAdvanced<T>() where T: class => gameObject.GetComponentsAdvanced<T>();
 
 		/// <summary>
 		/// Its GetComponentsInChildren, but also checks for attached Linkers
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public T[] GetComponentsInChildrenAdvanced<T>() where T: class
-		{
-			return gameObject.GetComponentsInChildrenAdvanced<T>();
-		}
+		public T[] GetComponentsInChildrenAdvanced<T>() where T: class => gameObject.GetComponentsInChildrenAdvanced<T>();
 
 		/// <summary>
 		/// Its GetComponentsInParent, but also checks for attached Linkers
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public T[] GetComponentsInParentAdvanced<T>() where T: class
-		{
-			return gameObject.GetComponentsInParentAdvanced<T>();
-		}
-		#endregion
+		public T[] GetComponentsInParentAdvanced<T>() where T: class => gameObject.GetComponentsInParentAdvanced<T>();
+#endregion
 
 		//#region ComponentTag
 		//public bool HasTags()

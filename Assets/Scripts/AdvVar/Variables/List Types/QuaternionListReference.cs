@@ -4,12 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[Serializable]
-	[AdvFolderNameUnityLists]
-	public class QuaternionListReference: AdvListReference<Quaternion>
-	{ }
+	[Serializable] [AdvFolderNameUnityLists] public class QuaternionListReference: AdvListReference<Quaternion> { }
 
-	[Serializable]
-	public class QuaternionListVariable: AdvListVariable<Quaternion, QuaternionListReference>
-	{ }
+	[Serializable] public class QuaternionListVariable: AdvListVariable<Quaternion, QuaternionListReference> { }
 }

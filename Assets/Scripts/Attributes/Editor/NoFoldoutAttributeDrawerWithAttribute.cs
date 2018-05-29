@@ -40,10 +40,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		public override float GetPropertyHeight(SerializedProperty serializedProperty, GUIContent label)
 		{
-			var totalHeight = GetAttribute.ShowVariableName?
-				SingleLine :
-				0f;
-
+			var totalHeight = GetAttribute.ShowVariableName? SingleLine : 0f;
 			serializedProperty.isExpanded = true;
 
 			foreach(var child in serializedProperty.GetChildren())

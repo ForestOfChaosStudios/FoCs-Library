@@ -9,12 +9,13 @@ namespace ForestOfChaosLib.Utilities
 		{
 			if(tex.width != tex.height)
 				throw new Exception("Image Dimensions are not Square");
-			var newTex = new Texture2D(tex.width, tex.width);
 
+			var newTex = new Texture2D(tex.width, tex.width);
 			var pixels = tex.GetPixels32();
 			pixels = RotateMatrix(pixels, tex.width);
 			newTex.SetPixels32(pixels);
 			newTex.Apply();
+
 			return newTex;
 		}
 

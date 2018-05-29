@@ -3,10 +3,10 @@ using RAND = UnityEngine.Random;
 
 namespace ForestOfChaosLib.Maths
 {
-	#region Noise
+#region Noise
 	public static class Noise
 	{
-		#region ReturnNoiseInt
+#region ReturnNoiseInt
 		/// <summary>
 		/// Randomize value by amount.
 		/// </summary>
@@ -16,11 +16,11 @@ namespace ForestOfChaosLib.Maths
 		public static int ReturnNoise(int value, int amount)
 		{
 			var f = RandomMaster.Random.Next(value - amount, value + amount);
+
 			return (f);
 		}
-		#endregion
-
-		#region ReturnNoiseFloat
+#endregion
+#region ReturnNoiseFloat
 		/// <summary>
 		/// Randomize value by amount.
 		/// </summary>
@@ -30,9 +30,10 @@ namespace ForestOfChaosLib.Maths
 		public static float ReturnNoise(float value, float amount)
 		{
 			var f = RAND.Range(value - amount, value + amount);
+
 			return (f);
 		}
-		#endregion
+#endregion
 	}
-	#endregion
+#endregion
 }

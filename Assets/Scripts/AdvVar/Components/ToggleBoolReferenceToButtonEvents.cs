@@ -5,7 +5,7 @@ namespace ForestOfChaosLib.AdvVar.Components
 	public class ToggleBoolReferenceToButtonEvents: FoCsBehavior
 	{
 		public BoolReference BoolReference;
-		public FoCsButton FoCsButton;
+		public FoCsButton    FoCsButton;
 
 		private void OnEnable()
 		{
@@ -25,9 +25,6 @@ namespace ForestOfChaosLib.AdvVar.Components
 				FoCsButton.onMouseClick += OnMouseClick;
 		}
 
-		private void Reset()
-		{
-			FoCsButton = GetComponentInChildren<FoCsButton>();
-		}
+		private void Reset() { FoCsButton = GetComponentInChildren<FoCsButton>(); }
 	}
 }

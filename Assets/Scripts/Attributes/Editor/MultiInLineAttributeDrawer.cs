@@ -16,13 +16,12 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 				{
 					for(var i = 0; i < GetAttribute.index; i++)
 						scope.GetNext();
+
 					EditorGUI.PropertyField(scope.GetNext().MoveY(-(SingleLinePlusPadding * GetAttribute.index)).SetHeight(SingleLine), property, label);
 				}
 			}
 		}
 
-		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label) => GetAttribute.index == 0?
-			EditorGUIUtility.singleLineHeight :
-			0;
+		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label) => GetAttribute.index == 0? EditorGUIUtility.singleLineHeight : 0;
 	}
 }

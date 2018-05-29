@@ -9,9 +9,8 @@ namespace ForestOfChaosLib.InputManager.Editor
 	[FoCsWindow]
 	public class PlayerInputManagerWindow: FoCsWindow<PlayerInputManagerWindow>
 	{
-		public const string InputManagerEnumName = "PlayerInputManagerEnum";
-
-		private const string Title = "Input Manager";
+		public const  string InputManagerEnumName = "PlayerInputManagerEnum";
+		private const string Title                = "Input Manager";
 
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + "Player Input Manager Window")]
 		internal static void Init()
@@ -20,15 +19,13 @@ namespace ForestOfChaosLib.InputManager.Editor
 			Window.titleContent.text = Title;
 		}
 
-		protected void Update()
-		{
-			Repaint();
-		}
+		protected void Update() { Repaint(); }
 
 		protected override void OnGUI()
 		{
 			if(AdvInputManager.InstanceNull)
 				return;
+
 			using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
 			{
 				foreach(var input in AdvInputManager.Instance.AxisReferences)
@@ -46,11 +43,13 @@ namespace ForestOfChaosLib.InputManager.Editor
 				EditorGUILayout.LabelField($"Inverted: {input.ValueInverted}");
 				var barSize = EditorGUILayout.BeginHorizontal();
 				GUILayout.Space(32);
+
 				using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
 				{
 					GUILayout.Space(16);
 					EditorGUI.ProgressBar(barSize, (input.Value + 1) * 0.5f, $"Value: {input.Value}");
 				}
+
 				EditorGUILayout.EndHorizontal();
 			}
 		}

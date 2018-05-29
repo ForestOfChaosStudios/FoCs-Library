@@ -5,8 +5,7 @@ namespace ForestOfChaosLib.Components.Generic
 {
 	public abstract class GenericArrayComponent<T>: FoCsBehavior
 	{
-		[NoFoldout(true)]
-		public T[] Data;
+		[NoFoldout(true)] public T[] Data;
 
 		public T First
 		{
@@ -20,14 +19,7 @@ namespace ForestOfChaosLib.Components.Generic
 			}
 		}
 
-		public T GetRandomEntry()
-		{
-			return Data[RandomMaster.Random.Next(0, Data.Length)];
-		}
-
-		public static implicit operator T[](GenericArrayComponent<T> col)
-		{
-			return col.Data;
-		}
+		public                          T GetRandomEntry()                => Data[RandomMaster.Random.Next(0, Data.Length)];
+		public static implicit operator T[](GenericArrayComponent<T> col) => col.Data;
 	}
 }

@@ -9,12 +9,7 @@ namespace ForestOfChaosLib.FoCsUI.Button
 
 		public override string Text
 		{
-			get
-			{
-				return TextObj == null?
-					"" :
-					TextObj.text;
-			}
+			get { return TextObj == null? "" : TextObj.text; }
 			set
 			{
 				if(TextObj != null)
@@ -26,7 +21,7 @@ namespace ForestOfChaosLib.FoCsUI.Button
 
 		private void Reset()
 		{
-			Button = GetComponentAdvanced<UnityEngine.UI.Button>();
+			Button  = GetComponentAdvanced<UnityEngine.UI.Button>();
 			TextObj = GetComponentInChildrenAdvanced<TextMeshProUGUI>();
 		}
 	}

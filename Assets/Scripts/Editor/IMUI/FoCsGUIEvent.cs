@@ -7,101 +7,99 @@ namespace ForestOfChaosLib.Editor
 	{
 		public class GUIEvent
 		{
-			public Event Event;
-			public Rect Rect;
-
-			public bool EventOccurredInRect => Rect.Contains(Event.mousePosition);
-
-			public bool EventIsMouseL => (Event.type == EventType.MouseUp) && (Event.button == 0);
-
-			public bool EventIsMouseR => (Event.type == EventType.MouseUp) && (Event.button == 1);
-
-			public bool EventIsMouseLInRect => EventIsMouseL && EventOccurredInRect;
-
-			public bool EventIsMouseRInRect => EventIsMouseR && EventOccurredInRect;
-
-			public virtual bool Pressed => EventIsMouseLInRect;
-
-			public static implicit operator Event(GUIEvent input) => input.Event;
-
-			public static implicit operator Rect(GUIEvent input) => input.Rect;
+			public                          Event Event;
+			public                          Rect  Rect;
+			public                          bool  EventOccurredInRect => Rect.Contains(Event.mousePosition);
+			public                          bool  EventIsMouseL       => (Event.type == EventType.MouseUp) && (Event.button == 0);
+			public                          bool  EventIsMouseR       => (Event.type == EventType.MouseUp) && (Event.button == 1);
+			public                          bool  EventIsMouseLInRect => EventIsMouseL                     && EventOccurredInRect;
+			public                          bool  EventIsMouseRInRect => EventIsMouseR                     && EventOccurredInRect;
+			public virtual                  bool  Pressed             => EventIsMouseLInRect;
+			public static implicit operator Event(GUIEvent input)     => input.Event;
+			public static implicit operator Rect(GUIEvent  input)     => input.Rect;
 
 			public static GUIEvent Create()
 			{
 				var data = new GUIEvent
-						   {
-							   Event = new Event(Event.current)
-						   };
+				{
+						Event = new Event(Event.current)
+				};
 
 				if(data.Event.type == EventType.repaint)
 					data.Rect = GUILayoutUtility.GetLastRect();
+
 				return data;
 			}
 
 			public static GUIEvent Create(Rect rect)
 			{
 				var data = new GUIEvent
-						   {
-							   Event = new Event(Event.current)
-						   };
+				{
+						Event = new Event(Event.current)
+				};
+
 				return data;
 			}
 
 			public static GUIEvent<T> Create<T>(T val)
 			{
 				var data = new GUIEvent<T>
-						   {
-							   Event = new Event(Event.current),
-							   Value = val
-						   };
+				{
+						Event = new Event(Event.current),
+						Value = val
+				};
 
 				if(data.Event.type == EventType.repaint)
 					data.Rect = GUILayoutUtility.GetLastRect();
+
 				return data;
 			}
 
 			public static GUIEvent<T> Create<T>(Rect rect, T val)
 			{
 				var data = new GUIEvent<T>
-						   {
-							   Event = new Event(Event.current),
-							   Rect = rect,
-							   Value = val
-						   };
+				{
+						Event = new Event(Event.current),
+						Rect  = rect,
+						Value = val
+				};
+
 				return data;
 			}
 
 			public static GUIEventBool Create(bool val)
 			{
 				var data = new GUIEventBool
-						   {
-							   Event = new Event(Event.current),
-							   Value = val
-						   };
+				{
+						Event = new Event(Event.current),
+						Value = val
+				};
 
 				if(data.Event.type == EventType.repaint)
 					data.Rect = GUILayoutUtility.GetLastRect();
+
 				return data;
 			}
 
 			public static GUIEventBool Create(Rect rect, bool val)
 			{
 				var data = new GUIEventBool
-						   {
-							   Event = new Event(Event.current),
-							   Rect = rect,
-							   Value = val
-						   };
+				{
+						Event = new Event(Event.current),
+						Rect  = rect,
+						Value = val
+				};
+
 				return data;
 			}
 		}
 
 		public class GUIEvent<T>: GUIEvent
 		{
-			public T Value;
-
+			public                          T Value;
 			public static implicit operator T(GUIEvent<T> input) => input.Value;
 		}
+
 		public class GUIEventBool: GUIEvent<bool>
 		{
 			/// <inheritdoc />

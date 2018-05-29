@@ -9,7 +9,7 @@ namespace ForestOfChaosLib.Attributes
 
 		public RegexStringAttribute(string _pattern, string _helpMessage)
 		{
-			pattern = _pattern;
+			pattern     = _pattern;
 			helpMessage = _helpMessage;
 		}
 	}

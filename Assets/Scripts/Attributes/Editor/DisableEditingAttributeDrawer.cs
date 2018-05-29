@@ -11,23 +11,15 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		internal static readonly GUIContent[] OPTIONS_ARRAY =
 		{
-			new GUIContent("Enable Editing"),
-			new GUIContent("Disable Editing")
+				new GUIContent("Enable Editing"),
+				new GUIContent("Disable Editing")
 		};
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			if(GetAttribute.AllowConfirmedEdit)
 			{
-				GetAttribute.CurrentlyEditable = FoCsGUI.DrawDisabledPropertyWithMenu(!GetAttribute.CurrentlyEditable,
-																						position,
-																						property,
-																						label,
-																						OPTIONS_ARRAY,
-																						GetAttribute.CurrentlyEditable?
-																							0 :
-																							1).Value ==
-												 0;
+				GetAttribute.CurrentlyEditable = FoCsGUI.DrawDisabledPropertyWithMenu(!GetAttribute.CurrentlyEditable, position, property, label, OPTIONS_ARRAY, GetAttribute.CurrentlyEditable? 0 : 1).Value == 0;
 			}
 			else
 			{

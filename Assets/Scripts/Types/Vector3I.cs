@@ -33,207 +33,74 @@ namespace ForestOfChaosLib.Types
 			z = _z;
 		}
 
-		public Vector3I(float _x): this((int)_x, 0, 0)
-		{ }
-
-		public Vector3I(float _x, bool allValues = false): this((int)_x, allValues)
-		{ }
-
-		public Vector3I(int _x, int _y): this(_x, _y, 0)
-		{ }
-
-		public Vector3I(float _x, float _y): this((int)_x, (int)_x, 0)
-		{ }
-
-		public Vector3I(float _x, float _y, float _z): this((int)_x, (int)_y, (int)_z)
-		{ }
-
-		public Vector3I(Vector3I other): this(other.x, other.y, other.z)
-		{ }
-
-		public int Total()
-		{
-			return x + y + z;
-		}
-
-		public bool IsZero()
-		{
-			return x == 0 && y == 0 && z == 0;
-		}
-
-		public bool IsZeroOrNegative()
-		{
-			return x <= 0 && y <= 0 && z <= 0;
-		}
-
-		public bool IsNegative()
-		{
-			return x < 0 && y < 0 && z < 0;
-		}
-
-		public bool IsZeroOrPosative()
-		{
-			return x >= 0 && y >= 0 && z >= 0;
-		}
-
-		public bool IsPosative()
-		{
-			return x > 0 && y > 0 && z > 0;
-		}
-
-		public bool IsUnitVector()
-		{
-			return x == y && x == z && y == z && z == x;
-		}
-
-		public Vector2 ToVector2()
-		{
-			return this;
-		}
-
-		public Vector3 ToVector3()
-		{
-			return this;
-		}
-
-		public Vector4 ToVector4()
-		{
-			return this;
-		}
-
-		public Vector2I ToVector2I()
-		{
-			return this;
-		}
-
-		public Vector3I ToVector3I()
-		{
-			return this;
-		}
-
-		public Vector4I ToVector4I()
-		{
-			return this;
-		}
-
-		public Vector3I Copy()
-		{
-			return new Vector3I(this);
-		}
-
-		public static Vector3I operator -(Vector3I left)
-		{
-			return new Vector3I(-left.x, -left.y, -left.z);
-		}
-
-		public static Vector3I operator +(Vector3I left)
-		{
-			return new Vector3I(+left.x, +left.y, +left.z);
-		}
-
-		public static Vector3I operator -(Vector3I left, Vector3I right)
-		{
-			return new Vector3I(left.x - right.x, left.y - right.y, left.z - right.z);
-		}
-
-		public static Vector3I operator +(Vector3I left, Vector3I right)
-		{
-			return new Vector3I(left.x + right.x, left.y + right.y, left.z + right.z);
-		}
-
-		public static Vector3I operator *(Vector3I left, Vector3I right)
-		{
-			return new Vector3I(left.x * right.x, left.y * right.y, left.z * right.z);
-		}
-
-		public static bool operator ==(Vector3I left, int right)
-		{
-			return left.Equals(right);
-		}
-
-		public static bool operator !=(Vector3I left, int right)
-		{
-			return !left.Equals(right);
-		}
-
-		public static bool operator ==(Vector3I left, Vector3I right)
-		{
-			return left.Equals(right);
-		}
-
-		public static bool operator !=(Vector3I left, Vector3I right)
-		{
-			return !left.Equals(right);
-		}
-
-		public static implicit operator Vector2(Vector3I input)
-		{
-			return new Vector2(input.x, input.y);
-		}
-
-		public static implicit operator Vector3(Vector3I input)
-		{
-			return new Vector3(input.x, input.y, input.z);
-		}
-
-		public static implicit operator Vector4(Vector3I input)
-		{
-			return new Vector4(input.x, input.y, input.z);
-		}
-
-		public static implicit operator Vector3I(Vector2 input)
-		{
-			return new Vector3I(input.x, input.y);
-		}
-
-		public static implicit operator Vector3I(Vector3 input)
-		{
-			return new Vector3I(input.x, input.y, input.z);
-		}
-
-		public static implicit operator Vector3I(Vector4 input)
-		{
-			return new Vector3I(input.x, input.y, input.z);
-		}
-
-		public static implicit operator Vector3I(Vector2I input)
-		{
-			return new Vector3I(input.x, input.y);
-		}
-
-		public static implicit operator Vector3I(Vector4I input)
-		{
-			return new Vector3I(input.x, input.y, input.z);
-		}
-
-		public static implicit operator int[](Vector3I num)
-		{
-			return new[] {num.x, num.y, num.z};
-		}
+		public Vector3I(float    _x): this((int)_x, 0, 0) { }
+		public Vector3I(float    _x, bool  allValues = false): this((int)_x, allValues) { }
+		public Vector3I(int      _x, int   _y): this(_x, _y, 0) { }
+		public Vector3I(float    _x, float _y): this((int)_x, (int)_x, 0) { }
+		public Vector3I(float    _x, float _y, float _z): this((int)_x, (int)_y, (int)_z) { }
+		public Vector3I(Vector3I other): this(other.x, other.y, other.z) { }
+		public                          int      Total()                                   => x + y + z;
+		public                          bool     IsZero()                                  => x == 0 && y == 0           && z == 0;
+		public                          bool     IsZeroOrNegative()                        => x <= 0 && y <= 0           && z <= 0;
+		public                          bool     IsNegative()                              => x < 0 && y < 0             && z < 0;
+		public                          bool     IsZeroOrPositive()                        => x >= 0 && y >= 0           && z >= 0;
+		public                          bool     IsPositive()                              => x > 0 && y > 0             && z > 0;
+		public                          bool     IsUnitVector()                            => x == y && x == z && y == z && z == x;
+		public                          Vector2  ToVector2()                               => this;
+		public                          Vector3  ToVector3()                               => this;
+		public                          Vector4  ToVector4()                               => this;
+		public                          Vector2I ToVector2I()                              => this;
+		public                          Vector3I ToVector3I()                              => this;
+		public                          Vector4I ToVector4I()                              => this;
+		public                          Vector3I Copy()                                    => new Vector3I(this);
+		public static                   Vector3I operator -(Vector3I left)                 => new Vector3I(-left.x,          -left.y,          -left.z);
+		public static                   Vector3I operator +(Vector3I left)                 => new Vector3I(+left.x,          +left.y,          +left.z);
+		public static                   Vector3I operator -(Vector3I left, Vector3I right) => new Vector3I(left.x - right.x, left.y - right.y, left.z - right.z);
+		public static                   Vector3I operator +(Vector3I left, Vector3I right) => new Vector3I(left.x + right.x, left.y + right.y, left.z + right.z);
+		public static                   Vector3I operator *(Vector3I left, Vector3I right) => new Vector3I(left.x * right.x, left.y * right.y, left.z * right.z);
+		public static                   bool operator ==(Vector3I    left, int      right) => left.Equals(right);
+		public static                   bool operator !=(Vector3I    left, int      right) => !left.Equals(right);
+		public static                   bool operator ==(Vector3I    left, Vector3I right) => left.Equals(right);
+		public static                   bool operator !=(Vector3I    left, Vector3I right) => !left.Equals(right);
+		public static implicit operator Vector2(Vector3I             input) => new Vector2(input.x, input.y);
+		public static implicit operator Vector3(Vector3I             input) => new Vector3(input.x, input.y, input.z);
+		public static implicit operator Vector4(Vector3I             input) => new Vector4(input.x, input.y, input.z);
+		public static implicit operator Vector3I(Vector2             input) => new Vector3I(input.x, input.y);
+		public static implicit operator Vector3I(Vector3             input) => new Vector3I(input.x, input.y, input.z);
+		public static implicit operator Vector3I(Vector4             input) => new Vector3I(input.x, input.y, input.z);
+		public static implicit operator Vector3I(Vector2I            input) => new Vector3I(input.x, input.y);
+		public static implicit operator Vector3I(Vector4I            input) => new Vector3I(input.x, input.y, input.z);
+		public static implicit operator int[](Vector3I               num)   => new[] {num.x, num.y, num.z};
 
 		public static implicit operator Vector3I(int[] num)
 		{
 			var Vector = new Vector3I();
+
 			switch(num.Length)
 			{
 				case 0:
+
 					return Vector;
 				case 1:
 					Vector.x = num[0];
+
 					return Vector;
 				case 2:
 					Vector.x = num[0];
 					Vector.y = num[1];
+
 					return Vector;
 				case 3:
 					Vector.x = num[0];
 					Vector.y = num[1];
 					Vector.z = num[2];
+
 					return Vector;
 				default:
 					Vector.x = num[0];
 					Vector.y = num[1];
 					Vector.z = num[2];
+
 					return Vector;
 			}
 		}
@@ -241,26 +108,32 @@ namespace ForestOfChaosLib.Types
 		public static implicit operator Vector3I(float[] num)
 		{
 			var Vector = new Vector3I();
+
 			switch(num.Length)
 			{
 				case 0:
+
 					return Vector;
 				case 1:
 					Vector.x = (int)num[0];
+
 					return Vector;
 				case 2:
 					Vector.x = (int)num[0];
 					Vector.y = (int)num[1];
+
 					return Vector;
 				case 3:
 					Vector.x = (int)num[0];
 					Vector.y = (int)num[1];
 					Vector.z = (int)num[2];
+
 					return Vector;
 				default:
 					Vector.x = (int)num[0];
 					Vector.y = (int)num[1];
 					Vector.z = (int)num[2];
+
 					return Vector;
 			}
 		}
@@ -269,38 +142,39 @@ namespace ForestOfChaosLib.Types
 		{
 			if(ReferenceEquals(null, obj))
 				return false;
+
 			if(obj is Vector3I)
 				return Equals((Vector3I)obj);
+
 			if(obj is int)
 				return Equals((int)obj);
+
 			return false;
 		}
 
-		public bool Equals(Vector3I other)
-		{
-			return (x == other.x) && (y == other.y) && (z == other.z);
-		}
-
-		public bool Equals(int other)
-		{
-			return (x == other) && (y == other) && (z == other);
-		}
+		public bool Equals(Vector3I other) => (x == other.x) && (y == other.y) && (z == other.z);
+		public bool Equals(int      other) => (x == other) && (y == other)     && (z == other);
 
 		public int CompareTo(int other)
 		{
 			if(IsUnitVector())
 				return x.CompareTo(other);
+
 			return 1;
 		}
 
 		public int CompareTo(Vector3I other)
 		{
 			var xComparison = x.CompareTo(other.x);
+
 			if(xComparison != 0)
 				return xComparison;
+
 			var yComparison = y.CompareTo(other.y);
+
 			if(yComparison != 0)
 				return yComparison;
+
 			return z.CompareTo(other.z);
 		}
 
@@ -311,20 +185,19 @@ namespace ForestOfChaosLib.Types
 				var hashCode = x;
 				hashCode = (hashCode * 397) ^ y;
 				hashCode = (hashCode * 397) ^ z;
+
 				return hashCode;
 			}
 		}
 
-		public override string ToString()
-		{
-			return string.Format("X: {0}, Y: {1}, Z: {2}", x, y, z);
-		}
+		public override string ToString() => $"X: {x}, Y: {y}, Z: {z}";
 
 		public static Vector3I Zero
 		{
 			get
 			{
 				const int num = 0;
+
 				return new Vector3I(num, true);
 			}
 		}
@@ -334,6 +207,7 @@ namespace ForestOfChaosLib.Types
 			get
 			{
 				const int num = 1;
+
 				return new Vector3I(num, true);
 			}
 		}
@@ -343,6 +217,7 @@ namespace ForestOfChaosLib.Types
 			get
 			{
 				const int num = int.MinValue;
+
 				return new Vector3I(num, true);
 			}
 		}
@@ -352,6 +227,7 @@ namespace ForestOfChaosLib.Types
 			get
 			{
 				const int num = int.MaxValue;
+
 				return new Vector3I(num, true);
 			}
 		}

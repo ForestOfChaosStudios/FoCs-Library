@@ -15,15 +15,17 @@ namespace ForestOfChaosLib.Utilities.Enums
 	public static class Direction_UDLRFB_Helpers
 	{
 		public const Direction_UDLRFB FIRST = Direction_UDLRFB.Up;
-		public const Direction_UDLRFB LAST = Direction_UDLRFB.Backward;
+		public const Direction_UDLRFB LAST  = Direction_UDLRFB.Backward;
 
 		public static Direction_UDLRFB Next(this Direction_UDLRFB val)
 		{
 			switch(val)
 			{
 				case LAST:
+
 					return FIRST;
 				default:
+
 					return (++val);
 			}
 		}
@@ -33,8 +35,10 @@ namespace ForestOfChaosLib.Utilities.Enums
 			switch(val)
 			{
 				case FIRST:
+
 					return LAST;
 				default:
+
 					return (--val);
 			}
 		}
@@ -44,18 +48,25 @@ namespace ForestOfChaosLib.Utilities.Enums
 			switch(val)
 			{
 				case Direction_UDLRFB.Forward:
+
 					return Vector3.forward;
 				case Direction_UDLRFB.Backward:
+
 					return Vector3.back;
 				case Direction_UDLRFB.Left:
+
 					return Vector3.left;
 				case Direction_UDLRFB.Right:
+
 					return Vector3.right;
 				case Direction_UDLRFB.Up:
+
 					return Vector3.up;
 				case Direction_UDLRFB.Down:
+
 					return Vector3.down;
 			}
+
 			return Vector3.zero;
 		}
 
@@ -63,6 +74,7 @@ namespace ForestOfChaosLib.Utilities.Enums
 		{
 			Vector3 dir;
 			GetDirection(val, transform, out dir);
+
 			return dir;
 		}
 
@@ -70,31 +82,39 @@ namespace ForestOfChaosLib.Utilities.Enums
 		{
 			Vector3 dir;
 			GetDirection(val, transform, out dir);
+
 			return dir;
 		}
 
 		private static void GetDirection(Direction_UDLRFB val, Transform transform, out Vector3 dir)
 		{
 			dir = Vector3.zero;
+
 			switch(val)
 			{
 				case Direction_UDLRFB.Forward:
 					dir = transform.forward;
+
 					return;
 				case Direction_UDLRFB.Backward:
 					dir = -transform.forward;
+
 					return;
 				case Direction_UDLRFB.Left:
 					dir = -transform.right;
+
 					return;
 				case Direction_UDLRFB.Right:
 					dir = transform.right;
+
 					return;
 				case Direction_UDLRFB.Up:
 					dir = transform.up;
+
 					return;
 				case Direction_UDLRFB.Down:
 					dir = -transform.up;
+
 					return;
 			}
 		}
@@ -104,25 +124,29 @@ namespace ForestOfChaosLib.Utilities.Enums
 			switch(val)
 			{
 				case Direction_UDLRFB.Forward:
+
 					return Vector3.zero;
 				case Direction_UDLRFB.Backward:
+
 					return Vector3.up * 180;
 				case Direction_UDLRFB.Up:
+
 					return Vector3.left * 90;
 				case Direction_UDLRFB.Down:
+
 					return Vector3.right * 90;
 				case Direction_UDLRFB.Left:
+
 					return Vector3.down * 90;
 				case Direction_UDLRFB.Right:
+
 					return Vector3.up * 90;
 				default:
+
 					return Vector3.zero;
 			}
 		}
 
-		public static void Rotate(this Transform transform, Direction_UDLRFB dir)
-		{
-			transform.Rotate(dir.EulerAngles());
-		}
+		public static void Rotate(this Transform transform, Direction_UDLRFB dir) { transform.Rotate(dir.EulerAngles()); }
 	}
 }

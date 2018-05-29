@@ -13,13 +13,12 @@ namespace ForestOfChaosLib.Animation
 			Trigger
 		}
 
-		public string Key;
+		public string   Key;
 		public AnimType KeyType;
-
-		public int intData;
-		public float floatData;
-		public bool boolData;
-		public bool triggerData;
+		public int      intData;
+		public float    floatData;
+		public bool     boolData;
+		public bool     triggerData;
 
 		public AnimatorKey CalculateAnimator(Animator animator)
 		{
@@ -30,21 +29,27 @@ namespace ForestOfChaosLib.Animation
 			{
 				case AnimType.Int:
 					animator.SetInteger(Key, intData);
+
 					break;
 				case AnimType.Float:
 					animator.SetFloat(Key, floatData);
+
 					break;
 				case AnimType.Bool:
 					animator.SetBool(Key, boolData);
+
 					break;
 				case AnimType.Trigger:
+
 					if(triggerData)
 					{
 						triggerData = false;
 						animator.SetTrigger(Key);
 					}
+
 					break;
 			}
+
 			return this;
 		}
 	}

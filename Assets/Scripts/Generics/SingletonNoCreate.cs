@@ -4,12 +4,10 @@ using UnityEngine;
 namespace ForestOfChaosLib.Generics
 {
 	[Serializable]
-	public class SingletonNoCreate<S>: FoCsBehavior
-		where S: FoCsBehavior
+	public class SingletonNoCreate<S>: FoCsBehavior where S: FoCsBehavior
 	{
-		protected static S instance;
-
-		public static bool instanceNull => instance == null;
+		protected static S    instance;
+		public static    bool instanceNull => instance == null;
 
 		public static S Instance
 		{
@@ -17,9 +15,12 @@ namespace ForestOfChaosLib.Generics
 			{
 				if(instance)
 					return instance;
+
 				instance = FindObjectOfType<S>();
+
 				if(!instance)
 					Debug.LogError(typeof(S) + " is needed in the scene."); //Print error
+
 				return instance;
 			}
 		}
@@ -29,12 +30,15 @@ namespace ForestOfChaosLib.Generics
 		public void DestroyOtherInstances()
 		{
 			var others = FindObjectsOfType<S>();
+
 			if(others.Length == 1)
 				return;
+
 			for(var i = others.Length - 1; i >= 0; i--)
 			{
 				if(Instance == others[1])
 					continue;
+
 				Destroy(others[i]);
 			}
 		}

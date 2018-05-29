@@ -4,10 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[Serializable]
-	[AdvFolderNameUnity]
-	public class TransformReference: AdvReference<Transform>
-	{ }
+	[Serializable] [AdvFolderNameUnity] public class TransformReference: AdvReference<Transform> { }
 
 	[Serializable]
 	public class TransformVariable: AdvVariable<Transform, TransformReference>
@@ -15,10 +12,10 @@ namespace ForestOfChaosLib.AdvVar
 		public static implicit operator TransformVariable(Transform input)
 		{
 			var fR = new TransformVariable
-					 {
-						 UseConstant = true,
-						 Value = input
-					 };
+			{
+					UseConstant = true,
+					Value       = input
+			};
 
 			return fR;
 		}

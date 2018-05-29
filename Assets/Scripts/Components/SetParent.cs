@@ -12,10 +12,9 @@ namespace ForestOfChaosLib.Components
 			Awake
 		}
 
-		public Mode CallMode = Mode.OnEnable;
-		public Transform ChildTransform;
-		public Transform ParentTransform;
-
+		public Mode         CallMode = Mode.OnEnable;
+		public Transform    ChildTransform;
+		public Transform    ParentTransform;
 		public BoolVariable DestroyComponentAfterCall = true;
 
 		private void OnEnable()
@@ -39,13 +38,11 @@ namespace ForestOfChaosLib.Components
 		private void DoParent()
 		{
 			ChildTransform.SetParent(ParentTransform);
+
 			if(DestroyComponentAfterCall.Value)
 				Destroy(this);
 		}
 
-		private void Reset()
-		{
-			ChildTransform = transform;
-		}
+		private void Reset() { ChildTransform = transform; }
 	}
 }

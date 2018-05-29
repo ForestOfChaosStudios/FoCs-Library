@@ -16,26 +16,20 @@ namespace ForestOfChaosLib.Attributes
 
 		internal static readonly GUIContent[] OPTIONS_ARRAY =
 		{
-			new GUIContent("Call Setter", Tooltip),
-			new GUIContent("Don't Call Setter", Tooltip)
+				new GUIContent("Call Setter",       Tooltip),
+				new GUIContent("Don't Call Setter", Tooltip)
 		};
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			using(var cc = FoCsEditor.Disposables.ChangeCheck())
 			{
-				GetAttribute.CallSetter = FoCsGUI.DrawPropertyWithMenu(position,
-																		 property,
-																		 label,
-																		 OPTIONS_ARRAY,
-																		 GetAttribute.CallSetter?
-																			 0 :
-																			 1).Value ==
-										  0;
+				GetAttribute.CallSetter = FoCsGUI.DrawPropertyWithMenu(position, property, label, OPTIONS_ARRAY, GetAttribute.CallSetter? 0 : 1).Value == 0;
 
 				if(cc.changed)
 					GetAttribute.dirty = true;
 			}
+
 			if(GetAttribute.dirty)
 				ElseLogic(property);
 		}
@@ -44,10 +38,10 @@ namespace ForestOfChaosLib.Attributes
 		{
 			if(!GetAttribute.CallSetter)
 				return;
-			var parent = ReflectionUtils.GetParentObject(property.propertyPath, property.serializedObject.targetObject);
 
-			var type = parent.GetType();
-			var info = type.GetProperty(GetAttribute.name);
+			var parent = ReflectionUtils.GetParentObject(property.propertyPath, property.serializedObject.targetObject);
+			var type   = parent.GetType();
+			var info   = type.GetProperty(GetAttribute.name);
 
 			if(info == null)
 				Debug.LogError($"Invalid property name \"{GetAttribute.name}\"");

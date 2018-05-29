@@ -14,13 +14,8 @@ namespace ForestOfChaosLib.Editor.Windows
 	///  <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
 	public abstract class FoCsWindow<T>: EditorWindow where T: EditorWindow
 	{
-		private static T window;
-
-		protected static T Window
-		{
-			get { return window ?? (window = GetWindow()); }
-		}
-
+		private static   T window;
+		protected static T Window => window ?? (window = GetWindow());
 
 		protected static T GetWindow()
 		{
@@ -28,6 +23,7 @@ namespace ForestOfChaosLib.Editor.Windows
 				return window;
 
 			window = FindObjectOfType<T>() ?? CreateInstance<T>();
+
 			return window;
 		}
 
@@ -36,6 +32,7 @@ namespace ForestOfChaosLib.Editor.Windows
 			GetWindow();
 			window.Show();
 			window.Focus();
+
 			return window;
 		}
 
@@ -44,20 +41,13 @@ namespace ForestOfChaosLib.Editor.Windows
 			GetWindow();
 			window.ShowUtility();
 			window.Focus();
+
 			return window;
 		}
 
 		protected abstract void OnGUI();
-
-		protected static void DrawReorderableList(ReorderableList list)
-		{
-			list.DoLayoutList();
-		}
-
-		public static void DrawSpace()
-		{
-			EditorGUILayout.Space();
-		}
+		protected static   void DrawReorderableList(ReorderableList list) { list.DoLayoutList(); }
+		public static      void DrawSpace()                               { EditorGUILayout.Space(); }
 
 		public static void DrawSpace(int count)
 		{
@@ -67,9 +57,6 @@ namespace ForestOfChaosLib.Editor.Windows
 			}
 		}
 
-		public static void DrawSpace(float size)
-		{
-			GUILayout.Space(size);
-		}
+		public static void DrawSpace(float size) { GUILayout.Space(size); }
 	}
 }

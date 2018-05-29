@@ -11,17 +11,17 @@ namespace ForestOfChaosLib.AdvVar
 			var b = false;
 			var f = ScriptableObject.CreateInstance<StringReference>();
 			f.OnValueChange += () => b = true;
-			f.Value = " ";
+			f.Value         =  " ";
 			Assert.True(b);
 		}
 
 		[Test(Author = "Jordan Miles", Description = "To Test the OnValueChanged Event")]
 		public static void String_Constant_OnChange_Event()
 		{
-			var b = false;
+			var            b = false;
 			StringVariable f = "";
 			f.OnValueChange += () => b = true;
-			f.Value = " ";
+			f.Value         =  " ";
 			Assert.True(b);
 		}
 
@@ -29,13 +29,15 @@ namespace ForestOfChaosLib.AdvVar
 		public static void String_Global_OnChange_Event()
 		{
 			var b = false;
+
 			var f = new StringVariable
-					{
-						UseConstant = false
-					};
-			f.InternalData.GlobalVariable = ScriptableObject.CreateInstance<StringReference>();
-			f.OnValueChange += () => b = true;
-			f.Value = " ";
+			{
+					UseConstant = false
+			};
+
+			f.InternalData.GlobalVariable =  ScriptableObject.CreateInstance<StringReference>();
+			f.OnValueChange               += () => b = true;
+			f.Value                       =  " ";
 			Assert.True(b);
 		}
 	}

@@ -12,8 +12,10 @@ namespace ForestOfChaosLib.Utilities
 			if(filePath.Contains("://"))
 			{
 				var www = UnityWebRequest.Get(filePath);
+
 				return www.downloadHandler.text;
 			}
+
 			return System.IO.File.ReadAllText(filePath);
 		}
 

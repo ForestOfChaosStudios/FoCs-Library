@@ -4,10 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[Serializable]
-	[AdvFolderNameUnity]
-	public class Vector3IntReference: AdvReference<Vector3Int>
-	{ }
+	[Serializable] [AdvFolderNameUnity] public class Vector3IntReference: AdvReference<Vector3Int> { }
 
 	[Serializable]
 	public class Vector3IntVariable: AdvVariable<Vector3Int, Vector3IntReference>
@@ -15,10 +12,10 @@ namespace ForestOfChaosLib.AdvVar
 		public static implicit operator Vector3IntVariable(Vector3Int input)
 		{
 			var fR = new Vector3IntVariable
-					 {
-						 UseConstant = true,
-						 Value = input
-					 };
+			{
+					UseConstant = true,
+					Value       = input
+			};
 
 			return fR;
 		}

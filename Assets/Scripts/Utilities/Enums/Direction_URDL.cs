@@ -13,15 +13,17 @@ namespace ForestOfChaosLib.Utilities.Enums
 	public static class URDLHelper
 	{
 		public const URDL FIRST = URDL.Up;
-		public const URDL LAST = URDL.Left;
+		public const URDL LAST  = URDL.Left;
 
 		public static URDL Next(this URDL val)
 		{
 			switch(val)
 			{
 				case LAST:
+
 					return FIRST;
 				default:
+
 					return (++val);
 			}
 		}
@@ -31,8 +33,10 @@ namespace ForestOfChaosLib.Utilities.Enums
 			switch(val)
 			{
 				case FIRST:
+
 					return LAST;
 				default:
+
 					return (--val);
 			}
 		}
@@ -42,14 +46,19 @@ namespace ForestOfChaosLib.Utilities.Enums
 			switch(val)
 			{
 				case URDL.Up:
+
 					return 0;
 				case URDL.Right:
+
 					return 90;
 				case URDL.Down:
+
 					return 180;
 				case URDL.Left:
+
 					return -90;
 			}
+
 			return 0;
 		}
 
@@ -58,14 +67,19 @@ namespace ForestOfChaosLib.Utilities.Enums
 			switch(val)
 			{
 				case URDL.Up:
+
 					return Vector3.up;
 				case URDL.Right:
+
 					return Vector3.right;
 				case URDL.Down:
+
 					return Vector3.down;
 				case URDL.Left:
+
 					return Vector3.left;
 			}
+
 			return Vector3.zero;
 		}
 
@@ -73,6 +87,7 @@ namespace ForestOfChaosLib.Utilities.Enums
 		{
 			Vector3 dir;
 			GetDirection(val, transform, out dir);
+
 			return dir;
 		}
 
@@ -80,28 +95,33 @@ namespace ForestOfChaosLib.Utilities.Enums
 		{
 			Vector3 dir;
 			GetDirection(val, transform, out dir);
+
 			return dir;
 		}
 
 		private static void GetDirection(URDL val, Transform transform, out Vector3 dir)
 		{
 			dir = Vector3.zero;
+
 			switch(val)
 			{
 				case URDL.Up:
 					dir = transform.up;
+
 					return;
 				case URDL.Right:
 					dir = transform.right;
+
 					return;
 				case URDL.Down:
 					dir = -transform.up;
+
 					return;
 				case URDL.Left:
 					dir = -transform.right;
+
 					return;
 			}
 		}
-
 	}
 }

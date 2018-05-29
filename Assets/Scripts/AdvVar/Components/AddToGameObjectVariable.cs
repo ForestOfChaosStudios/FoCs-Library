@@ -1,11 +1,9 @@
-﻿using ForestOfChaosLib.Components;
-
-namespace ForestOfChaosLib.AdvVar.Components
+﻿namespace ForestOfChaosLib.AdvVar.Components
 {
 	public class AddToGameObjectVariable: FoCsBehavior
 	{
 		public GameObjectReference GameObjectReference;
-		public bool RemoveOnDisable = true;
+		public bool                RemoveOnDisable = true;
 
 		public void OnEnable()
 		{

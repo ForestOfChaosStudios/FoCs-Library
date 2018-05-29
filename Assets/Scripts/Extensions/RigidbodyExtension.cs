@@ -6,7 +6,7 @@ namespace ForestOfChaosLib.Extensions
 	{
 		public static void ResetVelocity(this Rigidbody rB)
 		{
-			rB.velocity = Vector3.zero;
+			rB.velocity        = Vector3.zero;
 			rB.angularVelocity = Vector3.zero;
 		}
 	}
