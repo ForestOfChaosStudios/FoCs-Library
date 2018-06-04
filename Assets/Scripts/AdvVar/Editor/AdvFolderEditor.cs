@@ -17,9 +17,9 @@ namespace ForestOfChaosLib.AdvVar.Editor
 	public class AdvFolderEditor: FoCsEditor
 	{
 		private static SortedDictionary<AdvFolderNameAttribute, List<Type>> typeDictionary;
-		private        bool                                                 showChildrenSettings = true;
-		private        int                                                  ActiveTab            = 0;
+		private        int                                                  ActiveTab;
 		private        AdvFolderNameAttribute                               ActiveTabName;
+		private        bool                                                 showChildrenSettings = true;
 
 		public override void OnInspectorGUI()
 		{
@@ -251,11 +251,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				}
 				else
 				{
-					finalList.Add(attribute,
-								  new List<Type>
-								  {
-										  type
-								  });
+					finalList.Add(attribute, new List<Type> {type});
 				}
 			}
 

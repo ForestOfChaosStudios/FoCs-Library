@@ -10,7 +10,10 @@
 				Reference.OnValueChange += ChangeState;
 		}
 
-		private void ChangeState() { gameObject.SetActive(Reference.Value); }
+		private void ChangeState()
+		{
+			gameObject.SetActive(Reference.Value);
+		}
 
 		private void OnDestroy()
 		{

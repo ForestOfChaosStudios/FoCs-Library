@@ -8,26 +8,36 @@ namespace ForestOfChaosLib.InputManager
 	public class InputAxis
 	{
 		/// <summary>
-		/// The Axis that the coder uses as Reference
+		///     The Axis that the coder uses as Reference
 		/// </summary>
 		public string Axis;
 
-		public                   float         Value    { get { return ValueInverted? m_Value : -m_Value; } set { m_Value    = ValueInverted? value : -value; } }
-		public                   float         DeadZone { get { return m_DeadZone; }                        set { m_DeadZone = value; } }
-		[SerializeField] private float         m_Value;
-		[SerializeField] private float         m_DeadZone;
 		public                   KeyPosition   KeyPos = KeyPosition.Up;
-		public                   bool          ValueInverted;
-		public                   bool          OnlyButton = false;
+		[SerializeField] private float         m_DeadZone;
+		[SerializeField] private float         m_Value;
+		public                   Action<float> OnKey;
 		public                   Action        OnKeyDown;
-		public                   Action        OnKeyUp;
-		public                   Action        OnKeyPositiveDown;
-		public                   Action        OnKeyPositiveUp;
 		public                   Action        OnKeyNegativeDown;
 		public                   Action        OnKeyNegativeUp;
-		public                   Action        OnKeyNoValue;
-		public                   Action<float> OnKey;
 		public                   Action<float> OnKeyNoDeadZone;
+		public                   Action        OnKeyNoValue;
+		public                   Action        OnKeyPositiveDown;
+		public                   Action        OnKeyPositiveUp;
+		public                   Action        OnKeyUp;
+		public                   bool          OnlyButton = false;
+		public                   bool          ValueInverted;
+
+		public float Value
+		{
+			get { return ValueInverted? m_Value : -m_Value; }
+			set { m_Value = ValueInverted? value : -value; }
+		}
+
+		public float DeadZone
+		{
+			get { return m_DeadZone; }
+			set { m_DeadZone = value; }
+		}
 
 		public InputAxis(string axis, bool invert = false)
 		{
@@ -39,10 +49,18 @@ namespace ForestOfChaosLib.InputManager
 		public static implicit operator string(InputAxis fp) => fp.Axis;
 		public static implicit operator bool(InputAxis   fp) => fp.ValueInverted;
 		public static implicit operator InputAxis(string fp) => new InputAxis(fp);
-		public                          bool InputInDeadZone() => Math.Abs(Value) > m_DeadZone;
-		public                          bool InputInDeadZone(float deadZone) => Math.Abs(Value) > deadZone;
-		public                          void CallEvents()                    { CallEvents(this, m_DeadZone); }
-		public                          void CallEvents(float deadZone)      { CallEvents(this, deadZone); }
+		public bool InputInDeadZone() => Math.Abs(Value)               > m_DeadZone;
+		public bool InputInDeadZone(float deadZone) => Math.Abs(Value) > deadZone;
+
+		public void CallEvents()
+		{
+			CallEvents(this, m_DeadZone);
+		}
+
+		public void CallEvents(float deadZone)
+		{
+			CallEvents(this, deadZone);
+		}
 
 		public void UpdateData()
 		{
@@ -68,7 +86,10 @@ namespace ForestOfChaosLib.InputManager
 			CallEvents(this, deadZone);
 		}
 
-		public static void CallEvents(InputAxis key) { CallEvents(key, key.m_DeadZone); }
+		public static void CallEvents(InputAxis key)
+		{
+			CallEvents(key, key.m_DeadZone);
+		}
 
 		public void CallEventsCustomValue(float key)
 		{

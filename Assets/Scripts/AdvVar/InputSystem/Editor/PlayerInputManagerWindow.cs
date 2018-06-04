@@ -19,7 +19,10 @@ namespace ForestOfChaosLib.InputManager.Editor
 			Window.titleContent.text = Title;
 		}
 
-		protected void Update() { Repaint(); }
+		protected void Update()
+		{
+			Repaint();
+		}
 
 		protected override void OnGUI()
 		{
@@ -29,9 +32,7 @@ namespace ForestOfChaosLib.InputManager.Editor
 			using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
 			{
 				foreach(var input in AdvInputManager.Instance.AxisReferences)
-				{
 					DrawInput(input.Value);
-				}
 			}
 		}
 

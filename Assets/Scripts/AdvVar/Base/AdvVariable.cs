@@ -7,6 +7,8 @@ namespace ForestOfChaosLib.AdvVar.Base
 	[Serializable]
 	public class AdvVariable<T, aT>: AdvVariable where aT: AdvReference<T>
 	{
+		private AdvVariableInternals _InternalData;
+
 		/*[GetSetter("Value")] */
 		[SerializeField] private T ConstantValue;
 
@@ -27,6 +29,7 @@ namespace ForestOfChaosLib.AdvVar.Base
 			}
 		}
 
+		public AdvVariableInternals InternalData => _InternalData ?? (_InternalData = new AdvVariableInternals(this));
 		public AdvVariable() { }
 
 		public AdvVariable(T constantValue)
@@ -49,15 +52,27 @@ namespace ForestOfChaosLib.AdvVar.Base
 		}
 
 		public static implicit operator T(AdvVariable<T, aT> input) => input.Value;
-		private                         AdvVariableInternals _InternalData;
-		public                          AdvVariableInternals InternalData => _InternalData ?? (_InternalData = new AdvVariableInternals(this));
 
 		public class AdvVariableInternals
 		{
 			private readonly AdvVariable<T, aT> classRef;
-			public AdvVariableInternals(AdvVariable<T, aT> _classRef) { classRef = _classRef; }
-			public aT GlobalVariable { get { return classRef.Variable; }      set { classRef.Variable      = value; } }
-			public T  ConstantValue  { get { return classRef.ConstantValue; } set { classRef.ConstantValue = value; } }
+
+			public aT GlobalVariable
+			{
+				get { return classRef.Variable; }
+				set { classRef.Variable = value; }
+			}
+
+			public T ConstantValue
+			{
+				get { return classRef.ConstantValue; }
+				set { classRef.ConstantValue = value; }
+			}
+
+			public AdvVariableInternals(AdvVariable<T, aT> _classRef)
+			{
+				classRef = _classRef;
+			}
 		}
 	}
 

@@ -2,26 +2,24 @@ using System;
 
 namespace UnityEngine.PostProcessing
 {
-    [Serializable]
-    public abstract class PostProcessingModel
-    {
-        [SerializeField, GetSet("enabled")]
-        bool m_Enabled;
-        public bool enabled
-        {
-            get { return m_Enabled; }
-            set
-            {
-                m_Enabled = value;
+	[Serializable]
+	public abstract class PostProcessingModel
+	{
+		[SerializeField] [GetSet("enabled")] private bool m_Enabled;
 
-                if (value)
-                    OnValidate();
-            }
-        }
+		public bool enabled
+		{
+			get { return m_Enabled; }
+			set
+			{
+				m_Enabled = value;
 
-        public abstract void Reset();
+				if(value)
+					OnValidate();
+			}
+		}
 
-        public virtual void OnValidate()
-        {}
-    }
+		public abstract void Reset();
+		public virtual void OnValidate() { }
+	}
 }

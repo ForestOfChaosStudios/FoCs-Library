@@ -11,11 +11,7 @@ namespace ForestOfChaosLib.AdvVar
 	{
 		public static implicit operator Vector2Variable(Vector2 input)
 		{
-			var fR = new Vector2Variable
-			{
-					UseConstant = true,
-					Value       = input
-			};
+			var fR = new Vector2Variable {UseConstant = true, Value = input};
 
 			return fR;
 		}

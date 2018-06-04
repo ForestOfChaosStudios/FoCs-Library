@@ -14,7 +14,14 @@ namespace ForestOfChaosLib.Components
 				transformToMove = GetComponent<Transform>();
 		}
 
-		private void Reset()  { transformToMove = transform; }
-		public  void Update() { transformToMove.Rotate(rotateAngle * Time.deltaTime, transformSpace); }
+		private void Reset()
+		{
+			transformToMove = transform;
+		}
+
+		public void Update()
+		{
+			transformToMove.Rotate(rotateAngle * Time.deltaTime, transformSpace);
+		}
 	}
 }

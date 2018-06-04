@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar
 {
@@ -29,12 +29,7 @@ namespace ForestOfChaosLib.AdvVar
 		public static void String_Global_OnChange_Event()
 		{
 			var b = false;
-
-			var f = new StringVariable
-			{
-					UseConstant = false
-			};
-
+			var f = new StringVariable {UseConstant = false};
 			f.InternalData.GlobalVariable =  ScriptableObject.CreateInstance<StringReference>();
 			f.OnValueChange               += () => b = true;
 			f.Value                       =  " ";

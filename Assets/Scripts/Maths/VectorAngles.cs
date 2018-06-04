@@ -12,35 +12,23 @@ namespace ForestOfChaosLib.Maths
 			angle = NormalizeAngle(angle);
 
 			if(angle > 180)
-			{
 				angle -= 360;
-			}
 			else if(angle < -180)
-			{
 				angle += 360;
-			}
 
 			min = NormalizeAngle(min);
 
 			if(min > 180)
-			{
 				min -= 360;
-			}
 			else if(min < -180)
-			{
 				min += 360;
-			}
 
 			max = NormalizeAngle(max);
 
 			if(max > 180)
-			{
 				max -= 360;
-			}
 			else if(max < -180)
-			{
 				max += 360;
-			}
 
 			// Aim is, convert angles to -180 until 180.
 			return Mathf.Clamp(angle, min, max);

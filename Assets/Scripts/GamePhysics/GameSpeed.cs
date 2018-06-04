@@ -17,21 +17,26 @@ namespace ForestOfChaosLib.GamePhysics
 			TWENTYxSPEED
 		}
 
-#region Consts
-		public const float PAUSED       = 0f;
-		public const float HALF_SPEED   = 0.5f;
-		public const float ONExSPEED    = 1f;
-		public const float TWOxSPEED    = 2f;
-		public const float THREExSPEED  = 3f;
-		public const float FOURxSPEED   = 4f;
-		public const float FIVExTIMES   = 5f;
-		public const float TENxSPEED    = 10f;
-		public const float TWENTYxSPEED = 20f;
-#endregion
-		public float CurrentGameSpeed                  { get { return Time.timeScale; } set { Time.timeScale = value; } }
-		public void  ResetGameSpeed()                  { CurrentGameSpeed = ONExSPEED; }
-		public void  SetGameSpeed(float newSpeed = 1f) { CurrentGameSpeed = newSpeed; }
-		public void  SetGameSpeed(int   newSpeed = 1)  { CurrentGameSpeed = newSpeed; }
+		public float CurrentGameSpeed
+		{
+			get { return Time.timeScale; }
+			set { Time.timeScale = value; }
+		}
+
+		public void ResetGameSpeed()
+		{
+			CurrentGameSpeed = ONExSPEED;
+		}
+
+		public void SetGameSpeed(float newSpeed = 1f)
+		{
+			CurrentGameSpeed = newSpeed;
+		}
+
+		public void SetGameSpeed(int newSpeed = 1)
+		{
+			CurrentGameSpeed = newSpeed;
+		}
 
 		public void SetGameSpeed(SetSpeeds newSpeed = SetSpeeds.ONExSPEED)
 		{
@@ -75,5 +80,17 @@ namespace ForestOfChaosLib.GamePhysics
 					break;
 			}
 		}
+
+#region Consts
+		public const float PAUSED       = 0f;
+		public const float HALF_SPEED   = 0.5f;
+		public const float ONExSPEED    = 1f;
+		public const float TWOxSPEED    = 2f;
+		public const float THREExSPEED  = 3f;
+		public const float FOURxSPEED   = 4f;
+		public const float FIVExTIMES   = 5f;
+		public const float TENxSPEED    = 10f;
+		public const float TWENTYxSPEED = 20f;
+#endregion
 	}
 }

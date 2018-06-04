@@ -14,7 +14,11 @@ namespace ForestOfChaosLib.Grid
 		/// 000
 		/// 010
 		/// 000
-		public GridPosition Center { get { return _center; } set { _center = value; } }
+		public GridPosition Center
+		{
+			get { return _center; }
+			set { _center = value; }
+		}
 
 		/// 000
 		/// 100

@@ -32,41 +32,41 @@ namespace ForestOfChaosLib.Types
 		public Vector2I(float    _x, bool  allValues = false): this((int)_x, allValues) { }
 		public Vector2I(float    _x, float _y): this((int)_x, (int)_y) { }
 		public Vector2I(Vector2I other): this(other.x, other.y) { }
-		public                          int      Total                                     => x + y;
-		public                          bool     IsZero()                                  => x == 0 && y == 0;
-		public                          bool     IsZeroOrNegative()                        => x <= 0 && y <= 0;
-		public                          bool     IsNegative()                              => x < 0  && y < 0;
-		public                          bool     IsZeroOrPositive()                        => x >= 0 && y >= 0;
-		public                          bool     IsPositive()                              => x > 0  && y > 0;
-		public                          bool     IsUnitVector()                            => x == y;
-		public                          Vector2  ToVector2()                               => this;
-		public                          Vector3  ToVector3()                               => this;
-		public                          Vector4  ToVector4()                               => this;
-		public                          Vector2I ToVector2I()                              => this;
-		public                          Vector3I ToVector3I()                              => this;
-		public                          Vector4I ToVector4I()                              => this;
-		public                          Vector3  FromX_Y2Z()                               => new Vector3(x, 0, y);
-		public                          Vector2I Copy()                                    => new Vector2I(this);
-		public static                   Vector2I operator -(Vector2I left)                 => new Vector2I(-left.x,          -left.y);
-		public static                   Vector2I operator +(Vector2I left)                 => new Vector2I(+left.x,          +left.y);
-		public static                   Vector2I operator -(Vector2I left, Vector2I right) => new Vector2I(left.x - right.x, left.y - right.y);
-		public static                   Vector2I operator +(Vector2I left, Vector2I right) => new Vector2I(left.x + right.x, left.y + right.y);
-		public static                   Vector2I operator *(Vector2I left, Vector2I right) => new Vector2I(left.x * right.x, left.y * right.y);
-		public static                   Vector2I operator *(Vector2I left, int      right) => new Vector2I(left.x * right,   left.y * right);
-		public static                   Vector2I operator *(Vector2I left, float    right) => new Vector2I(left.x * right,   left.y * right);
-		public static                   bool operator ==(Vector2I    left, int      right) => left.Equals(right);
-		public static                   bool operator !=(Vector2I    left, int      right) => !left.Equals(right);
-		public static                   bool operator ==(Vector2I    left, Vector2I right) => left.Equals(right);
-		public static                   bool operator !=(Vector2I    left, Vector2I right) => !left.Equals(right);
-		public static implicit operator Vector2(Vector2I             input) => new Vector2(input.x, input.y);
-		public static implicit operator Vector3(Vector2I             input) => new Vector3(input.x, input.y);
-		public static implicit operator Vector4(Vector2I             input) => new Vector4(input.x, input.y);
-		public static implicit operator Vector2I(Vector2             input) => new Vector2I(input.x, input.y);
-		public static implicit operator Vector2I(Vector3             input) => new Vector2I(input.x, input.y);
-		public static implicit operator Vector2I(Vector4             input) => new Vector2I(input.x, input.y);
-		public static implicit operator Vector2I(Vector3I            input) => new Vector2I(input.x, input.y);
-		public static implicit operator Vector2I(Vector4I            input) => new Vector2I(input.x, input.y);
-		public static implicit operator int[](Vector2I               num)   => new[] {num.x, num.y};
+		public int Total => x + y;
+		public bool IsZero() => (x           == 0) && (y == 0);
+		public bool IsZeroOrNegative() => (x <= 0) && (y <= 0);
+		public bool IsNegative() => (x       < 0)  && (y < 0);
+		public bool IsZeroOrPositive() => (x >= 0) && (y >= 0);
+		public bool IsPositive() => (x       > 0)  && (y > 0);
+		public bool IsUnitVector() => x == y;
+		public Vector2 ToVector2() => this;
+		public Vector3 ToVector3() => this;
+		public Vector4 ToVector4() => this;
+		public Vector2I ToVector2I() => this;
+		public Vector3I ToVector3I() => this;
+		public Vector4I ToVector4I() => this;
+		public Vector3 FromX_Y2Z() => new Vector3(x, 0, y);
+		public Vector2I Copy() => new Vector2I(this);
+		public static Vector2I operator -(Vector2I        left) => new Vector2I(-left.x,                          -left.y);
+		public static Vector2I operator +(Vector2I        left) => new Vector2I(+left.x,                          +left.y);
+		public static Vector2I operator -(Vector2I        left, Vector2I right) => new Vector2I(left.x - right.x, left.y - right.y);
+		public static Vector2I operator +(Vector2I        left, Vector2I right) => new Vector2I(left.x + right.x, left.y + right.y);
+		public static Vector2I operator *(Vector2I        left, Vector2I right) => new Vector2I(left.x * right.x, left.y * right.y);
+		public static Vector2I operator *(Vector2I        left, int      right) => new Vector2I(left.x * right,   left.y * right);
+		public static Vector2I operator *(Vector2I        left, float    right) => new Vector2I(left.x * right,   left.y * right);
+		public static bool operator ==(Vector2I           left, int      right) => left.Equals(right);
+		public static bool operator !=(Vector2I           left, int      right) => !left.Equals(right);
+		public static bool operator ==(Vector2I           left, Vector2I right) => left.Equals(right);
+		public static bool operator !=(Vector2I           left, Vector2I right) => !left.Equals(right);
+		public static implicit operator Vector2(Vector2I  input) => new Vector2(input.x, input.y);
+		public static implicit operator Vector3(Vector2I  input) => new Vector3(input.x, input.y);
+		public static implicit operator Vector4(Vector2I  input) => new Vector4(input.x, input.y);
+		public static implicit operator Vector2I(Vector2  input) => new Vector2I(input.x, input.y);
+		public static implicit operator Vector2I(Vector3  input) => new Vector2I(input.x, input.y);
+		public static implicit operator Vector2I(Vector4  input) => new Vector2I(input.x, input.y);
+		public static implicit operator Vector2I(Vector3I input) => new Vector2I(input.x, input.y);
+		public static implicit operator Vector2I(Vector4I input) => new Vector2I(input.x, input.y);
+		public static implicit operator int[](Vector2I    num) => new[] {num.x, num.y};
 
 		public static implicit operator Vector2I(int[] num)
 		{
@@ -74,9 +74,7 @@ namespace ForestOfChaosLib.Types
 
 			switch(num.Length)
 			{
-				case 0:
-
-					return Vector;
+				case 0: return Vector;
 				case 1:
 					Vector.x = num[0];
 
@@ -100,9 +98,7 @@ namespace ForestOfChaosLib.Types
 
 			switch(num.Length)
 			{
-				case 0:
-
-					return Vector;
+				case 0: return Vector;
 				case 1:
 					Vector.x = (int)num[0];
 
@@ -142,7 +138,7 @@ namespace ForestOfChaosLib.Types
 			unchecked
 			{
 				var hashCode = x;
-				hashCode = (hashCode * 397) ^ y;
+				hashCode = hashCode * 397 ^ y;
 
 				return hashCode;
 			}
@@ -208,9 +204,9 @@ namespace ForestOfChaosLib.Types
 			}
 		}
 
-		public static Vector2I Up    { get { return new Vector2I(0,  1); } }
-		public static Vector2I Down  { get { return new Vector2I(0,  -1); } }
-		public static Vector2I Left  { get { return new Vector2I(1,  0); } }
-		public static Vector2I Right { get { return new Vector2I(-1, 0); } }
+		public static Vector2I Up    => new Vector2I(0,  1);
+		public static Vector2I Down  => new Vector2I(0,  -1);
+		public static Vector2I Left  => new Vector2I(1,  0);
+		public static Vector2I Right => new Vector2I(-1, 0);
 	}
 }

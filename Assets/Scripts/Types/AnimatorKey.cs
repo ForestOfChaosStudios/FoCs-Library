@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Animation
 {
-	[System.Serializable]
+	[Serializable]
 	public struct AnimatorKey
 	{
 		public enum AnimType

@@ -1,4 +1,3 @@
-using ForestOfChaosLib.Components;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Animation
@@ -6,12 +5,12 @@ namespace ForestOfChaosLib.Animation
 	public class IKControl: FoCsBehavior
 	{
 		[SerializeField] protected Animator  animator;
-		public                     bool      rightHandIkActive = false;
-		public                     Transform rightHandObj      = null;
-		public                     bool      leftHandIkActive  = false;
-		public                     Transform leftHandObj       = null;
-		public                     bool      headIkActive      = false;
-		public                     Transform lookObj           = null;
+		public                     bool      headIkActive;
+		public                     bool      leftHandIkActive;
+		public                     Transform leftHandObj;
+		public                     Transform lookObj;
+		public                     bool      rightHandIkActive;
+		public                     Transform rightHandObj;
 
 		private void Start()
 		{

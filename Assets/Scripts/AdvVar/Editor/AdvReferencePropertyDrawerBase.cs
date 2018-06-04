@@ -10,18 +10,13 @@ namespace ForestOfChaosLib.AdvVar.Editor
 	[CustomPropertyDrawer(typeof(AdvVariable), true)]
 	public class AdvReferencePropertyDrawerBase: ObjectReferenceDrawer
 	{
-		internal const           float      WIDTH                     = 16f;
-		internal const           string     VARIABLE_STR              = "Variable";
-		internal const           string     CONSTANT_VALUE_STR        = "ConstantValue";
-		internal const           string     USE_CONSTANT_STR          = "UseConstant";
-		internal static readonly GUIContent localConstantGUIContent   = new GUIContent("Use Local Constant",   "Use Local Constant");
-		internal static readonly GUIContent globalReferenceGUIContent = new GUIContent("Use Global Reference", "Use Global Reference");
-
-		internal static readonly GUIContent[] OPTIONS_ARRAY =
-		{
-				localConstantGUIContent,
-				globalReferenceGUIContent
-		};
+		internal const           float        WIDTH                     = 16f;
+		internal const           string       VARIABLE_STR              = "Variable";
+		internal const           string       CONSTANT_VALUE_STR        = "ConstantValue";
+		internal const           string       USE_CONSTANT_STR          = "UseConstant";
+		internal static readonly GUIContent   localConstantGUIContent   = new GUIContent("Use Local Constant",   "Use Local Constant");
+		internal static readonly GUIContent   globalReferenceGUIContent = new GUIContent("Use Global Reference", "Use Global Reference");
+		internal static readonly GUIContent[] OPTIONS_ARRAY             = {localConstantGUIContent, globalReferenceGUIContent};
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{

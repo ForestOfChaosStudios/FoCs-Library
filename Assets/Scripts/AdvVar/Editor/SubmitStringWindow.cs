@@ -1,7 +1,7 @@
 ﻿using System;
-using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.Windows;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,7 +13,11 @@ namespace ForestOfChaosLib.AdvVar.Editor
 		private const  string                GUI_SELECTION_LABEL = "SubmitStringWindowDataField";
 		private static bool                  notSelectedLabel;
 		private        SubmitStringArguments currentArguments;
-		private static void                  Init() { GetWindowAndOpenUtility(); }
+
+		private static void Init()
+		{
+			GetWindowAndOpenUtility();
+		}
 
 		public static void SetUpInstance(SubmitStringArguments Args)
 		{
@@ -59,21 +63,19 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				return;
 
 			if(FoCsGUI.Layout.Button(currentArguments.SubmitAnotherMessage))
-			{
 				currentArguments.OnSubmitAnother.Trigger(currentArguments);
-			}
 		}
 
 		public class SubmitStringArguments
 		{
 			public string                        CancelMessage;
 			public string                        Data;
-			public Action<SubmitStringArguments> OnCancel;
-			public string                        SubmitMessage;
-			public Action<SubmitStringArguments> OnSubmit;
 			public bool                          HasAnotherButton = false;
-			public string                        SubmitAnotherMessage;
+			public Action<SubmitStringArguments> OnCancel;
+			public Action<SubmitStringArguments> OnSubmit;
 			public Action<SubmitStringArguments> OnSubmitAnother;
+			public string                        SubmitAnotherMessage;
+			public string                        SubmitMessage;
 			public string                        Title;
 			public string                        WindowTitle;
 		}

@@ -7,16 +7,16 @@ namespace ForestOfChaosLib.ScreenCap
 {
 	public class Timelapse
 	{
-		private        TimelapseArgs Args;
-		private static GameObject    obj;
-		private static FoCsBehavior  com;
-		private        float         WaitTime;
-		private        int           Times;
-		private        DateTime      Start;
-		public         DateTime      TimeRemaining => (Start.AddSeconds(WaitTime * (Times - 1)) - Start.TimeOfDay);
-		public         int           ShootsTaken   { get; private set; }
-		private        Coroutine     Routine;
-		public         bool          Capping = true;
+		private static   GameObject    obj;
+		private static   FoCsBehavior  com;
+		private readonly TimelapseArgs Args;
+		public           bool          Capping = true;
+		private readonly Coroutine     Routine;
+		private readonly DateTime      Start;
+		private          int           Times;
+		private readonly float         WaitTime;
+		public           DateTime      TimeRemaining => Start.AddSeconds(WaitTime * (Times - 1)) - Start.TimeOfDay;
+		public           int           ShootsTaken   { get; private set; }
 
 		public Timelapse(float waitTime, int times, ScreenShotArgs myArgs)
 		{
@@ -62,6 +62,7 @@ namespace ForestOfChaosLib.ScreenCap
 					if(Times == 1)
 					{
 						yield return waiter;
+
 						ScreenCap.TakeScreenShot(Args);
 						Object.Destroy(obj);
 

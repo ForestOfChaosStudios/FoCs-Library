@@ -19,9 +19,7 @@ namespace ForestOfChaosLib.InputManager.Editor
 		protected override void OnGUI()
 		{
 			foreach(var axisName in ReadInputManager.GetAxisProperties())
-			{
 				EditorGUILayout.PropertyField(axisName, true);
-			}
 		}
 	}
 }

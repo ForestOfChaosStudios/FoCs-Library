@@ -17,7 +17,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 			{
 				EditorGUI.PropertyField(position.SetHeight(SingleLine), property);
 
-				if((changeCheckScope.changed) && (property.objectReferenceValue != null))
+				if(changeCheckScope.changed && (property.objectReferenceValue != null))
 					serializedObject = new SerializedObject(property.objectReferenceValue);
 			}
 
@@ -79,7 +79,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			if(serializedObject == null || !foldOut || serializedObject.VisibleProperties() == 0)
+			if((serializedObject == null) || !foldOut || (serializedObject.VisibleProperties() == 0))
 				return SingleLine;
 
 			var iterator = serializedObject.GetIterator();
@@ -90,9 +90,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 			do
 			{
 				if(!FoCsEditor.IsPropertyHidden(iterator))
-				{
 					height += EditorGUI.GetPropertyHeight(iterator, iterator.isExpanded) + Padding;
-				}
 			}
 			while(iterator.NextVisible(false));
 

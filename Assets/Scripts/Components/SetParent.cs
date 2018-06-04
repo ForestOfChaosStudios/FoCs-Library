@@ -14,8 +14,8 @@ namespace ForestOfChaosLib.Components
 
 		public Mode         CallMode = Mode.OnEnable;
 		public Transform    ChildTransform;
-		public Transform    ParentTransform;
 		public BoolVariable DestroyComponentAfterCall = true;
+		public Transform    ParentTransform;
 
 		private void OnEnable()
 		{
@@ -43,6 +43,9 @@ namespace ForestOfChaosLib.Components
 				Destroy(this);
 		}
 
-		private void Reset() { ChildTransform = transform; }
+		private void Reset()
+		{
+			ChildTransform = transform;
+		}
 	}
 }

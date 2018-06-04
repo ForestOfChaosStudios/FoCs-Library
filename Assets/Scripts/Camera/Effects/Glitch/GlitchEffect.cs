@@ -6,7 +6,6 @@
 //		to make commercial use of the work
 
 //Please note. I DID NOT MAKE THIS
-
 /*
 namespace ForestOfChaos.Camera.Effects.Glitch
 {
@@ -69,4 +68,5 @@ namespace ForestOfChaos.Camera.Effects.Glitch
 	}
 }
 */
+
 

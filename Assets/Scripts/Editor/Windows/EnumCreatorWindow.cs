@@ -11,13 +11,13 @@ namespace ForestOfChaosLib.Editor.Windows
 {
 	public abstract class EnumCreatorWindow<T>: FoCsWindow<T> where T: EditorWindow
 	{
+		private static     ReorderableList ReorderableList;
+		private static     bool            RLIsExpanded = true;
 		protected abstract string          EnumName     { get; }
 		protected abstract string          EnumNewEntry { get; }
 		protected abstract string[]        EnumDefault  { get; }
-		private static     ReorderableList ReorderableList;
-		private static     bool            RLIsExpanded = true;
-		protected          string          TagFilePath { get { return FileStrings.ASSETS_GENERATED_RAWDATA + "/" + EnumName + FileStrings.FOCS_EXTENSION; } }
-		protected abstract List<string>    EnumList    { get; set; }
+		protected          string          TagFilePath  => FileStrings.ASSETS_GENERATED_RAWDATA + "/" + EnumName + FileStrings.FOCS_EXTENSION;
+		protected abstract List<string>    EnumList     { get; set; }
 
 		public void InitList()
 		{
@@ -32,8 +32,8 @@ namespace ForestOfChaosLib.Editor.Windows
 #region ReorderableListInits
 			ReorderableList = new ReorderableList(EnumList, typeof(string), true, true, true, true)
 			{
-					drawHeaderCallback = (rect) => RLIsExpanded = EditorGUI.ToggleLeft(rect, string.Format("{0}\t[{1}]", EnumName, ReorderableList.count), RLIsExpanded, EditorStyles.boldLabel),
-					drawElementCallback = (Rect pos, int index, bool isActive, bool isFocused) =>
+					drawHeaderCallback = rect => RLIsExpanded = EditorGUI.ToggleLeft(rect, string.Format("{0}\t[{1}]", EnumName, ReorderableList.count), RLIsExpanded, EditorStyles.boldLabel),
+					drawElementCallback = (pos, index, isActive, isFocused) =>
 					{
 						const float buttonWidth = 64f + 16;
 						var         textAreaPos = pos;
@@ -53,15 +53,13 @@ namespace ForestOfChaosLib.Editor.Windows
 							GUI.backgroundColor = str.DoesStringHaveInvalidChars()? Color.red : col;
 
 							if(GUI.Button(buttonPos, new GUIContent("Fix Error", "This is caused by an invalid char existing in the string.")))
-							{
 								ReorderableList.list[index] = str.ReplaceStringHaveInvalidChars();
-							}
 						}
 
-						ReorderableList.list[index] = EditorGUI.TextArea(textAreaPos, ((string)ReorderableList.list[index]));
+						ReorderableList.list[index] = EditorGUI.TextArea(textAreaPos, (string)ReorderableList.list[index]);
 						GUI.backgroundColor         = col;
 					},
-					onAddCallback = (list) =>
+					onAddCallback = list =>
 					{
 						SaveDataFile();
 						list.list.Add(EnumNewEntry);
@@ -84,7 +82,14 @@ namespace ForestOfChaosLib.Editor.Windows
 			CreateEnum();
 		}
 
-		private void CreateEnum()   { ScriptGenerators.CreateCountEnum(EnumName, EnumList.Select(s => s.ToUpperAllWordsAfterSpace().ReplaceWhiteSpace())); }
-		private void SaveDataFile() { ScriptGenerators.WriteFile(TagFilePath, EnumList); }
+		private void CreateEnum()
+		{
+			ScriptGenerators.CreateCountEnum(EnumName, EnumList.Select(s => s.ToUpperAllWordsAfterSpace().ReplaceWhiteSpace()));
+		}
+
+		private void SaveDataFile()
+		{
+			ScriptGenerators.WriteFile(TagFilePath, EnumList);
+		}
 	}
 }

@@ -7,8 +7,9 @@ namespace ForestOfChaosLib.ScreenCap
 {
 	public class ScreenshotTab: Tab<ScreenCapWindow>
 	{
-		public override string          TabName => "Screenshot";
+		private         ScreenShotArgs  args;
 		protected       ScreenCapWindow Owner;
+		public override string          TabName => "Screenshot";
 
 		public override void DrawTab(FoCsWindow<ScreenCapWindow> owner)
 		{
@@ -21,9 +22,7 @@ namespace ForestOfChaosLib.ScreenCap
 					DrawVariables();
 
 					using(FoCsEditor.Disposables.HorizontalScope())
-					{
 						DrawTakeImageGUI();
-					}
 				}
 			}
 		}
@@ -42,7 +41,10 @@ namespace ForestOfChaosLib.ScreenCap
 
 		public virtual void DrawOtherVars() { }
 
-		private void DrawPathAndFileUI() { EditorGUILayout.LabelField($"File will be saved as \"{args.GetFileNameAndPath()}\""); }
+		private void DrawPathAndFileUI()
+		{
+			EditorGUILayout.LabelField($"File will be saved as \"{args.GetFileNameAndPath()}\"");
+		}
 
 		private void DrawPathUI()
 		{
@@ -67,12 +69,9 @@ namespace ForestOfChaosLib.ScreenCap
 		private void DrawFilePathGUI()
 		{
 			using(FoCsEditor.Disposables.HorizontalScope())
-			{
 				GUILayout.Label("Save Path", EditorStyles.boldLabel);
-			}
 
 			EditorGUILayout.TextField(Owner.path, GUILayout.ExpandWidth(true));
-
 			PathButtons();
 		}
 
@@ -88,7 +87,10 @@ namespace ForestOfChaosLib.ScreenCap
 			}
 		}
 
-		private void DrawScale() { Owner.scale = EditorGUILayout.IntSlider("Scale", Owner.scale, 0, 8); }
+		private void DrawScale()
+		{
+			Owner.scale = EditorGUILayout.IntSlider("Scale", Owner.scale, 0, 8);
+		}
 
 		private void DrawTakeImageGUI()
 		{
@@ -103,9 +105,7 @@ namespace ForestOfChaosLib.ScreenCap
 						TakeScreenShot();
 					}
 					else
-					{
 						TakeScreenShot();
-					}
 				}
 			}
 
@@ -116,23 +116,15 @@ namespace ForestOfChaosLib.ScreenCap
 			}
 		}
 
-		ScreenShotArgs args;
-
 		protected virtual void TakeScreenShot()
 		{
 			BuildArgs();
-
 			ScreenCap.TakeScreenShot(args);
 		}
 
 		private void BuildArgs()
 		{
-			args = new ScreenShotArgs
-			{
-					fileName             = Owner.filename,
-					Path                 = Owner.path,
-					ResolutionMultiplier = Owner.scale
-			};
+			args = new ScreenShotArgs {fileName = Owner.filename, Path = Owner.path, ResolutionMultiplier = Owner.scale};
 		}
 
 		private void UpdateArgs()

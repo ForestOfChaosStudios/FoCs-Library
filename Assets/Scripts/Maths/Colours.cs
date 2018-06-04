@@ -4,7 +4,7 @@ namespace ForestOfChaosLib.Maths
 {
 #region DataTypes
 	/// <summary>
-	/// Lets you specify a colour type.
+	///     Lets you specify a colour type.
 	/// </summary>
 	public enum ColourRGBAType
 	{
@@ -16,14 +16,14 @@ namespace ForestOfChaosLib.Maths
 #endregion
 #region CreateColours
 	/// <summary>
-	/// This Class has all of my custom color builders in it.
+	///     This Class has all of my custom color builders in it.
 	/// </summary>
 	public static class CreateColours
 	{
 #region BuildSingleColourInt
 		/// <summary>
-		/// This will build a color from an Int value divided by 255.
-		/// It will have 0,0,0,1 Exept for what you change.
+		///     This will build a color from an Int value divided by 255.
+		///     It will have 0,0,0,1 Exept for what you change.
 		/// </summary>
 		/// <param name="value"> The int value between 0 - 255 </param>
 		/// <param name="colType"> Lets you specify a colour type. </param>
@@ -37,28 +37,28 @@ namespace ForestOfChaosLib.Maths
 				case ColourRGBAType.Red:
 					c.r = value == 0? 0 : value / 255;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Green:
 					c.g = value == 0? 0 : value / 255;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Blue:
 					c.b = value == 0? 0 : value / 255;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Alpha:
 					c.a = value == 0? 0 : value / 255;
 
-					return (c);
+					return c;
 			}
 
-			return (c);
+			return c;
 		}
 #endregion
 #region BuildSingleColourFloat
 		/// <summary>
-		/// This will build a color from an float from 0.0 - 1.0.
-		/// It will have 0,0,0,1 Exept for what you change.
+		///     This will build a color from an float from 0.0 - 1.0.
+		///     It will have 0,0,0,1 Exept for what you change.
 		/// </summary>
 		/// <param name="value"> The float value between 0.0 - 1.0 </param>
 		/// <param name="colType"> Lets you specify a colour type. </param>
@@ -72,28 +72,28 @@ namespace ForestOfChaosLib.Maths
 				case ColourRGBAType.Red:
 					c.r = value;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Green:
 					c.g = value;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Blue:
 					c.b = value;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Alpha:
 					c.a = value;
 
-					return (c);
+					return c;
 			}
 
-			return (c);
+			return c;
 		}
 #endregion
 #region BuildColorWithoutTypeInt
 		/// <summary>
-		/// This will build a color from three Int values divided by 255.
-		/// It will have 0,0,0,1 Exept for what you change.
+		///     This will build a color from three Int values divided by 255.
+		///     It will have 0,0,0,1 Exept for what you change.
 		/// </summary>
 		/// <param name="valueOne"> The first int value between 0 - 255 </param>
 		/// <param name="valueTwo"> The second value between 0 - 255 </param>
@@ -111,34 +111,34 @@ namespace ForestOfChaosLib.Maths
 					c.b = valueTwo   / 255;
 					c.a = valueThree / 255;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Green:
 					c.r = valueOne   / 255;
 					c.b = valueTwo   / 255;
 					c.a = valueThree / 255;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Blue:
 					c.r = valueOne   / 255;
 					c.g = valueTwo   / 255;
 					c.a = valueThree / 255;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Alpha:
 					c.r = valueOne   / 255;
 					c.g = valueTwo   / 255;
 					c.b = valueThree / 255;
 
-					return (c);
+					return c;
 			}
 
-			return (c);
+			return c;
 		}
 #endregion
 #region BuildColorWithoutTypeFloat
 		/// <summary>
-		/// This will build a color from three float values.
-		/// It will have 0,0,0,1 Exept for what you change.
+		///     This will build a color from three float values.
+		///     It will have 0,0,0,1 Exept for what you change.
 		/// </summary>
 		/// <param name="valueOne"> The first int value between 0 - 1 </param>
 		/// <param name="valueTwo"> The second value between 0 - 1 </param>
@@ -156,34 +156,34 @@ namespace ForestOfChaosLib.Maths
 					c.b = valueTwo;
 					c.a = valueThree;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Green:
 					c.r = valueOne;
 					c.b = valueTwo;
 					c.a = valueThree;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Blue:
 					c.r = valueOne;
 					c.g = valueTwo;
 					c.a = valueThree;
 
-					return (c);
+					return c;
 				case ColourRGBAType.Alpha:
 					c.r = valueOne;
 					c.g = valueTwo;
 					c.b = valueThree;
 
-					return (c);
+					return c;
 			}
 
-			return (c);
+			return c;
 		}
 #endregion
 #region BuildColor255
 		/// <summary>
-		/// This will build a color from three float values.
-		/// You can also change the alpha.
+		///     This will build a color from three float values.
+		///     You can also change the alpha.
 		/// </summary>
 		/// <param name="valueRed">Red</param>
 		/// <param name="valueGreen">Green</param>
@@ -194,13 +194,13 @@ namespace ForestOfChaosLib.Maths
 		{
 			var c = new Color(valueRed == 0? 0 : valueRed / 255, valueGreen == 0? 0 : valueGreen / 255, valueBlue == 0? 0 : valueBlue / 255, valueAlpha == 0? 0 : valueAlpha / 255);
 
-			return (c);
+			return c;
 		}
 #endregion
 #region BuildColorNoAlphaFloat
 		/// <summary>
-		/// This will build a color from three float values.
-		/// You can also change the alpha.
+		///     This will build a color from three float values.
+		///     You can also change the alpha.
 		/// </summary>
 		/// <param name="valueRed">Red</param>
 		/// <param name="valueGreen">Green</param>
@@ -219,7 +219,7 @@ namespace ForestOfChaosLib.Maths
 
 	public static class ConvertColours
 	{
-		public static string HexNumberFromColour(Color col) { return ColorUtility.ToHtmlStringRGBA(col); }
+		public static string HexNumberFromColour(Color col) => ColorUtility.ToHtmlStringRGBA(col);
 
 		public static Color HexNumberToColour(string colString)
 		{

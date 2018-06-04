@@ -4,6 +4,8 @@ namespace ForestOfChaosLib.Maths
 {
 	public static class VectorMaths
 	{
+		public const float ROTATION_MAX = 360f;
+
 		public static Vector3 GetVectorDirection(Vector3 vA, Vector3 vB, bool Normalized = true)
 		{
 			var output = vA - vB;
@@ -13,8 +15,6 @@ namespace ForestOfChaosLib.Maths
 
 			return output;
 		}
-
-		public const float ROTATION_MAX = 360f;
 
 		public static float ClampAngle(this float angle, float min, float max)
 		{

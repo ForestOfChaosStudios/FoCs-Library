@@ -9,8 +9,13 @@ namespace ForestOfChaosLib.FoCsUI
 	public class ScrollbarEvents: FoCsBehavior
 	{
 		public Scrollbar     _Scrollbar;
-		public float         Value { get { return _Scrollbar.value; } set { _Scrollbar.value = value; } }
 		public Action<float> onValueChanged;
+
+		public float Value
+		{
+			get { return _Scrollbar.value; }
+			set { _Scrollbar.value = value; }
+		}
 
 		private void OnEnable()
 		{
@@ -20,7 +25,14 @@ namespace ForestOfChaosLib.FoCsUI
 			_Scrollbar.onValueChanged.AddListener(ValueChanged);
 		}
 
-		private void OnDisable()               { _Scrollbar.onValueChanged.RemoveListener(ValueChanged); }
-		private void ValueChanged(float value) { onValueChanged.Trigger(value); }
+		private void OnDisable()
+		{
+			_Scrollbar.onValueChanged.RemoveListener(ValueChanged);
+		}
+
+		private void ValueChanged(float value)
+		{
+			onValueChanged.Trigger(value);
+		}
 	}
 }

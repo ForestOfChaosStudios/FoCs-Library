@@ -4,8 +4,8 @@ namespace ForestOfChaosLib.Attributes
 {
 	public class RegexStringAttribute: PropertyAttribute
 	{
-		public readonly string pattern;
 		public readonly string helpMessage;
+		public readonly string pattern;
 
 		public RegexStringAttribute(string _pattern, string _helpMessage)
 		{

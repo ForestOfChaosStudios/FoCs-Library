@@ -22,7 +22,6 @@ namespace ForestOfChaosLib.Animation
 		{
 			using(var scope = FoCsEditor.Disposables.RectHorizontalScope(8, position))
 			{
-
 				EditorGUI.LabelField(scope.GetNext(), label);
 				scope.GetNext();
 
@@ -30,10 +29,8 @@ namespace ForestOfChaosLib.Animation
 				{
 					EditorGUI.LabelField(scope.GetNext(), KEY_LABEL);
 					EditorGUI.PropertyField(scope.GetNext(), property.FindPropertyRelative(KEY), GUIContent.none);
-
 					EditorGUI.LabelField(scope.GetNext(), KEY_TYPE_LABEL);
 					EditorGUI.PropertyField(scope.GetNext(), property.FindPropertyRelative(KEY_TYPE), GUIContent.none);
-
 					var key     = property.GetTargetObjectOfProperty<AnimatorKey>();
 					var typeStr = INT_DATA;
 

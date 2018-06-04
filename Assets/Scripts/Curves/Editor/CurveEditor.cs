@@ -1,7 +1,7 @@
 ﻿using ForestOfChaosLib.Curves.Components;
 using ForestOfChaosLib.Editor;
-using ForestOfChaosLib.Maths;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Maths;
 using UnityEditor;
 using UnityEngine;
 
@@ -50,9 +50,7 @@ namespace ForestOfChaosLib.Curves.Editor
 						}
 
 						if(undoCheck.changed)
-						{
 							Undo.RecordObject(Curve, "Changed Curve Position");
-						}
 					}
 				}
 

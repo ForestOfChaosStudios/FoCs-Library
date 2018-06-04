@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using ForestOfChaosLib.Maths;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Maths;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Curves
@@ -12,9 +12,24 @@ namespace ForestOfChaosLib.Curves
 		public const             int           TOTAL_COUNT    = 3;
 		public                   List<Vector3> Positions      = new List<Vector3>(TOTAL_COUNT);
 		[SerializeField] private bool          useGlobalSpace = true;
-		public                   Vector3       StartPos { get { return Positions[0]; } set { Positions[0] = value; } }
-		public                   Vector3       MidPos   { get { return Positions[1]; } set { Positions[1] = value; } }
-		public                   Vector3       EndPos   { get { return Positions[2]; } set { Positions[2] = value; } }
+
+		public Vector3 StartPos
+		{
+			get { return Positions[0]; }
+			set { Positions[0] = value; }
+		}
+
+		public Vector3 MidPos
+		{
+			get { return Positions[1]; }
+			set { Positions[1] = value; }
+		}
+
+		public Vector3 EndPos
+		{
+			get { return Positions[2]; }
+			set { Positions[2] = value; }
+		}
 
 		private void PosNullCheck()
 		{
@@ -22,7 +37,11 @@ namespace ForestOfChaosLib.Curves
 				Positions = new List<Vector3>(3);
 		}
 
-		public bool UseGlobalSpace { get { return useGlobalSpace; } set { useGlobalSpace = value; } }
+		public bool UseGlobalSpace
+		{
+			get { return useGlobalSpace; }
+			set { useGlobalSpace = value; }
+		}
 
 		public List<Vector3> CurvePositions
 		{
@@ -41,9 +60,7 @@ namespace ForestOfChaosLib.Curves
 
 				switch(value.Count)
 				{
-					case 0:
-
-						return;
+					case 0: return;
 					case 1:
 						StartPos = value[0];
 
@@ -69,8 +86,8 @@ namespace ForestOfChaosLib.Curves
 			}
 		}
 
-		public bool    IsFixedLength    => true;
-		public int     Length           => TOTAL_COUNT;
+		public bool IsFixedLength => true;
+		public int  Length        => TOTAL_COUNT;
 		public Vector3 Lerp(float time) => BezierLerp.Lerp(this, time);
 	}
 }

@@ -25,6 +25,9 @@ namespace ForestOfChaosLib.AdvVar.Components
 				FoCsButton.onMouseClick += OnMouseClick;
 		}
 
-		private void Reset() { FoCsButton = GetComponentInChildren<FoCsButton>(); }
+		private void Reset()
+		{
+			FoCsButton = GetComponentInChildren<FoCsButton>();
+		}
 	}
 }

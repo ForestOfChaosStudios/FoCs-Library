@@ -6,8 +6,20 @@ namespace ForestOfChaosLib.AdvVar.Events
 	{
 		public AdvEvent   Event;
 		public UnityEvent Response;
-		public void       OnEnable()         { Event.RegisterListener(this); }
-		public void       OnDisable()        { Event.UnRegisterListener(this); }
-		public void       OnEventTriggered() { Response.Invoke(); }
+
+		public void OnEnable()
+		{
+			Event.RegisterListener(this);
+		}
+
+		public void OnDisable()
+		{
+			Event.UnRegisterListener(this);
+		}
+
+		public void OnEventTriggered()
+		{
+			Response.Invoke();
+		}
 	}
 }

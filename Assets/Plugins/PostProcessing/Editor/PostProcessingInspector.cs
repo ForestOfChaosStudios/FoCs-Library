@@ -1,208 +1,186 @@
-using UnityEngine;
-using UnityEngine.PostProcessing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
+using UnityEngine.PostProcessing;
 
 namespace UnityEditor.PostProcessing
 {
-    //[CanEditMultipleObjects]
-    [CustomEditor(typeof(PostProcessingProfile))]
-    public class PostProcessingInspector : Editor
-    {
-        static GUIContent s_PreviewTitle = new GUIContent("Monitors");
+	//[CanEditMultipleObjects]
+	[CustomEditor(typeof(PostProcessingProfile))]
+	public class PostProcessingInspector: Editor
+	{
+		private static readonly GUIContent                                                 s_PreviewTitle  = new GUIContent("Monitors");
+		private readonly        Dictionary<PostProcessingModelEditor, PostProcessingModel> m_CustomEditors = new Dictionary<PostProcessingModelEditor, PostProcessingModel>();
+		private                 GUIContent[]                                               m_MonitorNames;
+		private                 List<PostProcessingMonitor>                                m_Monitors;
+		private                 PostProcessingProfile                                      m_ConcreteTarget => target as PostProcessingProfile;
 
-        PostProcessingProfile m_ConcreteTarget
-        {
-            get { return target as PostProcessingProfile; }
-        }
+		private int m_CurrentMonitorID
+		{
+			get { return m_ConcreteTarget.monitors.currentMonitorID; }
+			set { m_ConcreteTarget.monitors.currentMonitorID = value; }
+		}
 
-        int m_CurrentMonitorID
-        {
-            get { return m_ConcreteTarget.monitors.currentMonitorID; }
-            set { m_ConcreteTarget.monitors.currentMonitorID = value; }
-        }
+		public bool IsInteractivePreviewOpened { get; private set; }
 
-        List<PostProcessingMonitor> m_Monitors;
-        GUIContent[] m_MonitorNames;
-        Dictionary<PostProcessingModelEditor, PostProcessingModel> m_CustomEditors = new Dictionary<PostProcessingModelEditor, PostProcessingModel>();
+		private void OnEnable()
+		{
+			if(target == null)
+				return;
 
-        public bool IsInteractivePreviewOpened { get; private set; }
+			// Aggregate custom post-fx editors
+			var assembly      = Assembly.GetAssembly(typeof(PostProcessingInspector));
+			var editorTypes   = assembly.GetTypes().Where(x => x.IsDefined(typeof(PostProcessingModelEditorAttribute), false));
+			var customEditors = new Dictionary<Type, PostProcessingModelEditor>();
 
-        void OnEnable()
-        {
-            if (target == null)
-                return;
+			foreach(var editor in editorTypes)
+			{
+				var attr          = (PostProcessingModelEditorAttribute)editor.GetCustomAttributes(typeof(PostProcessingModelEditorAttribute), false)[0];
+				var effectType    = attr.type;
+				var alwaysEnabled = attr.alwaysEnabled;
+				var editorInst    = (PostProcessingModelEditor)Activator.CreateInstance(editor);
+				editorInst.alwaysEnabled = alwaysEnabled;
+				editorInst.profile       = target as PostProcessingProfile;
+				editorInst.inspector     = this;
+				customEditors.Add(effectType, editorInst);
+			}
 
-            // Aggregate custom post-fx editors
-            var assembly = Assembly.GetAssembly(typeof(PostProcessingInspector));
+			// ... and corresponding models
+			var baseType = target.GetType();
+			var property = serializedObject.GetIterator();
 
-            var editorTypes = assembly.GetTypes()
-                .Where(x => x.IsDefined(typeof(PostProcessingModelEditorAttribute), false));
+			while(property.Next(true))
+			{
+				if(!property.hasChildren)
+					continue;
 
-            var customEditors = new Dictionary<Type, PostProcessingModelEditor>();
-            foreach (var editor in editorTypes)
-            {
-                var attr = (PostProcessingModelEditorAttribute)editor.GetCustomAttributes(typeof(PostProcessingModelEditorAttribute), false)[0];
-                var effectType = attr.type;
-                var alwaysEnabled = attr.alwaysEnabled;
+				var type      = baseType;
+				var srcObject = ReflectionUtils.GetFieldValueFromPath(serializedObject.targetObject, ref type, property.propertyPath);
 
-                var editorInst = (PostProcessingModelEditor)Activator.CreateInstance(editor);
-                editorInst.alwaysEnabled = alwaysEnabled;
-                editorInst.profile = target as PostProcessingProfile;
-                editorInst.inspector = this;
-                customEditors.Add(effectType, editorInst);
-            }
+				if(srcObject == null)
+					continue;
 
-            // ... and corresponding models
-            var baseType = target.GetType();
-            var property = serializedObject.GetIterator();
+				PostProcessingModelEditor editor;
 
-            while (property.Next(true))
-            {
-                if (!property.hasChildren)
-                    continue;
+				if(customEditors.TryGetValue(type, out editor))
+				{
+					var effect = (PostProcessingModel)srcObject;
 
-                var type = baseType;
-                var srcObject = ReflectionUtils.GetFieldValueFromPath(serializedObject.targetObject, ref type, property.propertyPath);
+					if(editor.alwaysEnabled)
+						effect.enabled = editor.alwaysEnabled;
 
-                if (srcObject == null)
-                    continue;
+					m_CustomEditors.Add(editor, effect);
+					editor.target             = effect;
+					editor.serializedProperty = property.Copy();
+					editor.OnPreEnable();
+				}
+			}
 
-                PostProcessingModelEditor editor;
-                if (customEditors.TryGetValue(type, out editor))
-                {
-                    var effect = (PostProcessingModel)srcObject;
+			// Prepare monitors
+			m_Monitors = new List<PostProcessingMonitor>();
+			var monitors     = new List<PostProcessingMonitor> {new HistogramMonitor(), new WaveformMonitor(), new ParadeMonitor(), new VectorscopeMonitor()};
+			var monitorNames = new List<GUIContent>();
 
-                    if (editor.alwaysEnabled)
-                        effect.enabled = editor.alwaysEnabled;
+			foreach(var monitor in monitors)
+			{
+				if(monitor.IsSupported())
+				{
+					monitor.Init(m_ConcreteTarget.monitors, this);
+					m_Monitors.Add(monitor);
+					monitorNames.Add(monitor.GetMonitorTitle());
+				}
+			}
 
-                    m_CustomEditors.Add(editor, effect);
-                    editor.target = effect;
-                    editor.serializedProperty = property.Copy();
-                    editor.OnPreEnable();
-                }
-            }
+			m_MonitorNames = monitorNames.ToArray();
 
-            // Prepare monitors
-            m_Monitors = new List<PostProcessingMonitor>();
+			if(m_Monitors.Count > 0)
+				m_ConcreteTarget.monitors.onFrameEndEditorOnly = OnFrameEnd;
+		}
 
-            var monitors = new List<PostProcessingMonitor>
-            {
-                new HistogramMonitor(),
-                new WaveformMonitor(),
-                new ParadeMonitor(),
-                new VectorscopeMonitor()
-            };
+		private void OnDisable()
+		{
+			if(m_CustomEditors != null)
+			{
+				foreach(var editor in m_CustomEditors.Keys)
+					editor.OnDisable();
 
-            var monitorNames = new List<GUIContent>();
+				m_CustomEditors.Clear();
+			}
 
-            foreach (var monitor in monitors)
-            {
-                if (monitor.IsSupported())
-                {
-                    monitor.Init(m_ConcreteTarget.monitors, this);
-                    m_Monitors.Add(monitor);
-                    monitorNames.Add(monitor.GetMonitorTitle());
-                }
-            }
+			if(m_Monitors != null)
+			{
+				foreach(var monitor in m_Monitors)
+					monitor.Dispose();
 
-            m_MonitorNames = monitorNames.ToArray();
+				m_Monitors.Clear();
+			}
 
-            if (m_Monitors.Count > 0)
-                m_ConcreteTarget.monitors.onFrameEndEditorOnly = OnFrameEnd;
-        }
+			if(m_ConcreteTarget != null)
+				m_ConcreteTarget.monitors.onFrameEndEditorOnly = null;
+		}
 
-        void OnDisable()
-        {
-            if (m_CustomEditors != null)
-            {
-                foreach (var editor in m_CustomEditors.Keys)
-                    editor.OnDisable();
+		private void OnFrameEnd(RenderTexture source)
+		{
+			if(!IsInteractivePreviewOpened)
+				return;
 
-                m_CustomEditors.Clear();
-            }
+			if(m_CurrentMonitorID < m_Monitors.Count)
+				m_Monitors[m_CurrentMonitorID].OnFrameData(source);
 
-            if (m_Monitors != null)
-            {
-                foreach (var monitor in m_Monitors)
-                    monitor.Dispose();
+			IsInteractivePreviewOpened = false;
+		}
 
-                m_Monitors.Clear();
-            }
+		public override void OnInspectorGUI()
+		{
+			serializedObject.Update();
 
-            if (m_ConcreteTarget != null)
-                m_ConcreteTarget.monitors.onFrameEndEditorOnly = null;
-        }
+			// Handles undo/redo events first (before they get used by the editors' widgets)
+			var e = Event.current;
 
-        void OnFrameEnd(RenderTexture source)
-        {
-            if (!IsInteractivePreviewOpened)
-                return;
+			if((e.type == EventType.ValidateCommand) && (e.commandName == "UndoRedoPerformed"))
+			{
+				foreach(var editor in m_CustomEditors)
+					editor.Value.OnValidate();
+			}
 
-            if (m_CurrentMonitorID < m_Monitors.Count)
-                m_Monitors[m_CurrentMonitorID].OnFrameData(source);
+			if(!m_ConcreteTarget.debugViews.IsModeActive(BuiltinDebugViewsModel.Mode.None))
+				EditorGUILayout.HelpBox("A debug view is currently enabled. Changes done to an effect might not be visible.", MessageType.Info);
 
-            IsInteractivePreviewOpened = false;
-        }
+			foreach(var editor in m_CustomEditors)
+			{
+				EditorGUI.BeginChangeCheck();
+				editor.Key.OnGUI();
 
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
+				if(EditorGUI.EndChangeCheck())
+					editor.Value.OnValidate();
+			}
 
-            // Handles undo/redo events first (before they get used by the editors' widgets)
-            var e = Event.current;
-            if (e.type == EventType.ValidateCommand && e.commandName == "UndoRedoPerformed")
-            {
-                foreach (var editor in m_CustomEditors)
-                    editor.Value.OnValidate();
-            }
+			serializedObject.ApplyModifiedProperties();
+		}
 
-            if (!m_ConcreteTarget.debugViews.IsModeActive(BuiltinDebugViewsModel.Mode.None))
-                EditorGUILayout.HelpBox("A debug view is currently enabled. Changes done to an effect might not be visible.", MessageType.Info);
+		public override GUIContent GetPreviewTitle() => s_PreviewTitle;
+		public override bool HasPreviewGUI() => GraphicsUtils.supportsDX11 && (m_Monitors.Count > 0);
 
-            foreach (var editor in m_CustomEditors)
-            {
-                EditorGUI.BeginChangeCheck();
+		public override void OnPreviewSettings()
+		{
+			using(new EditorGUILayout.HorizontalScope())
+			{
+				if(m_CurrentMonitorID < m_Monitors.Count)
+					m_Monitors[m_CurrentMonitorID].OnMonitorSettings();
 
-                editor.Key.OnGUI();
+				GUILayout.Space(5);
+				m_CurrentMonitorID = EditorGUILayout.Popup(m_CurrentMonitorID, m_MonitorNames, FxStyles.preDropdown, GUILayout.MaxWidth(100f));
+			}
+		}
 
-                if (EditorGUI.EndChangeCheck())
-                    editor.Value.OnValidate();
-            }
+		public override void OnInteractivePreviewGUI(Rect r, GUIStyle background)
+		{
+			IsInteractivePreviewOpened = true;
 
-            serializedObject.ApplyModifiedProperties();
-        }
-
-        public override GUIContent GetPreviewTitle()
-        {
-            return s_PreviewTitle;
-        }
-
-        public override bool HasPreviewGUI()
-        {
-            return GraphicsUtils.supportsDX11 && m_Monitors.Count > 0;
-        }
-
-        public override void OnPreviewSettings()
-        {
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                if (m_CurrentMonitorID < m_Monitors.Count)
-                    m_Monitors[m_CurrentMonitorID].OnMonitorSettings();
-
-                GUILayout.Space(5);
-                m_CurrentMonitorID = EditorGUILayout.Popup(m_CurrentMonitorID, m_MonitorNames, FxStyles.preDropdown, GUILayout.MaxWidth(100f));
-            }
-        }
-
-        public override void OnInteractivePreviewGUI(Rect r, GUIStyle background)
-        {
-            IsInteractivePreviewOpened = true;
-
-            if (m_CurrentMonitorID < m_Monitors.Count)
-                m_Monitors[m_CurrentMonitorID].OnMonitorGUI(r);
-        }
-    }
+			if(m_CurrentMonitorID < m_Monitors.Count)
+				m_Monitors[m_CurrentMonitorID].OnMonitorGUI(r);
+		}
+	}
 }

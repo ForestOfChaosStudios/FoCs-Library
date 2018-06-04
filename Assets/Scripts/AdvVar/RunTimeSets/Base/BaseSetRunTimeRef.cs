@@ -30,8 +30,14 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 	public abstract class BaseSetRunTimeRefWithField<T, RT_T>: BaseSetRunTimeRef<T, RT_T> where RT_T: RunTimeRef<T> where T: Object
 	{
 		[SerializeField] private T _referenceField;
-		public                   T ReferenceField { get { return _referenceField ?? (_referenceField = GetComponent<T>()); } set { _referenceField = value; } }
-		public override          T Value          => ReferenceField;
+
+		public T ReferenceField
+		{
+			get { return _referenceField ?? (_referenceField = GetComponent<T>()); }
+			set { _referenceField = value; }
+		}
+
+		public override T Value => ReferenceField;
 
 		private void Reset()
 		{

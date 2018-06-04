@@ -16,6 +16,9 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 			MousePosition.Value = Input.mousePosition;
 		}
 
-		public void Reset() { AxisReferences = Resources.FindObjectsOfTypeAll<AdvInputAxisReference>(); }
+		public void Reset()
+		{
+			AxisReferences = Resources.FindObjectsOfTypeAll<AdvInputAxisReference>();
+		}
 	}
 }

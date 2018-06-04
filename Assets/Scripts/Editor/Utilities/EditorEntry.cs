@@ -20,9 +20,17 @@ namespace ForestOfChaosLib.Editor.Utilities
 			LabelName = prop.displayName;
 		}
 
-		public static implicit operator SerializedProperty(EditorEntry editorString)             => editorString.Property;
-		public static implicit operator string(EditorEntry             editorString)             => editorString.LabelName;
-		public                          void Draw(Rect                 position)                 { EditorGUI.PropertyField(position, Property, new GUIContent(LabelName)); }
-		public                          void Draw(Rect                 position, string toolTip) { EditorGUI.PropertyField(position, Property, new GUIContent(LabelName, toolTip)); }
+		public static implicit operator SerializedProperty(EditorEntry editorString) => editorString.Property;
+		public static implicit operator string(EditorEntry             editorString) => editorString.LabelName;
+
+		public void Draw(Rect position)
+		{
+			EditorGUI.PropertyField(position, Property, new GUIContent(LabelName));
+		}
+
+		public void Draw(Rect position, string toolTip)
+		{
+			EditorGUI.PropertyField(position, Property, new GUIContent(LabelName, toolTip));
+		}
 	}
 }

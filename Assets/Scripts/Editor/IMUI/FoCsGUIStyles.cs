@@ -8,9 +8,9 @@ namespace ForestOfChaosLib.Editor
 	{
 		public static partial class Styles
 		{
-			private static SkinRef   unitySkins;
-			public static  SkinRef   Unity                     => unitySkins ?? (unitySkins = new SkinRef());
-			public static  Texture2D GetTexture(string search) => GetAsset<Texture2D>(search);
+			private static SkinRef unitySkins;
+			public static  SkinRef Unity => unitySkins ?? (unitySkins = new SkinRef());
+			public static Texture2D GetTexture(string search) => GetAsset<Texture2D>(search);
 
 			public static T GetAsset<T>(string search) where T: Object
 			{
@@ -21,9 +21,7 @@ namespace ForestOfChaosLib.Editor
 					var obj = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid));
 
 					if(obj != null)
-					{
 						return obj;
-					}
 				}
 
 				return null;

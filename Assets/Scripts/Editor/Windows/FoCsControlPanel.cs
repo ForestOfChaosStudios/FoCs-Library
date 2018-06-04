@@ -15,10 +15,15 @@ namespace ForestOfChaosLib.Editor
 		private const  string     TITLE       = "FoCs " + SHORT_TITLE;
 		public static  GUISkin    skin;
 		private static List<Type> windowList;
-		private static List<Type> WindowList => windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false));
 		private static List<Type> tabList;
-		private static List<Type> TabList   => tabList ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTabAttribute>(false));
-		private static int        ActiveTab { get { return EditorPrefs.GetInt("FoCsCP.ActiveIndex"); } set { EditorPrefs.SetInt("FoCsCP.ActiveIndex", value); } }
+		private static List<Type> WindowList => windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false));
+		private static List<Type> TabList    => tabList    ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTabAttribute>(false));
+
+		private static int ActiveTab
+		{
+			get { return EditorPrefs.GetInt("FoCsCP.ActiveIndex"); }
+			set { EditorPrefs.SetInt("FoCsCP.ActiveIndex", value); }
+		}
 
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + SHORT_TITLE)]
 		private static void Init()
@@ -34,26 +39,16 @@ namespace ForestOfChaosLib.Editor
 			using(FoCsEditor.Disposables.HorizontalScope())
 			{
 				using(FoCsEditor.Disposables.VerticalScope(GUILayout.Width(200)))
-				{
 					DrawWindowButtons();
-				}
 
 				using(FoCsEditor.Disposables.VerticalScope())
 				{
 					using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-					{
 						DrawTabButtons();
-					}
 
 					if(TabList.InRange(ActiveTab))
 					{
-						TabList[ActiveTab].
-								GetMethod("DrawGUI")?.
-								Invoke(null,
-									   new object[]
-									   {
-											   this
-									   });
+						TabList[ActiveTab].GetMethod("DrawGUI")?.Invoke(null, new object[] {this});
 					}
 				}
 			}
@@ -62,9 +57,7 @@ namespace ForestOfChaosLib.Editor
 		private void Update()
 		{
 			if(mouseOverWindow)
-			{
 				Repaint();
-			}
 		}
 
 		private static void DrawWindowButtons()

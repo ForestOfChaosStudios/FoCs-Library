@@ -45,38 +45,38 @@ namespace ForestOfChaosLib.Types
 		public Vector4I(float    _x, float _y, float _z): this((int)_x, (int)_y, (int)_z, 0) { }
 		public Vector4I(float    _x, float _y, float _z, float _w): this((int)_x, (int)_y, (int)_z, (int)_w) { }
 		public Vector4I(Vector4I other): this(other.x, other.y, other.z, other.w) { }
-		public                          int      Total()                                   => x + y + z + w;
-		public                          bool     IsZero()                                  => x == 0 && y == 0 && z == 0                                                   && w == 0;
-		public                          bool     IsZeroOrNegative()                        => x <= 0 && y <= 0 && z <= 0                                                   && w <= 0;
-		public                          bool     IsNegative()                              => x < 0 && y < 0 && z < 0                                                      && w < 0;
-		public                          bool     IsZeroOrPositive()                        => x >= 0 && y >= 0 && z >= 0                                                   && w >= 0;
-		public                          bool     IsPositive()                              => x > 0 && y > 0 && z > 0                                                      && w > 0;
-		public                          bool     IsUnitVector()                            => x == y && x == z && x == w && y == z && y == w && z == x && z == w && w == x && w == y;
-		public                          Vector2  ToVector2()                               => this;
-		public                          Vector3  ToVector3()                               => this;
-		public                          Vector4  ToVector4()                               => this;
-		public                          Vector2I ToVector2I()                              => this;
-		public                          Vector3I ToVector3I()                              => this;
-		public                          Vector4I ToVector4I()                              => this;
-		public                          Vector4I Copy()                                    => new Vector4I(this);
-		public static                   Vector4I operator -(Vector4I left)                 => new Vector4I(-left.x,          -left.y,          -left.z,          -left.w);
-		public static                   Vector4I operator +(Vector4I left)                 => new Vector4I(+left.x,          +left.y,          +left.z,          +left.w);
-		public static                   Vector4I operator -(Vector4I left, Vector4I right) => new Vector4I(left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w);
-		public static                   Vector4I operator +(Vector4I left, Vector4I right) => new Vector4I(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
-		public static                   Vector4I operator *(Vector4I left, Vector4I right) => new Vector4I(left.x * right.x, left.y * right.y, left.z * right.z, left.w * right.w);
-		public static                   bool operator ==(Vector4I    left, int      right) => left.Equals(right);
-		public static                   bool operator !=(Vector4I    left, int      right) => !left.Equals(right);
-		public static                   bool operator ==(Vector4I    left, Vector4I right) => left.Equals(right);
-		public static                   bool operator !=(Vector4I    left, Vector4I right) => !left.Equals(right);
-		public static implicit operator Vector2(Vector4I             input) => new Vector2(input.x, input.y);
-		public static implicit operator Vector3(Vector4I             input) => new Vector3(input.x, input.y, input.z);
-		public static implicit operator Vector4(Vector4I             input) => new Vector4(input.x, input.y, input.z, input.w);
-		public static implicit operator Vector4I(Vector2             input) => new Vector4I(input.x, input.y);
-		public static implicit operator Vector4I(Vector3             input) => new Vector4I(input.x, input.y, input.z);
-		public static implicit operator Vector4I(Vector4             input) => new Vector4I(input.x, input.y, input.z, input.w);
-		public static implicit operator Vector4I(Vector2I            input) => new Vector4I(input.x, input.y);
-		public static implicit operator Vector4I(Vector3I            input) => new Vector4I(input.x, input.y, input.z);
-		public static implicit operator int[](Vector4I               num)   => new[] {num.x, num.y, num.z, num.w};
+		public int Total() => x + y + z + w;
+		public bool IsZero() => (x == 0) && (y == 0) && (z == 0)                                                                   && (w == 0);
+		public bool IsZeroOrNegative() => (x <= 0) && (y <= 0) && (z <= 0)                                                         && (w <= 0);
+		public bool IsNegative() => (x < 0) && (y < 0) && (z < 0)                                                                  && (w < 0);
+		public bool IsZeroOrPositive() => (x >= 0) && (y >= 0) && (z >= 0)                                                         && (w >= 0);
+		public bool IsPositive() => (x > 0) && (y > 0) && (z > 0)                                                                  && (w > 0);
+		public bool IsUnitVector() => (x == y) && (x == z) && (x == w) && (y == z) && (y == w) && (z == x) && (z == w) && (w == x) && (w == y);
+		public Vector2 ToVector2() => this;
+		public Vector3 ToVector3() => this;
+		public Vector4 ToVector4() => this;
+		public Vector2I ToVector2I() => this;
+		public Vector3I ToVector3I() => this;
+		public Vector4I ToVector4I() => this;
+		public Vector4I Copy() => new Vector4I(this);
+		public static Vector4I operator -(Vector4I        left) => new Vector4I(-left.x,                          -left.y,          -left.z,          -left.w);
+		public static Vector4I operator +(Vector4I        left) => new Vector4I(+left.x,                          +left.y,          +left.z,          +left.w);
+		public static Vector4I operator -(Vector4I        left, Vector4I right) => new Vector4I(left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w);
+		public static Vector4I operator +(Vector4I        left, Vector4I right) => new Vector4I(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
+		public static Vector4I operator *(Vector4I        left, Vector4I right) => new Vector4I(left.x * right.x, left.y * right.y, left.z * right.z, left.w * right.w);
+		public static bool operator ==(Vector4I           left, int      right) => left.Equals(right);
+		public static bool operator !=(Vector4I           left, int      right) => !left.Equals(right);
+		public static bool operator ==(Vector4I           left, Vector4I right) => left.Equals(right);
+		public static bool operator !=(Vector4I           left, Vector4I right) => !left.Equals(right);
+		public static implicit operator Vector2(Vector4I  input) => new Vector2(input.x, input.y);
+		public static implicit operator Vector3(Vector4I  input) => new Vector3(input.x, input.y, input.z);
+		public static implicit operator Vector4(Vector4I  input) => new Vector4(input.x, input.y, input.z, input.w);
+		public static implicit operator Vector4I(Vector2  input) => new Vector4I(input.x, input.y);
+		public static implicit operator Vector4I(Vector3  input) => new Vector4I(input.x, input.y, input.z);
+		public static implicit operator Vector4I(Vector4  input) => new Vector4I(input.x, input.y, input.z, input.w);
+		public static implicit operator Vector4I(Vector2I input) => new Vector4I(input.x, input.y);
+		public static implicit operator Vector4I(Vector3I input) => new Vector4I(input.x, input.y, input.z);
+		public static implicit operator int[](Vector4I    num) => new[] {num.x, num.y, num.z, num.w};
 
 		public static implicit operator Vector4I(int[] num)
 		{
@@ -84,9 +84,7 @@ namespace ForestOfChaosLib.Types
 
 			switch(num.Length)
 			{
-				case 0:
-
-					return Vector;
+				case 0: return Vector;
 				case 1:
 					Vector.x = num[0];
 
@@ -125,9 +123,7 @@ namespace ForestOfChaosLib.Types
 
 			switch(num.Length)
 			{
-				case 0:
-
-					return Vector;
+				case 0: return Vector;
 				case 1:
 					Vector.x = (int)num[0];
 
@@ -182,9 +178,9 @@ namespace ForestOfChaosLib.Types
 			unchecked
 			{
 				var hashCode = x;
-				hashCode = (hashCode * 397) ^ y;
-				hashCode = (hashCode * 397) ^ z;
-				hashCode = (hashCode * 397) ^ w;
+				hashCode = hashCode * 397 ^ y;
+				hashCode = hashCode * 397 ^ z;
+				hashCode = hashCode * 397 ^ w;
 
 				return hashCode;
 			}

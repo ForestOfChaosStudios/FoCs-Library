@@ -7,10 +7,15 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 {
 	public class FoCsSlider: FoCsBehavior
 	{
-		public USlider        slider;
-		public float          Value { get { return slider.value; } set { slider.value = value; } }
 		public Action<float>  OnValueChanged;
 		public FloatReference ReferencedFloat;
+		public USlider        slider;
+
+		public float Value
+		{
+			get { return slider.value; }
+			set { slider.value = value; }
+		}
 
 		protected virtual void OnEnable()
 		{
@@ -40,6 +45,9 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 				ReferencedFloat.Value = value;
 		}
 
-		void Reset() { slider = GetComponentInChildren<USlider>(); }
+		private void Reset()
+		{
+			slider = GetComponentInChildren<USlider>();
+		}
 	}
 }

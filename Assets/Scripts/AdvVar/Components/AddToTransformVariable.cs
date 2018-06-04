@@ -2,8 +2,8 @@
 {
 	public class AddToTransformVariable: FoCsBehavior
 	{
-		public TransformReference TransformReference;
 		public bool               RemoveOnDisable = true;
+		public TransformReference TransformReference;
 
 		public void OnEnable()
 		{

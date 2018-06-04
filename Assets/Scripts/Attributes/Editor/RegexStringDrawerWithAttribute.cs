@@ -33,7 +33,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 		private static void DrawTextField(Rect position, SerializedProperty prop, GUIContent label)
 		{
 			EditorGUI.BeginChangeCheck();
-			string value = EditorGUI.TextField(position, label, prop.stringValue);
+			var value = EditorGUI.TextField(position, label, prop.stringValue);
 
 			if(EditorGUI.EndChangeCheck())
 				prop.stringValue = value;
@@ -47,6 +47,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			EditorGUI.HelpBox(position, GetAttribute.helpMessage, MessageType.Error);
 		}
 
-		private bool IsValid(SerializedProperty prop) { return Regex.IsMatch(prop.stringValue, GetAttribute.pattern); }
+		private bool IsValid(SerializedProperty prop) => Regex.IsMatch(prop.stringValue, GetAttribute.pattern);
 	}
 }

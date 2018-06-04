@@ -11,11 +11,7 @@ namespace ForestOfChaosLib.AdvVar
 	{
 		public static implicit operator GameObjectVariable(GameObject input)
 		{
-			var fR = new GameObjectVariable
-			{
-					UseConstant = true,
-					Value       = input
-			};
+			var fR = new GameObjectVariable {UseConstant = true, Value = input};
 
 			return fR;
 		}

@@ -12,7 +12,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 			var rect = position;
 			rect.height =  SingleLine;
 			rect.y      += 1;
-
 			var colour = GetOwner(property);
 
 			if(colour == null)
@@ -26,7 +25,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 			using(var ChangeCheck = FoCsEditor.Disposables.ChangeCheck())
 			{
 				var col = EditorGUI.ColorField(rect2, new GUIContent(property.displayName, property.displayName), colour);
-
 				colour.SetColor(col);
 
 				if(!property.isExpanded)

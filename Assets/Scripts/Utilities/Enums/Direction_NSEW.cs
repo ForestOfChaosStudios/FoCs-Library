@@ -17,12 +17,8 @@
 		{
 			switch(val)
 			{
-				case LAST:
-
-					return FIRST;
-				default:
-
-					return (++val);
+				case LAST: return FIRST;
+				default:   return ++val;
 			}
 		}
 
@@ -30,12 +26,8 @@
 		{
 			switch(val)
 			{
-				case FIRST:
-
-					return LAST;
-				default:
-
-					return (--val);
+				case FIRST: return LAST;
+				default:    return --val;
 			}
 		}
 	}

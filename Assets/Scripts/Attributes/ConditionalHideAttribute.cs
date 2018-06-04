@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Attributes
 {
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct, Inherited = true)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct)]
 	public class ConditionalHideAttribute: PropertyAttribute
 	{
 		//The name of the bool field that will be in control

@@ -6,13 +6,18 @@ namespace ForestOfChaosLib.Components
 	public class DisableAfterTime: FoCsBehavior
 	{
 		public float lifeTime = 1f; //My lifetime
-		public void  OnEnable() { StartCoroutine(Disable()); }
+
+		public void OnEnable()
+		{
+			StartCoroutine(Disable());
+		}
 
 		private IEnumerator Disable()
 		{
 			var waiter = new WaitForSeconds(lifeTime);
 
 			yield return waiter;
+
 			gameObject.SetActive(false);
 		}
 	}

@@ -1,7 +1,7 @@
 using System.Linq;
-using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Editor.UnitySettings;
 using ForestOfChaosLib.Editor.Utilities;
+using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.InputManager;
 using UnityEditor;
 using UnityEngine;
@@ -11,19 +11,13 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 	[CustomPropertyDrawer(typeof(InputAxis))]
 	public class InputAxisPropertyDrawer: FoCsPropertyDrawer
 	{
-		internal const           float      LABEL_SIZE                     = 0.5f;
-		internal const           float      FIELD_SIZE                     = 1 - LABEL_SIZE;
-		internal static readonly GUIContent enableSyncAxisNamesGUIContent  = new GUIContent("Enable Sync",   "Enable Sync Axis Names");
-		internal static readonly GUIContent disableSyncAxisNamesGUIContent = new GUIContent("Disable Sync",  "Disable Sync Axis Names");
-		internal static readonly GUIContent ProgressBarContent             = new GUIContent("Current Value", "Shows what the current value of the Axis is.");
-		internal static readonly GUIContent PopupContent                   = new GUIContent("Input Axis",    "Chose from the available Unity Input Axis values.");
-
-		internal static readonly GUIContent[] OPTIONS_ARRAY =
-		{
-				enableSyncAxisNamesGUIContent,
-				disableSyncAxisNamesGUIContent
-		};
-
+		internal const           float        LABEL_SIZE                     = 0.5f;
+		internal const           float        FIELD_SIZE                     = 1 - LABEL_SIZE;
+		internal static readonly GUIContent   enableSyncAxisNamesGUIContent  = new GUIContent("Enable Sync",   "Enable Sync Axis Names");
+		internal static readonly GUIContent   disableSyncAxisNamesGUIContent = new GUIContent("Disable Sync",  "Disable Sync Axis Names");
+		internal static readonly GUIContent   ProgressBarContent             = new GUIContent("Current Value", "Shows what the current value of the Axis is.");
+		internal static readonly GUIContent   PopupContent                   = new GUIContent("Input Axis",    "Chose from the available Unity Input Axis values.");
+		internal static readonly GUIContent[] OPTIONS_ARRAY                  = {enableSyncAxisNamesGUIContent, disableSyncAxisNamesGUIContent};
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => EditorGUIUtility.singleLineHeight * 3;
 
 		public override void OnGUI(Rect wholePosition, SerializedProperty property, GUIContent label)

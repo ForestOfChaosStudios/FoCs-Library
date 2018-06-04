@@ -28,7 +28,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 		protected abstract Rect DoAmountRectCalculations(Rect rect, int amount);
 
 		/// <summary>
-		/// Gets the next rect in the layout
+		///     Gets the next rect in the layout
 		/// </summary>
 		/// <returns>Next rect</returns>
 		public Rect GetNext()
@@ -44,19 +44,19 @@ namespace ForestOfChaosLib.Editor.Utilities
 		}
 
 		/// <summary>
-		/// Gets the next rect in the layout with a size of "amount" elements
+		///     Gets the next rect in the layout with a size of "amount" elements
 		/// </summary>
 		/// <param name="amount">How many spaces should this take</param>
 		/// <returns>Returns the Next rect, size of "amount" elements</returns>
 		public Rect GetNext(int amount)
 		{
-			if(CurrentIndex == Count || CurrentIndex + amount >= Count)
+			if((CurrentIndex == Count) || (CurrentIndex + amount >= Count))
 				throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
 
 			LastRect = NextRect;
 			var retVal = NextRect;
 
-			for(int i = 0; i < amount; i++)
+			for(var i = 0; i < amount; i++)
 				DoNextRect();
 
 			return DoAmountRectCalculations(retVal, amount);
@@ -71,13 +71,9 @@ namespace ForestOfChaosLib.Editor.Utilities
 		public IEnumerator<Rect> GetEnumerator()
 		{
 			while(CurrentIndex < Count)
-			{
 				yield return GetNext();
-			}
-
-			yield break;
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }

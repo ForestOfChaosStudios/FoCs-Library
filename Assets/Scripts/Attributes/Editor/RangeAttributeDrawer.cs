@@ -44,7 +44,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			}
 		}
 
-		private static void DoFloat(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range) { EditorGUI.Slider(position, property, range.min, range.max, label); }
+		private static void DoFloat(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range)
+		{
+			EditorGUI.Slider(position, property, range.min, range.max, label);
+		}
 
 		private static void DoVector3(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, Rect pos)
 		{
@@ -79,7 +82,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			property.vector2Value = vec2;
 		}
 
-		private static void DoInt(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range) { EditorGUI.IntSlider(position, property, (int)range.min, (int)range.max, label); }
+		private static void DoInt(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range)
+		{
+			EditorGUI.IntSlider(position, property, (int)range.min, (int)range.max, label);
+		}
 
 		private static void DoString(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range)
 		{
@@ -99,15 +105,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 		{
 			switch(property.propertyType)
 			{
-				case SerializedPropertyType.Vector2:
-
-					return SingleLine * 3;
-				case SerializedPropertyType.Vector3:
-
-					return SingleLine * 4;
-				default:
-
-					return SingleLine;
+				case SerializedPropertyType.Vector2: return SingleLine * 3;
+				case SerializedPropertyType.Vector3: return SingleLine * 4;
+				default:                             return SingleLine;
 			}
 		}
 	}

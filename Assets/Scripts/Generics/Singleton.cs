@@ -31,6 +31,8 @@ namespace ForestOfChaosLib.Generics
 			}
 		}
 
+		public static bool InstanceNull => Instance == null;
+
 		public static void CreateInstance()
 		{
 			var go = new GameObject($"{typeof(S)} Instance", typeof(S));
@@ -42,8 +44,6 @@ namespace ForestOfChaosLib.Generics
 			var go = new GameObject(name, typeof(S));
 			go.transform.ResetLocalPosRotScale();
 		}
-
-		public static bool InstanceNull => Instance == null;
 
 		public void DestroyOtherInstances()
 		{

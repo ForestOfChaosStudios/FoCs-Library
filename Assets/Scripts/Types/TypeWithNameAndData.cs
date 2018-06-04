@@ -10,16 +10,24 @@ namespace ForestOfChaosLib.Types
 		public abstract class BaseGenericType
 		{
 			public string Name;
-			protected BaseGenericType(string      name = "") { Name = name; }
-			public virtual  void   SetData(object obj) { }
-			public override string ToString()          { return Name; }
-			public virtual  string GetDataString()     { return ""; }
+
+			protected BaseGenericType(string name = "")
+			{
+				Name = name;
+			}
+
+			public virtual void SetData(object obj) { }
+			public override string ToString() => Name;
+			public virtual string GetDataString() => "";
 		}
 
 		[Serializable]
 		public class GenericType<T>: BaseGenericType
 		{
-			private T _data;
+			private                T            _data;
+			[NonSerialized] public Action       OnAfterDataChange;
+			[NonSerialized] public Action       OnBeforeDataChange;
+			[NonSerialized] public Action<T, T> OnDataChangeOldNewValue;
 
 			public T Data
 			{
@@ -33,10 +41,10 @@ namespace ForestOfChaosLib.Types
 				}
 			}
 
-			[NonSerialized] public Action<T, T> OnDataChangeOldNewValue;
-			[NonSerialized] public Action       OnBeforeDataChange;
-			[NonSerialized] public Action       OnAfterDataChange;
-			public GenericType(string name = ""): base(name) { Data = default(T); }
+			public GenericType(string name = ""): base(name)
+			{
+				Data = default(T);
+			}
 
 			public GenericType(string name, T d): base(name)
 			{
@@ -44,20 +52,24 @@ namespace ForestOfChaosLib.Types
 				Data = d;
 			}
 
-			public override                 void SetData(object             obj)   { Data = (T)obj; }
-			public static implicit operator T(GenericType<T>                input) { return input.Data; }
-			public virtual                  T      GetTypeFromString(string data)  { return default(T); }
-			public override                 string ToString()                      { return ToString(false); }
+			public override void SetData(object obj)
+			{
+				Data = (T)obj;
+			}
+
+			public static implicit operator T(GenericType<T> input) => input.Data;
+			public virtual T GetTypeFromString(string        data) => default(T);
+			public override string ToString() => ToString(false);
 
 			public string ToString(bool b)
 			{
 				if(b)
-					return Name + " : (" + typeof(T) + ")" + Data.ToString();
+					return Name + " : (" + typeof(T) + ")" + Data;
 
-				return Name + " : " + Data.ToString();
+				return Name + " : " + Data;
 			}
 
-			public override string GetDataString() { return Data.ToString(); }
+			public override string GetDataString() => Data.ToString();
 		}
 
 		[Serializable]
@@ -65,8 +77,12 @@ namespace ForestOfChaosLib.Types
 		{
 			public StringType(string                        name = ""): base(name) { }
 			public StringType(string                        name, string d): base(name, d) { }
-			public override string GetTypeFromString(string data) { return data; }
-			public override void   SetData(object           obj)  { Data = obj.ToString(); }
+			public override string GetTypeFromString(string data) => data;
+
+			public override void SetData(object obj)
+			{
+				Data = obj.ToString();
+			}
 		}
 
 		[Serializable]
@@ -83,41 +99,50 @@ namespace ForestOfChaosLib.Types
 				return num;
 			}
 
-			public override void SetData(object obj) { Data = GetTypeFromString(obj.ToString()); }
+			public override void SetData(object obj)
+			{
+				Data = GetTypeFromString(obj.ToString());
+			}
 		}
 
 		[Serializable]
-		public class Int32Type: GenericType<Int32>
+		public class Int32Type: GenericType<int>
 		{
 			public Int32Type(string name = ""): base(name) { }
-			public Int32Type(string name, Int32 d): base(name, d) { }
+			public Int32Type(string name, int d): base(name, d) { }
 
-			public override Int32 GetTypeFromString(string data)
+			public override int GetTypeFromString(string data)
 			{
-				Int32 num;
-				Int32.TryParse(data, out num);
+				int num;
+				int.TryParse(data, out num);
 
 				return num;
 			}
 
-			public override void SetData(object obj) { Data = GetTypeFromString(obj.ToString()); }
+			public override void SetData(object obj)
+			{
+				Data = GetTypeFromString(obj.ToString());
+			}
 		}
 
 		[Serializable]
-		public class Int64Type: GenericType<Int64>
+		public class Int64Type: GenericType<long>
 		{
 			public Int64Type(string name = ""): base(name) { }
-			public Int64Type(string name, Int64 d): base(name, d) { }
+			public Int64Type(string name, long d): base(name, d) { }
 
-			public override Int64 GetTypeFromString(string data)
+			public override long GetTypeFromString(string data)
 			{
-				Int64 num;
-				Int64.TryParse(data, out num);
+				long num;
+				long.TryParse(data, out num);
 
 				return num;
 			}
 
-			public override void SetData(object obj) { Data = GetTypeFromString(obj.ToString()); }
+			public override void SetData(object obj)
+			{
+				Data = GetTypeFromString(obj.ToString());
+			}
 		}
 
 		[Serializable]
@@ -134,7 +159,10 @@ namespace ForestOfChaosLib.Types
 				return num;
 			}
 
-			public override void SetData(object obj) { Data = GetTypeFromString(obj.ToString()); }
+			public override void SetData(object obj)
+			{
+				Data = GetTypeFromString(obj.ToString());
+			}
 		}
 
 		[Serializable]
@@ -151,7 +179,10 @@ namespace ForestOfChaosLib.Types
 				return num;
 			}
 
-			public override void SetData(object obj) { Data = GetTypeFromString(obj.ToString()); }
+			public override void SetData(object obj)
+			{
+				Data = GetTypeFromString(obj.ToString());
+			}
 		}
 
 		[Serializable]
@@ -168,7 +199,10 @@ namespace ForestOfChaosLib.Types
 				return num;
 			}
 
-			public override void SetData(object obj) { Data = GetTypeFromString(obj.ToString()); }
+			public override void SetData(object obj)
+			{
+				Data = GetTypeFromString(obj.ToString());
+			}
 		}
 	}
 }

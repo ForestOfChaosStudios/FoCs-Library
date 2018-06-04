@@ -17,12 +17,8 @@ namespace ForestOfChaosLib.Utilities.Enums
 		{
 			switch(val)
 			{
-				case LAST:
-
-					return FIRST;
-				default:
-
-					return ++val;
+				case LAST: return FIRST;
+				default:   return ++val;
 			}
 		}
 
@@ -30,12 +26,8 @@ namespace ForestOfChaosLib.Utilities.Enums
 		{
 			switch(val)
 			{
-				case FIRST:
-
-					return LAST;
-				default:
-
-					return --val;
+				case FIRST: return LAST;
+				default:    return --val;
 			}
 		}
 
@@ -43,18 +35,15 @@ namespace ForestOfChaosLib.Utilities.Enums
 		{
 			switch(val)
 			{
-				case Direction_UD.Up:
-
-					return Vector3.left * 90;
-				case Direction_UD.Down:
-
-					return Vector3.right * 90;
-				default:
-
-					return Vector3.zero;
+				case Direction_UD.Up:   return Vector3.left  * 90;
+				case Direction_UD.Down: return Vector3.right * 90;
+				default:                return Vector3.zero;
 			}
 		}
 
-		public static void Rotate(this Transform transform, Direction_UD dir) { transform.Rotate(dir.EulerAngles()); }
+		public static void Rotate(this Transform transform, Direction_UD dir)
+		{
+			transform.Rotate(dir.EulerAngles());
+		}
 	}
 }

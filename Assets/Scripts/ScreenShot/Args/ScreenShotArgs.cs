@@ -23,10 +23,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		public static ScreenShotArgs GetUnityCap()
 		{
-			var screenShotArgs = new ScreenShotArgs
-			{
-					ResolutionMultiplier = 2
-			};
+			var screenShotArgs = new ScreenShotArgs {ResolutionMultiplier = 2};
 
 			return screenShotArgs;
 		}

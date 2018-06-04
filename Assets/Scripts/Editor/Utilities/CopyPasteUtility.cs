@@ -8,8 +8,34 @@ namespace ForestOfChaosLib.Editor.Utilities
 {
 	public static class CopyPasteUtility
 	{
-		public static string CopyBuffer           { get { return EditorGUIUtility.systemCopyBuffer; } set { EditorGUIUtility.systemCopyBuffer = value; } }
-		public static string CopyBufferNoTypeName { get { return RemoveTypeFromCopyBuffer(); } }
+		public static string CopyBuffer
+		{
+			get { return EditorGUIUtility.systemCopyBuffer; }
+			set { EditorGUIUtility.systemCopyBuffer = value; }
+		}
+
+		public static string CopyBufferNoTypeName => RemoveTypeFromCopyBuffer();
+		public static bool IsEditorCopyNoEntries(string str)
+		{
+			string[] types = {"UnityEngine.MonoBehaviour", "UnityEngine.AudioListener", "UnityEngine.GUILayer", "UnityEngine.FlareLayer"};
+
+			foreach(var s in types)
+			{
+				if(str == s)
+					return true;
+			}
+
+			var removeTypeFromCopyBuffer = RemoveTypeFromCopyBuffer();
+
+			switch(removeTypeFromCopyBuffer)
+			{
+				case "":                                                                                                                                                                             return true;
+				case @"{}":                                                                                                                                                                          return true;
+				case "{\n    \"MonoBehaviour\": {\n        \"m_Enabled\": true,\n        \"m_EditorHideFlags\": 0,\n        \"m_Name\": \"\",\n        \"m_EditorClassIdentifier\": \"\"\n    }\n}": return true;
+			}
+
+			return false;
+		}
 #pragma warning disable 168
 
 		public static bool CanCopy<T>(T value)
@@ -42,11 +68,9 @@ namespace ForestOfChaosLib.Editor.Utilities
 			}
 
 			if(IsEditorCopyNoEntries(value.GetType().ToString()))
-			{
 				return false;
-			}
 
-			return s != "" || s != "{}";
+			return (s != "") || (s != "{}");
 		}
 
 		private const string COPY_SPLIT   = ">||>";
@@ -87,11 +111,23 @@ namespace ForestOfChaosLib.Editor.Utilities
 			return value;
 		}
 
-		public static  void   Paste<T>(ref       T obj) { JsonUtility.FromJsonOverwrite(CopyBufferNoTypeName, obj); }
-		public static  void   EditorPaste<T>(ref T obj) { EditorJsonUtility.FromJsonOverwrite(CopyBufferNoTypeName, obj); }
-		public static  void   EditorPaste<T>(T     obj) { EditorJsonUtility.FromJsonOverwrite(CopyBufferNoTypeName, obj); }
-		private const  string NEEDLE = "\".*\":";
-		private static bool   IsValidObjectInBuffer() { return CopyBuffer.Contains(COPY_SPLIT_S); }
+		public static void Paste<T>(ref T obj)
+		{
+			JsonUtility.FromJsonOverwrite(CopyBufferNoTypeName, obj);
+		}
+
+		public static void EditorPaste<T>(ref T obj)
+		{
+			EditorJsonUtility.FromJsonOverwrite(CopyBufferNoTypeName, obj);
+		}
+
+		public static void EditorPaste<T>(T obj)
+		{
+			EditorJsonUtility.FromJsonOverwrite(CopyBufferNoTypeName, obj);
+		}
+
+		private const string NEEDLE = "\".*\":";
+		private static bool IsValidObjectInBuffer() => CopyBuffer.Contains(COPY_SPLIT_S);
 
 		public static bool IsTypeInBuffer(Object obj)
 		{
@@ -114,7 +150,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 				var list = copyBufferSplit.ToList();
 				list.RemoveAt(0);
 
-				return String.Join(String.Empty, list.ToArray());
+				return string.Join(string.Empty, list.ToArray());
 			}
 
 			return CopyBuffer;
@@ -133,33 +169,5 @@ namespace ForestOfChaosLib.Editor.Utilities
 		}
 
 #pragma warning restore 168
-
-		public static bool IsEditorCopyNoEntries(string str)
-		{
-			string[] types = {"UnityEngine.MonoBehaviour", "UnityEngine.AudioListener", "UnityEngine.GUILayer", "UnityEngine.FlareLayer"};
-
-			foreach(var s in types)
-			{
-				if(str == s)
-					return true;
-			}
-
-			var removeTypeFromCopyBuffer = RemoveTypeFromCopyBuffer();
-
-			switch(removeTypeFromCopyBuffer)
-			{
-				case "":
-
-					return true;
-				case @"{}":
-
-					return true;
-				case "{\n    \"MonoBehaviour\": {\n        \"m_Enabled\": true,\n        \"m_EditorHideFlags\": 0,\n        \"m_Name\": \"\",\n        \"m_EditorClassIdentifier\": \"\"\n    }\n}":
-
-					return true;
-			}
-
-			return false;
-		}
 	}
 }

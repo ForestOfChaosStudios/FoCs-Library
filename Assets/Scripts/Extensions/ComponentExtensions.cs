@@ -4,12 +4,9 @@ namespace ForestOfChaosLib.Extensions
 {
 	public static class ComponentExtensions
 	{
-		public static Vector3 GetPosition(this Component mB) => mB.transform.position;
-
-		public static Vector3 GetLocalPosition(this Component mB) => mB.transform.localPosition;
-
-		public static Vector3 GetEulerAngles(this Component mB) => mB.transform.eulerAngles;
-
+		public static Vector3 GetPosition(this         Component mB) => mB.transform.position;
+		public static Vector3 GetLocalPosition(this    Component mB) => mB.transform.localPosition;
+		public static Vector3 GetEulerAngles(this      Component mB) => mB.transform.eulerAngles;
 		public static Vector3 GetLocalEulerAngles(this Component mB) => mB.transform.localEulerAngles;
 
 		public static void SetPosition(this Component mB, Vector3 pos)

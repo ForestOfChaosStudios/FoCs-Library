@@ -26,9 +26,7 @@ namespace ForestOfChaosLib.Utilities
 			for(var i = 0; i < n; ++i)
 			{
 				for(var j = 0; j < n; ++j)
-				{
-					ret[i * n + j] = matrix[(n - j - 1) * n + i];
-				}
+					ret[(i * n) + j] = matrix[((n - j - 1) * n) + i];
 			}
 
 			return ret;

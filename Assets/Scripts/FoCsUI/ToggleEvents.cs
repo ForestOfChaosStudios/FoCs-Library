@@ -9,8 +9,13 @@ namespace ForestOfChaosLib.FoCsUI
 	public class ToggleEvents: FoCsBehavior
 	{
 		public Toggle       _Toggle;
-		public bool         Value { get { return _Toggle.isOn; } set { _Toggle.isOn = value; } }
 		public Action<bool> onValueChanged;
+
+		public bool Value
+		{
+			get { return _Toggle.isOn; }
+			set { _Toggle.isOn = value; }
+		}
 
 		private void OnEnable()
 		{
@@ -20,7 +25,14 @@ namespace ForestOfChaosLib.FoCsUI
 			_Toggle.onValueChanged.AddListener(ValueChanged);
 		}
 
-		private void OnDisable()              { _Toggle.onValueChanged.RemoveListener(ValueChanged); }
-		private void ValueChanged(bool value) { onValueChanged.Trigger(value); }
+		private void OnDisable()
+		{
+			_Toggle.onValueChanged.RemoveListener(ValueChanged);
+		}
+
+		private void ValueChanged(bool value)
+		{
+			onValueChanged.Trigger(value);
+		}
 	}
 }

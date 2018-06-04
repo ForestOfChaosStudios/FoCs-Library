@@ -2,132 +2,81 @@ using System;
 
 namespace UnityEngine.PostProcessing
 {
-    [Serializable]
-    public class BuiltinDebugViewsModel : PostProcessingModel
-    {
-        [Serializable]
-        public struct DepthSettings
-        {
-            [Range(0f, 1f), Tooltip("Scales the camera far plane before displaying the depth map.")]
-            public float scale;
+	[Serializable]
+	public class BuiltinDebugViewsModel: PostProcessingModel
+	{
+		public enum Mode
+		{
+			None,
+			Depth,
+			Normals,
+			MotionVectors,
+			AmbientOcclusion,
+			EyeAdaptation,
+			FocusPlane,
+			PreGradingLog,
+			LogLut,
+			UserLut
+		}
 
-            public static DepthSettings defaultSettings
-            {
-                get
-                {
-                    return new DepthSettings
-                    {
-                        scale = 1f
-                    };
-                }
-            }
-        }
+		[SerializeField] private Settings m_Settings = Settings.defaultSettings;
 
-        [Serializable]
-        public struct MotionVectorsSettings
-        {
-            [Range(0f, 1f), Tooltip("Opacity of the source render.")]
-            public float sourceOpacity;
+		public Settings settings
+		{
+			get { return m_Settings; }
+			set { m_Settings = value; }
+		}
 
-            [Range(0f, 1f), Tooltip("Opacity of the per-pixel motion vector colors.")]
-            public float motionImageOpacity;
+		public bool willInterrupt => !IsModeActive(Mode.None) && !IsModeActive(Mode.EyeAdaptation) && !IsModeActive(Mode.PreGradingLog) && !IsModeActive(Mode.LogLut) && !IsModeActive(Mode.UserLut);
 
-            [Min(0f), Tooltip("Because motion vectors are mainly very small vectors, you can use this setting to make them more visible.")]
-            public float motionImageAmplitude;
+		public override void Reset()
+		{
+			settings = Settings.defaultSettings;
+		}
 
-            [Range(0f, 1f), Tooltip("Opacity for the motion vector arrows.")]
-            public float motionVectorsOpacity;
+		public bool IsModeActive(Mode mode) => m_Settings.mode == mode;
 
-            [Range(8, 64), Tooltip("The arrow density on screen.")]
-            public int motionVectorsResolution;
+		[Serializable]
+		public struct DepthSettings
+		{
+			[Range(0f, 1f)]
+			[Tooltip("Scales the camera far plane before displaying the depth map.")]
+			public float scale;
 
-            [Min(0f), Tooltip("Tweaks the arrows length.")]
-            public float motionVectorsAmplitude;
+			public static DepthSettings defaultSettings => new DepthSettings {scale = 1f};
+		}
 
-            public static MotionVectorsSettings defaultSettings
-            {
-                get
-                {
-                    return new MotionVectorsSettings
-                    {
-                        sourceOpacity = 1f,
+		[Serializable]
+		public struct MotionVectorsSettings
+		{
+			[Range(0f, 1f)] [Tooltip("Opacity of the source render.")] public float sourceOpacity;
 
-                        motionImageOpacity = 0f,
-                        motionImageAmplitude = 16f,
+			[Range(0f, 1f)]
+			[Tooltip("Opacity of the per-pixel motion vector colors.")]
+			public float motionImageOpacity;
 
-                        motionVectorsOpacity = 1f,
-                        motionVectorsResolution = 24,
-                        motionVectorsAmplitude = 64f
-                    };
-                }
-            }
-        }
+			[Min(0f)]
+			[Tooltip("Because motion vectors are mainly very small vectors, you can use this setting to make them more visible.")]
+			public float motionImageAmplitude;
 
-        public enum Mode
-        {
-            None,
+			[Range(0f, 1f)]
+			[Tooltip("Opacity for the motion vector arrows.")]
+			public float motionVectorsOpacity;
 
-            Depth,
-            Normals,
-            MotionVectors,
+			[Range(8, 64)] [Tooltip("The arrow density on screen.")] public int   motionVectorsResolution;
+			[Min(0f)] [Tooltip(     "Tweaks the arrows length.")]    public float motionVectorsAmplitude;
 
-            AmbientOcclusion,
-            EyeAdaptation,
-            FocusPlane,
-            PreGradingLog,
-            LogLut,
-            UserLut
-        }
+			public static MotionVectorsSettings defaultSettings =>
+					new MotionVectorsSettings {sourceOpacity = 1f, motionImageOpacity = 0f, motionImageAmplitude = 16f, motionVectorsOpacity = 1f, motionVectorsResolution = 24, motionVectorsAmplitude = 64f};
+		}
 
-        [Serializable]
-        public struct Settings
-        {
-            public Mode mode;
-            public DepthSettings depth;
-            public MotionVectorsSettings motionVectors;
-
-            public static Settings defaultSettings
-            {
-                get
-                {
-                    return new Settings
-                    {
-                        mode = Mode.None,
-                        depth = DepthSettings.defaultSettings,
-                        motionVectors = MotionVectorsSettings.defaultSettings
-                    };
-                }
-            }
-        }
-
-        [SerializeField]
-        Settings m_Settings = Settings.defaultSettings;
-        public Settings settings
-        {
-            get { return m_Settings; }
-            set { m_Settings = value; }
-        }
-
-        public bool willInterrupt
-        {
-            get
-            {
-                return !IsModeActive(Mode.None)
-                       && !IsModeActive(Mode.EyeAdaptation)
-                       && !IsModeActive(Mode.PreGradingLog)
-                       && !IsModeActive(Mode.LogLut)
-                       && !IsModeActive(Mode.UserLut);
-            }
-        }
-
-        public override void Reset()
-        {
-            settings = Settings.defaultSettings;
-        }
-
-        public bool IsModeActive(Mode mode)
-        {
-            return m_Settings.mode == mode;
-        }
-    }
+		[Serializable]
+		public struct Settings
+		{
+			public        Mode                  mode;
+			public        DepthSettings         depth;
+			public        MotionVectorsSettings motionVectors;
+			public static Settings              defaultSettings => new Settings {mode = Mode.None, depth = DepthSettings.defaultSettings, motionVectors = MotionVectorsSettings.defaultSettings};
+		}
+	}
 }

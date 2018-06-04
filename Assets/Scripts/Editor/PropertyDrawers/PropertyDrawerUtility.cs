@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -12,9 +13,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			var obj = fieldInfo.GetValue(property.serializedObject.targetObject);
 
 			if(obj == null)
-			{
 				return null;
-			}
 
 			T actualObject = null;
 
@@ -24,9 +23,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				actualObject = ((T[])obj)[index];
 			}
 			else
-			{
 				actualObject = obj as T;
-			}
 
 			return actualObject;
 		}
@@ -36,9 +33,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			var obj = drawer.fieldInfo.GetValue(property.serializedObject.targetObject);
 
 			if(obj == null)
-			{
 				return null;
-			}
 
 			T actualObject = null;
 
@@ -48,15 +43,13 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				actualObject = ((T[])obj)[index];
 			}
 			else
-			{
 				actualObject = obj as T;
-			}
 
 			return actualObject;
 		}
 
 		/// <summary>
-		/// Gets the object the property represents.
+		///     Gets the object the property represents.
 		/// </summary>
 		/// <param name="prop"></param>
 		/// <returns></returns>
@@ -71,13 +64,11 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				if(element.Contains("["))
 				{
 					var elementName = element.Substring(0, element.IndexOf("["));
-					var index       = System.Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "").Replace("]", ""));
+					var index       = Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "").Replace("]", ""));
 					obj = GetValue_Imp(obj, elementName, index);
 				}
 				else
-				{
 					obj = GetValue_Imp(obj, element);
-				}
 			}
 
 			return obj;
@@ -94,13 +85,11 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				if(element.Contains("["))
 				{
 					var elementName = element.Substring(0, element.IndexOf("["));
-					var index       = System.Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "").Replace("]", ""));
+					var index       = Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "").Replace("]", ""));
 					obj = GetValue_Imp(obj, elementName, index);
 				}
 				else
-				{
 					obj = GetValue_Imp(obj, element);
-				}
 			}
 
 			return (T)obj;
@@ -133,7 +122,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		private static object GetValue_Imp(object source, string name, int index)
 		{
-			var enumerable = GetValue_Imp(source, name) as System.Collections.IEnumerable;
+			var enumerable = GetValue_Imp(source, name) as IEnumerable;
 
 			if(enumerable == null)
 				return null;
@@ -143,7 +132,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			//    enm.MoveNext();
 			//return enm.Current;
 
-			for(int i = 0; i <= index; i++)
+			for(var i = 0; i <= index; i++)
 			{
 				if(!enm.MoveNext())
 					return null;

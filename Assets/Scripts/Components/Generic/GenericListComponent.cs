@@ -19,7 +19,7 @@ namespace ForestOfChaosLib.Components.Generic
 			}
 		}
 
-		public                          T GetRandomEntry()                => Data[RandomMaster.Random.Next(0, Data.Length)];
+		public T GetRandomEntry() => Data[RandomMaster.Random.Next(0, Data.Length)];
 		public static implicit operator T[](GenericArrayComponent<T> col) => col.Data;
 	}
 }

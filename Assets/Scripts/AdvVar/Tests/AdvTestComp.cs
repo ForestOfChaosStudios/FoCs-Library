@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class AdvTestComp: FoCsBehavior
 {
-	public  FloatVariable Float = 10;
-	private void          OnEnable() { Float.OnValueChange += OnValueChange; }
+	public FloatVariable Float = 10;
+
+	private void OnEnable()
+	{
+		Float.OnValueChange += OnValueChange;
+	}
 
 	private void OnValueChange()
 	{
@@ -13,7 +17,10 @@ public class AdvTestComp: FoCsBehavior
 		Float.InternalData.ConstantValue = 17;
 	}
 
-	private void OnDisable() { Float.OnValueChange -= OnValueChange; }
+	private void OnDisable()
+	{
+		Float.OnValueChange -= OnValueChange;
+	}
 
 	private void Start()
 	{

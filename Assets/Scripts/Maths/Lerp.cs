@@ -19,24 +19,12 @@ namespace ForestOfChaosLib.Maths
 		{
 			switch(curve.Count)
 			{
-				case 0:
-
-					return 0;
-				case 1:
-
-					return curve[0];
-				case 2:
-
-					return Lerp(curve[0], curve[1], time);
-				case 3:
-
-					return Lerp(curve[0], curve[1], curve[2], time);
-				case 4:
-
-					return Lerp(curve[0], curve[1], Lerp(curve[2], curve[3], time), time);
-				case 5:
-
-					return Lerp(curve[0], curve[1], Lerp(curve[2], Lerp(curve[3], curve[4], time), time), time);
+				case 0: return 0;
+				case 1: return curve[0];
+				case 2: return Lerp(curve[0], curve[1], time);
+				case 3: return Lerp(curve[0], curve[1], curve[2],                                             time);
+				case 4: return Lerp(curve[0], curve[1], Lerp(curve[2], curve[3],                       time), time);
+				case 5: return Lerp(curve[0], curve[1], Lerp(curve[2], Lerp(curve[3], curve[4], time), time), time);
 			}
 
 			//FROM HERE IS IS SAFE
@@ -73,24 +61,12 @@ namespace ForestOfChaosLib.Maths
 		{
 			switch(curve.Count)
 			{
-				case 0:
-
-					return 0;
-				case 1:
-
-					return curve[0];
-				case 2:
-
-					return Lerp(curve[0], curve[1], time);
-				case 3:
-
-					return Lerp(curve[0], curve[1], curve[2], time);
-				case 4:
-
-					return Lerp(curve[0], curve[1], Lerp(curve[2], curve[3], time), time);
-				case 5:
-
-					return Lerp(curve[0], curve[1], Lerp(curve[2], Lerp(curve[3], curve[4], time), time), time);
+				case 0: return 0;
+				case 1: return curve[0];
+				case 2: return Lerp(curve[0], curve[1], time);
+				case 3: return Lerp(curve[0], curve[1], curve[2],                                             time);
+				case 4: return Lerp(curve[0], curve[1], Lerp(curve[2], curve[3],                       time), time);
+				case 5: return Lerp(curve[0], curve[1], Lerp(curve[2], Lerp(curve[3], curve[4], time), time), time);
 			}
 
 			//FROM HERE IS IS SAFE

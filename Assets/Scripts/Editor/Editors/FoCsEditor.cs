@@ -1,4 +1,5 @@
 //#define FoCsEditor_ANIMATED
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -24,13 +25,13 @@ namespace ForestOfChaosLib.Editor
 			Hidden
 		}
 
-		private         Dictionary<string, ObjectReferenceDrawer> objectDrawers    = new Dictionary<string, ObjectReferenceDrawer>(10);
-		private         Dictionary<string, RLP>                   reorderableLists = new Dictionary<string, RLP>(1);
-		public static   float                                     StandardLine         => EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-		protected       bool                                      GUIChanged           { get; private set; }
-		public virtual  bool                                      HideDefaultProperty  => true;
-		public virtual  bool                                      ShowCopyPasteButtons => true;
-		public override bool                                      UseDefaultMargins()  => false;
+		private        Dictionary<string, ObjectReferenceDrawer> objectDrawers    = new Dictionary<string, ObjectReferenceDrawer>(10);
+		private        Dictionary<string, RLP>                   reorderableLists = new Dictionary<string, RLP>(1);
+		public static  float                                     StandardLine         => EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+		protected      bool                                      GUIChanged           { get; private set; }
+		public virtual bool                                      HideDefaultProperty  => true;
+		public virtual bool                                      ShowCopyPasteButtons => true;
+		public override bool UseDefaultMargins() => false;
 
 		protected virtual void OnEnable()
 		{
@@ -76,14 +77,15 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		protected void DrawCopyPasteButtons() { EditorHelpers.CopyPastObjectButtons(serializedObject); }
+		protected void DrawCopyPasteButtons()
+		{
+			EditorHelpers.CopyPastObjectButtons(serializedObject);
+		}
 
 		protected void DrawCopyPasteButtonsHeader()
 		{
 			using(Disposables.HorizontalScope(EditorStyles.toolbar))
-			{
 				DrawCopyPasteButtons();
-			}
 		}
 
 		public virtual void OnSceneGUI() { }
@@ -144,8 +146,8 @@ namespace ForestOfChaosLib.Editor
 		public static bool IsDefaultScriptProperty(SerializedProperty property) =>
 				property.name.Equals("m_Script") && property.type.Equals("PPtr<MonoScript>") && (property.propertyType == SerializedPropertyType.ObjectReference) && property.propertyPath.Equals("m_Script");
 
-		public static bool IsPropertyHidden(SerializedProperty            property) => GetDefaultPropertyType(property) != DefaultPropertyType.NotDefault;
-		protected     bool PropertyIsArrayAndNotString(SerializedProperty property) => property.isArray && (property.propertyType != SerializedPropertyType.String);
+		public static bool IsPropertyHidden(SerializedProperty        property) => GetDefaultPropertyType(property) != DefaultPropertyType.NotDefault;
+		protected bool PropertyIsArrayAndNotString(SerializedProperty property) => property.isArray && (property.propertyType != SerializedPropertyType.String);
 
 		public void HandleArray(SerializedProperty property)
 		{
@@ -238,7 +240,7 @@ namespace ForestOfChaosLib.Editor
 			return localId;
 		}
 
-		public        string AssetPath()              => AssetPath(target);
+		public string AssetPath() => AssetPath(target);
 		public static string AssetPath(Object target) => AssetDatabase.GetAssetPath(target);
 	}
 

@@ -10,11 +10,7 @@ namespace ForestOfChaosLib.AdvVar
 	{
 		public static implicit operator ByteVariable(byte input)
 		{
-			var fR = new ByteVariable
-			{
-					UseConstant = true,
-					Value       = input
-			};
+			var fR = new ByteVariable {UseConstant = true, Value = input};
 
 			return fR;
 		}

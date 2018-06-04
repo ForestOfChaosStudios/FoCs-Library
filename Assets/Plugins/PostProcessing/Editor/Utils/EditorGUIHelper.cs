@@ -1,197 +1,187 @@
 using System;
-using UnityEngine;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using UnityEngine;
 using UnityEngine.PostProcessing;
 
 namespace UnityEditor.PostProcessing
 {
-    public static class EditorGUIHelper
-    {
-        static EditorGUIHelper()
-        {
-            s_GUIContentCache = new Dictionary<string, GUIContent>();
-        }
+	public static class EditorGUIHelper
+	{
+		static EditorGUIHelper()
+		{
+			s_GUIContentCache = new Dictionary<string, GUIContent>();
+		}
 
-        #region GUIContent caching
+		public static bool Header(string title, SerializedProperty group, Action resetAction)
+		{
+			var rect = GUILayoutUtility.GetRect(16f, 22f, FxStyles.header);
+			GUI.Box(rect, title, FxStyles.header);
+			var display     = (group == null) || group.isExpanded;
+			var foldoutRect = new Rect(rect.x + 4f, rect.y + 2f, 13f, 13f);
+			var e           = Event.current;
+			var popupRect   = new Rect((rect.x + rect.width) - FxStyles.paneOptionsIcon.width - 5f, rect.y + (FxStyles.paneOptionsIcon.height / 2f) + 1f, FxStyles.paneOptionsIcon.width, FxStyles.paneOptionsIcon.height);
+			GUI.DrawTexture(popupRect, FxStyles.paneOptionsIcon);
 
-        static Dictionary<string, GUIContent> s_GUIContentCache;
+			if(e.type == EventType.Repaint)
+				FxStyles.headerFoldout.Draw(foldoutRect, false, false, display, false);
 
-        public static GUIContent GetContent(string textAndTooltip)
-        {
-            if (string.IsNullOrEmpty(textAndTooltip))
-                return GUIContent.none;
+			if(e.type == EventType.MouseDown)
+			{
+				if(popupRect.Contains(e.mousePosition))
+				{
+					var popup = new GenericMenu();
+					popup.AddItem(GetContent("Reset"), false, () => resetAction());
+					popup.AddSeparator(string.Empty);
+					popup.AddItem(GetContent("Copy Settings"), false, () => CopySettings(group));
 
-            GUIContent content;
+					if(CanPaste(group))
+						popup.AddItem(GetContent("Paste Settings"), false, () => PasteSettings(group));
+					else
+						popup.AddDisabledItem(GetContent("Paste Settings"));
 
-            if (!s_GUIContentCache.TryGetValue(textAndTooltip, out content))
-            {
-                var s = textAndTooltip.Split('|');
-                content = new GUIContent(s[0]);
+					popup.ShowAsContext();
+				}
+				else if(rect.Contains(e.mousePosition) && (group != null))
+				{
+					display = !display;
 
-                if (s.Length > 1 && !string.IsNullOrEmpty(s[1]))
-                    content.tooltip = s[1];
+					if(group != null)
+						group.isExpanded = !group.isExpanded;
 
-                s_GUIContentCache.Add(textAndTooltip, content);
-            }
+					e.Use();
+				}
+			}
 
-            return content;
-        }
+			return display;
+		}
 
-        #endregion
+		public static bool Header(string title, SerializedProperty group, SerializedProperty enabledField, Action resetAction)
+		{
+			var          field  = ReflectionUtils.GetFieldInfoFromPath(enabledField.serializedObject.targetObject, enabledField.propertyPath);
+			object       parent = null;
+			PropertyInfo prop   = null;
 
-        public static bool Header(string title, SerializedProperty group, Action resetAction)
-        {
-            var rect = GUILayoutUtility.GetRect(16f, 22f, FxStyles.header);
-            GUI.Box(rect, title, FxStyles.header);
+			if((field != null) && field.IsDefined(typeof(GetSetAttribute), false))
+			{
+				var attr = (GetSetAttribute)field.GetCustomAttributes(typeof(GetSetAttribute), false)[0];
+				parent = ReflectionUtils.GetParentObject(enabledField.propertyPath, enabledField.serializedObject.targetObject);
+				prop   = parent.GetType().GetProperty(attr.name);
+			}
 
-            var display = group == null || group.isExpanded;
+			var display = (group == null) || group.isExpanded;
+			var enabled = enabledField.boolValue;
+			var rect    = GUILayoutUtility.GetRect(16f, 22f, FxStyles.header);
+			GUI.Box(rect, title, FxStyles.header);
+			var toggleRect = new Rect(rect.x + 4f, rect.y + 4f, 13f, 13f);
+			var e          = Event.current;
+			var popupRect  = new Rect((rect.x + rect.width) - FxStyles.paneOptionsIcon.width - 5f, rect.y + (FxStyles.paneOptionsIcon.height / 2f) + 1f, FxStyles.paneOptionsIcon.width, FxStyles.paneOptionsIcon.height);
+			GUI.DrawTexture(popupRect, FxStyles.paneOptionsIcon);
 
-            var foldoutRect = new Rect(rect.x + 4f, rect.y + 2f, 13f, 13f);
-            var e = Event.current;
+			if(e.type == EventType.Repaint)
+				FxStyles.headerCheckbox.Draw(toggleRect, false, false, enabled, false);
 
-            var popupRect = new Rect(rect.x + rect.width - FxStyles.paneOptionsIcon.width - 5f,
-                                     rect.y + FxStyles.paneOptionsIcon.height / 2f + 1f,
-                                     FxStyles.paneOptionsIcon.width,
-                                     FxStyles.paneOptionsIcon.height);
-            GUI.DrawTexture(popupRect, FxStyles.paneOptionsIcon);
+			if(e.type == EventType.MouseDown)
+			{
+				const float kOffset = 2f;
+				toggleRect.x      -= kOffset;
+				toggleRect.y      -= kOffset;
+				toggleRect.width  += kOffset * 2f;
+				toggleRect.height += kOffset * 2f;
 
-            if (e.type == EventType.Repaint)
-                FxStyles.headerFoldout.Draw(foldoutRect, false, false, display, false);
+				if(toggleRect.Contains(e.mousePosition))
+				{
+					enabledField.boolValue = !enabledField.boolValue;
 
-            if (e.type == EventType.MouseDown)
-            {
-                if (popupRect.Contains(e.mousePosition))
-                {
-                    var popup = new GenericMenu();
-                    popup.AddItem(GetContent("Reset"), false, () => resetAction());
-                    popup.AddSeparator(string.Empty);
-                    popup.AddItem(GetContent("Copy Settings"), false, () => CopySettings(group));
+					if(prop != null)
+						prop.SetValue(parent, enabledField.boolValue, null);
 
-                    if (CanPaste(group))
-                        popup.AddItem(GetContent("Paste Settings"), false, () => PasteSettings(group));
-                    else
-                        popup.AddDisabledItem(GetContent("Paste Settings"));
+					e.Use();
+				}
+				else if(popupRect.Contains(e.mousePosition))
+				{
+					var popup = new GenericMenu();
+					popup.AddItem(GetContent("Reset"), false, () => resetAction());
+					popup.AddSeparator(string.Empty);
+					popup.AddItem(GetContent("Copy Settings"), false, () => CopySettings(group));
 
-                    popup.ShowAsContext();
-                }
-                else if (rect.Contains(e.mousePosition) && group != null)
-                {
-                    display = !display;
+					if(CanPaste(group))
+						popup.AddItem(GetContent("Paste Settings"), false, () => PasteSettings(group));
+					else
+						popup.AddDisabledItem(GetContent("Paste Settings"));
 
-                    if (group != null)
-                        group.isExpanded = !group.isExpanded;
+					popup.ShowAsContext();
+				}
+				else if(rect.Contains(e.mousePosition) && (group != null))
+				{
+					display          = !display;
+					group.isExpanded = !group.isExpanded;
+					e.Use();
+				}
+			}
 
-                    e.Use();
-                }
-            }
+			return display;
+		}
 
-            return display;
-        }
+		private static void CopySettings(SerializedProperty settings)
+		{
+			var t                = typeof(PostProcessingProfile);
+			var settingsStruct   = ReflectionUtils.GetFieldValueFromPath(settings.serializedObject.targetObject, ref t, settings.propertyPath);
+			var serializedString = t.ToString() + '|' + JsonUtility.ToJson(settingsStruct);
+			EditorGUIUtility.systemCopyBuffer = serializedString;
+		}
 
-        public static bool Header(string title, SerializedProperty group, SerializedProperty enabledField, Action resetAction)
-        {
-            var field = ReflectionUtils.GetFieldInfoFromPath(enabledField.serializedObject.targetObject, enabledField.propertyPath);
-            object parent = null;
-            PropertyInfo prop = null;
+		private static bool CanPaste(SerializedProperty settings)
+		{
+			var data = EditorGUIUtility.systemCopyBuffer;
 
-            if (field != null && field.IsDefined(typeof(GetSetAttribute), false))
-            {
-                var attr = (GetSetAttribute)field.GetCustomAttributes(typeof(GetSetAttribute), false)[0];
-                parent = ReflectionUtils.GetParentObject(enabledField.propertyPath, enabledField.serializedObject.targetObject);
-                prop = parent.GetType().GetProperty(attr.name);
-            }
+			if(string.IsNullOrEmpty(data))
+				return false;
 
-            var display = group == null || group.isExpanded;
-            var enabled = enabledField.boolValue;
+			var parts = data.Split('|');
 
-            var rect = GUILayoutUtility.GetRect(16f, 22f, FxStyles.header);
-            GUI.Box(rect, title, FxStyles.header);
+			if(string.IsNullOrEmpty(parts[0]))
+				return false;
 
-            var toggleRect = new Rect(rect.x + 4f, rect.y + 4f, 13f, 13f);
-            var e = Event.current;
+			var field = ReflectionUtils.GetFieldInfoFromPath(settings.serializedObject.targetObject, settings.propertyPath);
 
-            var popupRect = new Rect(rect.x + rect.width - FxStyles.paneOptionsIcon.width - 5f, rect.y + FxStyles.paneOptionsIcon.height / 2f + 1f, FxStyles.paneOptionsIcon.width, FxStyles.paneOptionsIcon.height);
-            GUI.DrawTexture(popupRect, FxStyles.paneOptionsIcon);
+			return parts[0] == field.FieldType.ToString();
+		}
 
-            if (e.type == EventType.Repaint)
-                FxStyles.headerCheckbox.Draw(toggleRect, false, false, enabled, false);
+		private static void PasteSettings(SerializedProperty settings)
+		{
+			Undo.RecordObject(settings.serializedObject.targetObject, "Paste effect settings");
+			var field  = ReflectionUtils.GetFieldInfoFromPath(settings.serializedObject.targetObject, settings.propertyPath);
+			var json   = EditorGUIUtility.systemCopyBuffer.Substring(field.FieldType.ToString().Length + 1);
+			var obj    = JsonUtility.FromJson(json, field.FieldType);
+			var parent = ReflectionUtils.GetParentObject(settings.propertyPath, settings.serializedObject.targetObject);
+			field.SetValue(parent, obj, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, CultureInfo.CurrentCulture);
+		}
 
-            if (e.type == EventType.MouseDown)
-            {
-                const float kOffset = 2f;
-                toggleRect.x -= kOffset;
-                toggleRect.y -= kOffset;
-                toggleRect.width += kOffset * 2f;
-                toggleRect.height += kOffset * 2f;
+#region GUIContent caching
+		private static readonly Dictionary<string, GUIContent> s_GUIContentCache;
 
-                if (toggleRect.Contains(e.mousePosition))
-                {
-                    enabledField.boolValue = !enabledField.boolValue;
+		public static GUIContent GetContent(string textAndTooltip)
+		{
+			if(string.IsNullOrEmpty(textAndTooltip))
+				return GUIContent.none;
 
-                    if (prop != null)
-                        prop.SetValue(parent, enabledField.boolValue, null);
+			GUIContent content;
 
-                    e.Use();
-                }
-                else if (popupRect.Contains(e.mousePosition))
-                {
-                    var popup = new GenericMenu();
-                    popup.AddItem(GetContent("Reset"), false, () => resetAction());
-                    popup.AddSeparator(string.Empty);
-                    popup.AddItem(GetContent("Copy Settings"), false, () => CopySettings(group));
+			if(!s_GUIContentCache.TryGetValue(textAndTooltip, out content))
+			{
+				var s = textAndTooltip.Split('|');
+				content = new GUIContent(s[0]);
 
-                    if (CanPaste(group))
-                        popup.AddItem(GetContent("Paste Settings"), false, () => PasteSettings(group));
-                    else
-                        popup.AddDisabledItem(GetContent("Paste Settings"));
+				if((s.Length > 1) && !string.IsNullOrEmpty(s[1]))
+					content.tooltip = s[1];
 
-                    popup.ShowAsContext();
-                }
-                else if (rect.Contains(e.mousePosition) && group != null)
-                {
-                    display = !display;
-                    group.isExpanded = !group.isExpanded;
-                    e.Use();
-                }
-            }
+				s_GUIContentCache.Add(textAndTooltip, content);
+			}
 
-            return display;
-        }
-
-        static void CopySettings(SerializedProperty settings)
-        {
-            var t = typeof(PostProcessingProfile);
-            var settingsStruct = ReflectionUtils.GetFieldValueFromPath(settings.serializedObject.targetObject, ref t, settings.propertyPath);
-            var serializedString = t.ToString() + '|' + JsonUtility.ToJson(settingsStruct);
-            EditorGUIUtility.systemCopyBuffer = serializedString;
-        }
-
-        static bool CanPaste(SerializedProperty settings)
-        {
-            var data = EditorGUIUtility.systemCopyBuffer;
-
-            if (string.IsNullOrEmpty(data))
-                return false;
-
-            var parts = data.Split('|');
-
-            if (string.IsNullOrEmpty(parts[0]))
-                return false;
-
-            var field = ReflectionUtils.GetFieldInfoFromPath(settings.serializedObject.targetObject, settings.propertyPath);
-            return parts[0] == field.FieldType.ToString();
-        }
-
-        static void PasteSettings(SerializedProperty settings)
-        {
-            Undo.RecordObject(settings.serializedObject.targetObject, "Paste effect settings");
-            var field = ReflectionUtils.GetFieldInfoFromPath(settings.serializedObject.targetObject, settings.propertyPath);
-            var json = EditorGUIUtility.systemCopyBuffer.Substring(field.FieldType.ToString().Length + 1);
-            var obj = JsonUtility.FromJson(json, field.FieldType);
-            var parent = ReflectionUtils.GetParentObject(settings.propertyPath, settings.serializedObject.targetObject);
-            field.SetValue(parent, obj, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, CultureInfo.CurrentCulture);
-        }
-    }
+			return content;
+		}
+#endregion
+	}
 }

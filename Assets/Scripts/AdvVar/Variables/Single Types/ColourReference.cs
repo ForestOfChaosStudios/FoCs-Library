@@ -11,11 +11,7 @@ namespace ForestOfChaosLib.AdvVar
 	{
 		public static implicit operator ColourVariable(Colour input)
 		{
-			var fR = new ColourVariable
-			{
-					UseConstant = true,
-					Value       = input
-			};
+			var fR = new ColourVariable {UseConstant = true, Value = input};
 
 			return fR;
 		}

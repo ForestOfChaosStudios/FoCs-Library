@@ -9,7 +9,7 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 	public class SliderToggle: FoCsSlider, IPointerClickHandler
 	{
 		public                                       Action<bool> OnToggle;
-		[SerializeField] [GetSet("Toggled")] private bool         toggled = false;
+		[SerializeField] [GetSet("Toggled")] private bool         toggled;
 
 		public bool Toggled
 		{
@@ -47,6 +47,9 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 			slider.value = val? 1 : 0;
 		}
 
-		public void OnPointerClick(PointerEventData eventData) { Toggle(); }
+		public void OnPointerClick(PointerEventData eventData)
+		{
+			Toggle();
+		}
 	}
 }

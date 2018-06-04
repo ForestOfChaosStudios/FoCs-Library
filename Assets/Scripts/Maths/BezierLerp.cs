@@ -45,24 +45,12 @@ namespace ForestOfChaosLib.Maths
 
 			switch(count)
 			{
-				case 0:
-
-					return Vector3.zero;
-				case 1:
-
-					return curve[0];
-				case 2:
-
-					return Lerps.Lerp(curve[0], curve[1], time);
-				case 3:
-
-					return Lerp(curve[0], curve[1], curve[2], time);
-				case 4:
-
-					return Lerp(curve[0], curve[1], curve[2], curve[3], time);
-				case 5:
-
-					return Lerp(curve[0], curve[1], curve[2], Lerps.Lerp(curve[3], curve[4], time), time);
+				case 0: return Vector3.zero;
+				case 1: return curve[0];
+				case 2: return Lerps.Lerp(curve[0], curve[1], time);
+				case 3: return Lerp(curve[0], curve[1], curve[2], time);
+				case 4: return Lerp(curve[0], curve[1], curve[2], curve[3],                             time);
+				case 5: return Lerp(curve[0], curve[1], curve[2], Lerps.Lerp(curve[3], curve[4], time), time);
 			}
 
 			//FROM HERE IS IS SAFE

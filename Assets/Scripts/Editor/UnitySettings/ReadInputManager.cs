@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.UnitySettings
 {
@@ -8,8 +8,8 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 	//The same Unity User "Sarkahn"
 	public class ReadInputManager
 	{
-		private static Object           InputManagerAsset              { get { return UnitySettingsReader.InputManager; } }
-		public static  SerializedObject GetInputAxisSerializedObject() { return new SerializedObject(InputManagerAsset); }
+		private static Object InputManagerAsset => UnitySettingsReader.InputManager;
+		public static SerializedObject GetInputAxisSerializedObject() => new SerializedObject(InputManagerAsset);
 
 		public static SerializedProperty GetAxisArrayProperty()
 		{
@@ -28,7 +28,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			var returnVal = new SerializedProperty[axisArray.arraySize];
 
-			for(int i = 0; i < axisArray.arraySize; ++i)
+			for(var i = 0; i < axisArray.arraySize; ++i)
 				returnVal[i] = axisArray.GetArrayElementAtIndex(i).Copy();
 
 			return returnVal;
@@ -43,7 +43,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			var returnVal = new string[axisArray.arraySize];
 
-			for(int i = 0; i < axisArray.arraySize; ++i)
+			for(var i = 0; i < axisArray.arraySize; ++i)
 			{
 				var axis = axisArray.GetArrayElementAtIndex(i);
 				var name = axis.FindPropertyRelative("m_Name").stringValue;

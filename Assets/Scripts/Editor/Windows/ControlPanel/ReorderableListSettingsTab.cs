@@ -2,7 +2,7 @@
 
 namespace ForestOfChaosLib.Editor
 {
-	[FoCsControlPanel.ControlPanelTab]
+	[FoCsControlPanel.ControlPanelTabAttribute]
 	public static class ReorderableListSettingsTab
 	{
 		public static void DrawGUI(FoCsControlPanel owner)

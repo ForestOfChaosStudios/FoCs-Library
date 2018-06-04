@@ -10,11 +10,7 @@ namespace ForestOfChaosLib.AdvVar
 	{
 		public static implicit operator BoolVariable(bool input)
 		{
-			var fR = new BoolVariable
-			{
-					UseConstant = true,
-					Value       = input
-			};
+			var fR = new BoolVariable {UseConstant = true, Value = input};
 
 			return fR;
 		}

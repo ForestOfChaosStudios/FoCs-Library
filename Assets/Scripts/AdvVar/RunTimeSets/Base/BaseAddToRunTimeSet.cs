@@ -2,7 +2,8 @@
 {
 	public abstract class BaseAddToRunTimeSet<T, RT_T>: FoCsBehavior where RT_T: RunTimeList<T>
 	{
-		public RT_T Set;
+		public          RT_T Set;
+		public abstract T    Value { get; }
 
 		public void OnEnable()
 		{
@@ -15,7 +16,5 @@
 			if(Set)
 				Set.Remove(Value);
 		}
-
-		public abstract T Value { get; }
 	}
 }

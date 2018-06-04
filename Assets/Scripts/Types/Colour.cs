@@ -8,10 +8,14 @@ namespace ForestOfChaosLib.Types
 	public class Colour
 	{
 		public byte A;
-		public byte R;
-		public byte G;
 		public byte B;
-		public Colour() { A = R = G = B = 255; }
+		public byte G;
+		public byte R;
+
+		public Colour()
+		{
+			A = R = G = B = 255;
+		}
 
 		public Colour(byte r, byte g, byte b, byte a = 255)
 		{
@@ -62,9 +66,7 @@ namespace ForestOfChaosLib.Types
 
 			switch(col.Length)
 			{
-				case 0:
-
-					return newCol;
+				case 0: return newCol;
 				case 1:
 					newCol.R = col[0];
 

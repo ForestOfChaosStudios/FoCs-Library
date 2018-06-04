@@ -11,9 +11,15 @@ namespace ForestOfChaosLib.Maths
 		public static Vector3 RotateAroundPivot(this Vector3 Point, Vector3 Pivot, Vector3 Euler) => RotateAroundPivot(Point, Pivot, Quaternion.Euler(Euler));
 
 		//Rotates the Transform's position using a Quaternion
-		public static void RotateAroundPivot(this Transform Me, Vector3 Pivot, Quaternion Angle) { Me.position = Me.position.RotateAroundPivot(Pivot, Angle); }
+		public static void RotateAroundPivot(this Transform Me, Vector3 Pivot, Quaternion Angle)
+		{
+			Me.position = Me.position.RotateAroundPivot(Pivot, Angle);
+		}
 
 		//Rotates the Transform's position using Euler
-		public static void RotateAroundPivot(this Transform Me, Vector3 Pivot, Vector3 Euler) { Me.position = Me.position.RotateAroundPivot(Pivot, Quaternion.Euler(Euler)); }
+		public static void RotateAroundPivot(this Transform Me, Vector3 Pivot, Vector3 Euler)
+		{
+			Me.position = Me.position.RotateAroundPivot(Pivot, Quaternion.Euler(Euler));
+		}
 	}
 }

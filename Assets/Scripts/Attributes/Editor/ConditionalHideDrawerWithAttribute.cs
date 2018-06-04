@@ -10,10 +10,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			//check if the property we want to draw should be enabled
-			bool enabled = GetConditionalHideAttributeResult(GetAttribute, property);
+			var enabled = GetConditionalHideAttributeResult(GetAttribute, property);
 
 			//Enable/disable the property
-			bool wasEnabled = GUI.enabled;
+			var wasEnabled = GUI.enabled;
 			GUI.enabled = enabled;
 
 			//Check if we should draw the property
@@ -25,9 +25,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 				EditorGUI.indentLevel -= 1;
 			}
 			else
-			{
 				property.isExpanded = false;
-			}
 
 			//Ensure that the next property that is being drawn uses the correct settings
 			GUI.enabled = wasEnabled;
@@ -35,33 +33,27 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		private static bool GetConditionalHideAttributeResult(ConditionalHideAttribute condHAtt, SerializedProperty property)
 		{
-			bool enabled = true;
+			var enabled = true;
 			//Look for the sourcefield within the object that the property belongs to
-			string propertyPath        = property.propertyPath;                                                //returns the property path of the property we want to apply the attribute to
-			string conditionPath       = propertyPath.Replace(property.name, condHAtt.ConditionalSourceField); //changes the path to the conditionalsource property path
-			var    sourcePropertyValue = property.serializedObject.FindProperty(conditionPath);
+			var propertyPath        = property.propertyPath;                                                //returns the property path of the property we want to apply the attribute to
+			var conditionPath       = propertyPath.Replace(property.name, condHAtt.ConditionalSourceField); //changes the path to the conditionalsource property path
+			var sourcePropertyValue = property.serializedObject.FindProperty(conditionPath);
 
 			if(sourcePropertyValue != null)
-			{
 				enabled = sourcePropertyValue.boolValue;
-			}
 			else
-			{
 				Debug.LogWarning("Attempting to use a ConditionalHideAttribute but no matching SourcePropertyValue found in object: " + condHAtt.ConditionalSourceField);
-			}
 
 			return enabled;
 		}
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			var  condHAtt = GetAttribute;
-			bool enabled  = GetConditionalHideAttributeResult(condHAtt, property);
+			var condHAtt = GetAttribute;
+			var enabled  = GetConditionalHideAttributeResult(condHAtt, property);
 
 			if(!condHAtt.HideInInspector || enabled)
-			{
 				return EditorGUI.GetPropertyHeight(property, label);
-			}
 
 			return 0;
 		}

@@ -6,7 +6,11 @@ namespace ForestOfChaosLib.ScreenCap
 	{
 		private readonly DateTime Start;
 		public           int      LoopCount = 0;
-		public TimelapseArgs(ScreenShotArgs args, DateTime start): base(args) { Start = start; }
+
+		public TimelapseArgs(ScreenShotArgs args, DateTime start): base(args)
+		{
+			Start = start;
+		}
 
 		public override string GetFileName()
 		{

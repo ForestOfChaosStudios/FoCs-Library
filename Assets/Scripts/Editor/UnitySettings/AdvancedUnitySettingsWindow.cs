@@ -31,7 +31,10 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 			Window.titleContent.text = Title;
 		}
 
-		private void OnEnable() { CreatePrivateTabsArray(); }
+		private void OnEnable()
+		{
+			CreatePrivateTabsArray();
+		}
 
 		private void CreatePrivateTabsArray()
 		{
@@ -111,9 +114,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 						EditorUtility.SetDirty(Asset.targetObject);
 
 					using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
-					{
 						EditorGUILayout.HelpBox("Warning, This window has not been tested for all the settings being validated.\nIt is still recommended to use the Unity settings windows.", MessageType.Warning);
-					}
 				}
 			}
 

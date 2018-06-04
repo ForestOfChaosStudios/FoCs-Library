@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
 //using UnityEditor;
 
 namespace ForestOfChaosLib.AdvDebug
@@ -9,7 +8,11 @@ namespace ForestOfChaosLib.AdvDebug
 	public static class AdvDebug
 	{
 		public static Dictionary<string, DictionaryData> DataDictionary = new Dictionary<string, DictionaryData>();
-		static AdvDebug() { DataDictionary = new Dictionary<string, DictionaryData>(); }
+
+		static AdvDebug()
+		{
+			DataDictionary = new Dictionary<string, DictionaryData>();
+		}
 
 		public static void Log(string Key, string Data)
 		{
@@ -21,9 +24,9 @@ namespace ForestOfChaosLib.AdvDebug
 
 		public class DictionaryData
 		{
-			public string         Value;
-			public float          Time;
 			public DictionaryData previousData;
+			public float          Time;
+			public string         Value;
 
 			public static DictionaryData Build(string val)
 			{
@@ -32,27 +35,15 @@ namespace ForestOfChaosLib.AdvDebug
 				{
 					if(!Application.isPlaying)
 					{
-						return new DictionaryData
-						{
-								Value = val,
-								Time  = 0
-						};
+						return new DictionaryData {Value = val, Time = 0};
 					}
 				}
 				catch
 				{
-					return new DictionaryData
-					{
-							Value = val,
-							Time  = 0
-					};
+					return new DictionaryData {Value = val, Time = 0};
 				}
 #endif
-				return new DictionaryData
-				{
-						Value = val,
-						Time  = UnityEngine.Time.time
-				};
+				return new DictionaryData {Value = val, Time = UnityEngine.Time.time};
 			}
 
 			public static DictionaryData Build(string val, DictionaryData other)
@@ -62,30 +53,15 @@ namespace ForestOfChaosLib.AdvDebug
 				{
 					if(!Application.isPlaying)
 					{
-						return new DictionaryData
-						{
-								Value        = val,
-								Time         = 0,
-								previousData = other
-						};
+						return new DictionaryData {Value = val, Time = 0, previousData = other};
 					}
 				}
 				catch
 				{
-					return new DictionaryData
-					{
-							Value        = val,
-							Time         = 0,
-							previousData = other
-					};
+					return new DictionaryData {Value = val, Time = 0, previousData = other};
 				}
 #endif
-				return new DictionaryData
-				{
-						Value        = val,
-						Time         = UnityEngine.Time.time,
-						previousData = other
-				};
+				return new DictionaryData {Value = val, Time = UnityEngine.Time.time, previousData = other};
 			}
 
 			public static implicit operator DictionaryData(string input) => Build(input);

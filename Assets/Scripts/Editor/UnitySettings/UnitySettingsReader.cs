@@ -40,13 +40,14 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 						QualitySettings,
 						TagManager,
 						TimeManager,
-						UnityConnectSettings,
+						UnityConnectSettings
 						//ProjectVersion,
 				};
 
 		public class SettingsFile
 		{
-			Object _Asset;
+			private Object _Asset;
+			public  string FileName;
 
 			public Object Asset
 			{
@@ -59,12 +60,15 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 				}
 			}
 
-			public string FileName;
-			public SettingsFile(string                                    fileName) { FileName = fileName; }
-			public static implicit operator Object(SettingsFile           input)            => input.Asset;
-			public static implicit operator string(SettingsFile           input)            => input.FileName;
-			public static implicit operator SerializedObject(SettingsFile input)            => input.GetInputAxisSerializedObject();
-			public                          SerializedObject GetInputAxisSerializedObject() => new SerializedObject(Asset);
+			public SettingsFile(string fileName)
+			{
+				FileName = fileName;
+			}
+
+			public static implicit operator Object(SettingsFile           input) => input.Asset;
+			public static implicit operator string(SettingsFile           input) => input.FileName;
+			public static implicit operator SerializedObject(SettingsFile input) => input.GetInputAxisSerializedObject();
+			public SerializedObject GetInputAxisSerializedObject() => new SerializedObject(Asset);
 		}
 	}
 }

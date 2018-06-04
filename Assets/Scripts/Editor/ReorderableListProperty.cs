@@ -13,8 +13,10 @@ namespace ForestOfChaosLib.Editor
 		public class ReorderableListProperty
 		{
 			private static ReorderableList.Defaults s_Defaults;
+			private static Action                   OnLimitingChange;
 			private        SerializedProperty       _property;
 			public         bool                     Animate;
+			public         ListLimiter              Limiter;
 
 			public static bool LimitingEnabled
 			{
@@ -26,14 +28,9 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 
-			private static Action      OnLimitingChange;
-			public         ListLimiter Limiter;
-
-			public ReorderableList List { get; private set; }
-
-			public AnimBool IsExpanded { get; set; }
-
-			public static ReorderableList.Defaults Defaults => s_Defaults ?? (s_Defaults = new ReorderableList.Defaults());
+			public        ReorderableList          List       { get; private set; }
+			public        AnimBool                 IsExpanded { get; set; }
+			public static ReorderableList.Defaults Defaults   => s_Defaults ?? (s_Defaults = new ReorderableList.Defaults());
 
 			public SerializedProperty Property
 			{
@@ -52,10 +49,7 @@ namespace ForestOfChaosLib.Editor
 
 				if(Animate)
 				{
-					IsExpanded = new AnimBool(property.isExpanded)
-					{
-							speed = 1f
-					};
+					IsExpanded = new AnimBool(property.isExpanded) {speed = 1f};
 				}
 
 				InitList();
@@ -68,10 +62,7 @@ namespace ForestOfChaosLib.Editor
 
 				if(Animate)
 				{
-					IsExpanded = new AnimBool(property.isExpanded)
-					{
-							speed = 1f
-					};
+					IsExpanded = new AnimBool(property.isExpanded) {speed = 1f};
 				}
 
 				InitList(dragAble, displayHeader, displayAdd, displayRemove);
@@ -84,7 +75,10 @@ namespace ForestOfChaosLib.Editor
 				OnLimitingChange -= ChangeLimiting;
 			}
 
-			private void ChangeLimiting() { Limiter = null; }
+			private void ChangeLimiting()
+			{
+				Limiter = null;
+			}
 
 			private void InitList(bool dragable = true, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true)
 			{
@@ -97,7 +91,6 @@ namespace ForestOfChaosLib.Editor
 				//TODO Implement limited view of lists, eg only show index 50-100, and buttons to move limits
 				List.drawFooterCallback    += OnListDrawFooterCallback;
 				List.showDefaultBackground =  true;
-
 				CheckLimiter();
 			}
 
@@ -117,9 +110,8 @@ namespace ForestOfChaosLib.Editor
 
 			private void DoDrawElement(Rect rect, int index)
 			{
-				rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(_property.GetArrayElementAtIndex(index), _property.GetArrayElementAtIndex(index).isExpanded));
-
-				rect.y += 1;
+				rect.height =  Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(_property.GetArrayElementAtIndex(index), _property.GetArrayElementAtIndex(index).isExpanded));
+				rect.y      += 1;
 				var iProp = _property.GetArrayElementAtIndex(index);
 				EditorGUI.PropertyField(rect, iProp, iProp.propertyType == SerializedPropertyType.Generic? new GUIContent(iProp.displayName) : GUIContent.none, true);
 			}
@@ -165,7 +157,6 @@ namespace ForestOfChaosLib.Editor
 
 					if((!IsExpanded.value && !IsExpanded.isAnimating) || (!IsExpanded.value && IsExpanded.isAnimating))
 						DrawDefaultHeader(rect);
-
 					else
 					{
 						if(EditorGUILayout.BeginFadeGroup(IsExpanded.faded))
@@ -184,10 +175,12 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			public void DrawHeader() => DrawDefaultHeader();
-
 			public void DrawHeader(Rect rect) => DrawDefaultHeader(rect);
 
-			private void DrawDefaultHeader() { DrawDefaultHeader(GUILayoutUtility.GetRect(0.0f, List.headerHeight, GUILayout.ExpandWidth(true))); }
+			private void DrawDefaultHeader()
+			{
+				DrawDefaultHeader(GUILayoutUtility.GetRect(0.0f, List.headerHeight, GUILayout.ExpandWidth(true)));
+			}
 
 			private void DrawDefaultHeader(Rect headerRect)
 			{
@@ -231,20 +224,17 @@ namespace ForestOfChaosLib.Editor
 
 			public static class ListStyles
 			{
-				public static readonly GUIContent IconToolbarPlus = EditorGUIUtility.IconContent("Toolbar Plus", "|Add to list");
-				public static readonly GUIContent IconToolbar     = EditorGUIUtility.IconContent("Toolbar Plus", "|Add to list");
-
+				public static readonly GUIContent IconToolbarPlus     = EditorGUIUtility.IconContent("Toolbar Plus",      "|Add to list");
+				public static readonly GUIContent IconToolbar         = EditorGUIUtility.IconContent("Toolbar Plus",      "|Add to list");
 				public static readonly GUIContent IconToolbarPlusMore = EditorGUIUtility.IconContent("Toolbar Plus More", "Choose to add to list");
 				public static readonly GUIContent IconToolbarMinus    = EditorGUIUtility.IconContent("Toolbar Minus",     "Remove selection from list");
-
-				private static GUIStyle miniLabel;
-
-				public static readonly GUIStyle DraggingHandle    = new GUIStyle("RL DragHandle");
-				public static readonly GUIStyle HeaderBackground  = new GUIStyle("RL Header");
-				public static readonly GUIStyle FooterBackground  = new GUIStyle("RL Footer");
-				public static readonly GUIStyle BoxBackground     = new GUIStyle("RL Background");
-				public static readonly GUIStyle PreButton         = new GUIStyle("RL FooterButton");
-				public static readonly GUIStyle ElementBackground = new GUIStyle("RL Element");
+				private static         GUIStyle   miniLabel;
+				public static readonly GUIStyle   DraggingHandle    = new GUIStyle("RL DragHandle");
+				public static readonly GUIStyle   HeaderBackground  = new GUIStyle("RL Header");
+				public static readonly GUIStyle   FooterBackground  = new GUIStyle("RL Footer");
+				public static readonly GUIStyle   BoxBackground     = new GUIStyle("RL Background");
+				public static readonly GUIStyle   PreButton         = new GUIStyle("RL FooterButton");
+				public static readonly GUIStyle   ElementBackground = new GUIStyle("RL Element");
 
 				public static GUIStyle MiniLabel
 				{
@@ -263,6 +253,12 @@ namespace ForestOfChaosLib.Editor
 
 			public class ListLimiter
 			{
+				private static Action                  ChangeCount;
+				private        int                     _max;
+				private        int                     _min;
+				public         ReorderableListProperty MyListProperty;
+				private        bool                    Update;
+
 				private static int _TOTAL_VISIBLE_COUNT
 				{
 					get
@@ -287,31 +283,27 @@ namespace ForestOfChaosLib.Editor
 					}
 				}
 
-				private static Action ChangeCount;
+				private int Count => MyListProperty.Property.arraySize;
 
-
-				private int                     _max;
-				private int                     _min;
-				public  ReorderableListProperty MyListProperty;
-				private int                     Count => MyListProperty.Property.arraySize;
-
-				public int Min { get { return _min; } set { _min = Math.Max(0, value); } }
-
-				public int Max { get { return _max; } set { _max = Math.Min(Count, value); } }
-
-				public bool ShowElement(int index)
+				public int Min
 				{
-					//CheckUpdate();
-					return (index >= Min) && (index < Max);
+					get { return _min; }
+					set { _min = Math.Max(0, value); }
 				}
 
-				public static ListLimiter GetLimiter(ReorderableListProperty listProperty) =>
-						new ListLimiter
-						{
-								MyListProperty = listProperty,
-								Min            = 0,
-								Max            = TOTAL_VISIBLE_COUNT
-						};
+				public int Max
+				{
+					get { return _max; }
+					set { _max = Math.Min(Count, value); }
+				}
+
+				private ListLimiter()
+				{
+					ChangeCount += UpdateRange;
+				}
+
+				public bool ShowElement(int                                  index) => (index >= Min) && (index < Max);
+				public static ListLimiter GetLimiter(ReorderableListProperty listProperty) => new ListLimiter {MyListProperty = listProperty, Min = 0, Max = TOTAL_VISIBLE_COUNT};
 
 				public bool CanDecrease()
 				{
@@ -369,8 +361,10 @@ namespace ForestOfChaosLib.Editor
 					Min = Max - TOTAL_VISIBLE_COUNT;
 				}
 
-				private bool Update;
-				public  void UpdateRange() { Update = true; }
+				public void UpdateRange()
+				{
+					Update = true;
+				}
 
 				private void CheckUpdate()
 				{
@@ -378,9 +372,10 @@ namespace ForestOfChaosLib.Editor
 						ChangeRange(0);
 				}
 
-				private ListLimiter() { ChangeCount += UpdateRange; }
-
-				~ListLimiter() { ChangeCount -= UpdateRange; }
+				~ListLimiter()
+				{
+					ChangeCount -= UpdateRange;
+				}
 			}
 
 #region DelegateMethods
@@ -407,7 +402,6 @@ namespace ForestOfChaosLib.Editor
 
 			private void OnListDrawHeaderCallback(Rect rect)
 			{
-
 				var xMax = rect.xMax;
 				var x    = xMax - 8f;
 
@@ -417,29 +411,20 @@ namespace ForestOfChaosLib.Editor
 				if(List.displayRemove)
 					x -= 25f;
 
-
 				using(Disposables.IndentSet(0))
-				{
 					_property.isExpanded = EditorGUI.ToggleLeft(rect.SetWidth(x - 10), $"{_property.displayName}\t[{_property.arraySize}]", _property.isExpanded, _property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none);
-				}
 
 				using(Disposables.DisabledScope(!_property.isExpanded))
 				{
-					var rect2 = new Rect(x, rect.y, xMax - x, rect.height);
-
-					var addButtonRect = new Rect(xMax - 29f - 25f, rect2.y - 3f, 25f, 13f);
-
-					var removeButtonRect = new Rect(xMax - 29f, rect2.y - 3f, 25f, 13f);
+					var rect2            = new Rect(x, rect.y, xMax - x,   rect.height);
+					var addButtonRect    = new Rect(xMax - 29f      - 25f, rect2.y - 3f, 25f, 13f);
+					var removeButtonRect = new Rect(xMax            - 29f, rect2.y - 3f, 25f, 13f);
 
 					if(List.displayAdd)
-					{
 						FooterAddGUI(addButtonRect.MoveY(3));
-					}
 
 					if(List.displayRemove)
-					{
 						FooterRemoveGUI(removeButtonRect.MoveY(3));
-					}
 				}
 			}
 
@@ -457,29 +442,21 @@ namespace ForestOfChaosLib.Editor
 				if(Limiter != null)
 					x -= 25f * 6;
 
-				var rect = new Rect(x, rowRect.y, xMax - x, rowRect.height);
-
-				var addButtonRect = new Rect(xMax - 29f - 25f, rect.y - 3f, 25f, 13f);
-
-				var removeButtonRect = new Rect(xMax - 29f, rect.y - 3f, 25f, 13f);
+				var rect             = new Rect(x, rowRect.y, xMax - x,   rowRect.height);
+				var addButtonRect    = new Rect(xMax - 29f         - 25f, rect.y - 3f, 25f, 13f);
+				var removeButtonRect = new Rect(xMax               - 29f, rect.y - 3f, 25f, 13f);
 
 				if(Event.current.type == EventType.Repaint)
 					ListStyles.FooterBackground.Draw(rect, false, false, false, false);
 
 				if(Limiter != null)
-				{
 					FooterLimiterGUI(rect);
-				}
 
 				if(List.displayAdd)
-				{
 					FooterAddGUI(addButtonRect);
-				}
 
 				if(List.displayRemove)
-				{
 					FooterRemoveGUI(removeButtonRect);
-				}
 			}
 
 			private void FooterLimiterGUI(Rect rect)
@@ -492,13 +469,11 @@ namespace ForestOfChaosLib.Editor
 				//	minAmount = 10;
 				//	maxAmount = 25;
 				//}
-
 				var upArrow    = new GUIContent("", $"Increase Displayed Index {minAmount}");
 				var up2Arrow   = new GUIContent("", $"Increase Displayed Index {maxAmount}");
 				var downArrow  = new GUIContent("", $"Decrease Displayed Index {minAmount}");
 				var down2Arrow = new GUIContent("", $"Decrease Displayed Index {maxAmount}");
-
-				var horScope = Disposables.RectHorizontalScope(11, rect.ChangeX(5).MoveWidth(-16));
+				var horScope   = Disposables.RectHorizontalScope(11, rect.ChangeX(5).MoveWidth(-16));
 
 				using(Disposables.DisabledScope(!Limiter.CanDecrease()))
 				{
@@ -509,9 +484,8 @@ namespace ForestOfChaosLib.Editor
 						Limiter.ChangeRange(-maxAmount);
 				}
 
-				var minString = Limiter.Min.ToString();
-				var maxString = Limiter.Max.ToString();
-
+				var minString  = Limiter.Min.ToString();
+				var maxString  = Limiter.Max.ToString();
 				var shortLabel = $"{(minString.Length + maxString.Length < 5? "Index" : "I")}: {minString}-{maxString}";
 				var toolTip    = $"Viewable Indices: Min:{minString} Max:{maxString}";
 				FoCsGUI.Button(horScope.GetNext(5).ChangeY(-3), new GUIContent(shortLabel, toolTip), ListStyles.MiniLabel);
@@ -566,10 +540,9 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 #endregion
-
 #region Delegate Setters
 			/// <summary>
-			/// SetAddCallBack
+			///     SetAddCallBack
 			/// </summary>
 			/// <param name="a">The callback to be used instead of default</param>
 			/// <returns>This</returns>
@@ -581,7 +554,7 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			/// <summary>
-			/// SetAddDropdownCallback
+			///     SetAddDropdownCallback
 			/// </summary>
 			/// <param name="a">The callback to be used instead of default</param>
 			/// <returns>This</returns>
@@ -593,7 +566,7 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			/// <summary>
-			/// SetCanAddCallback
+			///     SetCanAddCallback
 			/// </summary>
 			/// <param name="a">The callback to be used instead of default</param>
 			/// <returns>This</returns>
@@ -605,7 +578,7 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			/// <summary>
-			/// SetCanRemoveCallback
+			///     SetCanRemoveCallback
 			/// </summary>
 			/// <param name="a">The callback to be used instead of default</param>
 			/// <returns>This</returns>
@@ -617,7 +590,7 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			/// <summary>
-			/// SetReorderCallback
+			///     SetReorderCallback
 			/// </summary>
 			/// <param name="a">The callback to be used instead of default</param>
 			/// <returns>This</returns>
@@ -629,7 +602,7 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			/// <summary>
-			/// SetDrawElementBackgroundCallback
+			///     SetDrawElementBackgroundCallback
 			/// </summary>
 			/// <param name="a">The callback to be used instead of default</param>
 			/// <returns>This</returns>
@@ -641,7 +614,7 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			/// <summary>
-			/// SetDrawElementCallback
+			///     SetDrawElementCallback
 			/// </summary>
 			/// <param name="a">The callback to be used instead of default</param>
 			/// <returns>This</returns>
@@ -653,7 +626,7 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			/// <summary>
-			/// SetDrawFooterCallback
+			///     SetDrawFooterCallback
 			/// </summary>
 			/// <param name="a">The callback to be used instead of default</param>
 			/// <returns>This</returns>
@@ -665,7 +638,7 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			/// <summary>
-			/// SetDrawHeaderCallback
+			///     SetDrawHeaderCallback
 			/// </summary>
 			/// <param name="a">The callback to be used instead of default</param>
 			/// <returns>This</returns>
@@ -677,7 +650,7 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			/// <summary>
-			/// SetElementHeightCallback
+			///     SetElementHeightCallback
 			/// </summary>
 			/// <param name="a">The callback to be used instead of default</param>
 			/// <returns>This</returns>
@@ -689,7 +662,7 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			/// <summary>
-			/// SetSelectCallback
+			///     SetSelectCallback
 			/// </summary>
 			/// <param name="a">The callback to be used instead of default</param>
 			/// <returns>This</returns>

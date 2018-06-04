@@ -39,7 +39,9 @@ namespace ForestOfChaosLib.AdvDebug
 
 					for(var i = 0; i < 5; i++)
 					{
-						if(tempData == null) break;
+						if(tempData == null)
+							break;
+
 						DrawData(tempData);
 						tempData = tempData.previousData;
 					}
@@ -58,7 +60,8 @@ namespace ForestOfChaosLib.AdvDebug
 
 		protected void Update()
 		{
-			if(Application.isPlaying) Repaint();
+			if(Application.isPlaying)
+				Repaint();
 		}
 	}
 }

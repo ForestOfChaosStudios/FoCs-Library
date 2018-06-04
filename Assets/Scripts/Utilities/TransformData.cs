@@ -105,6 +105,9 @@ namespace ForestOfChaosLib.Utilities
 
 	public static class TransformDataExtn
 	{
-		public static void Set(this Transform transform, TransformData data) { data.ApplyData(transform); }
+		public static void Set(this Transform transform, TransformData data)
+		{
+			data.ApplyData(transform);
+		}
 	}
 }

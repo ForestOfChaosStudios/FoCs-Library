@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.Maths
 	{
 #region ReturnNoiseInt
 		/// <summary>
-		/// Randomize value by amount.
+		///     Randomize value by amount.
 		/// </summary>
 		/// <param name="value">Value to Randomize.</param>
 		/// <param name="amount">Amount to Randomize.</param>
@@ -17,12 +17,12 @@ namespace ForestOfChaosLib.Maths
 		{
 			var f = RandomMaster.Random.Next(value - amount, value + amount);
 
-			return (f);
+			return f;
 		}
 #endregion
 #region ReturnNoiseFloat
 		/// <summary>
-		/// Randomize value by amount.
+		///     Randomize value by amount.
 		/// </summary>
 		/// <param name="value">Value to Randomize.</param>
 		/// <param name="amount">Amount to Randomize.</param>
@@ -31,7 +31,7 @@ namespace ForestOfChaosLib.Maths
 		{
 			var f = RAND.Range(value - amount, value + amount);
 
-			return (f);
+			return f;
 		}
 #endregion
 	}

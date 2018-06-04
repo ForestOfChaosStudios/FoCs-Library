@@ -14,7 +14,10 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 				Items.Add(t);
 		}
 
-		public void Remove(T t) { Items.Remove(t); }
+		public void Remove(T t)
+		{
+			Items.Remove(t);
+		}
 	}
 
 	public abstract class RunTimeList: FoCsScriptableObject

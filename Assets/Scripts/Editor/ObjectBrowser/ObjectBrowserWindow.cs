@@ -7,7 +7,6 @@ using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using Disposables = ForestOfChaosLib.Editor.FoCsEditor.Disposables;
 using SearchCompo = UnityEngine.Component;
 using SearchAsset = UnityEngine.ScriptableObject;
 
@@ -16,7 +15,52 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 	[FoCsWindow]
 	public class ObjectBrowserWindow: FoCsWindow<ObjectBrowserWindow>
 	{
-		private const string TITLE = "Object Browser";
+		private const           string            TITLE           = "Object Browser";
+		private const           float             TYPE_WIDTH      = 350;
+		private static          Vector2           typeScrollPos   = Vector2.zero;
+		private static          Vector2           sceneScrollPos  = Vector2.zero;
+		private static          Vector2           assetsScrollPos = Vector2.zero;
+		private static          List<Type>        TypeList;
+		private static          List<Object>      FoundSceneObjects  = new List<Object>();
+		private static          List<Object>      FoundAssetsObjects = new List<Object>();
+		public static           bool              Enable_Compo       = true;
+		public static           bool              Enable_Asset       = true;
+		private static          string            typeSearch         = "";
+		private static          string            sceneSearch        = "";
+		private static          string            assetSearch        = "";
+		private static          int               activeIndex;
+		private static readonly GUILayoutOption[] ToggleOp    = {GUILayout.ExpandWidth(true), GUILayout.Height(18)};
+		private static readonly GUIContent        PingContent = new GUIContent("", "Ping Object");
+
+		public static Type ActiveType
+		{
+			get { return TypeList[ActiveIndex]; }
+			set { ActiveIndex = TypeList.IndexOf(value); }
+		}
+
+		private static string TypeSearch
+		{
+			get { return typeSearch; }
+			set { EditorPrefs.SetString("FoCsOB.TypeSearch", typeSearch = value); }
+		}
+
+		private static string SceneSearch
+		{
+			get { return sceneSearch; }
+			set { EditorPrefs.SetString("FoCsOB.SceneSearch", sceneSearch = value); }
+		}
+
+		private static string AssetSearch
+		{
+			get { return assetSearch; }
+			set { EditorPrefs.SetString("FoCsOB.AssetSearch", assetSearch = value); }
+		}
+
+		private static int ActiveIndex
+		{
+			get { return activeIndex; }
+			set { EditorPrefs.SetInt("FoCsOB.ActiveIndex", activeIndex = value); }
+		}
 
 		[MenuItem("Forest Of Chaos/" + TITLE)]
 		private static void Init()
@@ -24,25 +68,6 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			GetWindowAndShow();
 			Window.titleContent.text = TITLE;
 		}
-
-		private const  float        TYPE_WIDTH      = 350;
-		private static Vector2      typeScrollPos   = Vector2.zero;
-		private static Vector2      sceneScrollPos  = Vector2.zero;
-		private static Vector2      assetsScrollPos = Vector2.zero;
-		private static List<Type>   TypeList;
-		private static List<Object> FoundSceneObjects  = new List<Object>();
-		private static List<Object> FoundAssetsObjects = new List<Object>();
-		public static  bool         Enable_Compo       = true;
-		public static  bool         Enable_Asset       = true;
-		public static  Type         ActiveType { get { return TypeList[ActiveIndex]; } set { ActiveIndex = TypeList.IndexOf(value); } }
-		private static string       typeSearch = "";
-		private static string       TypeSearch { get { return typeSearch; } set { EditorPrefs.SetString("FoCsOB.TypeSearch", typeSearch = value); } }
-		private static string       sceneSearch = "";
-		private static string       SceneSearch { get { return sceneSearch; } set { EditorPrefs.SetString("FoCsOB.SceneSearch", sceneSearch = value); } }
-		private static string       assetSearch = "";
-		private static string       AssetSearch { get { return assetSearch; } set { EditorPrefs.SetString("FoCsOB.AssetSearch", assetSearch = value); } }
-		private static int          activeIndex;
-		private static int          ActiveIndex { get { return activeIndex; } set { EditorPrefs.SetInt("FoCsOB.ActiveIndex", activeIndex = value); } }
 
 		private void OnEnable()
 		{
@@ -60,7 +85,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 			for(var i = TypeList.Count - 1; i >= 0; i--)
 			{
-				if(TypeList[i].IsGenericType || TypeList[i].IsAbstract || TypeList[i].Assembly == typeof(EditorWindow).Assembly || TypeList[i].IsSubclassOf(typeof(UnityEditor.Editor)) || TypeList[i].IsSubclassOf(typeof(EditorWindow)))
+				if(TypeList[i].IsGenericType || TypeList[i].IsAbstract || (TypeList[i].Assembly == typeof(EditorWindow).Assembly) || TypeList[i].IsSubclassOf(typeof(UnityEditor.Editor)) || TypeList[i].IsSubclassOf(typeof(EditorWindow)))
 					TypeList.RemoveAt(i);
 			}
 
@@ -70,14 +95,14 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 		protected override void OnGUI()
 		{
-			using(var cc = Disposables.ChangeCheck())
+			using(var cc = FoCsEditor.Disposables.ChangeCheck())
 			{
-				using(Disposables.HorizontalScope())
+				using(FoCsEditor.Disposables.HorizontalScope())
 				{
-					using(Disposables.VerticalScope(GUILayout.Width(TYPE_WIDTH)))
+					using(FoCsEditor.Disposables.VerticalScope(GUILayout.Width(TYPE_WIDTH)))
 						DrawTypePanel();
 
-					using(Disposables.VerticalScope())
+					using(FoCsEditor.Disposables.VerticalScope())
 						DrawObjectPanel();
 				}
 
@@ -86,34 +111,32 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			}
 		}
 
-		private static readonly GUILayoutOption[] ToggleOp =
-		{
-				GUILayout.ExpandWidth(true),
-				GUILayout.Height(18)
-		};
-
 		private void DrawTypePanel()
 		{
-			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.Height(16)))
+			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.Height(16)))
 				FoCsGUI.Layout.Label("Type Selection", FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
 
-			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, ToggleOp))
+			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, ToggleOp))
 			{
 				Enable_Compo = FoCsGUI.Layout.Toggle(Enable_Compo, !Enable_Compo? "Components Hidden" : "Components Shown",                 FoCsGUI.Styles.ToolbarButton, GUILayout.Height(21));
 				Enable_Asset = FoCsGUI.Layout.Toggle(Enable_Asset, !Enable_Asset? "Scriptable Objects Hidden" : "Scriptable Objects Shown", FoCsGUI.Styles.ToolbarButton, GUILayout.Height(21));
 			}
 
-			using(var scroll = Disposables.ScrollViewScope(typeScrollPos, true, false, true))
+			using(var scroll = FoCsEditor.Disposables.ScrollViewScope(typeScrollPos, true, false, true))
 			{
 				for(var i = 0; i < TypeList.Count; i++)
 				{
 					if(!Enable_Compo)
+					{
 						if(TypeList[i].IsSubclassOf(typeof(SearchCompo)))
 							continue;
+					}
 
 					if(!Enable_Asset)
+					{
 						if(TypeList[i].IsSubclassOf(typeof(SearchAsset)))
 							continue;
+					}
 
 					if(TypeSearch.IsNullOrEmpty())
 						DrawTypeLabel(i);
@@ -149,11 +172,11 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 		private void DrawTypeSearchBox()
 		{
-			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.ExpandWidth(true)))
+			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.ExpandWidth(true)))
 			{
 				FoCsGUI.Layout.Label("Search", GUILayout.Width(60));
 
-				using(var cc = Disposables.ChangeCheck())
+				using(var cc = FoCsEditor.Disposables.ChangeCheck())
 				{
 					var str = FoCsGUI.Layout.TextField(TypeSearch, GUILayout.ExpandWidth(true));
 
@@ -168,14 +191,14 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 		private void DrawSceneSearchBox()
 		{
-			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, ToggleOp))
+			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, ToggleOp))
 			{
-				using(Disposables.HorizontalScope(FoCsGUI.Styles.ToolbarButton, ToggleOp))
+				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.ToolbarButton, ToggleOp))
 				{
 					FoCsGUI.Layout.Label("Current Loaded Scene Objects", GUILayout.Height(18));
 					FoCsGUI.Layout.Label("Search",                       GUILayout.Width(60), GUILayout.Height(18));
 
-					using(var cc = Disposables.ChangeCheck())
+					using(var cc = FoCsEditor.Disposables.ChangeCheck())
 					{
 						var str = FoCsGUI.Layout.TextField(SceneSearch, FoCsGUI.Styles.Unity.ToolbarTextField, GUILayout.Width((Screen.width * 0.3f) - 120));
 
@@ -191,14 +214,14 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 		private void DrawAssetSearchBox()
 		{
-			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, ToggleOp))
+			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, ToggleOp))
 			{
-				using(Disposables.HorizontalScope(FoCsGUI.Styles.ToolbarButton, ToggleOp))
+				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.ToolbarButton, ToggleOp))
 				{
 					FoCsGUI.Layout.Label("Assets", GUILayout.Height(18));
 					FoCsGUI.Layout.Label("Search", GUILayout.Width(60), GUILayout.Height(18));
 
-					using(var cc = Disposables.ChangeCheck())
+					using(var cc = FoCsEditor.Disposables.ChangeCheck())
 					{
 						var str = FoCsGUI.Layout.TextField(AssetSearch, FoCsGUI.Styles.Unity.ToolbarTextField, GUILayout.Width((Screen.width * 0.3f) - 120));
 
@@ -214,13 +237,11 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 		private void DrawObjectPanel()
 		{
-			using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.Height(16)))
+			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.Height(16)))
 				FoCsGUI.Layout.Label(TypeList[ActiveIndex].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
 
 			if(!Enable_Compo && !Enable_Asset)
-			{
 				EditorGUILayout.GetControlRect(GUILayout.ExpandHeight(true));
-			}
 			else if(!Enable_Compo && Enable_Asset)
 				DrawFoundAsset(GUILayout.ExpandHeight(true));
 			else
@@ -236,9 +257,9 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 		{
 			DrawSceneSearchBox();
 
-			using(var scroll = Disposables.ScrollViewScope(sceneScrollPos, true, options))
+			using(var scroll = FoCsEditor.Disposables.ScrollViewScope(sceneScrollPos, true, options))
 			{
-				using(Disposables.VerticalScope())
+				using(FoCsEditor.Disposables.VerticalScope())
 				{
 					if(FoundSceneObjects.Count == 0)
 						FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name} In scene.");
@@ -270,9 +291,9 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 		{
 			DrawAssetSearchBox();
 
-			using(var scroll = Disposables.ScrollViewScope(assetsScrollPos, true, options))
+			using(var scroll = FoCsEditor.Disposables.ScrollViewScope(assetsScrollPos, true, options))
 			{
-				using(Disposables.VerticalScope(GUILayout.ExpandHeight(true)))
+				using(FoCsEditor.Disposables.VerticalScope(GUILayout.ExpandHeight(true)))
 				{
 					if(FoundAssetsObjects.Count == 0)
 						FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name}. Can be found in the Assets Database.");
@@ -300,13 +321,12 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			}
 		}
 
-		private static          bool       SearchString(Object foundObject, string search) => SearchString(foundObject.name, search);
-		private static          bool       SearchString(string foundObject, string search) => foundObject.ToLower().Contains(search.ToLower());
-		private static readonly GUIContent PingContent = new GUIContent("", "Ping Object");
+		private static bool SearchString(Object foundObject, string search) => SearchString(foundObject.name, search);
+		private static bool SearchString(string foundObject, string search) => foundObject.ToLower().Contains(search.ToLower());
 
 		private static void DrawFoundObject(Object foundObject)
 		{
-			using(Disposables.HorizontalScope())
+			using(FoCsEditor.Disposables.HorizontalScope())
 			{
 				var eventPingButton = FoCsGUI.Layout.Button(PingContent, FoCsGUI.Styles.Find, GUILayout.Width(16));
 				FoCsGUI.Layout.Label("  ", GUILayout.Width(8));
@@ -333,18 +353,18 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 		private static void DrawInfo()
 		{
-			using(Disposables.VerticalScope(GUILayout.MaxHeight(16 * 3)))
+			using(FoCsEditor.Disposables.VerticalScope(GUILayout.MaxHeight(16 * 3)))
 			{
-				using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.Height(16)))
+				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.Height(16)))
 					FoCsGUI.Layout.Label("Type Info", FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
 
-				using(Disposables.HorizontalScope())
+				using(FoCsEditor.Disposables.HorizontalScope())
 				{
 					FoCsGUI.Layout.Label("Assembly:");
 					FoCsGUI.Layout.Label(TypeList[ActiveIndex].Assembly.GetName().Name);
 				}
 
-				using(Disposables.HorizontalScope())
+				using(FoCsEditor.Disposables.HorizontalScope())
 				{
 					var baseType = TypeList[ActiveIndex].BaseType;
 
@@ -370,9 +390,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 							FoCsGUI.Layout.Label($"{TypeList[ActiveIndex].BaseType.Name.Replace("`1", "")}{genArg}");
 						}
 						else
-						{
 							FoCsGUI.Layout.Label(TypeList[ActiveIndex].BaseType.Name.SplitCamelCase());
-						}
 					}
 				}
 			}
@@ -416,7 +434,9 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 					continue;
 				}
 
-				if(AssetDatabase.Contains(FoundAssetsObjects[i])) continue;
+				if(AssetDatabase.Contains(FoundAssetsObjects[i]))
+					continue;
+
 				FoundSceneObjects.Add(FoundAssetsObjects[i]);
 				FoundAssetsObjects.RemoveAt(i);
 			}

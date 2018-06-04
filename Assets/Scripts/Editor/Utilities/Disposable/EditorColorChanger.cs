@@ -6,8 +6,8 @@ namespace ForestOfChaosLib.Editor.Utilities.Disposable
 {
 	public class EditorColorChanger: IDisposable
 	{
-		private readonly Color            color;
 		private readonly EditorColourType _editorColourType;
+		private readonly Color            color;
 
 		public EditorColorChanger(Color _color, EditorColourType editorColourType = EditorColourType.Background)
 		{

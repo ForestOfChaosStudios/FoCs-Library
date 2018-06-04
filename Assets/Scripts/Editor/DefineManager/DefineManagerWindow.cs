@@ -34,8 +34,8 @@ namespace ForestOfChaosLib.Editor.EditorWindows
 #region ReorderableListInits
 			tagReorderableList = new ReorderableList(DataList, typeof(string), true, true, true, true)
 			{
-					drawHeaderCallback = (rect) => defineRLIsExpanded = EditorGUI.ToggleLeft(rect, string.Format("{0}\t[{1}]", "Defines", tagReorderableList.count), defineRLIsExpanded, EditorStyles.boldLabel),
-					drawElementCallback = (Rect position, int index, bool isActive, bool isFocused) =>
+					drawHeaderCallback = rect => defineRLIsExpanded = EditorGUI.ToggleLeft(rect, string.Format("{0}\t[{1}]", "Defines", tagReorderableList.count), defineRLIsExpanded, EditorStyles.boldLabel),
+					drawElementCallback = (position, index, isActive, isFocused) =>
 					{
 						const float buttonWidth = 64f + 16;
 						const float dividingGap = 16f;
@@ -57,21 +57,17 @@ namespace ForestOfChaosLib.Editor.EditorWindows
 							GUI.backgroundColor = Color.red;
 
 							if(GUI.Button(pos3, "Fix Error"))
-							{
 								tagReorderableList.list[index] = str.ReplaceStringHaveInvalidCharsOrWhiteSpace();
-							}
 						}
 						else
-						{
 							GUI.backgroundColor = col;
-						}
 
-						tagReorderableList.list[index] = EditorGUI.TextArea(pos, ((string)tagReorderableList.list[index]));
+						tagReorderableList.list[index] = EditorGUI.TextArea(pos, (string)tagReorderableList.list[index]);
 						GUI.backgroundColor            = col;
 					},
-					onCanRemoveCallback = (list) => list.count > 1,
-					onAddCallback       = (list) => list.list.Add("newDefine_DEFINE"),
-					onRemoveCallback = (list) =>
+					onCanRemoveCallback = list => list.count > 1,
+					onAddCallback       = list => list.list.Add("newDefine_DEFINE"),
+					onRemoveCallback = list =>
 					{
 						if(list.index != 0)
 							list.list.RemoveAt(list.index);
@@ -99,15 +95,14 @@ namespace ForestOfChaosLib.Editor.EditorWindows
 				Init();
 
 			if(defineRLIsExpanded)
-			{
 				DrawReorderableList(tagReorderableList);
-			}
 			else
-			{
 				defineRLIsExpanded = EditorGUILayout.ToggleLeft($"Defines\t[{DataList.Count}]", defineRLIsExpanded, EditorStyles.boldLabel);
-			}
 		}
 
-		private static void WriteDataFile() { ScriptGenerators.WriteFile(DefineManager.DefineManagerPath, DataList); }
+		private static void WriteDataFile()
+		{
+			ScriptGenerators.WriteFile(DefineManager.DefineManagerPath, DataList);
+		}
 	}
 }

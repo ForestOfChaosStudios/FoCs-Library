@@ -6,7 +6,7 @@ namespace ForestOfChaosLib.Types.EventVariable.Editor
 {
 	public class GenericEventVariablePropertyDrawerer<T>: FoCsPropertyDrawer<GenericEventVariable<T>>
 	{
-		protected virtual bool NameInLine() { return true; }
+		protected virtual bool NameInLine() => true;
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{

@@ -6,12 +6,14 @@
 
 		public void OnEnable()
 		{
-			if(GameObjectListReference) GameObjectListReference.Add(gameObject);
+			if(GameObjectListReference)
+				GameObjectListReference.Add(gameObject);
 		}
 
 		public void OnDisable()
 		{
-			if(GameObjectListReference) GameObjectListReference.Remove(gameObject);
+			if(GameObjectListReference)
+				GameObjectListReference.Remove(gameObject);
 		}
 	}
 }

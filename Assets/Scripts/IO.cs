@@ -1,14 +1,18 @@
 using System;
-using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
 
 namespace ForestOfChaosLib
 {
 	public static class IO
 	{
-		public const  string FILE_EXT = "FoCsdat";
-		public static void   LoadGameDataUnityFile<T>(string name, out T data, Func<T> defaultDataCtor, bool saveIfNotExist = true) { LoadGameDataUnityFile(name, out data, defaultDataCtor, FILE_EXT, saveIfNotExist); }
+		public const string FILE_EXT = "FoCsdat";
+
+		public static void LoadGameDataUnityFile<T>(string name, out T data, Func<T> defaultDataCtor, bool saveIfNotExist = true)
+		{
+			LoadGameDataUnityFile(name, out data, defaultDataCtor, FILE_EXT, saveIfNotExist);
+		}
 
 		public static void LoadGameDataUnityFile<T>(string name, out T data, Func<T> defaultDataCtor, string extn, bool saveIfNotExist = true)
 		{
@@ -27,11 +31,14 @@ namespace ForestOfChaosLib
 				data = defaultDataCtor();
 
 				if(saveIfNotExist)
-					SaveGameDataUnityFile<T>(name, data);
+					SaveGameDataUnityFile(name, data);
 			}
 		}
 
-		public static void SaveGameDataUnityFile<T>(string name, T data) { SaveGameDataUnityFile(name, data, FILE_EXT); }
+		public static void SaveGameDataUnityFile<T>(string name, T data)
+		{
+			SaveGameDataUnityFile(name, data, FILE_EXT);
+		}
 
 		public static void SaveGameDataUnityFile<T>(string name, T data, string extn)
 		{
@@ -58,7 +65,7 @@ namespace ForestOfChaosLib
 				data = defaultDataCtor();
 
 				if(saveIfNotExist)
-					SaveGameDataFilepath<T>(filepath, data);
+					SaveGameDataFilepath(filepath, data);
 			}
 		}
 
@@ -71,7 +78,7 @@ namespace ForestOfChaosLib
 			file.Close();
 		}
 
-		public static string LoadStringUnityFile(string name) { return LoadStringUnityFile(name, FILE_EXT); }
+		public static string LoadStringUnityFile(string name) => LoadStringUnityFile(name, FILE_EXT);
 
 		public static string LoadStringUnityFile(string name, string extn)
 		{
@@ -84,7 +91,10 @@ namespace ForestOfChaosLib
 			return "";
 		}
 
-		public static void SaveStringUnityFile(string name, string data) { SaveStringUnityFile(name, data, FILE_EXT); }
+		public static void SaveStringUnityFile(string name, string data)
+		{
+			SaveStringUnityFile(name, data, FILE_EXT);
+		}
 
 		public static void SaveStringUnityFile(string name, string data, string extn)
 		{

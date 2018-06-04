@@ -24,19 +24,13 @@ public class StringReferenceEditor: FoCsEditor
 					GUI.color = cachedGuiColor;
 
 					if(serializedProperty.name == "_value")
-					{
 						DoTextBox(serializedProperty);
-					}
 					else
-					{
 						HandleProperty(serializedProperty);
-					}
 				}
 
 				if(changeCheckScope.changed)
-				{
 					serializedObject.ApplyModifiedProperties();
-				}
 			}
 
 			EditorGUILayout.GetControlRect(false, FoCsGUI.Utilities.Padding);

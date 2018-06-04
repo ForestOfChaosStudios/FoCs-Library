@@ -10,12 +10,15 @@ namespace ForestOfChaosLib.Editor
 {
 	public static class DefineManager
 	{
-		public const   string       DefineManagerPath = FileStrings.ASSETS_GENERATED_RAWDATA + "/DefineManager" + FileStrings.FOCS_EXTENSION;
-		private const  string       mcs_rspPath       = FileStrings.ASSETS                                      + "/mcs.rsp";
-		private static List<string> s_defines         = new List<string> {"ForestOfChaos"};
-		public static  Action       OnDataChanged;
-		public static  List<string> Defines { get { return s_defines; } private set { s_defines = value; } }
-		static DefineManager() { Init(); }
+		public const  string       DefineManagerPath = FileStrings.ASSETS_GENERATED_RAWDATA + "/DefineManager" + FileStrings.FOCS_EXTENSION;
+		private const string       mcs_rspPath       = FileStrings.ASSETS                                      + "/mcs.rsp";
+		public static Action       OnDataChanged;
+		public static List<string> Defines { get; private set; } = new List<string> {"ForestOfChaos"};
+
+		static DefineManager()
+		{
+			Init();
+		}
 
 		public static void AddDefine(string defineName, bool writeFile = true)
 		{
@@ -39,9 +42,7 @@ namespace ForestOfChaosLib.Editor
 					Defines = new List<string>();
 
 					while(!stream.EndOfStream)
-					{
 						Defines.Add(stream.ReadLine());
-					}
 				}
 			}
 
@@ -56,14 +57,17 @@ namespace ForestOfChaosLib.Editor
 			WriteDefineFile();
 		}
 
-		private static void WriteDataFile() { ScriptGenerators.WriteFile(DefineManagerPath, Defines); }
+		private static void WriteDataFile()
+		{
+			ScriptGenerators.WriteFile(DefineManagerPath, Defines);
+		}
 
 		private static void WriteDefineFile()
 		{
 			if(Defines.Count == 0)
 				return;
 
-			var data = new[] {Defines.Aggregate("-define:", (current, str) => current + (str + ";"))};
+			var data = new[] {Defines.Aggregate("-define:", (current, str) => current + str + ";")};
 			ScriptGenerators.WriteFile(mcs_rspPath, data);
 		}
 	}

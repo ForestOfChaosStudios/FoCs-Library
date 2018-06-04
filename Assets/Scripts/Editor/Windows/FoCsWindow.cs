@@ -5,13 +5,13 @@ using UnityEngine;
 namespace ForestOfChaosLib.Editor.Windows
 {
 	/// <inheritdoc />
-	///  <summary>
-	///  [MenuItem("Tools/Forest Of Chaos/Example Window")]
-	///  private static void Init(){
-	/// 		GetWindowAndOpenTab();
-	///  }
-	///  </summary>
-	///  <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
+	/// <summary>
+	///     [MenuItem("Tools/Forest Of Chaos/Example Window")]
+	///     private static void Init(){
+	///     GetWindowAndOpenTab();
+	///     }
+	/// </summary>
+	/// <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
 	public abstract class FoCsWindow<T>: EditorWindow where T: EditorWindow
 	{
 		private static   T window;
@@ -46,17 +46,26 @@ namespace ForestOfChaosLib.Editor.Windows
 		}
 
 		protected abstract void OnGUI();
-		protected static   void DrawReorderableList(ReorderableList list) { list.DoLayoutList(); }
-		public static      void DrawSpace()                               { EditorGUILayout.Space(); }
+
+		protected static void DrawReorderableList(ReorderableList list)
+		{
+			list.DoLayoutList();
+		}
+
+		public static void DrawSpace()
+		{
+			EditorGUILayout.Space();
+		}
 
 		public static void DrawSpace(int count)
 		{
-			for(int i = 0; i < count; i++)
-			{
+			for(var i = 0; i < count; i++)
 				EditorGUILayout.Space();
-			}
 		}
 
-		public static void DrawSpace(float size) { GUILayout.Space(size); }
+		public static void DrawSpace(float size)
+		{
+			GUILayout.Space(size);
+		}
 	}
 }

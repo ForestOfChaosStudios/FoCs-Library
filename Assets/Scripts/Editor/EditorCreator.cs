@@ -9,10 +9,6 @@ namespace ForestOfChaosLib.Editor
 
 		// Note that we pass the same path, and also pass "true" to the second argument.
 		//[MenuItem("Assets/Create Editor", true)]
-		private static bool CreateEditorValidation()
-		{
-			// This returns true when the selected object is a Texture2D (the menu item will be disabled otherwise).
-			return Selection.activeObject.GetType() == typeof(MonoScript);
-		}
+		private static bool CreateEditorValidation() => Selection.activeObject.GetType() == typeof(MonoScript);
 	}
 }

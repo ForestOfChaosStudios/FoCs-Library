@@ -2,42 +2,32 @@ using System;
 
 namespace UnityEngine.PostProcessing
 {
-    [Serializable]
-    public class ChromaticAberrationModel : PostProcessingModel
-    {
-        [Serializable]
-        public struct Settings
-        {
-            [Tooltip("Shift the hue of chromatic aberrations.")]
-            public Texture2D spectralTexture;
+	[Serializable]
+	public class ChromaticAberrationModel: PostProcessingModel
+	{
+		[SerializeField] private Settings m_Settings = Settings.defaultSettings;
 
-            [Range(0f, 1f), Tooltip("Amount of tangential distortion.")]
-            public float intensity;
+		public Settings settings
+		{
+			get { return m_Settings; }
+			set { m_Settings = value; }
+		}
 
-            public static Settings defaultSettings
-            {
-                get
-                {
-                    return new Settings
-                    {
-                        spectralTexture = null,
-                        intensity = 0.1f
-                    };
-                }
-            }
-        }
+		public override void Reset()
+		{
+			m_Settings = Settings.defaultSettings;
+		}
 
-        [SerializeField]
-        Settings m_Settings = Settings.defaultSettings;
-        public Settings settings
-        {
-            get { return m_Settings; }
-            set { m_Settings = value; }
-        }
+		[Serializable]
+		public struct Settings
+		{
+			[Tooltip("Shift the hue of chromatic aberrations.")] public Texture2D spectralTexture;
 
-        public override void Reset()
-        {
-            m_Settings = Settings.defaultSettings;
-        }
-    }
+			[Range(0f, 1f)]
+			[Tooltip("Amount of tangential distortion.")]
+			public float intensity;
+
+			public static Settings defaultSettings => new Settings {spectralTexture = null, intensity = 0.1f};
+		}
+	}
 }

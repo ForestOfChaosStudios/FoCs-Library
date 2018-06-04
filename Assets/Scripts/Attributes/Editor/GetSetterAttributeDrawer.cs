@@ -12,13 +12,8 @@ namespace ForestOfChaosLib.Attributes
 	[CustomPropertyDrawer(typeof(GetSetterAttribute))]
 	public class GetSetterAttributeDrawer: FoCsPropertyDrawerWithAttribute<GetSetterAttribute>
 	{
-		internal const string Tooltip = "Persists until recompile";
-
-		internal static readonly GUIContent[] OPTIONS_ARRAY =
-		{
-				new GUIContent("Call Setter",       Tooltip),
-				new GUIContent("Don't Call Setter", Tooltip)
-		};
+		internal const           string       Tooltip       = "Persists until recompile";
+		internal static readonly GUIContent[] OPTIONS_ARRAY = {new GUIContent("Call Setter", Tooltip), new GUIContent("Don't Call Setter", Tooltip)};
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{

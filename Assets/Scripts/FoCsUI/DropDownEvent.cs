@@ -9,8 +9,13 @@ namespace ForestOfChaosLib.FoCsUI
 	public class DropDownEvent: FoCsBehavior
 	{
 		public Dropdown    _DropDown;
-		public int         Value { get { return _DropDown.value; } set { _DropDown.value = value; } }
 		public Action<int> onValueChanged;
+
+		public int Value
+		{
+			get { return _DropDown.value; }
+			set { _DropDown.value = value; }
+		}
 
 		private void OnEnable()
 		{
@@ -20,7 +25,14 @@ namespace ForestOfChaosLib.FoCsUI
 			_DropDown.onValueChanged.AddListener(ValueChanged);
 		}
 
-		private void OnDisable()             { _DropDown.onValueChanged.RemoveListener(ValueChanged); }
-		private void ValueChanged(int value) { onValueChanged.Trigger(value); }
+		private void OnDisable()
+		{
+			_DropDown.onValueChanged.RemoveListener(ValueChanged);
+		}
+
+		private void ValueChanged(int value)
+		{
+			onValueChanged.Trigger(value);
+		}
 	}
 }

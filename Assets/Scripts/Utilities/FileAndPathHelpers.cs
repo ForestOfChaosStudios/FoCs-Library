@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ForestOfChaosLib.Utilities
@@ -16,7 +17,7 @@ namespace ForestOfChaosLib.Utilities
 				return www.downloadHandler.text;
 			}
 
-			return System.IO.File.ReadAllText(filePath);
+			return File.ReadAllText(filePath);
 		}
 
 		public static string GetStreamingAssetsPath(string name) => Application.streamingAssetsPath + "/" + name;

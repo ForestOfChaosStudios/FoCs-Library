@@ -13,11 +13,15 @@ namespace ForestOfChaosLib.Editor
 		private static          float                              scaleAmount       = 1;
 		private static readonly GUIContent                         ResetContent      = new GUIContent("Reset Transform",       "Reset Transforms in global space");
 		private static readonly GUIContent                         ResetLocalContent = new GUIContent("Reset Local Transform", "Reset Transforms in local space");
-		public override         bool                               ShowCopyPasteButtons => true;
-		public override         bool                               UseDefaultMargins()  => false;
 		private static          int                                _tabNum;
-		private static          int                                TabNum { get { return _tabNum; } set { EditorPrefs.SetInt("FoCsTE.TabNum", _tabNum = value); } }
-		private                 KeyValuePair<GUIContent, Action>[] TabName;
+		private readonly        KeyValuePair<GUIContent, Action>[] TabName;
+		public override         bool                               ShowCopyPasteButtons => true;
+
+		private static int TabNum
+		{
+			get { return _tabNum; }
+			set { EditorPrefs.SetInt("FoCsTE.TabNum", _tabNum = value); }
+		}
 
 		public TransformEditor()
 		{
@@ -26,11 +30,16 @@ namespace ForestOfChaosLib.Editor
 					new KeyValuePair<GUIContent, Action>(new GUIContent("Hide Extra Options",      "Hides Any Extra Options"),                null),
 					new KeyValuePair<GUIContent, Action>(new GUIContent("Scale Options",           "Scale Preset Options"),                   ScaleButtonsEnabled),
 					new KeyValuePair<GUIContent, Action>(new GUIContent("Global Transform Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions),
-					new KeyValuePair<GUIContent, Action>(new GUIContent("Local Transform Values",  "Force Display of Local Transform Data"),  DrawLocalTransformOptions),
+					new KeyValuePair<GUIContent, Action>(new GUIContent("Local Transform Values",  "Force Display of Local Transform Data"),  DrawLocalTransformOptions)
 			};
 		}
 
-		protected override void OnEnable() { _tabNum = EditorPrefs.GetInt("FoCsTE.TabNum"); }
+		public override bool UseDefaultMargins() => false;
+
+		protected override void OnEnable()
+		{
+			_tabNum = EditorPrefs.GetInt("FoCsTE.TabNum");
+		}
 
 		public override void OnInspectorGUI()
 		{
@@ -43,12 +52,10 @@ namespace ForestOfChaosLib.Editor
 
 				using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
 				{
-					for(int i = 0; i < TabName.Length; i++)
+					for(var i = 0; i < TabName.Length; i++)
 					{
 						if(FoCsGUI.Layout.Toggle(TabNum == i, TabName[i].Key, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16)))
-						{
 							TabNum = i;
-						}
 					}
 				}
 

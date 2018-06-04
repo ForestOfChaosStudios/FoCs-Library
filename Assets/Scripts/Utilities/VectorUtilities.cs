@@ -6,7 +6,7 @@ namespace ForestOfChaosLib.Utilities
 	{
 #region GetPosOnY
 #region Extensions
-		public static Vector3 GetPosOnY(this Ray ray)                => GetPosOnY(0, ray);
+		public static Vector3 GetPosOnY(this Ray ray) => GetPosOnY(0, ray);
 		public static Vector3 GetPosOnY(this Ray ray, float   yAxis) => GetPosOnYAxis(yAxis,   ray);
 		public static Vector3 GetPosOnY(this Ray ray, Vector3 yAxis) => GetPosOnYAxis(yAxis.y, ray);
 #endregion

@@ -38,9 +38,7 @@ namespace ForestOfChaosLib.Editor
 					}
 
 					if(GUILayout.Button(CopyContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
-					{
 						CopyPasteUtility.EditorCopy(vec);
-					}
 
 					if(GUILayout.Button(PasteContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
 					{
@@ -80,7 +78,9 @@ namespace ForestOfChaosLib.Editor
 				if(copyEvent)
 					CopyPasteUtility.Copy(obj);
 
-				if(!pasteEvent) return obj;
+				if(!pasteEvent)
+					return obj;
+
 				Undo.RecordObject(obj, "Before Paste Settings");
 				CopyPasteUtility.Paste(ref obj);
 
@@ -111,8 +111,8 @@ namespace ForestOfChaosLib.Editor
 					Undo.RecordObject(obj, "Before Paste Settings");
 					CopyPasteUtility.EditorPaste(ref obj);
 				}
-
 			}
+
 			return obj;
 		}
 

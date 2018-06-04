@@ -10,11 +10,7 @@ namespace ForestOfChaosLib.AdvVar
 	{
 		public static implicit operator IntVariable(int input)
 		{
-			var fR = new IntVariable
-			{
-					UseConstant = true,
-					Value       = input
-			};
+			var fR = new IntVariable {UseConstant = true, Value = input};
 
 			return fR;
 		}

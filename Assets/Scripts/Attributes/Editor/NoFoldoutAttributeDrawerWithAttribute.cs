@@ -44,9 +44,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			serializedProperty.isExpanded = true;
 
 			foreach(var child in serializedProperty.GetChildren())
-			{
 				totalHeight += EditorGUI.GetPropertyHeight(child, GUIContent.none, true);
-			}
 
 			return totalHeight;
 		}

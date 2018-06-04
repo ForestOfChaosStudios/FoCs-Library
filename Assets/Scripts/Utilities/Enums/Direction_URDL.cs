@@ -19,12 +19,8 @@ namespace ForestOfChaosLib.Utilities.Enums
 		{
 			switch(val)
 			{
-				case LAST:
-
-					return FIRST;
-				default:
-
-					return (++val);
+				case LAST: return FIRST;
+				default:   return ++val;
 			}
 		}
 
@@ -32,12 +28,8 @@ namespace ForestOfChaosLib.Utilities.Enums
 		{
 			switch(val)
 			{
-				case FIRST:
-
-					return LAST;
-				default:
-
-					return (--val);
+				case FIRST: return LAST;
+				default:    return --val;
 			}
 		}
 
@@ -45,18 +37,10 @@ namespace ForestOfChaosLib.Utilities.Enums
 		{
 			switch(val)
 			{
-				case URDL.Up:
-
-					return 0;
-				case URDL.Right:
-
-					return 90;
-				case URDL.Down:
-
-					return 180;
-				case URDL.Left:
-
-					return -90;
+				case URDL.Up:    return 0;
+				case URDL.Right: return 90;
+				case URDL.Down:  return 180;
+				case URDL.Left:  return -90;
 			}
 
 			return 0;
@@ -66,18 +50,10 @@ namespace ForestOfChaosLib.Utilities.Enums
 		{
 			switch(val)
 			{
-				case URDL.Up:
-
-					return Vector3.up;
-				case URDL.Right:
-
-					return Vector3.right;
-				case URDL.Down:
-
-					return Vector3.down;
-				case URDL.Left:
-
-					return Vector3.left;
+				case URDL.Up:    return Vector3.up;
+				case URDL.Right: return Vector3.right;
+				case URDL.Down:  return Vector3.down;
+				case URDL.Left:  return Vector3.left;
 			}
 
 			return Vector3.zero;

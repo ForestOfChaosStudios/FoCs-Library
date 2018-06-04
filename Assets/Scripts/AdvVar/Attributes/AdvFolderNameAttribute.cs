@@ -50,7 +50,7 @@ namespace ForestOfChaosLib.AdvVar
 			if(other._InternalNames == InternalNames.Other)
 				return string.Compare(ToggleName, other.ToggleName, StringComparison.Ordinal);
 
-			return (int)_InternalNames.CompareTo(other._InternalNames);
+			return _InternalNames.CompareTo(other._InternalNames);
 		}
 
 		protected enum InternalNames

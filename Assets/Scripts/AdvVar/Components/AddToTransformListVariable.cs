@@ -6,12 +6,14 @@
 
 		public void OnEnable()
 		{
-			if(TransformListReference) TransformListReference.Add(transform);
+			if(TransformListReference)
+				TransformListReference.Add(transform);
 		}
 
 		public void OnDisable()
 		{
-			if(TransformListReference) TransformListReference.Remove(transform);
+			if(TransformListReference)
+				TransformListReference.Remove(transform);
 		}
 	}
 }

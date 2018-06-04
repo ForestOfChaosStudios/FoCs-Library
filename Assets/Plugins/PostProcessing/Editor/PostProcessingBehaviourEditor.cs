@@ -4,28 +4,23 @@ using UnityEngine.PostProcessing;
 
 namespace UnityEditor.PostProcessing
 {
-    [CustomEditor(typeof(PostProcessingBehaviour))]
-    public class PostProcessingBehaviourEditor : Editor
-    {
-        SerializedProperty m_Profile;
+	[CustomEditor(typeof(PostProcessingBehaviour))]
+	public class PostProcessingBehaviourEditor: Editor
+	{
+		private SerializedProperty m_Profile;
 
-        public void OnEnable()
-        {
-            m_Profile = FindSetting((PostProcessingBehaviour x) => x.profile);
-        }
+		public void OnEnable()
+		{
+			m_Profile = FindSetting((PostProcessingBehaviour x) => x.profile);
+		}
 
-        public override void OnInspectorGUI()
-        {
-            serializedObject.Update();
+		public override void OnInspectorGUI()
+		{
+			serializedObject.Update();
+			EditorGUILayout.PropertyField(m_Profile);
+			serializedObject.ApplyModifiedProperties();
+		}
 
-            EditorGUILayout.PropertyField(m_Profile);
-
-            serializedObject.ApplyModifiedProperties();
-        }
-
-        SerializedProperty FindSetting<T, TValue>(Expression<Func<T, TValue>> expr)
-        {
-            return serializedObject.FindProperty(ReflectionUtils.GetFieldPath(expr));
-        }
-    }
+		private SerializedProperty FindSetting<T, TValue>(Expression<Func<T, TValue>> expr) => serializedObject.FindProperty(ReflectionUtils.GetFieldPath(expr));
+	}
 }

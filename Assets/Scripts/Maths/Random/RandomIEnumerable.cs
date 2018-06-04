@@ -11,9 +11,9 @@ namespace ForestOfChaosLib.Maths.Random
 		{
 			var array = iEnumerable.ToArray();
 
-			for(int i = array.Count() - 1; i > 0; i--)
+			for(var i = array.Count() - 1; i > 0; i--)
 			{
-				int index = rng.Next(i + 1);
+				var index = rng.Next(i + 1);
 				// Simple swap
 				var a = array[index];
 				array[index] = array[i];
@@ -27,9 +27,9 @@ namespace ForestOfChaosLib.Maths.Random
 		{
 			var array = iEnumerable.ToArray();
 
-			for(int i = array.Length - 1; i > 0; i--)
+			for(var i = array.Length - 1; i > 0; i--)
 			{
-				int index = UnityEngine.Random.Range(0, i + 1);
+				var index = UnityEngine.Random.Range(0, i + 1);
 				var a     = array[index];
 				array[index] = array[i];
 				array[i]     = a;

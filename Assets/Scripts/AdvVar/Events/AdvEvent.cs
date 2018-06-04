@@ -20,6 +20,9 @@ namespace ForestOfChaosLib.AdvVar.Events
 				listeners.Add(listener);
 		}
 
-		public void UnRegisterListener(AdvEventListener listener) { listeners.Remove(listener); }
+		public void UnRegisterListener(AdvEventListener listener)
+		{
+			listeners.Remove(listener);
+		}
 	}
 }
