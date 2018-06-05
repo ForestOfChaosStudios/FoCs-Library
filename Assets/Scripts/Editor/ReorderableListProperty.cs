@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEditorInternal;
 using UnityEngine;
+using ORD = ForestOfChaosLib.Editor.PropertyDrawers.ObjectReferenceDrawer;
 
 namespace ForestOfChaosLib.Editor
 {
@@ -12,6 +15,7 @@ namespace ForestOfChaosLib.Editor
 	{
 		public class ReorderableListProperty
 		{
+			private Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
 			private static ReorderableList.Defaults s_Defaults;
 			private static Action                   OnLimitingChange;
 			private        SerializedProperty       _property;
@@ -98,6 +102,8 @@ namespace ForestOfChaosLib.Editor
 			{
 				if((Limiter == null) && LimitingEnabled)
 					Limiter = ListLimiter.GetLimiter(this);
+				else
+					Limiter?.UpdateRange();
 			}
 
 			private void DrawElement(Rect rect, int index, bool active, bool focused)
@@ -105,15 +111,46 @@ namespace ForestOfChaosLib.Editor
 				if(Limiter == null)
 					DoDrawElement(rect, index);
 				else if(Limiter.ShowElement(index))
+				{
 					DoDrawElement(rect, index);
+				}
+				else
+				{
+					List.elementHeight = 0;
+				}
 			}
 
 			private void DoDrawElement(Rect rect, int index)
 			{
-				rect.height =  Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(_property.GetArrayElementAtIndex(index), _property.GetArrayElementAtIndex(index).isExpanded));
-				rect.y      += 1;
-				var iProp = _property.GetArrayElementAtIndex(index);
-				EditorGUI.PropertyField(rect, iProp, iProp.propertyType == SerializedPropertyType.Generic? new GUIContent(iProp.displayName) : GUIContent.none, true);
+				if(List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
+				{
+					HandleObjectReference(rect, List.serializedProperty.GetArrayElementAtIndex(index));
+				}
+				else
+				{
+					List.elementHeight =  rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(_property.GetArrayElementAtIndex(index), _property.GetArrayElementAtIndex(index).isExpanded));
+					rect.y             += 1;
+					var iProp = _property.GetArrayElementAtIndex(index);
+					//EditorGUI.PropertyField(rect, iProp, iProp.propertyType == SerializedPropertyType.Generic? new GUIContent(iProp.displayName) : GUIContent.none, true);
+					EditorGUI.PropertyField(rect, iProp, new GUIContent(iProp.displayName), true);
+				}
+			}
+
+			private void HandleObjectReference(Rect rect, SerializedProperty property)
+			{
+				var drawer                       = GetObjectDrawer(property);
+				var GuiCont                      = new GUIContent(property.displayName);
+				List.elementHeight = rect.height = ObjectReferenceElementHeight(property, GuiCont);
+				drawer.OnGUI(rect, property, GuiCont);
+			}
+
+			private float ObjectReferenceElementHeight(SerializedProperty property) => ObjectReferenceElementHeight(property, new GUIContent(property.displayName));
+
+			private float ObjectReferenceElementHeight(SerializedProperty property, GUIContent content)
+			{
+				var drawer = GetObjectDrawer(property);
+
+				return drawer.GetPropertyHeight(property, content);
 			}
 
 			public void HandleDrawing()
@@ -195,9 +232,9 @@ namespace ForestOfChaosLib.Editor
 			public float GetTotalHeight()
 			{
 				if(!Property.isExpanded)
-					return List.headerHeight + FoCsGUI.Utilities.Padding;
+					return List.headerHeight + FoCsGUI.Padding;
 
-				var height = List.headerHeight + List.footerHeight + 4 + FoCsGUI.Utilities.Padding;
+				var height = List.headerHeight + List.footerHeight + 4 + FoCsGUI.Padding;
 
 				if(Property.isExpanded && (List.serializedProperty.arraySize == 0))
 					return List.elementHeight + height;
@@ -205,7 +242,9 @@ namespace ForestOfChaosLib.Editor
 				if(Limiter == null)
 				{
 					for(var i = 0; i < List.serializedProperty.arraySize; i++)
+					{
 						height += OnListElementHeightCallback(i);
+					}
 				}
 				else
 				{
@@ -378,21 +417,33 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 
-#region DelegateMethods
+#region Delegate Methods
 			private float OnListElementHeightCallback(int index)
 			{
+				var prop = List.serializedProperty.GetArrayElementAtIndex(index);
+
 				if(Limiter == null)
 				{
-					var prop = _property.GetArrayElementAtIndex(index);
-
-					return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
+					if(List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
+					{
+						return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, ObjectReferenceElementHeight(prop)) + 4.0f;
+					}
+					else
+					{
+						return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
+					}
 				}
 
 				if(Limiter.ShowElement(index))
 				{
-					var prop = _property.GetArrayElementAtIndex(index);
-
-					return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
+					if(List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
+					{
+						return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, ObjectReferenceElementHeight(prop)) + 4.0f;
+					}
+					else
+					{
+						return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
+					}
 				}
 
 				return 0;
@@ -412,7 +463,7 @@ namespace ForestOfChaosLib.Editor
 					x -= 25f;
 
 				using(Disposables.IndentSet(0))
-					_property.isExpanded = EditorGUI.ToggleLeft(rect.SetWidth(x - 10), $"{_property.displayName}\t[{_property.arraySize}]", _property.isExpanded, _property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none);
+					_property.isExpanded = EditorGUI.ToggleLeft(rect.Edit(RectEdit.SetWidth(x - 10)), $"{_property.displayName}\t[{_property.arraySize}]", _property.isExpanded, _property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none);
 
 				using(Disposables.DisabledScope(!_property.isExpanded))
 				{
@@ -421,10 +472,10 @@ namespace ForestOfChaosLib.Editor
 					var removeButtonRect = new Rect(xMax            - 29f, rect2.y - 3f, 25f, 13f);
 
 					if(List.displayAdd)
-						FooterAddGUI(addButtonRect.MoveY(3));
+						FooterAddGUI(addButtonRect.Edit(RectEdit.AddY(3)));
 
 					if(List.displayRemove)
-						FooterRemoveGUI(removeButtonRect.MoveY(3));
+						FooterRemoveGUI(removeButtonRect.Edit(RectEdit.AddY(3)));
 				}
 			}
 
@@ -464,16 +515,11 @@ namespace ForestOfChaosLib.Editor
 				var minAmount = 1;
 				var maxAmount = 5;
 
-				//if(Event.current.shift)
-				//{
-				//	minAmount = 10;
-				//	maxAmount = 25;
-				//}
 				var upArrow    = new GUIContent("", $"Increase Displayed Index {minAmount}");
 				var up2Arrow   = new GUIContent("", $"Increase Displayed Index {maxAmount}");
 				var downArrow  = new GUIContent("", $"Decrease Displayed Index {minAmount}");
 				var down2Arrow = new GUIContent("", $"Decrease Displayed Index {maxAmount}");
-				var horScope   = Disposables.RectHorizontalScope(11, rect.ChangeX(5).MoveWidth(-16));
+				var horScope   = Disposables.RectHorizontalScope(11, rect.Edit(RectEdit.ChangeX(5),RectEdit.AddWidth(-16)));
 
 				using(Disposables.DisabledScope(!Limiter.CanDecrease()))
 				{
@@ -488,7 +534,7 @@ namespace ForestOfChaosLib.Editor
 				var maxString  = Limiter.Max.ToString();
 				var shortLabel = $"{(minString.Length + maxString.Length < 5? "Index" : "I")}: {minString}-{maxString}";
 				var toolTip    = $"Viewable Indices: Min:{minString} Max:{maxString}";
-				FoCsGUI.Button(horScope.GetNext(5).ChangeY(-3), new GUIContent(shortLabel, toolTip), ListStyles.MiniLabel);
+				FoCsGUI.Label(horScope.GetNext(5, RectEdit.ChangeY(-3)), new GUIContent(shortLabel, toolTip));
 
 				using(Disposables.DisabledScope(!Limiter.CanIncrease()))
 				{
@@ -677,6 +723,19 @@ namespace ForestOfChaosLib.Editor
 
 
 #region Storage
+			private ORD GetObjectDrawer(SerializedProperty property ){
+				var id = $"{property.propertyPath}-{property.name}";
+				ORD objDraw;
+
+				if(objectDrawers.TryGetValue(id, out objDraw))
+					return objDraw;
+
+				objDraw = new ORD();
+				objectDrawers.Add(id, objDraw);
+
+				return objDraw;
+			}
+
 			private static readonly Dictionary<string, ReorderableListProperty> ReorderableListPropertyList = new Dictionary<string, ReorderableListProperty>(10);
 			public static ReorderableListProperty GetReorderableList(SerializedProperty property)
 			{
