@@ -8,10 +8,10 @@ namespace ForestOfChaosLib.AdvVar.Base
 {
 	public class AdvListReference<T>: AdvListReference
 	{
-		[SerializeField] [NoFoldout] private List<T>   _value;
-		[NonSerialized]              public  Action<T> OnValueAdded;
-		[NonSerialized]              public  Action    OnValueChange;
-		[NonSerialized]              public  Action<T> OnValueRemoved;
+		[SerializeField] private List<T>   _value;
+		[NonSerialized]  public  Action<T> OnValueAdded;
+		[NonSerialized]  public  Action    OnValueChange;
+		[NonSerialized]  public  Action<T> OnValueRemoved;
 
 		public List<T> Value
 		{
