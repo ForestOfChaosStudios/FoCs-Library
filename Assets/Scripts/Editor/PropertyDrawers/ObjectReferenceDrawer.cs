@@ -1,9 +1,10 @@
-﻿using ForestOfChaosLib.Editor.Utilities;
+﻿using System.Collections.Generic;
+using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
+namespace ForestOfChaosLib.Editor.PropertyDrawers
 {
 	public class ObjectReferenceDrawer: FoCsPropertyDrawer
 	{
@@ -13,12 +14,17 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
-				EditorGUI.PropertyField(position.SetHeight(SingleLine), property);
+				label = propScope.content;
 
-				if(changeCheckScope.changed && (property.objectReferenceValue != null))
-					serializedObject = new SerializedObject(property.objectReferenceValue);
+				using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
+				{
+					FoCsGUI.PropertyField(position.SetHeight(SingleLine), property, label);
+
+					if(changeCheckScope.changed && (property.objectReferenceValue != null))
+						serializedObject = new SerializedObject(property.objectReferenceValue);
+				}
 			}
 
 			if(property.objectReferenceValue == null)
@@ -69,9 +75,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 
 		protected static Rect DrawSubProp(SerializedProperty prop, Rect drawPos)
 		{
-			var height = EditorGUI.GetPropertyHeight(prop);
+			var height = FoCsGUI.GetPropertyHeight(prop, FoCsGUI.AttributeCheck.DoCheck);
 			drawPos.height = height;
-			EditorGUI.PropertyField(drawPos, prop, prop.isExpanded);
+			FoCsGUI.PropertyField(drawPos, prop, prop.isExpanded, FoCsGUI.AttributeCheck.DoCheck);
 			drawPos.y += height + Padding;
 
 			return drawPos;
@@ -90,11 +96,29 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 			do
 			{
 				if(!FoCsEditor.IsPropertyHidden(iterator))
-					height += EditorGUI.GetPropertyHeight(iterator, iterator.isExpanded) + Padding;
+					height += FoCsGUI.GetPropertyHeight(iterator, iterator.isExpanded, FoCsGUI.AttributeCheck.DoCheck) + Padding;
 			}
 			while(iterator.NextVisible(false));
 
 			return height;
 		}
+
+#region Storage
+		private static readonly Dictionary<string, ObjectReferenceDrawer> objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(10);
+
+		public static ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property)
+		{
+			var                   id = $"{property.serializedObject.targetObject.name}:{property.propertyPath}-{property.name}";
+			ObjectReferenceDrawer objDraw;
+
+			if(objectDrawers.TryGetValue(id, out objDraw))
+				return objDraw;
+
+			objDraw = new ObjectReferenceDrawer();
+			objectDrawers.Add(id, objDraw);
+
+			return objDraw;
+		}
+#endregion
 	}
 }
