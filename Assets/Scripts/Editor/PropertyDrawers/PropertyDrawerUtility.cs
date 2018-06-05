@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.PropertyDrawers
 {
@@ -53,7 +54,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		/// </summary>
 		/// <param name="prop"></param>
 		/// <returns></returns>
-		public static object GetTargetObjectOfProperty(SerializedProperty prop)
+		public static object GetTargetObjectOfProperty(this SerializedProperty prop)
 		{
 			var    path     = prop.propertyPath.Replace(".Array.data[", "[");
 			object obj      = prop.serializedObject.targetObject;
@@ -128,9 +129,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				return null;
 
 			var enm = enumerable.GetEnumerator();
-			//while (index-- >= 0)
-			//    enm.MoveNext();
-			//return enm.Current;
 
 			for(var i = 0; i <= index; i++)
 			{
@@ -139,6 +137,25 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			}
 
 			return enm.Current;
+		}
+
+		public static object[] GetSerializedPropertyAttributes(this SerializedProperty prop)
+		{
+			var type       = prop.serializedObject.targetObject.GetType();
+			var field      = type.GetField(prop.name);
+
+			if(field == null)
+				return new object[0];
+			var attributes = field.GetCustomAttributes(false);
+			return attributes;
+		}
+		public static bool GetSerializedPropertyAttributes<T>(this SerializedProperty prop) where T: PropertyAttribute
+		{
+			var type       = prop.serializedObject.targetObject.GetType();
+			var field      = type.GetField(prop.name);
+			var attributes = field.GetCustomAttributes(false);
+
+			return attributes.Contains(typeof(T));
 		}
 	}
 }
