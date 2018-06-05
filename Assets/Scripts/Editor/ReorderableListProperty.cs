@@ -673,6 +673,32 @@ namespace ForestOfChaosLib.Editor
 				return this;
 			}
 #endregion
+
+
+
+#region Storage
+			private static readonly Dictionary<string, ReorderableListProperty> ReorderableListPropertyList = new Dictionary<string, ReorderableListProperty>(10);
+			public static ReorderableListProperty GetReorderableList(SerializedProperty property)
+			{
+				var id = $"{property.propertyPath}-{property.name}";
+				ReorderableListProperty ret;
+
+				if(ReorderableListPropertyList.TryGetValue(id, out ret))
+				{
+					ret.Property = property;
+
+					return ret;
+				}
+#if FoCsEditor_ANIMATED
+				ret = new ReorderableListProperty(property, true, true, true, true, true);
+#else
+				ret = new ReorderableListProperty(property, true);
+#endif
+				ReorderableListPropertyList.Add(id, ret);
+
+				return ret;
+			}
+#endregion
 		}
 	}
 }

@@ -1,14 +1,13 @@
 //#define FoCsEditor_ANIMATED
 
-using System;
 using System.Collections.Generic;
 using System.Reflection;
-using ForestOfChaosLib.Editor.PropertyDrawers.Types;
 using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
+using ORD = ForestOfChaosLib.Editor.PropertyDrawers.ObjectReferenceDrawer;
 
 //Based off of the CustomBaseEditor available at
 //https://gist.github.com/t0chas/34afd1e4c9bc28649311
@@ -24,22 +23,17 @@ namespace ForestOfChaosLib.Editor
 			Disabled,
 			Hidden
 		}
+		private Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
 
-		private        Dictionary<string, ObjectReferenceDrawer> objectDrawers    = new Dictionary<string, ObjectReferenceDrawer>(10);
-		private        Dictionary<string, RLP>                   reorderableLists = new Dictionary<string, RLP>(1);
 		public static  float                                     StandardLine         => EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 		protected      bool                                      GUIChanged           { get; private set; }
 		public virtual bool                                      HideDefaultProperty  => true;
 		public virtual bool                                      ShowCopyPasteButtons => true;
 		public override bool UseDefaultMargins() => false;
 
-
-		//Clean up after use
 		~FoCsEditor()
 		{
-			reorderableLists.Clear();
-			reorderableLists = null;
-			objectDrawers.Clear();
+			objectDrawers?.Clear();
 			objectDrawers = null;
 		}
 
@@ -155,41 +149,20 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-
-		private ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property)
-		{
+		private ORD GetObjectDrawer(SerializedProperty property ){
 			var                   id = $"{property.propertyPath}-{property.name}";
-			ObjectReferenceDrawer objDraw;
+			ORD objDraw;
 
 			if(objectDrawers.TryGetValue(id, out objDraw))
 				return objDraw;
 
-			objDraw = new ObjectReferenceDrawer();
+			objDraw = new ORD();
 			objectDrawers.Add(id, objDraw);
 
 			return objDraw;
 		}
 
-		private RLP GetReorderableList(SerializedProperty property)
-		{
-			var id = $"{property.propertyPath}-{property.name}";
-			RLP ret;
-
-			if(reorderableLists.TryGetValue(id, out ret))
-			{
-				ret.Property = property;
-
-				return ret;
-			}
-#if FoCsEditor_ANIMATED
-            ret = new RLP(property, true,true,true,true,true);
-#else
-			ret = new RLP(property, true);
-#endif
-			reorderableLists.Add(id, ret);
-
-			return ret;
-		}
+		private static RLP GetReorderableList(SerializedProperty property) => RLP.GetReorderableList(property);
 
 		public override bool RequiresConstantRepaint()
 		{
