@@ -33,11 +33,6 @@ namespace ForestOfChaosLib.Editor
 		public virtual bool                                      ShowCopyPasteButtons => true;
 		public override bool UseDefaultMargins() => false;
 
-		protected virtual void OnEnable()
-		{
-			reorderableLists = new Dictionary<string, RLP>(1);
-			objectDrawers    = new Dictionary<string, ObjectReferenceDrawer>(10);
-		}
 
 		//Clean up after use
 		~FoCsEditor()

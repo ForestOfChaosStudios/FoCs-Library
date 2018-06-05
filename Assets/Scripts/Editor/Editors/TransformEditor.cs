@@ -36,7 +36,7 @@ namespace ForestOfChaosLib.Editor
 
 		public override bool UseDefaultMargins() => false;
 
-		protected override void OnEnable()
+		protected void OnEnable()
 		{
 			_tabNum = EditorPrefs.GetInt("FoCsTE.TabNum");
 		}

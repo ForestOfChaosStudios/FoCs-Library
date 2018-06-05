@@ -12,9 +12,8 @@ namespace ForestOfChaosLib.Curves.Editor
 		private static float resolution = 0.1f;
 		private        T     Curve;
 
-		protected override void OnEnable()
+		protected void OnEnable()
 		{
-			base.OnEnable();
 			Curve = target as T;
 		}
 
