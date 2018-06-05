@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar
 {
+	[FoCsTestingCategory]
+	[Category("AdvVar")]
 	internal static class String_AdvVar_Testing
 	{
 		[Test(Author = "Jordan Miles", Description = "To Test the OnValueChanged Event")]
