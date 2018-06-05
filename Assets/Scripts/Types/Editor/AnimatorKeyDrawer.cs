@@ -1,5 +1,6 @@
 ﻿using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.PropertyDrawers;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,42 +21,45 @@ namespace ForestOfChaosLib.Animation
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var scope = FoCsEditor.Disposables.RectHorizontalScope(8, position))
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
-				EditorGUI.LabelField(scope.GetNext(), label);
-				scope.GetNext();
-
-				using(FoCsEditor.Disposables.Indent(-1))
+				label = propScope.content;
+				var labelPos = position.SetWidth(EditorGUIUtility.labelWidth);
+				EditorGUI.LabelField(labelPos, label);
+				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(6, position.MoveX(labelPos.width).SetWidth(position.width - labelPos.width)))
 				{
-					EditorGUI.LabelField(scope.GetNext(), KEY_LABEL);
-					EditorGUI.PropertyField(scope.GetNext(), property.FindPropertyRelative(KEY), GUIContent.none);
-					EditorGUI.LabelField(scope.GetNext(), KEY_TYPE_LABEL);
-					EditorGUI.PropertyField(scope.GetNext(), property.FindPropertyRelative(KEY_TYPE), GUIContent.none);
-					var key     = property.GetTargetObjectOfProperty<AnimatorKey>();
-					var typeStr = INT_DATA;
-
-					switch(key.KeyType)
+					using(FoCsEditor.Disposables.Indent(-1))
 					{
-						case AnimatorKey.AnimType.Int:
-							typeStr = INT_DATA;
+						EditorGUI.LabelField(scope.GetNext(), KEY_LABEL);
+						EditorGUI.PropertyField(scope.GetNext().MoveX(-4), property.FindPropertyRelative(KEY), GUIContent.none);
+						EditorGUI.LabelField(scope.GetNext(), KEY_TYPE_LABEL);
+						EditorGUI.PropertyField(scope.GetNext().MoveX(-4), property.FindPropertyRelative(KEY_TYPE), GUIContent.none);
+						var key     = property.GetTargetObjectOfProperty<AnimatorKey>();
+						var typeStr = INT_DATA;
 
-							break;
-						case AnimatorKey.AnimType.Float:
-							typeStr = FLOAT_DATA;
+						switch(key.KeyType)
+						{
+							case AnimatorKey.AnimType.Int:
+								typeStr = INT_DATA;
 
-							break;
-						case AnimatorKey.AnimType.Bool:
-							typeStr = BOOL_DATA;
+								break;
+							case AnimatorKey.AnimType.Float:
+								typeStr = FLOAT_DATA;
 
-							break;
-						case AnimatorKey.AnimType.Trigger:
-							typeStr = TRIGGER_DATA;
+								break;
+							case AnimatorKey.AnimType.Bool:
+								typeStr = BOOL_DATA;
 
-							break;
+								break;
+							case AnimatorKey.AnimType.Trigger:
+								typeStr = TRIGGER_DATA;
+
+								break;
+						}
+
+						EditorGUI.LabelField(scope.GetNext(), LABEL);
+						EditorGUI.PropertyField(scope.GetNext(), property.FindPropertyRelative(typeStr), GUIContent.none);
 					}
-
-					EditorGUI.LabelField(scope.GetNext(), LABEL);
-					EditorGUI.PropertyField(scope.GetNext(), property.FindPropertyRelative(typeStr), GUIContent.none);
 				}
 			}
 		}
