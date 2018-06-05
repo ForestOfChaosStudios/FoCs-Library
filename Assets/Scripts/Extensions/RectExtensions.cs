@@ -13,5 +13,47 @@ namespace ForestOfChaosLib.Extensions
 
 			return pos;
 		}
+
+		public static Rect Edit(this Rect rect, params RectEdit[] editor)
+		{
+			var output = new Rect(rect);
+			foreach(var pair in editor)
+			{
+				switch(pair.Type)
+				{
+					case RectEdit.RectEditType.Add:
+						RectEdit.Add(pair, ref output);
+
+						break;
+					case RectEdit.RectEditType.Change:
+						RectEdit.Change(pair, ref output);
+
+						break;
+					case RectEdit.RectEditType.Set:
+						RectEdit.Set(pair, ref output);
+
+						break;
+					case RectEdit.RectEditType.Multiply:
+						RectEdit.Multiply(pair, ref output);
+
+						break;
+					case RectEdit.RectEditType.Subtract:
+						RectEdit.Subtract(pair, ref output);
+
+						break;
+					case RectEdit.RectEditType.Divide:
+						RectEdit.Divide(pair, ref output);
+
+						break;
+					case RectEdit.RectEditType.Modulo:
+						RectEdit.Modulo(pair, ref output);
+
+						break;
+					default: throw new ArgumentOutOfRangeException();
+				}
+			}
+
+			return output;
+		}
 	}
 }
