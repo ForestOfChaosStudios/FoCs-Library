@@ -80,6 +80,9 @@ namespace ForestOfChaosLib.Editor
 			public static RectHorizontalScope RectHorizontalScope(int count, Rect rect) => new RectHorizontalScope(count, rect);
 			public static RectVerticalScope RectVerticalScope(int     count, Rect rect) => new RectVerticalScope(count, rect);
 #endregion
+#region PropertyScope
+			public static EditorGUI.PropertyScope PropertyScope(Rect rect, GUIContent label, SerializedProperty prop) => new EditorGUI.PropertyScope(rect, label, prop);
+#endregion
 		}
 	}
 }
