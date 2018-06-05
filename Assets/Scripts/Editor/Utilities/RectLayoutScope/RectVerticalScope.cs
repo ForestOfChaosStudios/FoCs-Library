@@ -1,5 +1,4 @@
-﻿using ForestOfChaosLib.Extensions;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Utilities
 {
@@ -22,7 +21,5 @@ namespace ForestOfChaosLib.Editor.Utilities
 			NextRect  =  nexRect;
 			++CurrentIndex;
 		}
-
-		protected override Rect DoAmountRectCalculations(Rect rect, int amount) => rect.MultiplyHeight(amount);
 	}
 }
