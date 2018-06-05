@@ -27,8 +27,8 @@ namespace ForestOfChaosLib.Editor
 		{
 			TabName = new[]
 			{
-					Pair.Create<GUIContent, Action>(new GUIContent("Hide Extra Options",      "Hides Any Extra Options"), null),
-					Pair.Create<GUIContent, Action>(new GUIContent("Scale Options","Scale Preset Options"), ScaleButtonsEnabled),
+					Pair.Create<GUIContent, Action>(new GUIContent("Hide Extra Options",      "Hides Any Extra Options"),                null),
+					Pair.Create<GUIContent, Action>(new GUIContent("Scale Options",           "Scale Preset Options"),                   ScaleButtonsEnabled),
 					Pair.Create<GUIContent, Action>(new GUIContent("Global Transform Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions),
 					Pair.Create<GUIContent, Action>(new GUIContent("Local Transform Values",  "Force Display of Local Transform Data"),  DrawLocalTransformOptions)
 			};

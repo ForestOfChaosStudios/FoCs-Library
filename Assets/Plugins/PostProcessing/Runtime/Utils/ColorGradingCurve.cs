@@ -7,11 +7,11 @@ namespace UnityEngine.PostProcessing
 	[Serializable]
 	public sealed class ColorGradingCurve
 	{
-		public                            AnimationCurve curve;
-		private                           AnimationCurve m_InternalLoopingCurve;
 		[SerializeField] private readonly bool           m_Loop;
 		[SerializeField] private readonly float          m_Range;
 		[SerializeField] private readonly float          m_ZeroValue;
+		public                            AnimationCurve curve;
+		private                           AnimationCurve m_InternalLoopingCurve;
 
 		public ColorGradingCurve(AnimationCurve curve, float zeroValue, bool loop, Vector2 bounds)
 		{

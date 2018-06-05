@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using ForestOfChaosLib.Editor.PropertyDrawers;
+﻿using ForestOfChaosLib.Editor.PropertyDrawers;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
@@ -177,15 +174,13 @@ namespace ForestOfChaosLib.Editor
 
 			if(ignoreCheck == AttributeCheck.DontCheck)
 				return DoPropSwitchDraw(pos, prop, cont, includeChildren, data);
-			else
-			{
-				var attributes = prop.GetSerializedPropertyAttributes();
 
-				if(attributes.Length == 0)
-					return DoPropSwitchDraw(pos, prop, cont, includeChildren, data);
-				else
-					EditorGUI.PropertyField(pos, prop, cont, includeChildren);
-			}
+			var attributes = prop.GetSerializedPropertyAttributes();
+
+			if(attributes.Length == 0)
+				return DoPropSwitchDraw(pos, prop, cont, includeChildren, data);
+
+			EditorGUI.PropertyField(pos, prop, cont, includeChildren);
 
 			return data;
 		}
@@ -224,15 +219,13 @@ namespace ForestOfChaosLib.Editor
 		{
 			if(ignoreAttributeCheck == AttributeCheck.DontCheck)
 				return DoPropSwitchHeight(prop, cont, includeChildren);
-			else
-			{
-				var attributes = prop.GetSerializedPropertyAttributes();
 
-				if(attributes.Length == 0)
-					return DoPropSwitchHeight(prop, cont, includeChildren);
-				else
-					return EditorGUI.GetPropertyHeight(prop, cont, includeChildren);
-			}
+			var attributes = prop.GetSerializedPropertyAttributes();
+
+			if(attributes.Length == 0)
+				return DoPropSwitchHeight(prop, cont, includeChildren);
+
+			return EditorGUI.GetPropertyHeight(prop, cont, includeChildren);
 		}
 
 		private static float DoPropSwitchHeight(SerProp prop, GUICon cont, bool includeChildren)

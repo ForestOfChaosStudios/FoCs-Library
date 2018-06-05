@@ -7,8 +7,8 @@ namespace UnityEditor.PostProcessing
 	public class VectorscopeMonitor: PostProcessingMonitor
 	{
 		private static readonly GUIContent    s_MonitorTitle = new GUIContent("Vectorscope");
-		private                 ComputeBuffer m_Buffer;
 		private readonly        ComputeShader m_ComputeShader;
+		private                 ComputeBuffer m_Buffer;
 		private                 Material      m_Material;
 		private                 Rect          m_MonitorAreaRect;
 		private                 RenderTexture m_VectorscopeTexture;
@@ -66,13 +66,9 @@ namespace UnityEditor.PostProcessing
 				var size = 0f;
 
 				if(r.width < r.height)
-				{
 					size = m_VectorscopeTexture != null? Mathf.Min(m_VectorscopeTexture.width, r.width - 35f) : r.width;
-				}
 				else
-				{
 					size = m_VectorscopeTexture != null? Mathf.Min(m_VectorscopeTexture.height, r.height - 25f) : r.height;
-				}
 
 				m_MonitorAreaRect = new Rect(Mathf.Floor((r.x + (r.width / 2f)) - (size / 2f)), Mathf.Floor((r.y + (r.height / 2f)) - (size / 2f) - 5f), size, size);
 

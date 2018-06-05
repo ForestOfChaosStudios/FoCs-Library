@@ -14,10 +14,8 @@ namespace ForestOfChaosLib.Editor.Utilities
 			var iterator = property.Copy();
 
 			do
-			{
 				yield return iterator.Copy();
-			}
-			while(iterator.NextVisible(enterChildren) && iterator.depth >= property.depth);
+			while(iterator.NextVisible(enterChildren) && (iterator.depth >= property.depth));
 		}
 
 		public static int GetChildrenCount(this SerializedProperty property, bool enterChildren = false) => property.GetChildren(enterChildren).Count();

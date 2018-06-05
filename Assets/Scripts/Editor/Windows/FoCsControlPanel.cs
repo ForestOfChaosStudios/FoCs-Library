@@ -47,9 +47,7 @@ namespace ForestOfChaosLib.Editor
 						DrawTabButtons();
 
 					if(TabList.InRange(ActiveTab))
-					{
 						TabList[ActiveTab].GetMethod("DrawGUI")?.Invoke(null, new object[] {this});
-					}
 				}
 			}
 		}

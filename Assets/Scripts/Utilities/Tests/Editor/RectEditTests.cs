@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using ForestOfChaosLib.Extensions;
 using NUnit.Framework;
-using ForestOfChaosLib.Extensions;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Utilities.Tests
 {

@@ -15,12 +15,12 @@ namespace ForestOfChaosLib.Editor
 	{
 		public class ReorderableListProperty
 		{
-			private Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
-			private static ReorderableList.Defaults s_Defaults;
-			private static Action                   OnLimitingChange;
-			private        SerializedProperty       _property;
-			public         bool                     Animate;
-			public         ListLimiter              Limiter;
+			private static   ReorderableList.Defaults s_Defaults;
+			private static   Action                   OnLimitingChange;
+			private          SerializedProperty       _property;
+			public           bool                     Animate;
+			public           ListLimiter              Limiter;
+			private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
 
 			public static bool LimitingEnabled
 			{
@@ -52,9 +52,7 @@ namespace ForestOfChaosLib.Editor
 				Animate   = false;
 
 				if(Animate)
-				{
 					IsExpanded = new AnimBool(property.isExpanded) {speed = 1f};
-				}
 
 				InitList();
 			}
@@ -65,9 +63,7 @@ namespace ForestOfChaosLib.Editor
 				Animate   = animate;
 
 				if(Animate)
-				{
 					IsExpanded = new AnimBool(property.isExpanded) {speed = 1f};
-				}
 
 				InitList(dragAble, displayHeader, displayAdd, displayRemove);
 			}
@@ -111,21 +107,15 @@ namespace ForestOfChaosLib.Editor
 				if(Limiter == null)
 					DoDrawElement(rect, index);
 				else if(Limiter.ShowElement(index))
-				{
 					DoDrawElement(rect, index);
-				}
 				else
-				{
 					List.elementHeight = 0;
-				}
 			}
 
 			private void DoDrawElement(Rect rect, int index)
 			{
 				if(List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
-				{
 					HandleObjectReference(rect, List.serializedProperty.GetArrayElementAtIndex(index));
-				}
 				else
 				{
 					List.elementHeight =  rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(_property.GetArrayElementAtIndex(index), _property.GetArrayElementAtIndex(index).isExpanded));
@@ -242,9 +232,7 @@ namespace ForestOfChaosLib.Editor
 				if(Limiter == null)
 				{
 					for(var i = 0; i < List.serializedProperty.arraySize; i++)
-					{
 						height += OnListElementHeightCallback(i);
-					}
 				}
 				else
 				{
@@ -425,25 +413,17 @@ namespace ForestOfChaosLib.Editor
 				if(Limiter == null)
 				{
 					if(List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
-					{
 						return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, ObjectReferenceElementHeight(prop)) + 4.0f;
-					}
-					else
-					{
-						return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
-					}
+
+					return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
 				}
 
 				if(Limiter.ShowElement(index))
 				{
 					if(List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
-					{
 						return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, ObjectReferenceElementHeight(prop)) + 4.0f;
-					}
-					else
-					{
-						return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
-					}
+
+					return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
 				}
 
 				return 0;
@@ -463,7 +443,10 @@ namespace ForestOfChaosLib.Editor
 					x -= 25f;
 
 				using(Disposables.IndentSet(0))
-					_property.isExpanded = EditorGUI.ToggleLeft(rect.Edit(RectEdit.SetWidth(x - 10)), $"{_property.displayName}\t[{_property.arraySize}]", _property.isExpanded, _property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none);
+					_property.isExpanded = EditorGUI.ToggleLeft(rect.Edit(RectEdit.SetWidth(x - 10)),
+					                                            $"{_property.displayName}\t[{_property.arraySize}]",
+					                                            _property.isExpanded,
+					                                            _property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none);
 
 				using(Disposables.DisabledScope(!_property.isExpanded))
 				{
@@ -512,14 +495,13 @@ namespace ForestOfChaosLib.Editor
 
 			private void FooterLimiterGUI(Rect rect)
 			{
-				var minAmount = 1;
-				var maxAmount = 5;
-
+				var minAmount  = 1;
+				var maxAmount  = 5;
 				var upArrow    = new GUIContent("", $"Increase Displayed Index {minAmount}");
 				var up2Arrow   = new GUIContent("", $"Increase Displayed Index {maxAmount}");
 				var downArrow  = new GUIContent("", $"Decrease Displayed Index {minAmount}");
 				var down2Arrow = new GUIContent("", $"Decrease Displayed Index {maxAmount}");
-				var horScope   = Disposables.RectHorizontalScope(11, rect.Edit(RectEdit.ChangeX(5),RectEdit.AddWidth(-16)));
+				var horScope   = Disposables.RectHorizontalScope(11, rect.Edit(RectEdit.ChangeX(5), RectEdit.AddWidth(-16)));
 
 				using(Disposables.DisabledScope(!Limiter.CanDecrease()))
 				{
@@ -719,11 +701,9 @@ namespace ForestOfChaosLib.Editor
 				return this;
 			}
 #endregion
-
-
-
 #region Storage
-			private ORD GetObjectDrawer(SerializedProperty property ){
+			private ORD GetObjectDrawer(SerializedProperty property)
+			{
 				var id = $"{property.propertyPath}-{property.name}";
 				ORD objDraw;
 
@@ -737,9 +717,10 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			private static readonly Dictionary<string, ReorderableListProperty> ReorderableListPropertyList = new Dictionary<string, ReorderableListProperty>(10);
+
 			public static ReorderableListProperty GetReorderableList(SerializedProperty property)
 			{
-				var id = $"{property.propertyPath}-{property.name}";
+				var                     id = $"{property.propertyPath}-{property.name}";
 				ReorderableListProperty ret;
 
 				if(ReorderableListPropertyList.TryGetValue(id, out ret))

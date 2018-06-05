@@ -7,8 +7,8 @@ namespace UnityEngine.PostProcessing
 		private const    int       k_InternalLogLutSize = 32;
 		private const    int       k_CurvePrecision     = 128;
 		private const    float     k_CurveStep          = 1f / k_CurvePrecision;
+		private readonly Color[]   m_pixels             = new Color[k_CurvePrecision * 2];
 		private          Texture2D m_GradingCurves;
-		private readonly Color[]   m_pixels = new Color[k_CurvePrecision * 2];
 		public override  bool      active => model.enabled && !context.interrupted;
 
 		// An analytical model of chromaticity of the standard illuminant, by Judd et al.

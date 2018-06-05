@@ -10,11 +10,11 @@ namespace ForestOfChaosLib.ScreenCap
 		private static   GameObject    obj;
 		private static   FoCsBehavior  com;
 		private readonly TimelapseArgs Args;
-		public           bool          Capping = true;
 		private readonly Coroutine     Routine;
 		private readonly DateTime      Start;
-		private          int           Times;
 		private readonly float         WaitTime;
+		public           bool          Capping = true;
+		private          int           Times;
 		public           DateTime      TimeRemaining => Start.AddSeconds(WaitTime * (Times - 1)) - Start.TimeOfDay;
 		public           int           ShootsTaken   { get; private set; }
 

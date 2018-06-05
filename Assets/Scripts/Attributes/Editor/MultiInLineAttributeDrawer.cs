@@ -1,5 +1,4 @@
 using ForestOfChaosLib.Attributes;
-using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -22,7 +21,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 						for(var i = 0; i < GetAttribute.index; i++)
 							scope.GetNext();
 
-						EditorGUI.PropertyField(scope.GetNext(RectEdit.SubtractY((SingleLinePlusPadding * GetAttribute.index)), RectEdit.SetHeight(SingleLine)), property, label);
+						EditorGUI.PropertyField(scope.GetNext(RectEdit.SubtractY(SingleLinePlusPadding * GetAttribute.index), RectEdit.SetHeight(SingleLine)), property, label);
 					}
 				}
 			}

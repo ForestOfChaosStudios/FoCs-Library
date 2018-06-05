@@ -27,6 +27,7 @@ namespace ForestOfChaosLib.Animation
 				label = propScope.content;
 				var labelPos = position.Edit(RectEdit.SetWidth(EditorGUIUtility.labelWidth));
 				EditorGUI.LabelField(labelPos, label);
+
 				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(6, position.Edit(RectEdit.AddX(labelPos.width), RectEdit.SetWidth(position.width - labelPos.width))))
 				{
 					using(FoCsEditor.Disposables.Indent(-1))

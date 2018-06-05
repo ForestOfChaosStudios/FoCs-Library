@@ -15,15 +15,15 @@ namespace UnityEngine.PostProcessing
 		{
 			None,
 
-		    /// <summary>
-		    ///     ACES Filmic reference tonemapper.
-		    /// </summary>
-		    ACES,
+			/// <summary>
+			///     ACES Filmic reference tonemapper.
+			/// </summary>
+			ACES,
 
-		    /// <summary>
-		    ///     Neutral tonemapper (based off John Hable's & Jim Hejl's work).
-		    /// </summary>
-		    Neutral
+			/// <summary>
+			///     Neutral tonemapper (based off John Hable's & Jim Hejl's work).
+			/// </summary>
+			Neutral
 		}
 
 		[SerializeField] private Settings m_Settings = Settings.defaultSettings;

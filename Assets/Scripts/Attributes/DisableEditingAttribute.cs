@@ -10,7 +10,7 @@ namespace ForestOfChaosLib.Attributes
 		public DisableEditingAttribute()
 		{
 			AllowConfirmedEdit = false;
-			CurrentlyEditable = false;
+			CurrentlyEditable  = false;
 		}
 
 		public DisableEditingAttribute(bool allowConfirmedEdit)

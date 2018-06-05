@@ -4,9 +4,58 @@ namespace ForestOfChaosLib.Utilities
 {
 	public class RectEdit
 	{
-		public RectEditType Type;
-		public RectAxis     Axis;
+		public enum RectAxis
+		{
+			X,
+			Y,
+			Width,
+			Height
+		}
+
+		/// <summary>
+		///     How would you like to edit an axis of the Rect
+		/// </summary>
+		public enum RectEditType
+		{
+			/// <summary>
+			///     Add to selected axis.
+			/// </summary>
+			Add,
+
+			/// <summary>
+			///     Add to selected axis, remove from parallel axis. e.g. (X + 2 Width - 2)
+			/// </summary>
+			Change,
+
+			/// <summary>
+			///     Set to selected axis.
+			/// </summary>
+			Set,
+
+			/// <summary>
+			///     Multiply to selected axis.
+			/// </summary>
+			Multiply,
+
+			/// <summary>
+			///     Subtract to selected axis.
+			/// </summary>
+			Subtract,
+
+			/// <summary>
+			///     Divide to selected axis.
+			/// </summary>
+			Divide,
+
+			/// <summary>
+			///     Modulo to selected axis.
+			/// </summary>
+			Modulo
+		}
+
 		public float        Amount;
+		public RectAxis     Axis;
+		public RectEditType Type;
 
 		public RectEdit(RectEditType type, RectAxis axis, float amount)
 		{
@@ -15,36 +64,35 @@ namespace ForestOfChaosLib.Utilities
 			Amount = amount;
 		}
 
-		public static RectEdit Create(RectEditType  type, RectAxis axis, float amount) => new RectEdit(type, axis, amount);
-		public static RectEdit AddX(float           amount) => Create(RectEditType.Add,      RectAxis.X,      amount);
-		public static RectEdit AddY(float           amount) => Create(RectEditType.Add,      RectAxis.Y,      amount);
-		public static RectEdit AddWidth(float       amount) => Create(RectEditType.Add,      RectAxis.Width,  amount);
-		public static RectEdit AddHeight(float      amount) => Create(RectEditType.Add,      RectAxis.Height, amount);
-		public static RectEdit ChangeX(float        amount) => Create(RectEditType.Change,   RectAxis.X,      amount);
-		public static RectEdit ChangeY(float        amount) => Create(RectEditType.Change,   RectAxis.Y,      amount);
-		public static RectEdit ChangeWidth(float    amount) => Create(RectEditType.Change,   RectAxis.Width,  amount);
-		public static RectEdit ChangeHeight(float   amount) => Create(RectEditType.Change,   RectAxis.Height, amount);
-		public static RectEdit SetX(float           amount) => Create(RectEditType.Set,      RectAxis.X,      amount);
-		public static RectEdit SetY(float           amount) => Create(RectEditType.Set,      RectAxis.Y,      amount);
-		public static RectEdit SetWidth(float       amount) => Create(RectEditType.Set,      RectAxis.Width,  amount);
-		public static RectEdit SetHeight(float      amount) => Create(RectEditType.Set,      RectAxis.Height, amount);
-		public static RectEdit MultiplyX(float      amount) => Create(RectEditType.Multiply, RectAxis.X,      amount);
-		public static RectEdit MultiplyY(float      amount) => Create(RectEditType.Multiply, RectAxis.Y,      amount);
-		public static RectEdit MultiplyWidth(float  amount) => Create(RectEditType.Multiply, RectAxis.Width,  amount);
-		public static RectEdit MultiplyHeight(float amount) => Create(RectEditType.Multiply, RectAxis.Height, amount);
-		public static RectEdit SubtractX(float      amount) => Create(RectEditType.Subtract, RectAxis.X,      amount);
-		public static RectEdit SubtractY(float      amount) => Create(RectEditType.Subtract, RectAxis.Y,      amount);
-		public static RectEdit SubtractWidth(float  amount) => Create(RectEditType.Subtract, RectAxis.Width,  amount);
-		public static RectEdit SubtractHeight(float amount) => Create(RectEditType.Subtract, RectAxis.Height, amount);
-		public static RectEdit DivideX(float        amount) => Create(RectEditType.Divide,   RectAxis.X,      amount);
-		public static RectEdit DivideY(float        amount) => Create(RectEditType.Divide,   RectAxis.Y,      amount);
-		public static RectEdit DivideWidth(float    amount) => Create(RectEditType.Divide,   RectAxis.Width,  amount);
-		public static RectEdit DivideHeight(float   amount) => Create(RectEditType.Divide,   RectAxis.Height, amount);
-		public static RectEdit ModuloX(float        amount) => Create(RectEditType.Modulo,   RectAxis.X,      amount);
-		public static RectEdit ModuloY(float        amount) => Create(RectEditType.Modulo,   RectAxis.Y,      amount);
-		public static RectEdit ModuloWidth(float    amount) => Create(RectEditType.Modulo,   RectAxis.Width,  amount);
-		public static RectEdit ModuloHeight(float   amount) => Create(RectEditType.Modulo,   RectAxis.Height, amount);
-
+		public static RectEdit Create(RectEditType    type, RectAxis axis, float amount) => new RectEdit(type, axis, amount);
+		public static RectEdit AddX(float             amount) => Create(RectEditType.Add,      RectAxis.X,      amount);
+		public static RectEdit AddY(float             amount) => Create(RectEditType.Add,      RectAxis.Y,      amount);
+		public static RectEdit AddWidth(float         amount) => Create(RectEditType.Add,      RectAxis.Width,  amount);
+		public static RectEdit AddHeight(float        amount) => Create(RectEditType.Add,      RectAxis.Height, amount);
+		public static RectEdit ChangeX(float          amount) => Create(RectEditType.Change,   RectAxis.X,      amount);
+		public static RectEdit ChangeY(float          amount) => Create(RectEditType.Change,   RectAxis.Y,      amount);
+		public static RectEdit ChangeWidth(float      amount) => Create(RectEditType.Change,   RectAxis.Width,  amount);
+		public static RectEdit ChangeHeight(float     amount) => Create(RectEditType.Change,   RectAxis.Height, amount);
+		public static RectEdit SetX(float             amount) => Create(RectEditType.Set,      RectAxis.X,      amount);
+		public static RectEdit SetY(float             amount) => Create(RectEditType.Set,      RectAxis.Y,      amount);
+		public static RectEdit SetWidth(float         amount) => Create(RectEditType.Set,      RectAxis.Width,  amount);
+		public static RectEdit SetHeight(float        amount) => Create(RectEditType.Set,      RectAxis.Height, amount);
+		public static RectEdit MultiplyX(float        amount) => Create(RectEditType.Multiply, RectAxis.X,      amount);
+		public static RectEdit MultiplyY(float        amount) => Create(RectEditType.Multiply, RectAxis.Y,      amount);
+		public static RectEdit MultiplyWidth(float    amount) => Create(RectEditType.Multiply, RectAxis.Width,  amount);
+		public static RectEdit MultiplyHeight(float   amount) => Create(RectEditType.Multiply, RectAxis.Height, amount);
+		public static RectEdit SubtractX(float        amount) => Create(RectEditType.Subtract, RectAxis.X,      amount);
+		public static RectEdit SubtractY(float        amount) => Create(RectEditType.Subtract, RectAxis.Y,      amount);
+		public static RectEdit SubtractWidth(float    amount) => Create(RectEditType.Subtract, RectAxis.Width,  amount);
+		public static RectEdit SubtractHeight(float   amount) => Create(RectEditType.Subtract, RectAxis.Height, amount);
+		public static RectEdit DivideX(float          amount) => Create(RectEditType.Divide,   RectAxis.X,      amount);
+		public static RectEdit DivideY(float          amount) => Create(RectEditType.Divide,   RectAxis.Y,      amount);
+		public static RectEdit DivideWidth(float      amount) => Create(RectEditType.Divide,   RectAxis.Width,  amount);
+		public static RectEdit DivideHeight(float     amount) => Create(RectEditType.Divide,   RectAxis.Height, amount);
+		public static RectEdit ModuloX(float          amount) => Create(RectEditType.Modulo,   RectAxis.X,      amount);
+		public static RectEdit ModuloY(float          amount) => Create(RectEditType.Modulo,   RectAxis.Y,      amount);
+		public static RectEdit ModuloWidth(float      amount) => Create(RectEditType.Modulo,   RectAxis.Width,  amount);
+		public static RectEdit ModuloHeight(float     amount) => Create(RectEditType.Modulo,   RectAxis.Height, amount);
 		public static RectEdit[] AddPos(Vector2       newPos) => new[] {AddX(newPos.x), AddY(newPos.y)};
 		public static RectEdit[] AddPos(float         x, float y) => new[] {AddX(x), AddY(y)};
 		public static RectEdit[] AddSize(Vector2      newPos) => new[] {AddX(newPos.x), AddY(newPos.y)};
@@ -73,55 +121,6 @@ namespace ForestOfChaosLib.Utilities
 		public static RectEdit[] ModuloPos(float      x, float y) => new[] {ModuloX(x), ModuloY(y)};
 		public static RectEdit[] ModuloSize(Vector2   newPos) => new[] {ModuloWidth(newPos.x), ModuloHeight(newPos.y)};
 		public static RectEdit[] ModuloSize(float     width, float height) => new[] {ModuloWidth(width), ModuloHeight(height)};
-
-		/// <summary>
-		/// How would you like to edit an axis of the Rect
-		/// </summary>
-		public enum RectEditType
-		{
-			/// <summary>
-			/// Add to selected axis.
-			/// </summary>
-			Add,
-
-			/// <summary>
-			/// Add to selected axis, remove from parallel axis. e.g. (X + 2 Width - 2)
-			/// </summary>
-			Change,
-
-			/// <summary>
-			/// Set to selected axis.
-			/// </summary>
-			Set,
-
-			/// <summary>
-			/// Multiply to selected axis.
-			/// </summary>
-			Multiply,
-
-			/// <summary>
-			/// Subtract to selected axis.
-			/// </summary>
-			Subtract,
-
-			/// <summary>
-			/// Divide to selected axis.
-			/// </summary>
-			Divide,
-
-			/// <summary>
-			/// Modulo to selected axis.
-			/// </summary>
-			Modulo,
-		}
-
-		public enum RectAxis
-		{
-			X,
-			Y,
-			Width,
-			Height
-		}
 
 		public static void Add(RectEdit pair, ref Rect rect)
 		{

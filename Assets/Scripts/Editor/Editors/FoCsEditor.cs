@@ -5,7 +5,6 @@ using System.Reflection;
 using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
 using ORD = ForestOfChaosLib.Editor.PropertyDrawers.ObjectReferenceDrawer;
 
@@ -23,12 +22,12 @@ namespace ForestOfChaosLib.Editor
 			Disabled,
 			Hidden
 		}
-		private Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
 
-		public static  float                                     StandardLine         => EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-		protected      bool                                      GUIChanged           { get; private set; }
-		public virtual bool                                      HideDefaultProperty  => true;
-		public virtual bool                                      ShowCopyPasteButtons => true;
+		private        Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
+		public static  float                   StandardLine         => EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+		protected      bool                    GUIChanged           { get; private set; }
+		public virtual bool                    HideDefaultProperty  => true;
+		public virtual bool                    ShowCopyPasteButtons => true;
 		public override bool UseDefaultMargins() => false;
 
 		~FoCsEditor()
@@ -149,8 +148,9 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private ORD GetObjectDrawer(SerializedProperty property ){
-			var                   id = $"{property.propertyPath}-{property.name}";
+		private ORD GetObjectDrawer(SerializedProperty property)
+		{
+			var id = $"{property.propertyPath}-{property.name}";
 			ORD objDraw;
 
 			if(objectDrawers.TryGetValue(id, out objDraw))

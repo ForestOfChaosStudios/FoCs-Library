@@ -141,14 +141,17 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static object[] GetSerializedPropertyAttributes(this SerializedProperty prop)
 		{
-			var type       = prop.serializedObject.targetObject.GetType();
-			var field      = type.GetField(prop.name);
+			var type  = prop.serializedObject.targetObject.GetType();
+			var field = type.GetField(prop.name);
 
 			if(field == null)
 				return new object[0];
+
 			var attributes = field.GetCustomAttributes(false);
+
 			return attributes;
 		}
+
 		public static bool GetSerializedPropertyAttributes<T>(this SerializedProperty prop) where T: PropertyAttribute
 		{
 			var type       = prop.serializedObject.targetObject.GetType();

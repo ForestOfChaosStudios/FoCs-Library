@@ -34,9 +34,7 @@ namespace ForestOfChaosLib.AdvDebug
 				try
 				{
 					if(!Application.isPlaying)
-					{
 						return new DictionaryData {Value = val, Time = 0};
-					}
 				}
 				catch
 				{
@@ -52,9 +50,7 @@ namespace ForestOfChaosLib.AdvDebug
 				try
 				{
 					if(!Application.isPlaying)
-					{
 						return new DictionaryData {Value = val, Time = 0, previousData = other};
-					}
 				}
 				catch
 				{

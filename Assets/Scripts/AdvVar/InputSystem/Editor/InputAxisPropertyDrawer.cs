@@ -67,7 +67,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 							using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
 							{
 								ProgressBar(horizontalScope.GetNext(), m_Value);
-
 								m_Value.Draw(horizontalScope.GetNext());
 							}
 						}

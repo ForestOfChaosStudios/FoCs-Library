@@ -23,14 +23,13 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 					rect.y += SingleLine;
 				}
 
-
 				property.NextVisible(true);
 
 				using(FoCsEditor.Disposables.Indent())
 				{
 					foreach(var child in property.GetChildren())
 					{
-						FoCsGUI.PropertyField(rect,child, true, FoCsGUI.AttributeCheck.DoCheck);
+						FoCsGUI.PropertyField(rect, child, true, FoCsGUI.AttributeCheck.DoCheck);
 						rect.y += FoCsGUI.GetPropertyHeight(child, GUIContent.none, true, FoCsGUI.AttributeCheck.DoCheck);
 					}
 				}
@@ -39,15 +38,14 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			var totalHeight = GetAttribute.ShowVariableName?SingleLine:0f;
-
+			var totalHeight = GetAttribute.ShowVariableName? SingleLine : 0f;
 			property.isExpanded = true;
 			property.NextVisible(true);
 
 			foreach(var child in property.GetChildren())
 				totalHeight += FoCsGUI.GetPropertyHeight(child, GUIContent.none, true, FoCsGUI.AttributeCheck.DoCheck);
 
-			return totalHeight-2;
+			return totalHeight - 2;
 		}
 	}
 }

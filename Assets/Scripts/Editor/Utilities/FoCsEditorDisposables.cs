@@ -19,6 +19,9 @@ namespace ForestOfChaosLib.Editor
 #region FadeGroup
 			public static EditorGUILayout.FadeGroupScope FadeGroupScope(float value) => new EditorGUILayout.FadeGroupScope(value);
 #endregion
+#region PropertyScope
+			public static EditorGUI.PropertyScope PropertyScope(Rect rect, GUIContent label, SerializedProperty prop) => new EditorGUI.PropertyScope(rect, label, prop);
+#endregion
 #region Indent
 			public static EditorIndent Indent() => new EditorIndent();
 			public static EditorIndent Indent(int    indentLevel) => new EditorIndent(indentLevel);
@@ -79,9 +82,6 @@ namespace ForestOfChaosLib.Editor
 #region RectLayout
 			public static RectHorizontalScope RectHorizontalScope(int count, Rect rect) => new RectHorizontalScope(count, rect);
 			public static RectVerticalScope RectVerticalScope(int     count, Rect rect) => new RectVerticalScope(count, rect);
-#endregion
-#region PropertyScope
-			public static EditorGUI.PropertyScope PropertyScope(Rect rect, GUIContent label, SerializedProperty prop) => new EditorGUI.PropertyScope(rect, label, prop);
 #endregion
 		}
 	}

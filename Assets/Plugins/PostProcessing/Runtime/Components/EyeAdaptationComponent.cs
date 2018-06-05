@@ -139,9 +139,7 @@ namespace UnityEngine.PostProcessing
 			if(context.profile.debugViews.IsModeActive(BuiltinDebugViewsModel.Mode.EyeAdaptation))
 			{
 				if((m_DebugHistogram == null) || !m_DebugHistogram.IsCreated())
-				{
 					m_DebugHistogram = new RenderTexture(256, 128, 0, RenderTextureFormat.ARGB32) {filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp};
-				}
 
 				material.SetFloat(Uniforms._DebugWidth, m_DebugHistogram.width);
 				Graphics.Blit(null, m_DebugHistogram, material, 2);

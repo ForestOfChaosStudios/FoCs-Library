@@ -53,7 +53,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			{
 				using(FoCsEditor.Disposables.Indent())
 				{
-					var drawPos = position.Edit(RectEdit.AddY(SingleLinePlusPadding),RectEdit.SubtractHeight(SingleLinePlusPadding));
+					var drawPos = position.Edit(RectEdit.AddY(SingleLinePlusPadding), RectEdit.SubtractHeight(SingleLinePlusPadding));
 
 					do
 					{
@@ -71,7 +71,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		protected static void DrawSurroundingBox(Rect position)
 		{
 			if(Event.current.type == EventType.repaint)
-				GUI.skin.box.Draw(position.Edit(RectEdit.ChangeY(-1),RectEdit.AddWidth(2)), false, false, false, false);
+				GUI.skin.box.Draw(position.Edit(RectEdit.ChangeY(-1), RectEdit.AddWidth(2)), false, false, false, false);
 		}
 
 		protected static Rect DrawSubProp(SerializedProperty prop, Rect drawPos)

@@ -250,9 +250,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 						finalList[attribute].Add(type);
 				}
 				else
-				{
 					finalList.Add(attribute, new List<Type> {type});
-				}
 			}
 
 			return finalList;

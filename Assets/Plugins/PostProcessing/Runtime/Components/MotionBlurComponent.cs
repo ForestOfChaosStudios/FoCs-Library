@@ -165,11 +165,11 @@ namespace UnityEngine.PostProcessing
 
 		public class ReconstructionFilter
 		{
-			// Texture format for storing packed velocity/depth.
-			private RenderTextureFormat m_PackedRTFormat = RenderTextureFormat.ARGB2101010;
-
 			// Texture format for storing 2D vectors.
 			private readonly RenderTextureFormat m_VectorRTFormat = RenderTextureFormat.RGHalf;
+
+			// Texture format for storing packed velocity/depth.
+			private RenderTextureFormat m_PackedRTFormat = RenderTextureFormat.ARGB2101010;
 
 			public ReconstructionFilter()
 			{
@@ -256,9 +256,9 @@ namespace UnityEngine.PostProcessing
 		public class FrameBlendingFilter
 		{
 			private readonly Frame[]             m_FrameList;
-			private          int                 m_LastFrameCount;
 			private readonly RenderTextureFormat m_RawTextureFormat;
 			private readonly bool                m_UseCompression;
+			private          int                 m_LastFrameCount;
 
 			public FrameBlendingFilter()
 			{
@@ -324,8 +324,10 @@ namespace UnityEngine.PostProcessing
 				RenderTextureFormat[] formats = {RenderTextureFormat.RGB565, RenderTextureFormat.ARGB1555, RenderTextureFormat.ARGB4444};
 
 				foreach(var f in formats)
+				{
 					if(SystemInfo.SupportsRenderTextureFormat(f))
 						return f;
+				}
 
 				return RenderTextureFormat.Default;
 			}

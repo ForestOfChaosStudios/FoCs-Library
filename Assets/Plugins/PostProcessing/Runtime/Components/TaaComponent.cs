@@ -29,9 +29,7 @@ namespace UnityEngine.PostProcessing
 			if(jitteredFunc != null)
 				context.camera.projectionMatrix = jitteredFunc(jitter);
 			else
-			{
 				context.camera.projectionMatrix = context.camera.orthographic? GetOrthographicProjectionMatrix(jitter) : GetPerspectiveProjectionMatrix(jitter);
-			}
 
 #if UNITY_5_5_OR_NEWER
 			context.camera.useJitteredProjectionMatrixForTransparentRendering = false;

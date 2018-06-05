@@ -625,9 +625,7 @@ namespace UnityEditor.PostProcessing
 			var tangent = EvaluateTangent(curve, position.x);
 
 			if(createOnCurve)
-			{
 				position.y = curve.length == 0? zeroKeyConstantValue : curve.Evaluate(position.x);
-			}
 
 			AddKeyframe(curve, new Keyframe(position.x, position.y, tangent, tangent));
 		}

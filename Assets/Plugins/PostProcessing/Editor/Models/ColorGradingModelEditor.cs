@@ -15,16 +15,16 @@ namespace UnityEditor.PostProcessing
 		private static readonly GUIContent[]                          s_Tonemappers     = {new GUIContent("None"), new GUIContent("Filmic (ACES)"), new GUIContent("Neutral")};
 		private static readonly GUIContent[]                          s_Curves          = {new GUIContent("YRGB"), new GUIContent("Hue VS Hue"), new GUIContent("Hue VS Sat"), new GUIContent("Sat VS Sat"), new GUIContent("Lum VS Sat")};
 		private static          Material                              s_MaterialSpline;
+		private readonly        Vector3[]                             m_CurveVertices = new Vector3[k_CurveResolution];
+		private readonly        Vector3[]                             m_LineVertices  = new Vector3[2];
+		private readonly        Vector3[]                             m_RectVertices  = new Vector3[4];
 		private                 BasicSettings                         m_Basic;
 		private                 ChannelMixerSettings                  m_ChannelMixer;
 		private                 ColorWheelsSettings                   m_ColorWheels;
 		private                 Dictionary<SerializedProperty, Color> m_CurveDict;
 		private                 CurveEditor                           m_CurveEditor;
 		private                 CurvesSettings                        m_Curves;
-		private readonly        Vector3[]                             m_CurveVertices = new Vector3[k_CurveResolution];
-		private readonly        Vector3[]                             m_LineVertices  = new Vector3[2];
 		private                 Rect                                  m_NeutralCurveRect;
-		private readonly        Vector3[]                             m_RectVertices = new Vector3[4];
 		private                 TonemappingSettings                   m_Tonemapping;
 
 		public override void OnEnable()
