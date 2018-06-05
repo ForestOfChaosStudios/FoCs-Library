@@ -9,27 +9,18 @@ namespace ForestOfChaosLib.Editor.Utilities
 	{
 		private const string INDEX_NEEDLE = @"\[[\d]\]";
 
-		public static IEnumerable<SerializedProperty> GetChildren(this SerializedProperty property, bool enterChildren = true)
+		public static IEnumerable<SerializedProperty> GetChildren(this SerializedProperty property, bool enterChildren = false)
 		{
-			var iterator     = property.Copy();
-			var iteratorNext = property.Next(true);
-
-			if(!iteratorNext)
-				yield break;
-
-			yield return iterator.Copy();
+			var iterator = property.Copy();
 
 			do
 			{
-				if(property.depth >= iterator.depth)
-					yield break;
-
 				yield return iterator.Copy();
 			}
-			while(iterator.Next(enterChildren));
+			while(iterator.NextVisible(enterChildren) && iterator.depth >= property.depth);
 		}
 
-		public static int GetChildrenCount(this SerializedProperty property) => property.GetChildren().Count();
+		public static int GetChildrenCount(this SerializedProperty property, bool enterChildren = false) => property.GetChildren(enterChildren).Count();
 
 		public static int GetIndex(SerializedProperty property)
 		{
