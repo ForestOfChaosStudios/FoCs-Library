@@ -6,16 +6,21 @@ namespace ForestOfChaosLib.Attributes
 	{
 		public bool AllowConfirmedEdit;
 		public bool CurrentlyEditable;
-		public DisableEditingAttribute() { }
 
-		public DisableEditingAttribute(bool _AllowConfirmedEdit)
+		public DisableEditingAttribute()
 		{
-			AllowConfirmedEdit = _AllowConfirmedEdit;
+			AllowConfirmedEdit = false;
+			CurrentlyEditable = false;
 		}
 
-		public DisableEditingAttribute(bool _AllowConfirmedEdit, bool _CurrentlyEditable): this(_AllowConfirmedEdit)
+		public DisableEditingAttribute(bool allowConfirmedEdit)
 		{
-			CurrentlyEditable = _CurrentlyEditable;
+			AllowConfirmedEdit = allowConfirmedEdit;
+		}
+
+		public DisableEditingAttribute(bool allowConfirmedEdit, bool currentlyEditable): this(allowConfirmedEdit)
+		{
+			CurrentlyEditable = currentlyEditable;
 		}
 	}
 }
