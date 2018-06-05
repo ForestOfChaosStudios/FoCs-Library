@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using ForestOfChaosLib.Editor.PropertyDrawers;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
 using GUICon = UnityEngine.GUIContent;
@@ -209,23 +211,14 @@ namespace ForestOfChaosLib.Editor
 			DoCheck
 		}
 
-		public static eProp PropertyField(Rect pos, SerProp prop) =>
-				PropFieldMaster(pos, prop, new GUICon(prop.displayName), true, AttributeCheck.DontCheck);
-
-		public static eProp PropertyField(Rect pos, SerProp prop, bool includeChildren) =>
-				PropFieldMaster(pos, prop, new GUICon(prop.displayName), includeChildren, AttributeCheck.DontCheck);
-
+		public static eProp PropertyField(Rect pos, SerProp prop) => PropFieldMaster(pos,                                                             prop, new GUICon(prop.displayName), true,            AttributeCheck.DontCheck);
+		public static eProp PropertyField(Rect pos, SerProp prop, bool           includeChildren) => PropFieldMaster(pos,                             prop, new GUICon(prop.displayName), includeChildren, AttributeCheck.DontCheck);
 		public static eProp PropertyField(Rect pos, SerProp prop, AttributeCheck ignoreCheck) => PropFieldMaster(pos,                                 prop, new GUICon(prop.displayName), true,            ignoreCheck);
 		public static eProp PropertyField(Rect pos, SerProp prop, bool           includeChildren, AttributeCheck ignoreCheck) => PropFieldMaster(pos, prop, new GUICon(prop.displayName), includeChildren, ignoreCheck);
-
-		public static eProp PropertyField(Rect pos, SerProp prop, GUICon cont) =>
-				PropFieldMaster(pos, prop, cont, true, AttributeCheck.DontCheck);
-
-		public static eProp PropertyField(Rect pos, SerProp prop, GUICon cont, bool includeChildren) =>
-				PropFieldMaster(pos, prop, cont, includeChildren, AttributeCheck.DontCheck);
-
-		public static eProp PropertyField(Rect pos, SerProp prop, GUICon cont, bool           includeChildren, AttributeCheck ignoreAttributeCheck) => PropFieldMaster(pos, prop, cont, includeChildren, ignoreAttributeCheck);
-		public static eProp PropertyField(Rect pos, SerProp prop, GUICon cont, AttributeCheck ignoreCheck) => PropFieldMaster(pos, prop, cont, true, ignoreCheck);
+		public static eProp PropertyField(Rect pos, SerProp prop, GUICon         cont) => PropFieldMaster(pos,                                                                      prop, cont, true,            AttributeCheck.DontCheck);
+		public static eProp PropertyField(Rect pos, SerProp prop, GUICon         cont, bool           includeChildren) => PropFieldMaster(pos,                                      prop, cont, includeChildren, AttributeCheck.DontCheck);
+		public static eProp PropertyField(Rect pos, SerProp prop, GUICon         cont, bool           includeChildren, AttributeCheck ignoreAttributeCheck) => PropFieldMaster(pos, prop, cont, includeChildren, ignoreAttributeCheck);
+		public static eProp PropertyField(Rect pos, SerProp prop, GUICon         cont, AttributeCheck ignoreCheck) => PropFieldMaster(pos, prop, cont, true, ignoreCheck);
 
 		private static float GetPropertyHeightMaster(SerProp prop, GUICon cont, bool includeChildren, AttributeCheck ignoreAttributeCheck)
 		{
@@ -270,12 +263,63 @@ namespace ForestOfChaosLib.Editor
 		public static float GetPropertyHeight(SerProp prop, GUICon cont, AttributeCheck ignoreCheck) => GetPropertyHeightMaster(prop, cont, true, ignoreCheck);
 #endregion
 #region Other
+		public static GUIEvent ProgressBar(Rect rect, float fillAmount, string label = "")
+		{
+			var data = new GUIEvent {Event = new Event(Event.current), Rect = rect};
+			EditorGUI.ProgressBar(rect, fillAmount, label);
+
+			return data;
+		}
+
+		public static void ProgressBarSplit(Rect pos, float value, string name = "", bool isPositiveLeft = true)
+		{
+			//TODO: add label
+			var leftPos = pos;
+			leftPos.width *= 0.5f;
+			var rightPos = leftPos;
+			rightPos.x    += leftPos.width;
+			leftPos.x     += leftPos.width;
+			leftPos.width *= -1;
+			float leftValue  = 0;
+			float rightValue = 0;
+
+			if(isPositiveLeft)
+			{
+				if(value >= 0)
+				{
+					leftValue  = value;
+					rightValue = 0;
+				}
+				else
+				{
+					leftValue  = 0;
+					rightValue = -value;
+				}
+			}
+			else
+			{
+				if(value <= 0)
+				{
+					leftValue  = -value;
+					rightValue = 0;
+				}
+				else
+				{
+					leftValue  = 0;
+					rightValue = value;
+				}
+			}
+
+			EditorGUI.ProgressBar(leftPos,  +leftValue,  "");
+			EditorGUI.ProgressBar(rightPos, +rightValue, "");
+		}
+
 		private const float MENU_BUTTON_SIZE = 16f;
 		public static eInt DrawPropertyWithMenu(Rect position, SerProp property, GUICon label, GUICon[] Options, int active) => DrawDisabledPropertyWithMenu(false, position, property, label, Options, active);
 
 		public static eInt DrawDisabledPropertyWithMenu(bool disabled, Rect position, SerProp property, GUICon label, GUICon[] Options, int active)
 		{
-			var propRect  = position.SetWidth(position.width - MENU_BUTTON_SIZE - 2).MoveHeight(-2);
+			var propRect  = position.Edit(RectEdit.SetWidth(position.width - MENU_BUTTON_SIZE         - 2), RectEdit.SubtractHeight(2));
 			var rectWidth = position.x + (position.width - (MENU_BUTTON_SIZE * (EditorGUI.indentLevel + 1)));
 			var menuRect  = new Rect(rectWidth, position.y, position.width - rectWidth, position.height);
 

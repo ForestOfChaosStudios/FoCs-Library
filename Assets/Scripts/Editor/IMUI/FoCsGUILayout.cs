@@ -220,10 +220,10 @@ namespace ForestOfChaosLib.Editor
 			}
 #endregion
 #region HelpBox
-			public static GUIEvent ErrorBox(string   text) => FoCsGUI.ErrorBox(GUILayoutUtility.GetRect(0,   Utilities.SingleLine * 2.5f, Styles.Unity.HelpBox, null), text);
-			public static GUIEvent InfoBox(string    text) => FoCsGUI.InfoBox(GUILayoutUtility.GetRect(0,    Utilities.SingleLine * 2.5f, Styles.Unity.HelpBox, null), text);
-			public static GUIEvent WarningBox(string text) => FoCsGUI.WarningBox(GUILayoutUtility.GetRect(0, Utilities.SingleLine * 2.5f, Styles.Unity.HelpBox, null), text);
-			public static GUIEvent HelpBox(string    text) => FoCsGUI.HelpBox(GUILayoutUtility.GetRect(0,    Utilities.SingleLine * 2.5f, Styles.Unity.HelpBox, null), text);
+			public static GUIEvent ErrorBox(string   text) => FoCsGUI.ErrorBox(GUILayoutUtility.GetRect(0,   SingleLine * 2.5f, Styles.Unity.HelpBox, null), text);
+			public static GUIEvent InfoBox(string    text) => FoCsGUI.InfoBox(GUILayoutUtility.GetRect(0,    SingleLine * 2.5f, Styles.Unity.HelpBox, null), text);
+			public static GUIEvent WarningBox(string text) => FoCsGUI.WarningBox(GUILayoutUtility.GetRect(0, SingleLine * 2.5f, Styles.Unity.HelpBox, null), text);
+			public static GUIEvent HelpBox(string    text) => FoCsGUI.HelpBox(GUILayoutUtility.GetRect(0,    SingleLine * 2.5f, Styles.Unity.HelpBox, null), text);
 #endregion
 		}
 	}

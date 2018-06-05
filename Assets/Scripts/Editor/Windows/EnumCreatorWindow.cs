@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using ForestOfChaosLib.Editor.Tools;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -32,14 +33,14 @@ namespace ForestOfChaosLib.Editor.Windows
 #region ReorderableListInits
 			ReorderableList = new ReorderableList(EnumList, typeof(string), true, true, true, true)
 			{
-					drawHeaderCallback = rect => RLIsExpanded = EditorGUI.ToggleLeft(rect, string.Format("{0}\t[{1}]", EnumName, ReorderableList.count), RLIsExpanded, EditorStyles.boldLabel),
+					drawHeaderCallback = rect => RLIsExpanded = EditorGUI.ToggleLeft(rect, $"{EnumName}\t[{ReorderableList.count}]", RLIsExpanded, EditorStyles.boldLabel),
 					drawElementCallback = (pos, index, isActive, isFocused) =>
 					{
 						const float buttonWidth = 64f + 16;
 						var         textAreaPos = pos;
 						textAreaPos.width  -= buttonWidth;
 						textAreaPos.height -= 2;
-						textAreaPos        =  textAreaPos.ChangeY(2);
+						textAreaPos        =  textAreaPos.Edit(RectEdit.ChangeY(2));
 						textAreaPos.y      -= 1;
 						var buttonPos = pos;
 						buttonPos.x      += pos.width - buttonWidth;

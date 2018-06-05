@@ -1,4 +1,5 @@
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,18 +22,22 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
 		{
-			position.height = SingleLine;
-
-			if(string.IsNullOrEmpty(label.text))
-				DoFieldsDraw(position, property);
-			else
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
-				EditorGUI.LabelField(position, label);
+				label           = propScope.content;
+				position.height = SingleLine;
 
-				using(FoCsEditor.Disposables.IndentSet(0))
+				if(string.IsNullOrEmpty(label.text))
+					DoFieldsDraw(position, property);
+				else
 				{
-					var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
-					DoFieldsDraw(pos, property);
+					EditorGUI.LabelField(position, label);
+
+					using(FoCsEditor.Disposables.IndentSet(0))
+					{
+						var pos = position.Edit(RectEdit.AddX(EditorGUIUtility.labelWidth),RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
+						DoFieldsDraw(pos, property);
+					}
 				}
 			}
 		}
@@ -44,9 +49,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(2, position))
 				{
 					property.Next(true);
-					EditorGUI.PropertyField(scope.GetNext().MoveWidth(-2), property, X_Content);
+					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1), RectEdit.SubtractWidth(2)), property, X_Content);
 					property.Next(true);
-					EditorGUI.PropertyField(scope.GetNext(), property, Y_Content);
+					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1)), property, Y_Content);
 				}
 			}
 		}
@@ -60,18 +65,22 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
 		{
-			position.height = SingleLine;
-
-			if(string.IsNullOrEmpty(label.text))
-				DoFieldsDraw(position, property);
-			else
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
-				EditorGUI.LabelField(position, label);
+				label           = propScope.content;
+				position.height = SingleLine;
 
-				using(FoCsEditor.Disposables.IndentSet(0))
+				if(string.IsNullOrEmpty(label.text))
+					DoFieldsDraw(position, property);
+				else
 				{
-					var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
-					DoFieldsDraw(pos, property);
+					EditorGUI.LabelField(position, label);
+
+					using(FoCsEditor.Disposables.IndentSet(0))
+					{
+						var pos = position.Edit(RectEdit.AddX(EditorGUIUtility.labelWidth),RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
+						DoFieldsDraw(pos, property);
+					}
 				}
 			}
 		}
@@ -83,11 +92,11 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(3, position))
 				{
 					property.Next(true);
-					EditorGUI.PropertyField(scope.GetNext(), property, X_Content);
+					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1), RectEdit.SubtractWidth(2)), property, X_Content);
 					property.Next(true);
-					EditorGUI.PropertyField(scope.GetNext(), property, Y_Content);
+					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1), RectEdit.SubtractWidth(2)), property, Y_Content);
 					property.Next(true);
-					EditorGUI.PropertyField(scope.GetNext(), property, Z_Content);
+					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1)), property, Z_Content);
 				}
 			}
 		}
@@ -101,18 +110,22 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
 		{
-			position.height = SingleLine;
-
-			if(string.IsNullOrEmpty(label.text))
-				DoFieldsDraw(position, property);
-			else
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
-				EditorGUI.LabelField(position, label);
+				label           = propScope.content;
+				position.height = SingleLine;
 
-				using(FoCsEditor.Disposables.IndentSet(0))
+				if(string.IsNullOrEmpty(label.text))
+					DoFieldsDraw(position, property);
+				else
 				{
-					var pos = position.MoveX(EditorGUIUtility.labelWidth).MoveWidth(-EditorGUIUtility.labelWidth);
-					DoFieldsDraw(pos, property);
+					EditorGUI.LabelField(position, label);
+
+					using(FoCsEditor.Disposables.IndentSet(0))
+					{
+						var pos = position.Edit(RectEdit.AddX(EditorGUIUtility.labelWidth), RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
+						DoFieldsDraw(pos, property);
+					}
 				}
 			}
 		}
@@ -124,13 +137,13 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(4, position))
 				{
 					property.Next(true);
-					EditorGUI.PropertyField(scope.GetNext(), property, X_Content);
+					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1), RectEdit.SubtractWidth(2)), property, X_Content);
 					property.Next(true);
-					EditorGUI.PropertyField(scope.GetNext(), property, Y_Content);
+					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1), RectEdit.SubtractWidth(2)), property, Y_Content);
 					property.Next(true);
-					EditorGUI.PropertyField(scope.GetNext(), property, Z_Content);
+					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1), RectEdit.SubtractWidth(2)), property, Z_Content);
 					property.Next(true);
-					EditorGUI.PropertyField(scope.GetNext(), property, W_Content);
+					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1)), property, W_Content);
 				}
 			}
 		}

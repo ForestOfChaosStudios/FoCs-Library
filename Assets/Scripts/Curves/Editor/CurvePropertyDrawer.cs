@@ -1,5 +1,7 @@
-﻿using ForestOfChaosLib.Editor.PropertyDrawers;
+﻿using ForestOfChaosLib.Editor;
+using ForestOfChaosLib.Editor.PropertyDrawers;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
 using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
@@ -19,22 +21,26 @@ namespace ForestOfChaosLib.Curves.Editor
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			var useGlobalSpaceProp = property.FindPropertyRelative("useGlobalSpace");
-			var positionsProp      = property.FindPropertyRelative("Positions");
-			var useGlobalBoolRect  = position;
-			useGlobalBoolRect.height = SingleLine;
-			position                 = position.ChangeY(SingleLine);
-			EditorGUI.PropertyField(useGlobalBoolRect, useGlobalSpaceProp);
-			var targ = property.GetTargetObjectOfProperty<ICurve>();
-
-			if(targ.IsFixedLength)
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
-				if(positionsProp.arraySize != targ.Length)
-					positionsProp.arraySize = targ.Length;
-			}
+				label = propScope.content;
+				var useGlobalSpaceProp = property.FindPropertyRelative("useGlobalSpace");
+				var positionsProp      = property.FindPropertyRelative("Positions");
+				var useGlobalBoolRect  = position;
+				useGlobalBoolRect.height = SingleLine;
+				position                 = position.Edit(RectEdit.ChangeY(SingleLine));
+				EditorGUI.PropertyField(useGlobalBoolRect, useGlobalSpaceProp);
+				var targ = property.GetTargetObjectOfProperty<ICurve>();
 
-			ListNullCheck(property);
-			list.HandleDrawing(position.ChangeX(16));
+				if(targ.IsFixedLength)
+				{
+					if(positionsProp.arraySize != targ.Length)
+						positionsProp.arraySize = targ.Length;
+				}
+
+				ListNullCheck(property);
+				list.HandleDrawing(position.Edit(RectEdit.ChangeX(16)));
+			}
 		}
 
 		private void ListNullCheck(SerializedProperty property)

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 				using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
 				{
-					FoCsGUI.PropertyField(position.SetHeight(SingleLine), property, label);
+					FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(SingleLine)), property, label);
 
 					if(changeCheckScope.changed && (property.objectReferenceValue != null))
 						serializedObject = new SerializedObject(property.objectReferenceValue);
@@ -41,7 +42,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);
-			foldOut = EditorGUI.Foldout(position.SetHeight(SingleLine).SetWidth(SingleLine), foldOut, foldoutGUIContent);
+			foldOut = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine)), foldOut, foldoutGUIContent);
 
 			if(!foldOut)
 				return;
@@ -52,7 +53,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			{
 				using(FoCsEditor.Disposables.Indent())
 				{
-					var drawPos = position.MoveY(SingleLinePlusPadding).MoveHeight(-SingleLinePlusPadding);
+					var drawPos = position.Edit(RectEdit.AddY(SingleLinePlusPadding),RectEdit.SubtractHeight(SingleLinePlusPadding));
 
 					do
 					{
@@ -70,7 +71,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		protected static void DrawSurroundingBox(Rect position)
 		{
 			if(Event.current.type == EventType.repaint)
-				GUI.skin.box.Draw(position.ChangeY(-1).MoveWidth(2), false, false, false, false);
+				GUI.skin.box.Draw(position.Edit(RectEdit.ChangeY(-1),RectEdit.AddWidth(2)), false, false, false, false);
 		}
 
 		protected static Rect DrawSubProp(SerializedProperty prop, Rect drawPos)

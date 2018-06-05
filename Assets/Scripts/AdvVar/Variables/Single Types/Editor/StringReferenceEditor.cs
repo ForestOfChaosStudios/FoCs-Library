@@ -33,7 +33,7 @@ public class StringReferenceEditor: FoCsEditor
 					serializedObject.ApplyModifiedProperties();
 			}
 
-			EditorGUILayout.GetControlRect(false, FoCsGUI.Utilities.Padding);
+			EditorGUILayout.GetControlRect(false, FoCsGUI.Padding);
 		}
 	}
 

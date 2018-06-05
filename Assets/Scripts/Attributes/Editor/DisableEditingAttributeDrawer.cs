@@ -12,15 +12,20 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			if(GetAttribute.AllowConfirmedEdit)
-				GetAttribute.CurrentlyEditable = FoCsGUI.DrawDisabledPropertyWithMenu(!GetAttribute.CurrentlyEditable, position, property, label, OPTIONS_ARRAY, GetAttribute.CurrentlyEditable? 0 : 1).Value == 0;
-			else
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
-				using(FoCsEditor.Disposables.DisabledScope(true))
-					EditorGUI.PropertyField(position, property, label);
+				label = propScope.content;
+
+				if(GetAttribute.AllowConfirmedEdit)
+					GetAttribute.CurrentlyEditable = FoCsGUI.DrawDisabledPropertyWithMenu(!GetAttribute.CurrentlyEditable, position, property, label, OPTIONS_ARRAY, GetAttribute.CurrentlyEditable? 0 : 1).Value == 0;
+				else
+				{
+					using(FoCsEditor.Disposables.DisabledScope(true))
+						FoCsGUI.PropertyField(position, property, label, true);
+				}
 			}
 		}
 
-		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label) => EditorGUI.GetPropertyHeight(prop, label);
+		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label) => FoCsGUI.GetPropertyHeight(prop, label, true);
 	}
 }

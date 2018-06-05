@@ -1,4 +1,5 @@
-﻿using ForestOfChaosLib.Editor.PropertyDrawers;
+﻿using ForestOfChaosLib.Editor;
+using ForestOfChaosLib.Editor.PropertyDrawers;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,7 +20,12 @@ namespace ForestOfChaosLib.Types.EventVariable.Editor
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			property.Next(true);
-			EditorGUI.PropertyField(position, property, label);
+
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			{
+				label = propScope.content;
+				EditorGUI.PropertyField(position, property, label);
+			}
 		}
 	}
 

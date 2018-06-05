@@ -5,30 +5,34 @@ using UnityEngine;
 namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 {
 	[CustomPropertyDrawer(typeof(ConditionalHideAttribute))]
-	public class ConditionalHideDrawerWithAttribute: FoCsPropertyDrawerWithAttribute<ConditionalHideAttribute>
+	public class ConditionalHideDrawer: FoCsPropertyDrawerWithAttribute<ConditionalHideAttribute>
 	{
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			//check if the property we want to draw should be enabled
-			var enabled = GetConditionalHideAttributeResult(GetAttribute, property);
-
-			//Enable/disable the property
-			var wasEnabled = GUI.enabled;
-			GUI.enabled = enabled;
-
-			//Check if we should draw the property
-			if(!GetAttribute.HideInInspector || enabled)
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
-				property.isExpanded   =  true;
-				EditorGUI.indentLevel += 1;
-				EditorGUI.PropertyField(position, property, label, true);
-				EditorGUI.indentLevel -= 1;
-			}
-			else
-				property.isExpanded = false;
+				label = propScope.content;
+				//check if the property we want to draw should be enabled
+				var enabled = GetConditionalHideAttributeResult(GetAttribute, property);
 
-			//Ensure that the next property that is being drawn uses the correct settings
-			GUI.enabled = wasEnabled;
+				//Enable/disable the property
+				var wasEnabled = GUI.enabled;
+				GUI.enabled = enabled;
+
+				//Check if we should draw the property
+				if(!GetAttribute.HideInInspector || enabled)
+				{
+					property.isExpanded   =  true;
+					EditorGUI.indentLevel += 1;
+					EditorGUI.PropertyField(position, property, label, true);
+					EditorGUI.indentLevel -= 1;
+				}
+				else
+					property.isExpanded = false;
+
+				//Ensure that the next property that is being drawn uses the correct settings
+				GUI.enabled = wasEnabled;
+			}
 		}
 
 		private static bool GetConditionalHideAttributeResult(ConditionalHideAttribute condHAtt, SerializedProperty property)

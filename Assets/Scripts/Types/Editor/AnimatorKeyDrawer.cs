@@ -1,6 +1,7 @@
 ﻿using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.PropertyDrawers;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
 
@@ -24,16 +25,16 @@ namespace ForestOfChaosLib.Animation
 			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
-				var labelPos = position.SetWidth(EditorGUIUtility.labelWidth);
+				var labelPos = position.Edit(RectEdit.SetWidth(EditorGUIUtility.labelWidth));
 				EditorGUI.LabelField(labelPos, label);
-				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(6, position.MoveX(labelPos.width).SetWidth(position.width - labelPos.width)))
+				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(6, position.Edit(RectEdit.AddX(labelPos.width), RectEdit.SetWidth(position.width - labelPos.width))))
 				{
 					using(FoCsEditor.Disposables.Indent(-1))
 					{
 						EditorGUI.LabelField(scope.GetNext(), KEY_LABEL);
-						EditorGUI.PropertyField(scope.GetNext().MoveX(-4), property.FindPropertyRelative(KEY), GUIContent.none);
+						EditorGUI.PropertyField(scope.GetNext(RectEdit.SubtractX(4)), property.FindPropertyRelative(KEY), GUIContent.none);
 						EditorGUI.LabelField(scope.GetNext(), KEY_TYPE_LABEL);
-						EditorGUI.PropertyField(scope.GetNext().MoveX(-4), property.FindPropertyRelative(KEY_TYPE), GUIContent.none);
+						EditorGUI.PropertyField(scope.GetNext(RectEdit.SubtractX(4)), property.FindPropertyRelative(KEY_TYPE), GUIContent.none);
 						var key     = property.GetTargetObjectOfProperty<AnimatorKey>();
 						var typeStr = INT_DATA;
 

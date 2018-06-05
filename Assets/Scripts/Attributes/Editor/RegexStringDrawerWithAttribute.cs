@@ -11,42 +11,46 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 		private const int helpHeight = 30;
 		private const int textHeight = 16;
 
-		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label)
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			if(IsValid(prop))
-				return base.GetPropertyHeight(prop, label);
+			if(IsValid(property))
+				return base.GetPropertyHeight(property, label);
 
-			return base.GetPropertyHeight(prop, label) + helpHeight;
+			return base.GetPropertyHeight(property, label) + helpHeight;
 		}
 
-		public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
+		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			var fieldPosition = position;
-			fieldPosition.height = textHeight;
-			DrawTextField(fieldPosition, prop, label);
-			var helpPosition = EditorGUI.IndentedRect(position);
-			helpPosition.y      += textHeight;
-			helpPosition.height =  helpHeight;
-			DrawHelpBox(helpPosition, prop);
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			{
+				label = propScope.content;
+				var fieldPosition = position;
+				fieldPosition.height = textHeight;
+				DrawTextField(fieldPosition, property, label);
+				var helpPosition = EditorGUI.IndentedRect(position);
+				helpPosition.y      += textHeight;
+				helpPosition.height =  helpHeight;
+				DrawHelpBox(helpPosition, property);
+			}
 		}
 
-		private static void DrawTextField(Rect position, SerializedProperty prop, GUIContent label)
+		private static void DrawTextField(Rect position, SerializedProperty property, GUIContent label)
 		{
 			EditorGUI.BeginChangeCheck();
-			var value = EditorGUI.TextField(position, label, prop.stringValue);
+			var value = EditorGUI.TextField(position, label, property.stringValue);
 
 			if(EditorGUI.EndChangeCheck())
-				prop.stringValue = value;
+				property.stringValue = value;
 		}
 
-		private void DrawHelpBox(Rect position, SerializedProperty prop)
+		private void DrawHelpBox(Rect position, SerializedProperty property)
 		{
-			if(IsValid(prop))
+			if(IsValid(property))
 				return;
 
 			EditorGUI.HelpBox(position, GetAttribute.helpMessage, MessageType.Error);
 		}
 
-		private bool IsValid(SerializedProperty prop) => Regex.IsMatch(prop.stringValue, GetAttribute.pattern);
+		private bool IsValid(SerializedProperty property) => Regex.IsMatch(property.stringValue, GetAttribute.pattern);
 	}
 }

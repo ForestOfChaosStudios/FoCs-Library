@@ -5,10 +5,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 {
 	public class FoCsPropertyDrawer: PropertyDrawer
 	{
-		public static float SingleLine            { get; } = FoCsGUI.Utilities.SingleLine;
-		public static float Padding               { get; } = FoCsGUI.Utilities.Padding;
-		public static float SingleLinePlusPadding { get; } = FoCsGUI.Utilities.SingleLinePlusPadding;
-		public static float IndentSize            { get; } = FoCsGUI.Utilities.IndentSize;
+		public static float SingleLine            { get; } = FoCsGUI.SingleLine;
+		public static float Padding               { get; } = FoCsGUI.Padding;
+		public static float SingleLinePlusPadding { get; } = FoCsGUI.SingleLinePlusPadding;
+		public static float IndentSize            { get; } = FoCsGUI.IndentSize;
 		public static float PropertyHeight(SerializedProperty      property, GUIContent label) => EditorGUI.GetPropertyHeight(property, label);
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => PropertyHeight(property, label);
 	}

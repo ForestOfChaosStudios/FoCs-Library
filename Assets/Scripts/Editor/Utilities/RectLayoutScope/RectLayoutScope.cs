@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Utilities
@@ -62,6 +64,44 @@ namespace ForestOfChaosLib.Editor.Utilities
 			}
 
 			return retVal;
+		}
+
+		/// <summary>
+		///     Gets the next rect in the layout
+		/// </summary>
+		/// <returns>Next rect</returns>
+		public Rect GetNext(params RectEdit[] edits)
+		{
+			if(CurrentIndex > Count)
+				throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
+
+			LastRect = NextRect;
+			var retVal = NextRect;
+			DoNextRect();
+
+			return retVal.Edit(edits);
+		}
+
+		/// <summary>
+		///     Gets the next rect in the layout with a size of "amount" elements
+		/// </summary>
+		/// <param name="amount">How many spaces should this take</param>
+		/// <returns>Returns the Next rect, size of "amount" elements</returns>
+		public Rect GetNext(int amount, params RectEdit[] edits)
+		{
+			if((CurrentIndex == Count) || (CurrentIndex + amount > Count))
+				throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
+
+			LastRect = NextRect;
+			var retVal = NextRect;
+
+			for(var i = 0; i < amount; i++)
+			{
+				DoNextRect();
+				retVal.width += NextRect.width;
+			}
+
+			return retVal.Edit(edits);
 		}
 
 		public void Dispose()

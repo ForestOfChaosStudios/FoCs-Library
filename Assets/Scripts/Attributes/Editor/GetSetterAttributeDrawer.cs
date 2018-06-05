@@ -17,16 +17,21 @@ namespace ForestOfChaosLib.Attributes
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var cc = FoCsEditor.Disposables.ChangeCheck())
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
-				GetAttribute.CallSetter = FoCsGUI.DrawPropertyWithMenu(position, property, label, OPTIONS_ARRAY, GetAttribute.CallSetter? 0 : 1).Value == 0;
+				label = propScope.content;
 
-				if(cc.changed)
-					GetAttribute.dirty = true;
+				using(var cc = FoCsEditor.Disposables.ChangeCheck())
+				{
+					GetAttribute.CallSetter = FoCsGUI.DrawPropertyWithMenu(position, property, label, OPTIONS_ARRAY, GetAttribute.CallSetter? 0 : 1).Value == 0;
+
+					if(cc.changed)
+						GetAttribute.dirty = true;
+				}
+
+				if(GetAttribute.dirty)
+					ElseLogic(property);
 			}
-
-			if(GetAttribute.dirty)
-				ElseLogic(property);
 		}
 
 		internal void ElseLogic(SerializedProperty property)

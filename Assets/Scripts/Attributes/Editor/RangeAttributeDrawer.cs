@@ -9,38 +9,42 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 		// Draw the property inside the given rect
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			// First get the attribute since it contains the range for the scrollbar
-			var range = attribute as RangeAttribute;
-			var pos   = position;
-			pos.height = SingleLine;
-
-			// Now draw the property as a Slider or an IntSlider based on whether it's a float or integer.
-			switch(property.propertyType)
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
-				case SerializedPropertyType.Float:
-					DoFloat(position, property, label, range);
+				label = propScope.content;
+				// First get the attribute since it contains the range for the scrollbar
+				var range = attribute as RangeAttribute;
+				var pos   = position;
+				pos.height = SingleLine;
 
-					break;
-				case SerializedPropertyType.String:
-					DoString(position, property, label, range);
+				// Now draw the property as a Slider or an IntSlider based on whether it's a float or integer.
+				switch(property.propertyType)
+				{
+					case SerializedPropertyType.Float:
+						DoFloat(position, property, label, range);
 
-					break;
-				case SerializedPropertyType.Integer:
-					DoInt(position, property, label, range);
+						break;
+					case SerializedPropertyType.String:
+						DoString(position, property, label, range);
 
-					break;
-				case SerializedPropertyType.Vector2:
-					DoVector2(position, property, label, range, pos);
+						break;
+					case SerializedPropertyType.Integer:
+						DoInt(position, property, label, range);
 
-					break;
-				case SerializedPropertyType.Vector3:
-					DoVector3(position, property, label, range, pos);
+						break;
+					case SerializedPropertyType.Vector2:
+						DoVector2(position, property, label, range, pos);
 
-					break;
-				default:
-					EditorGUI.LabelField(position, label.text, "Use Range with float, int, string, Vector2 & Vector3.");
+						break;
+					case SerializedPropertyType.Vector3:
+						DoVector3(position, property, label, range, pos);
 
-					break;
+						break;
+					default:
+						EditorGUI.LabelField(position, label.text, "Use Range with float, int, string, Vector2 & Vector3.");
+
+						break;
+				}
 			}
 		}
 
