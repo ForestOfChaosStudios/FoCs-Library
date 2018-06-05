@@ -160,20 +160,6 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		protected object[] GetPropertyAttributes(SerializedProperty property) => GetPropertyAttributes<PropertyAttribute>(property);
-
-		protected object[] GetPropertyAttributes<T>(SerializedProperty property) where T: Attribute
-		{
-			const BindingFlags bindingFlags = BindingFlags.GetField | BindingFlags.GetProperty | BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-
-			if(property.serializedObject.targetObject == null)
-				return null;
-
-			var targetType = property.serializedObject.targetObject.GetType();
-			var field      = targetType.GetField(property.name, bindingFlags);
-
-			return field != null? field.GetCustomAttributes(typeof(T), true) : null;
-		}
 
 		private ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property)
 		{
