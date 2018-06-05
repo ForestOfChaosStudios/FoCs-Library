@@ -1,4 +1,7 @@
-﻿using ForestOfChaosLib.Extensions;
+﻿using System;
+using System.Linq;
+using ForestOfChaosLib.Editor.PropertyDrawers;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
 using GUICon = UnityEngine.GUIContent;
@@ -6,6 +9,8 @@ using eInt = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<int>;
 using eBool = ForestOfChaosLib.Editor.FoCsGUI.GUIEventBool;
 using eFloat = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<float>;
 using eString = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<string>;
+using SerProp = UnityEditor.SerializedProperty;
+using eProp = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<UnityEditor.SerializedProperty>;
 
 namespace ForestOfChaosLib.Editor
 {
@@ -163,11 +168,112 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+#region PropertyField
+		private static eProp PropFieldMaster(Rect pos, SerProp prop, GUICon cont, bool includeChildren, AttributeCheck ignoreCheck)
+		{
+			var data = new eProp {Event = new Event(Event.current), Rect = pos, Value = prop};
+
+			if(ignoreCheck == AttributeCheck.DontCheck)
+				return DoPropSwitchDraw(pos, prop, cont, includeChildren, data);
+			else
+			{
+				var attributes = prop.GetSerializedPropertyAttributes();
+
+				if(attributes.Length == 0)
+					return DoPropSwitchDraw(pos, prop, cont, includeChildren, data);
+				else
+					EditorGUI.PropertyField(pos, prop, cont, includeChildren);
+			}
+
+			return data;
+		}
+
+		private static eProp DoPropSwitchDraw(Rect pos, SerProp prop, GUICon cont, bool includeChildren, eProp data)
+		{
+			switch(prop.propertyType)
+			{
+				case SerializedPropertyType.Quaternion:
+					Vector4PropEditor.Draw(pos, prop, cont);
+
+					return data;
+				default:
+					EditorGUI.PropertyField(pos, prop, cont, includeChildren);
+
+					return data;
+			}
+		}
+
+		public enum AttributeCheck
+		{
+			DontCheck,
+			DoCheck
+		}
+
+		public static eProp PropertyField(Rect pos, SerProp prop) =>
+				PropFieldMaster(pos, prop, new GUICon(prop.displayName), true, AttributeCheck.DontCheck);
+
+		public static eProp PropertyField(Rect pos, SerProp prop, bool includeChildren) =>
+				PropFieldMaster(pos, prop, new GUICon(prop.displayName), includeChildren, AttributeCheck.DontCheck);
+
+		public static eProp PropertyField(Rect pos, SerProp prop, AttributeCheck ignoreCheck) => PropFieldMaster(pos,                                 prop, new GUICon(prop.displayName), true,            ignoreCheck);
+		public static eProp PropertyField(Rect pos, SerProp prop, bool           includeChildren, AttributeCheck ignoreCheck) => PropFieldMaster(pos, prop, new GUICon(prop.displayName), includeChildren, ignoreCheck);
+
+		public static eProp PropertyField(Rect pos, SerProp prop, GUICon cont) =>
+				PropFieldMaster(pos, prop, cont, true, AttributeCheck.DontCheck);
+
+		public static eProp PropertyField(Rect pos, SerProp prop, GUICon cont, bool includeChildren) =>
+				PropFieldMaster(pos, prop, cont, includeChildren, AttributeCheck.DontCheck);
+
+		public static eProp PropertyField(Rect pos, SerProp prop, GUICon cont, bool           includeChildren, AttributeCheck ignoreAttributeCheck) => PropFieldMaster(pos, prop, cont, includeChildren, ignoreAttributeCheck);
+		public static eProp PropertyField(Rect pos, SerProp prop, GUICon cont, AttributeCheck ignoreCheck) => PropFieldMaster(pos, prop, cont, true, ignoreCheck);
+
+		private static float GetPropertyHeightMaster(SerProp prop, GUICon cont, bool includeChildren, AttributeCheck ignoreAttributeCheck)
+		{
+			if(ignoreAttributeCheck == AttributeCheck.DontCheck)
+				return DoPropSwitchHeight(prop, cont, includeChildren);
+			else
+			{
+				var attributes = prop.GetSerializedPropertyAttributes();
+
+				if(attributes.Length == 0)
+					return DoPropSwitchHeight(prop, cont, includeChildren);
+				else
+					return EditorGUI.GetPropertyHeight(prop, cont, includeChildren);
+			}
+		}
+
+		private static float DoPropSwitchHeight(SerProp prop, GUICon cont, bool includeChildren)
+		{
+			switch(prop.propertyType)
+			{
+				case SerializedPropertyType.Quaternion: return FoCsPropertyDrawer.PropertyHeight(prop, cont);
+				default:                                return EditorGUI.GetPropertyHeight(prop, cont, includeChildren);
+			}
+		}
+
+		public static float GetPropertyHeight(SerProp prop) => GetPropertyHeightMaster(prop,                                    new GUICon(prop.displayName), true,            AttributeCheck.DoCheck);
+		public static float GetPropertyHeight(SerProp prop, bool   includeChildren) => GetPropertyHeightMaster(prop,            new GUICon(prop.displayName), includeChildren, AttributeCheck.DoCheck);
+		public static float GetPropertyHeight(SerProp prop, GUICon cont, bool includeChildren) => GetPropertyHeightMaster(prop, cont,                         includeChildren, AttributeCheck.DoCheck);
+
+		public static float GetPropertyHeight(SerProp prop, GUICon cont) =>
+				GetPropertyHeightMaster(prop, cont, true, AttributeCheck.DoCheck);
+
+		public static float GetPropertyHeight(SerProp prop, AttributeCheck ignoreCheck) =>
+				GetPropertyHeightMaster(prop, new GUICon(prop.displayName), true, ignoreCheck);
+
+		public static float GetPropertyHeight(SerProp prop, bool includeChildren, AttributeCheck ignoreCheck) =>
+				GetPropertyHeightMaster(prop, new GUICon(prop.displayName), includeChildren, ignoreCheck);
+
+		public static float GetPropertyHeight(SerProp prop, GUICon cont, bool includeChildren, AttributeCheck ignoreCheck) =>
+				GetPropertyHeightMaster(prop, cont, includeChildren, ignoreCheck);
+
+		public static float GetPropertyHeight(SerProp prop, GUICon cont, AttributeCheck ignoreCheck) => GetPropertyHeightMaster(prop, cont, true, ignoreCheck);
+#endregion
 #region Other
 		private const float MENU_BUTTON_SIZE = 16f;
-		public static eInt DrawPropertyWithMenu(Rect position, SerializedProperty property, GUICon label, GUICon[] Options, int active) => DrawDisabledPropertyWithMenu(false, position, property, label, Options, active);
+		public static eInt DrawPropertyWithMenu(Rect position, SerProp property, GUICon label, GUICon[] Options, int active) => DrawDisabledPropertyWithMenu(false, position, property, label, Options, active);
 
-		public static eInt DrawDisabledPropertyWithMenu(bool disabled, Rect position, SerializedProperty property, GUICon label, GUICon[] Options, int active)
+		public static eInt DrawDisabledPropertyWithMenu(bool disabled, Rect position, SerProp property, GUICon label, GUICon[] Options, int active)
 		{
 			var propRect  = position.SetWidth(position.width - MENU_BUTTON_SIZE - 2).MoveHeight(-2);
 			var rectWidth = position.x + (position.width - (MENU_BUTTON_SIZE * (EditorGUI.indentLevel + 1)));
@@ -176,12 +282,12 @@ namespace ForestOfChaosLib.Editor
 			if(property.hasVisibleChildren)
 			{
 				using(FoCsEditor.Disposables.DisabledScope(disabled))
-					EditorGUI.PropertyField(propRect, property, label, true);
+					PropertyField(propRect, property, label, true);
 			}
 			else
 			{
 				using(FoCsEditor.Disposables.DisabledScope(disabled))
-					EditorGUI.PropertyField(propRect, property, label);
+					PropertyField(propRect, property, label);
 			}
 
 			var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);
