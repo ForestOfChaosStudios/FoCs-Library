@@ -70,7 +70,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		protected static void DrawSurroundingBox(Rect position)
 		{
-			if(Event.current.type == EventType.repaint)
+			if(Event.current.type == EventType.Repaint)
 				GUI.skin.box.Draw(position.Edit(RectEdit.ChangeY(-1), RectEdit.AddWidth(2)), false, false, false, false);
 		}
 
