@@ -1,4 +1,5 @@
 ﻿using ForestOfChaosLib.Generics;
+using ForestOfChaosLib.Utilities;
 using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.InputSystem
@@ -18,7 +19,7 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 
 		public void Reset()
 		{
-			Axes = Resources.FindObjectsOfTypeAll<AdvInputAxis>();
+			Axes = FoCsAssetFinder.FindAssetsByType<AdvInputAxis>();
 		}
 	}
 }
