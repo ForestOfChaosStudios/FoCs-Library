@@ -14,7 +14,15 @@ namespace ForestOfChaosLib.Editor.AssetPostProcessors
 				textureImporter.maxTextureSize = 128;
 			}
 			else if(textureImporter.assetPath.Contains("UI"))
+			{
 				textureImporter.textureType = TextureImporterType.Sprite;
+				//textureImporter.spritePixelsPerUnit = 512;
+			}
+			else if(textureImporter.assetPath.Contains("Sprite"))
+			{
+				textureImporter.textureType = TextureImporterType.Sprite;
+				//textureImporter.spritePixelsPerUnit = 512;
+			}
 		}
 	}
 }
