@@ -89,7 +89,6 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 					TypeList.RemoveAt(i);
 			}
 
-			TypeList.Add(typeof(GameObject));
 			TypeList.TrimExcess();
 		}
 
@@ -100,10 +99,16 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 				using(FoCsEditor.Disposables.HorizontalScope())
 				{
 					using(FoCsEditor.Disposables.VerticalScope(GUILayout.Width(TYPE_WIDTH)))
-						DrawTypePanel();
+					{
+						if(DrawTypePanel())
+							return;
+					}
 
 					using(FoCsEditor.Disposables.VerticalScope())
-						DrawObjectPanel();
+					{
+						if(DrawObjectPanel())
+							return;
+					}
 				}
 
 				if(cc.changed)
@@ -111,10 +116,13 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			}
 		}
 
-		private void DrawTypePanel()
+		private bool DrawTypePanel()
 		{
 			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.Height(16)))
 				FoCsGUI.Layout.Label("Type Selection", FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
+
+			if(DrawTypeSearchBox())
+				return true;
 
 			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, ToggleOp))
 			{
@@ -151,8 +159,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 				typeScrollPos = scroll.scrollPosition;
 			}
-
-			DrawTypeSearchBox();
+			return false;
 		}
 
 		private void DrawTypeLabel(int i)
@@ -170,7 +177,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			ChangeObjectType();
 		}
 
-		private void DrawTypeSearchBox()
+		private bool DrawTypeSearchBox()
 		{
 			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.ExpandWidth(true)))
 			{
@@ -181,10 +188,12 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 					var str = FoCsGUI.Layout.TextField(TypeSearch, GUILayout.ExpandWidth(true));
 
 					if(!cc.changed)
-						return;
+						return false;
 
 					TypeSearch = str;
 					Repaint();
+
+					return true;
 				}
 			}
 		}
@@ -235,7 +244,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			}
 		}
 
-		private void DrawObjectPanel()
+		private bool DrawObjectPanel()
 		{
 			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, GUILayout.Height(16)))
 				FoCsGUI.Layout.Label(TypeList[ActiveIndex].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
@@ -247,10 +256,12 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			else
 			{
 				DrawFoundScene(GUILayout.MinHeight((Screen.height * 0.4f) + 1), GUILayout.ExpandHeight(true));
-				DrawFoundAsset( /*GUILayout.MinHeight((Screen.height * 0.4f) + 1),*/ GUILayout.ExpandHeight(true));
+				DrawFoundAsset(GUILayout.ExpandHeight(true));
 			}
 
 			DrawInfo();
+
+			return false;
 		}
 
 		private void DrawFoundScene(params GUILayoutOption[] options)
@@ -410,14 +421,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 				FoundAssetsObjects.Clear();
 
 
-			FoundAssetsObjects.AddRange(FoCsAssetFinder.FindAssetsByType(ActiveType));
-
-			//FoundAssetsObjects.AddRange(Resources.LoadAll<Object>(""));
-			//foreach(var o in Resources.FindObjectsOfTypeAll<Object>())
-			//{
-			//	if(!FoundAssetsObjects.Contains(o))
-			//		FoundAssetsObjects.Add(o);
-			//}
+			FoundAssetsObjects.AddRange(FoCsAssetFinder.FindAssetsByTypeWithScene(ActiveType));
 
 			for(var i = FoundAssetsObjects.Count - 1; i >= 0; i--)
 			{
