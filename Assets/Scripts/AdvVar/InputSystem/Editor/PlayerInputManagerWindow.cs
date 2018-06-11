@@ -31,7 +31,7 @@ namespace ForestOfChaosLib.InputManager.Editor
 
 			using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
 			{
-				foreach(var input in AdvInputManager.Instance.AxisReferences)
+				foreach(var input in AdvInputManager.Instance.Axes)
 					DrawInput(input.Value);
 			}
 		}

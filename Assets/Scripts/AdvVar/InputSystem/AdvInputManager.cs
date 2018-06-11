@@ -5,12 +5,12 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 {
 	public class AdvInputManager: Singleton<AdvInputManager>
 	{
-		public AdvInputAxisReference[] AxisReferences;
-		public Vector2Variable         MousePosition = Vector2.zero;
+		public AdvInputAxis[]  Axes;
+		public Vector2Variable MousePosition = Vector2.zero;
 
 		public void Update()
 		{
-			foreach(var advInputAxisVariable in AxisReferences)
+			foreach(var advInputAxisVariable in Axes)
 				advInputAxisVariable.Value.UpdateDataAndCallEvents();
 
 			MousePosition.Value = Input.mousePosition;
@@ -18,7 +18,7 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 
 		public void Reset()
 		{
-			AxisReferences = Resources.FindObjectsOfTypeAll<AdvInputAxisReference>();
+			Axes = Resources.FindObjectsOfTypeAll<AdvInputAxis>();
 		}
 	}
 }

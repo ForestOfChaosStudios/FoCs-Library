@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 	[CreateAssetMenu(fileName = "Input Axis Variable", menuName = "ADV Variables/Input Axis", order = 2)]
 	[Serializable]
 	[AdvFolderNameForestOfChaos]
-	public class AdvInputAxisReference: AdvReferenceNoGetSetter<InputAxis>
+	public class AdvInputAxis: AdvReferenceNoGetSetter<InputAxis>
 	{
 		public bool OnlyButton
 		{
@@ -120,6 +120,6 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 			Value.CallEventsCustomValue(key, deadZone);
 		}
 
-		public static implicit operator float(AdvInputAxisReference input) => input.Value;
+		public static implicit operator float(AdvInputAxis input) => input.Value;
 	}
 }
