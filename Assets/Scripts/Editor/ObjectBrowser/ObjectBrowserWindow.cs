@@ -409,14 +409,8 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			else
 				FoundAssetsObjects.Clear();
 
-			var guids = AssetDatabase.FindAssets($"t:{ActiveType.Name}", null);
 
-			foreach(var guid in guids)
-			{
-				var obj = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), null);
-				//if(obj != null)
-				FoundAssetsObjects.Add(obj);
-			}
+			FoundAssetsObjects.AddRange(FoCsAssetFinder.FindAssetsByType(ActiveType));
 
 			//FoundAssetsObjects.AddRange(Resources.LoadAll<Object>(""));
 			//foreach(var o in Resources.FindObjectsOfTypeAll<Object>())
