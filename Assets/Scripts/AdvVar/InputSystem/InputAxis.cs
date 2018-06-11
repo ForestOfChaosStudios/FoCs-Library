@@ -64,7 +64,7 @@ namespace ForestOfChaosLib.InputManager
 
 		public void UpdateData()
 		{
-			m_Value = Input.GetAxis(Axis);
+			m_Value = Input.GetAxisRaw(Axis);
 
 			if(Input.GetButtonUp(Axis))
 				KeyPos = KeyPosition.Up;
