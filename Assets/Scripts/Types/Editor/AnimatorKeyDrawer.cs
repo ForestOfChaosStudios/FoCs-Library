@@ -15,10 +15,10 @@ namespace ForestOfChaosLib.Animation
 		private const string KEY_TYPE       = "KeyType";
 		private const string KEY_TYPE_LABEL = "Key Type";
 		private const string LABEL          = "Key Data";
-		private const string INT_DATA       = "intData";
-		private const string FLOAT_DATA     = "floatData";
-		private const string BOOL_DATA      = "boolData";
-		private const string TRIGGER_DATA   = "triggerData";
+		private const string INT_DATA       = "IntData";
+		private const string FLOAT_DATA     = "FloatData";
+		private const string BOOL_DATA      = "BoolData";
+		private const string TRIGGER_DATA   = "TriggerData";
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
