@@ -1,3 +1,5 @@
+using ForestOfChaosLib.AdvVar;
+using ForestOfChaosLib.AdvVar.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -40,12 +42,22 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 						DoVector3(position, property, label, range, pos);
 
 						break;
+					case SerializedPropertyType.Generic:
+						DoGeneric(position, property, label, range, pos);
+
+						break;
 					default:
-						EditorGUI.LabelField(position, label.text, "Use Range with float, int, string, Vector2 & Vector3.");
+						DrawErrorMessage(position, label);
 
 						break;
 				}
 			}
+		}
+
+
+		private static void DrawErrorMessage(Rect position, GUIContent label)
+		{
+			EditorGUI.LabelField(position, label.text, "Use Range with float, int, string, Vector2 & Vector3.");
 		}
 
 		private static void DoFloat(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range)
@@ -103,6 +115,25 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 			if(property.stringValue.Length > range.max)
 				property.stringValue = property.stringValue.Substring(0, (int)range.max);
+		}
+
+		private static void DoGeneric(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, Rect pos)
+		{
+			var obj = property.GetTargetObjectOfProperty();
+			bool foldout = false;
+			SerializedObject serObj = null;
+			if(obj is IntVariable)
+			{
+				AdvReferencePropertyDrawerBase.DoDraw(position, property,ref foldout,ref label,ref serObj, (rect) => DoInt(rect, property.FindPropertyRelative("LocalValue"), label, range));
+			}
+			else if(obj is FloatVariable)
+			{
+				AdvReferencePropertyDrawerBase.DoDraw(position, property,ref foldout,ref label,ref serObj, (rect) => DoFloat(rect, property.FindPropertyRelative("LocalValue"), label, range));
+			}
+			else if(obj is StringVariable)
+			{
+				AdvReferencePropertyDrawerBase.DoDraw(position, property,ref foldout,ref label,ref serObj, (rect) => DoString(position, property.FindPropertyRelative("LocalValue"), label, range));
+			}
 		}
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
