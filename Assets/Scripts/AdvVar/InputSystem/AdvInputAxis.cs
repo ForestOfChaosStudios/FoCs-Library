@@ -121,5 +121,18 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 		}
 
 		public static implicit operator float(AdvInputAxis input) => input.Value;
+
+
+		public static implicit operator AdvInputAxis(string input)
+		{
+#if UNITY_EDITOR
+			foreach(var axis in Utilities.FoCsAssetFinder.FindAssetsByType<AdvInputAxis>())
+			{
+				if(axis.Value.Axis == input)
+					return axis;
+			}
+#endif
+			return null;
+		}
 	}
 }
