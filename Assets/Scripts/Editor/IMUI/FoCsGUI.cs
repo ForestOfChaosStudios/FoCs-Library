@@ -1,4 +1,5 @@
-﻿using ForestOfChaosLib.Editor.PropertyDrawers;
+﻿using System;
+using ForestOfChaosLib.Editor.PropertyDrawers;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
@@ -326,6 +327,21 @@ namespace ForestOfChaosLib.Editor
 				using(FoCsEditor.Disposables.DisabledScope(disabled))
 					PropertyField(propRect, property, label);
 			}
+
+			var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);
+
+			return GUIEvent.Create(position, index);
+		}
+		public static eInt DrawActionWithMenu(Rect position, Action<Rect> draw, GUICon label, GUICon[] Options, int active) => DrawActionWithMenu(false, position, draw, label, Options, active);
+
+		public static eInt DrawActionWithMenu(bool disabled, Rect position, Action<Rect> draw, GUICon label, GUICon[] Options, int active)
+		{
+			var propRect  = position.Edit(RectEdit.SetWidth(position.width - MENU_BUTTON_SIZE         - 2), RectEdit.SubtractHeight(2));
+			var rectWidth = position.x + (position.width - (MENU_BUTTON_SIZE * (EditorGUI.indentLevel + 1)));
+			var menuRect  = new Rect(rectWidth, position.y, position.width - rectWidth, position.height);
+
+			using(FoCsEditor.Disposables.DisabledScope(disabled))
+				draw.Trigger(propRect);
 
 			var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);
 
