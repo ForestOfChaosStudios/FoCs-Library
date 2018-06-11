@@ -33,16 +33,20 @@ namespace ForestOfChaosLib.Generics
 
 		public static bool InstanceNull => Instance == null;
 
-		public static void CreateInstance()
+		public static GameObject CreateInstance()
 		{
 			var go = new GameObject($"{typeof(S)} Instance", typeof(S));
 			go.transform.ResetLocalPosRotScale();
+
+			return go;
 		}
 
-		public static void CreateInstance(string name)
+		public static GameObject CreateInstance(string name)
 		{
 			var go = new GameObject(name, typeof(S));
 			go.transform.ResetLocalPosRotScale();
+
+			return go;
 		}
 
 		public void DestroyOtherInstances()
