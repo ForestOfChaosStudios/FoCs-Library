@@ -11,7 +11,7 @@ namespace ForestOfChaosLib.AdvVar
 	{
 		public static implicit operator Vector3IVariable(Vector3I input)
 		{
-			var fR = new Vector3IVariable {UseConstant = true, Value = input};
+			var fR = new Vector3IVariable {UseLocal = true, Value = input};
 
 			return fR;
 		}

@@ -10,20 +10,20 @@ namespace ForestOfChaosLib.AdvVar.Base
 		private AdvVariableInternals _InternalData;
 
 		/*[GetSetter("Value")] */
-		[SerializeField] private T ConstantValue;
+		[SerializeField] private T LocalValue;
 
 		/*[GetSetter("Value")] */
-		[SerializeField] private aT Variable;
+		[SerializeField] private aT Reference;
 
 		public T Value
 		{
-			get { return UseConstant? ConstantValue : Variable.Value; }
+			get { return UseLocal? LocalValue : Reference.Value; }
 			set
 			{
-				if(UseConstant)
-					ConstantValue = value;
+				if(UseLocal)
+					LocalValue = value;
 				else
-					Variable.Value = value;
+					Reference.Value = value;
 
 				OnValueChange.Trigger();
 			}
@@ -32,23 +32,23 @@ namespace ForestOfChaosLib.AdvVar.Base
 		public AdvVariableInternals InternalData => _InternalData ?? (_InternalData = new AdvVariableInternals(this));
 		public AdvVariable() { }
 
-		public AdvVariable(T constantValue)
+		public AdvVariable(T localValue)
 		{
-			ConstantValue = constantValue;
-			UseConstant   = true;
+			LocalValue = localValue;
+			UseLocal   = true;
 		}
 
-		public AdvVariable(aT variable)
+		public AdvVariable(aT reference)
 		{
-			Variable    = variable;
-			UseConstant = false;
+			Reference    = reference;
+			UseLocal = false;
 		}
 
-		public AdvVariable(T constantValue, aT variable, bool useConstant = false)
+		public AdvVariable(T localValue, aT reference, bool useLocal = false)
 		{
-			ConstantValue = constantValue;
-			Variable      = variable;
-			UseConstant   = useConstant;
+			LocalValue = localValue;
+			Reference      = reference;
+			UseLocal   = useLocal;
 		}
 
 		public static implicit operator T(AdvVariable<T, aT> input) => input.Value;
@@ -57,16 +57,16 @@ namespace ForestOfChaosLib.AdvVar.Base
 		{
 			private readonly AdvVariable<T, aT> classRef;
 
-			public aT GlobalVariable
+			public aT GlobalReference
 			{
-				get { return classRef.Variable; }
-				set { classRef.Variable = value; }
+				get { return classRef.Reference; }
+				set { classRef.Reference = value; }
 			}
 
-			public T ConstantValue
+			public T LocalValue
 			{
-				get { return classRef.ConstantValue; }
-				set { classRef.ConstantValue = value; }
+				get { return classRef.LocalValue; }
+				set { classRef.LocalValue = value; }
 			}
 
 			public AdvVariableInternals(AdvVariable<T, aT> _classRef)
@@ -82,6 +82,6 @@ namespace ForestOfChaosLib.AdvVar.Base
 	public class AdvVariable
 	{
 		public Action OnValueChange;
-		public bool   UseConstant;
+		public bool   UseLocal;
 	}
 }

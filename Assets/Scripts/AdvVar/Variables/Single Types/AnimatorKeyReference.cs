@@ -53,7 +53,7 @@ namespace ForestOfChaosLib.AdvVar
 
 		public static implicit operator AnimatorKeyVariable(AnimatorKey input)
 		{
-			var fR = new AnimatorKeyVariable {UseConstant = true, Value = input};
+			var fR = new AnimatorKeyVariable {UseLocal = true, Value = input};
 
 			return fR;
 		}

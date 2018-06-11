@@ -31,8 +31,8 @@ namespace ForestOfChaosLib.AdvVar
 		public static void Int_Global_OnChange_Event()
 		{
 			var b = false;
-			var f = new IntVariable {UseConstant = false};
-			f.InternalData.GlobalVariable =  ScriptableObject.CreateInstance<IntReference>();
+			var f = new IntVariable {UseLocal = false};
+			f.InternalData.GlobalReference =  ScriptableObject.CreateInstance<IntReference>();
 			f.OnValueChange               += () => b = true;
 			f.Value                       =  6;
 			Assert.True(b);

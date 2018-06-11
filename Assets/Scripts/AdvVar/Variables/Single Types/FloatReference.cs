@@ -10,7 +10,7 @@ namespace ForestOfChaosLib.AdvVar
 	{
 		public static implicit operator FloatVariable(float input)
 		{
-			var fR = new FloatVariable {UseConstant = true, Value = input};
+			var fR = new FloatVariable {UseLocal = true, Value = input};
 
 			return fR;
 		}

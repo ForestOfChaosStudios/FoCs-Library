@@ -14,7 +14,7 @@ public class AdvTestComp: FoCsBehavior
 	private void OnValueChange()
 	{
 		Debug.Log("Float Changed");
-		Float.InternalData.ConstantValue = 17;
+		Float.InternalData.LocalValue = 17;
 	}
 
 	private void OnDisable()

@@ -11,7 +11,7 @@ namespace ForestOfChaosLib.AdvVar
 	{
 		public static implicit operator TransformVariable(Transform input)
 		{
-			var fR = new TransformVariable {UseConstant = true, Value = input};
+			var fR = new TransformVariable {UseLocal = true, Value = input};
 
 			return fR;
 		}

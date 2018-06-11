@@ -31,8 +31,8 @@ namespace ForestOfChaosLib.AdvVar
 		public static void Float_Global_OnChange_Event()
 		{
 			var b = false;
-			var f = new FloatVariable {UseConstant = false};
-			f.InternalData.GlobalVariable =  ScriptableObject.CreateInstance<FloatReference>();
+			var f = new FloatVariable {UseLocal = false};
+			f.InternalData.GlobalReference =  ScriptableObject.CreateInstance<FloatReference>();
 			f.OnValueChange               += () => b = true;
 			f.Value                       =  6;
 			Assert.True(b);

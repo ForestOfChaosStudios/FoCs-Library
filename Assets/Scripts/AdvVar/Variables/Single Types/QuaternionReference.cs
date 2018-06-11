@@ -11,7 +11,7 @@ namespace ForestOfChaosLib.AdvVar
 	{
 		public static implicit operator QuaternionVariable(Quaternion input)
 		{
-			var fR = new QuaternionVariable {UseConstant = true, Value = input};
+			var fR = new QuaternionVariable {UseLocal = true, Value = input};
 
 			return fR;
 		}

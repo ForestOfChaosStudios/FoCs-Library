@@ -10,7 +10,7 @@ namespace ForestOfChaosLib.AdvVar
 	{
 		public static implicit operator StringVariable(string input)
 		{
-			var fR = new StringVariable {UseConstant = true, Value = input};
+			var fR = new StringVariable {UseLocal = true, Value = input};
 
 			return fR;
 		}
