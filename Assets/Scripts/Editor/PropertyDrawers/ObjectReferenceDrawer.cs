@@ -10,7 +10,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 	public class ObjectReferenceDrawer: FoCsPropertyDrawer
 	{
 		protected static readonly GUIContent       foldoutGUIContent = new GUIContent("", "Open up the References Data");
-		protected                 bool             foldOut;
+		protected                 bool             foldout;
 		protected                 SerializedObject serializedObject;
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -42,9 +42,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);
-			foldOut = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine)), foldOut, foldoutGUIContent);
+			foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine)), foldout, foldoutGUIContent);
 
-			if(!foldOut)
+			if(!foldout)
 				return;
 
 			DrawSurroundingBox(position);
@@ -86,7 +86,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			if((serializedObject == null) || !foldOut || (serializedObject.VisibleProperties() == 0))
+			if((serializedObject == null) || !foldout || (serializedObject.VisibleProperties() == 0))
 				return SingleLine;
 
 			var iterator = serializedObject.GetIterator();
