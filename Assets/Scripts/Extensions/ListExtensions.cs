@@ -77,5 +77,12 @@ namespace ForestOfChaosLib.Extensions
 
 			return list[new SRandom(seed).Next(0, list.Count - 1)];
 		}
+
+		public static void AddWithDuplicateCheck<T>(this List<T> list, T obj)
+		{
+			if(!list.Contains(obj))
+				list.Add(obj);
+		}
+
 	}
 }
