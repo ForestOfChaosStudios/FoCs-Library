@@ -24,7 +24,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 					FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(SingleLine)), property, label);
 
 					if(changeCheckScope.changed && (property.objectReferenceValue != null))
+					{
+						property.serializedObject.ApplyModifiedProperties();
 						serializedObject = new SerializedObject(property.objectReferenceValue);
+					}
 				}
 			}
 
@@ -35,7 +38,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				return;
 			}
 
-			serializedObject = new SerializedObject(property.objectReferenceValue);
+			if(serializedObject == null)
+				serializedObject = new SerializedObject(property.objectReferenceValue);
 
 			if(serializedObject.VisibleProperties() == 0)
 				return;

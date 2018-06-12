@@ -22,18 +22,15 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			DoDraw(position, property, ref foldout, ref label);
+			foldout = DoDraw(position, property, foldout, ref label);
 		}
 
-		public static void DoDraw(Rect position, SerializedProperty property, ref bool foldout, ref GUIContent label)
+		public static bool DoDraw(Rect position, SerializedProperty property, bool foldout, ref GUIContent label)
 		{
-			property.serializedObject.Update();
 			var useLocal        = property.FindPropertyRelative(USE_LOCAL_STR);
 			var localValue      = property.FindPropertyRelative(LOCAL_VALUE_STR);
 			var globalReference = property.FindPropertyRelative(REFERENCE_STR);
 
-			using(var cc = FoCsEditor.Disposables.ChangeCheck())
-			{
 				using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 				{
 					label = propScope.content;
@@ -41,24 +38,66 @@ namespace ForestOfChaosLib.AdvVar.Editor
 					useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), useLocal.boolValue? localValue : globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 				}
 
-				if(cc.changed)
-				{
-					property.serializedObject.ApplyModifiedProperties();
-				}
-			}
-
 			if(globalReference.objectReferenceValue)
-				DrawReferenceObjectsData(position, ref foldout, ref useLocal, ref globalReference);
+				return DrawReferenceObjectsData(position, foldout, ref useLocal, ref globalReference);
+
+			return foldout;
 		}
 
-		public static void DoDraw(Rect position, SerializedProperty property, ref bool foldout, ref GUIContent label, ref SerializedObject serializedObject, Action<Rect> drawLocalValue)
+		public static void DoDraw(Rect position, SerializedProperty property, GUIContent label, Action<Rect> drawLocalValue)
 		{
 			var useLocal        = property.FindPropertyRelative(USE_LOCAL_STR);
 			var localValue      = property.FindPropertyRelative(LOCAL_VALUE_STR);
 			var globalReference = property.FindPropertyRelative(REFERENCE_STR);
 
-			using(var cc = FoCsEditor.Disposables.ChangeCheck())
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
+				label = propScope.content;
+
+				if(useLocal.boolValue)
+				{
+					if(drawLocalValue == null)
+						useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), localValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+					else
+						useLocal.boolValue = FoCsGUI.DrawActionWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), drawLocalValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+				}
+				else
+					useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+			}
+		}
+		public static bool DoDraw(Rect position, SerializedProperty property, bool foldout, GUIContent label, Action<Rect> drawLocalValue)
+		{
+			var useLocal        = property.FindPropertyRelative(USE_LOCAL_STR);
+			var localValue      = property.FindPropertyRelative(LOCAL_VALUE_STR);
+			var globalReference = property.FindPropertyRelative(REFERENCE_STR);
+
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			{
+				label = propScope.content;
+
+				if(useLocal.boolValue)
+				{
+					if(drawLocalValue == null)
+						useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), localValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+					else
+						useLocal.boolValue = FoCsGUI.DrawActionWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), drawLocalValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+				}
+				else
+					useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+			}
+
+			if(globalReference.objectReferenceValue)
+				return DrawReferenceObjectsData(position, foldout, ref useLocal, ref globalReference);
+
+			return foldout;
+		}
+
+		public static bool DoDraw(Rect position, SerializedProperty property, bool foldout, ref GUIContent label, ref SerializedObject serializedObject, Action<Rect> drawLocalValue)
+		{
+			var useLocal        = property.FindPropertyRelative(USE_LOCAL_STR);
+			var localValue      = property.FindPropertyRelative(LOCAL_VALUE_STR);
+			var globalReference = property.FindPropertyRelative(REFERENCE_STR);
+
 				using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 				{
 					label = propScope.content;
@@ -74,18 +113,14 @@ namespace ForestOfChaosLib.AdvVar.Editor
 						useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 				}
 
-				if(cc.changed)
-				{
-					property.serializedObject.ApplyModifiedProperties();
-				}
-			}
-
 			if(globalReference.objectReferenceValue)
-				DrawReferenceObjectsData(position, ref foldout, ref useLocal, ref globalReference);
+				return DrawReferenceObjectsData(position, foldout, ref useLocal, ref globalReference);
+
+			return foldout;
 		}
 
 
-		private static SerializedObject DrawReferenceObjectsData(Rect position, ref bool foldout, ref SerializedProperty useLocal, ref SerializedProperty globalReference)
+		private static bool DrawReferenceObjectsData(Rect position, bool foldout, ref SerializedProperty useLocal, ref SerializedProperty globalReference)
 		{
 			var serializedObject = new SerializedObject(globalReference.objectReferenceValue);
 			var iterator         = serializedObject.GetIterator();
@@ -127,7 +162,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				}
 			}
 
-			return serializedObject;
+			return foldout;
 		}
 	}
 }

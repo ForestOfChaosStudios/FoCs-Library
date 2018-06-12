@@ -1,7 +1,9 @@
 using ForestOfChaosLib.AdvVar;
 using ForestOfChaosLib.AdvVar.Editor;
+using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+using RangeAttribute = UnityEngine.RangeAttribute;
 
 namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 {
@@ -9,6 +11,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 	public class RangeAttributeDrawer: FoCsPropertyDrawerWithAttribute<RangeAttribute>
 	{
 		// Draw the property inside the given rect
+		private bool foldout = false;
+
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
@@ -43,7 +47,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 						break;
 					case SerializedPropertyType.Generic:
-						DoGeneric(position, property, label, range, pos);
+						foldout = DoGeneric(position, property, label, range, foldout);
 
 						break;
 					default:
@@ -117,23 +121,24 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 				property.stringValue = property.stringValue.Substring(0, (int)range.max);
 		}
 
-		private static void DoGeneric(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, Rect pos)
+		private static bool DoGeneric(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout)
 		{
 			var obj = property.GetTargetObjectOfProperty();
-			bool foldout = false;
-			SerializedObject serObj = null;
+
 			if(obj is IntVariable)
 			{
-				AdvReferencePropertyDrawerBase.DoDraw(position, property,ref foldout,ref label,ref serObj, (rect) => DoInt(rect, property.FindPropertyRelative("LocalValue"), label, range));
+				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, (rect) => DoInt(rect, property.FindPropertyRelative("LocalValue"), label, range));
 			}
 			else if(obj is FloatVariable)
 			{
-				AdvReferencePropertyDrawerBase.DoDraw(position, property,ref foldout,ref label,ref serObj, (rect) => DoFloat(rect, property.FindPropertyRelative("LocalValue"), label, range));
+				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, (rect) => DoFloat(rect, property.FindPropertyRelative("LocalValue"), label, range));
 			}
 			else if(obj is StringVariable)
 			{
-				AdvReferencePropertyDrawerBase.DoDraw(position, property,ref foldout,ref label,ref serObj, (rect) => DoString(position, property.FindPropertyRelative("LocalValue"), label, range));
+				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, (rect) => DoString(position, property.FindPropertyRelative("LocalValue"), label, range));
 			}
+
+			return foldout;
 		}
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -142,6 +147,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			{
 				case SerializedPropertyType.Vector2: return SingleLine * 3;
 				case SerializedPropertyType.Vector3: return SingleLine * 4;
+				case SerializedPropertyType.Generic: return FoCsGUI.GetPropertyHeight(property, FoCsGUI.AttributeCheck.DontCheck);
 				default:                             return SingleLine;
 			}
 		}
