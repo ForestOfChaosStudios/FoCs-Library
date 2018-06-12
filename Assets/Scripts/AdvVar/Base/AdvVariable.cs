@@ -17,7 +17,19 @@ namespace ForestOfChaosLib.AdvVar.Base
 
 		public T Value
 		{
-			get { return UseLocal? LocalValue : Reference.Value; }
+			get
+			{
+				if(UseLocal)
+				{
+					return LocalValue;
+				}
+				else
+				{
+					if(Reference == null)
+						throw new AdvVariableReferenceMissingError();
+					return Reference.Value;
+				}
+			}
 			set
 			{
 				if(UseLocal)
@@ -73,6 +85,12 @@ namespace ForestOfChaosLib.AdvVar.Base
 			{
 				classRef = _classRef;
 			}
+		}
+
+		public class AdvVariableReferenceMissingError: Exception
+		{
+			public AdvVariableReferenceMissingError():base($"Missing Reference of {typeof(aT)}, Set to Local, or add reference.")
+			{ }
 		}
 	}
 
