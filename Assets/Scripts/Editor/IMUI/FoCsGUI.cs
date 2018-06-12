@@ -315,7 +315,8 @@ namespace ForestOfChaosLib.Editor
 		{
 			var propRect  = position.Edit(RectEdit.SetWidth(position.width - MENU_BUTTON_SIZE         - 2), RectEdit.SubtractHeight(2));
 			var rectWidth = position.x + (position.width - (MENU_BUTTON_SIZE * (EditorGUI.indentLevel + 1)));
-			var menuRect  = new Rect(rectWidth, position.y, position.width - rectWidth, position.height);
+
+			var menuRect = new Rect(rectWidth, position.y, position.width - rectWidth, position.height);
 
 			if(property.hasVisibleChildren)
 			{
@@ -327,7 +328,6 @@ namespace ForestOfChaosLib.Editor
 				using(FoCsEditor.Disposables.DisabledScope(disabled))
 					PropertyField(propRect, property, label);
 			}
-
 			var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);
 
 			return GUIEvent.Create(position, index);
