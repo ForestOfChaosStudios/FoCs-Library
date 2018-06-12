@@ -23,7 +23,7 @@ public class StringReferenceEditor: FoCsEditor
 				{
 					GUI.color = cachedGuiColor;
 
-					if(serializedProperty.name == "_value")
+					if(serializedProperty.name == "value")
 						DoTextBox(serializedProperty);
 					else
 						HandleProperty(serializedProperty);

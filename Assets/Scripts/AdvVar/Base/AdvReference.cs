@@ -1,5 +1,4 @@
 ﻿using System;
-using ForestOfChaosLib.Attributes;
 using ForestOfChaosLib.Extensions;
 using UnityEngine;
 
@@ -7,29 +6,14 @@ namespace ForestOfChaosLib.AdvVar.Base
 {
 	public class AdvReference<T>: AdvReference
 	{
-		[SerializeField] [GetSetter("Value")] protected T _value;
+		[SerializeField] protected T value;
 
 		public T Value
 		{
-			get { return _value; }
+			get { return value; }
 			set
 			{
-				_value = value;
-				OnValueChange.Trigger();
-			}
-		}
-	}
-
-	public class AdvReferenceNoGetSetter<T>: AdvReference
-	{
-		[SerializeField] protected T _value;
-
-		public T Value
-		{
-			get { return _value; }
-			set
-			{
-				_value = value;
+				this.value = value;
 				OnValueChange.Trigger();
 			}
 		}
