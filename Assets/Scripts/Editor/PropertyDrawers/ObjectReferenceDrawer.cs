@@ -13,6 +13,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		protected                 bool             foldout;
 		protected                 SerializedObject serializedObject;
 
+		protected virtual bool AllowFoldout => true;
+
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
@@ -31,7 +33,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				}
 			}
 
-			if(property.objectReferenceValue == null)
+			if(property.objectReferenceValue == null || !AllowFoldout)
 			{
 				serializedObject = null;
 

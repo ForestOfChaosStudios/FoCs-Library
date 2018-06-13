@@ -36,7 +36,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 					serializedObject = new SerializedObject(@ref.objectReferenceValue);
 				}
 			}
-			return PropertyHeight(serializedObject, foldout);
+			return PropertyHeight(serializedObject, foldout) + 1;
 		}
 
 		public static bool DoDraw(Rect position, SerializedProperty property, bool foldout, ref GUIContent label)
@@ -144,8 +144,9 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 				if(foldout)
 				{
+					position.height += 1;
 					DrawSurroundingBox(position);
-
+					position.y += Padding;
 					using(FoCsEditor.Disposables.Indent())
 					{
 						using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())

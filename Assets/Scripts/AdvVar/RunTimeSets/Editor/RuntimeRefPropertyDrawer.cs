@@ -1,13 +1,16 @@
 ﻿using ForestOfChaosLib.Editor.PropertyDrawers;
 using UnityEditor;
+using UnityEngine;
 
 //TODO This file
 namespace ForestOfChaosLib.AdvVar.RuntimeRef.Editor
 {
 	[CustomPropertyDrawer(typeof(RunTimeRef), true)]
-	public class RuntimeRefPropertyDrawer: FoCsPropertyDrawer<RunTimeRef>
+	public class RuntimeRefPropertyDrawer: ObjectReferenceDrawer
 	{
-		//public override void  OnGUI(Rect                           position, SerializedProperty property, GUIContent label) { EditorGUI.ObjectField(position, property, label); }
-		//public override float GetPropertyHeight(SerializedProperty property, GUIContent         label) => SingleLinePlusPadding;
+		protected override bool AllowFoldout => false;
+
+		public override void  OnGUI(Rect                           position, SerializedProperty property, GUIContent label) { EditorGUI.ObjectField(position, property, label); }
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent         label) => SingleLinePlusPadding;
 	}
 }
