@@ -2,7 +2,6 @@
 using ForestOfChaosLib.AdvVar.Base;
 using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.PropertyDrawers;
-using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
@@ -28,15 +27,12 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			{
-				var @ref = property.GetReference();
+			var @ref = property.GetReference();
 
-				if(@ref.objectReferenceValue)
-				{
-					serializedObject = new SerializedObject(@ref.objectReferenceValue);
-				}
-			}
-			return PropertyHeight(serializedObject, foldout) + 1;
+			if(@ref.objectReferenceValue)
+				serializedObject = new SerializedObject(@ref.objectReferenceValue);
+
+			return PropertyHeight(serializedObject, foldout);
 		}
 
 		public static bool DoDraw(Rect position, SerializedProperty property, bool foldout, ref GUIContent label)
@@ -49,7 +45,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			{
 				label = propScope.content;
 
-				useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), useLocal.boolValue? localValue : globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+				useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.ChangeY(1)), useLocal.boolValue? localValue : globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 			}
 
 			if(globalReference.objectReferenceValue)
@@ -71,12 +67,12 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				if(useLocal.boolValue)
 				{
 					if(drawLocalValue == null)
-						useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), localValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+						useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)), localValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 					else
-						useLocal.boolValue = FoCsGUI.DrawActionWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), drawLocalValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+						useLocal.boolValue = FoCsGUI.DrawActionWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)), drawLocalValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 				}
 				else
-					useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+					useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)), globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 			}
 		}
 		public static bool DoDraw(Rect position, SerializedProperty property, bool foldout, GUIContent label, Action<Rect> drawLocalValue)
@@ -92,12 +88,11 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				if(useLocal.boolValue)
 				{
 					if(drawLocalValue == null)
-						useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), localValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+						useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)),localValue,label,OPTIONS_ARRAY,useLocal.boolValue ? 0 : 1).Value == 0;
 					else
-						useLocal.boolValue = FoCsGUI.DrawActionWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), drawLocalValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
-				}
-				else
-					useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+						useLocal.boolValue = FoCsGUI.DrawActionWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)),drawLocalValue,label,OPTIONS_ARRAY,useLocal.boolValue ? 0 : 1).Value == 0;
+				} else
+					useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)), globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 			}
 
 			if(globalReference.objectReferenceValue)
@@ -105,6 +100,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 			return foldout;
 		}
+
 		public static bool DoDraw(Rect position, SerializedProperty property, bool foldout, ref GUIContent label, ref SerializedObject serializedObject, Action<Rect> drawLocalValue)
 		{
 			var useLocal        = property.FindPropertyRelative(USE_LOCAL_STR);
@@ -118,12 +114,12 @@ namespace ForestOfChaosLib.AdvVar.Editor
 					if(useLocal.boolValue)
 					{
 						if(drawLocalValue == null)
-							useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), localValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+							useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)), localValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 						else
-							useLocal.boolValue = FoCsGUI.DrawActionWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), drawLocalValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+							useLocal.boolValue = FoCsGUI.DrawActionWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)), drawLocalValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 					}
 					else
-						useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding)), globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+						useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)), globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 				}
 
 			if(globalReference.objectReferenceValue)
@@ -140,7 +136,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 			if(!useLocal.boolValue && (globalReference.objectReferenceValue != null))
 			{
-				foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine)), foldout, foldoutGUIContent);
+				foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(2)), foldout, foldoutGUIContent);
 
 				if(foldout)
 				{

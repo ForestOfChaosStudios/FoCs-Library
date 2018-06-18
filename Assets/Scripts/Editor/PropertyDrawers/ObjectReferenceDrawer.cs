@@ -23,7 +23,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 				using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
 				{
-					FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(SingleLine)), property, label);
+					FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.ChangeY(1)), property, label);
 
 					if(changeCheckScope.changed && (property.objectReferenceValue != null))
 					{
@@ -48,7 +48,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);
-			foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine)), foldout, foldoutGUIContent);
+			foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(1)), foldout, foldoutGUIContent);
 
 			if(!foldout)
 				return;
@@ -59,7 +59,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			{
 				using(FoCsEditor.Disposables.Indent())
 				{
-					var drawPos = position.Edit(RectEdit.AddY(SingleLinePlusPadding), RectEdit.SubtractHeight(SingleLinePlusPadding));
+					var drawPos = position.Edit(RectEdit.AddY(SingleLinePlusPadding), RectEdit.SubtractHeight(SingleLinePlusPadding),RectEdit.ChangeY(1));
 
 					do
 					{
@@ -95,12 +95,12 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		public static float PropertyHeight(SerializedObject serializedObject, bool foldout)
 		{
 			if((serializedObject == null) || !foldout || (serializedObject.VisibleProperties() == 0))
-				return SingleLine;
+				return SingleLine + 1;
 
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);
 			iterator.Next(true);
-			var height = 0f;
+			var height = 1f;
 
 			do
 			{

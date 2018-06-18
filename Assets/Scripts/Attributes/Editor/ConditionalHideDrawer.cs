@@ -23,9 +23,11 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 				if(!GetAttribute.HideInInspector || enabled)
 				{
 					property.isExpanded   =  true;
-					EditorGUI.indentLevel += 1;
-					EditorGUI.PropertyField(position, property, label, true);
-					EditorGUI.indentLevel -= 1;
+
+					using(FoCsEditor.Disposables.Indent())
+					{
+						EditorGUI.PropertyField(position, property, label, true);
+					}
 				}
 				else
 					property.isExpanded = false;

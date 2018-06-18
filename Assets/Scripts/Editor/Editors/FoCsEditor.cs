@@ -24,7 +24,6 @@ namespace ForestOfChaosLib.Editor
 		}
 
 		private        Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
-		public static  float                   StandardLine         => EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 		protected      bool                    GUIChanged           { get; private set; }
 		public virtual bool                    HideDefaultProperty  => true;
 		public virtual bool                    ShowCopyPasteButtons => true;
@@ -63,6 +62,7 @@ namespace ForestOfChaosLib.Editor
 					}
 				}
 			}
+			EditorGUILayout.GetControlRect(false, 2);
 		}
 
 		protected void DrawCopyPasteButtons()

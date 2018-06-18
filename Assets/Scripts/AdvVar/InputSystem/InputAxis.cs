@@ -15,7 +15,7 @@ namespace ForestOfChaosLib.InputManager
 		[SerializeField] public  KeyPosition KeyPos = KeyPosition.Up;
 		[SerializeField] private float       deadZone;
 		[SerializeField] private float       value;
-		public                   bool        OnlyButton = false;
+		public                   bool        OnlyButtonEvents = false;
 		public                   bool        ValueInverted;
 		public                   bool        UseSmoothInput = true;
 #region Actions
@@ -112,7 +112,7 @@ namespace ForestOfChaosLib.InputManager
 
 		public static void CallEvents(InputAxis key, float deadZone)
 		{
-			if(key.OnlyButton)
+			if(key.OnlyButtonEvents)
 			{
 				switch(key.KeyPos)
 				{

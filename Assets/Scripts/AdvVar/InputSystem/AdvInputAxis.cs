@@ -10,10 +10,10 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 	[AdvFolderNameForestOfChaos]
 	public class AdvInputAxis: AdvReference<InputAxis>
 	{
-		public bool OnlyButton
+		public bool OnlyButtonEvents
 		{
-			get { return Value.OnlyButton; }
-			set { Value.OnlyButton = value; }
+			get { return Value.OnlyButtonEvents; }
+			set { Value.OnlyButtonEvents = value; }
 		}
 
 		public bool ValueInverted
