@@ -19,7 +19,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		internal static readonly GUIContent   ProgressBarContent             = new GUIContent("Current Value", "Shows what the current value of the Axis is.");
 		internal static readonly GUIContent   PopupContent                   = new GUIContent("Input Axis",    "Chose from the available Unity Input Axis values.");
 		internal static readonly GUIContent[] OPTIONS_ARRAY                  = {enableSyncAxisNamesGUIContent, disableSyncAxisNamesGUIContent};
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => EditorGUIUtility.singleLineHeight * 3;
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => SingleLinePlusPadding * 4;
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -30,22 +30,23 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				if(EditorGUI.indentLevel <= 1)
 					position = position.Edit(RectEdit.ChangeX(16f));
 
-				var axisProp      = property.FindPropertyRelative("Axis");
-				var ValueInverted = new EditorEntry("Invert Result",                                                    property.FindPropertyRelative("ValueInverted"));
-				var OnlyButton    = new EditorEntry("Only Button",                                                      property.FindPropertyRelative("OnlyButton"));
-				var Axis          = new EditorEntry($"Axis: {axisProp.stringValue}",                                    axisProp);
-				var m_Value       = new EditorEntry($"{(ValueInverted.Property.boolValue? "Non Inverted " : "")}Value", property.FindPropertyRelative("m_Value"));
-				var m_DeadZone    = new EditorEntry("DeadZone",                                                         property.FindPropertyRelative("m_DeadZone"));
+				var axisProp       = property.FindPropertyRelative("Axis");
+				var ValueInverted  = new EditorEntry("Invert Result",                                                    property.FindPropertyRelative("ValueInverted"));
+				var OnlyButton     = new EditorEntry("Only Button",                                                      property.FindPropertyRelative("OnlyButton"));
+				var UseSmoothInput = new EditorEntry("Use Smooth Input",                                                 property.FindPropertyRelative("UseSmoothInput"));
+				var Axis           = new EditorEntry($"Axis: {axisProp.stringValue}",                                    axisProp);
+				var m_Value        = new EditorEntry($"{(ValueInverted.Property.boolValue? "Non Inverted " : "")}Value", property.FindPropertyRelative("value"));
+				var m_DeadZone     = new EditorEntry("DeadZone",                                                         property.FindPropertyRelative("deadZone"));
 
 				using(FoCsEditor.Disposables.Indent(-1))
 				{
-					using(var verticalScope = FoCsEditor.Disposables.RectVerticalScope(3, position))
+					using(var verticalScope = FoCsEditor.Disposables.RectVerticalScope(4, position))
 					{
-						using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
+						using(FoCsEditor.Disposables.LabelFieldSetWidth((verticalScope.FirstRect.width * LABEL_SIZE) * LABEL_SIZE))
 						{
-							using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
+							using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
 							{
-								Axis.Draw(horizontalScope.GetNext());
+								Axis.Draw(horizontalScope.GetNext(RectEdit.SetHeight(SingleLine)));
 								var array = ReadInputManager.GetAxisNames();
 								var num   = -1;
 
@@ -54,37 +55,38 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 								using(var cc = FoCsEditor.Disposables.ChangeCheck())
 								{
-									var index = EditorGUI.Popup(horizontalScope.GetNext(), PopupContent, num, array.Select(a => new GUIContent(a)).ToArray());
-
-									if(cc.changed && array.InRange(index))
-										Axis.Property.stringValue = array[index];
-								}
-							}
-						}
-
-						using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
-						{
-							using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
-							{
-								ProgressBar(horizontalScope.GetNext(), m_Value);
-								m_Value.Draw(horizontalScope.GetNext());
-							}
-						}
-
-						using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
-						{
-							using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
-							{
-								m_DeadZone.Draw(horizontalScope.GetNext());
-
-								using(var horizontalScope2 = FoCsEditor.Disposables.RectHorizontalScope(2, horizontalScope.GetNext()))
-								{
-									using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope2.FirstRect.width * 0.7f))
+									using(FoCsEditor.Disposables.LabelFieldSetWidth((horizontalScope.FirstRect.width * LABEL_SIZE) - SingleLine))
 									{
-										ValueInverted.Draw(horizontalScope2.GetNext());
-										OnlyButton.Draw(horizontalScope2.GetNext());
+										var index = EditorGUI.Popup(horizontalScope.GetNext(RectEdit.SetHeight(SingleLine), RectEdit.ChangeX(SingleLine)), PopupContent, num, array.Select(a => new GUIContent(a)).ToArray());
+
+										if(cc.changed && array.InRange(index))
+											Axis.Property.stringValue = array[index];
 									}
 								}
+							}
+
+							using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
+							{
+								ProgressBar(horizontalScope.GetNext(RectEdit.SetHeight(SingleLine)), m_Value);
+
+								using(FoCsEditor.Disposables.LabelFieldSetWidth((horizontalScope.FirstRect.width * LABEL_SIZE) - SingleLine))
+									m_Value.Draw(horizontalScope.GetNext(RectEdit.SetHeight(SingleLine), RectEdit.ChangeX(SingleLine)));
+							}
+
+							using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
+							{
+								m_DeadZone.Draw(horizontalScope.GetNext(RectEdit.SetHeight(SingleLine)));
+
+								using(FoCsEditor.Disposables.LabelFieldSetWidth((horizontalScope.FirstRect.width * LABEL_SIZE) - SingleLine))
+									ValueInverted.Draw(horizontalScope.GetNext(RectEdit.SetHeight(SingleLine), RectEdit.ChangeX(SingleLine)));
+							}
+
+							using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, verticalScope.GetNext()))
+							{
+								OnlyButton.Draw(horizontalScope.GetNext(RectEdit.SetHeight(SingleLine)));
+
+								using(FoCsEditor.Disposables.LabelFieldSetWidth((horizontalScope.FirstRect.width * LABEL_SIZE) - SingleLine))
+									UseSmoothInput.Draw(horizontalScope.GetNext(RectEdit.SetHeight(SingleLine), RectEdit.ChangeX(SingleLine)));
 							}
 						}
 					}
