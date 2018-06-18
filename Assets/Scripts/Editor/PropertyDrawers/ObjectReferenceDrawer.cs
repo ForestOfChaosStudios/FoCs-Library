@@ -24,6 +24,32 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
 				{
 					FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(SingleLine)), property, label);
+//					var @event = FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(SingleLine)), property, label);
+//
+//					if(@event.EventIsMouseRInRect)
+//					{
+//						var hasRef  = property.objectReferenceValue != null;
+//						var    menu    = new GenericMenu();
+//						var objName = "Object";
+//
+//						{
+//							var s = property.type.Replace("PPtr<$", "").Replace(">", "");
+//							if(s.HasContent())
+//								objName = s;
+//						}
+//
+//						if(hasRef)
+//							menu.AddItem(new GUIContent("Remove Reference", "Will remove current Reference"), false, () => CreateObject(property));
+//						else
+//							menu.AddDisabledItem(new GUIContent("Remove Reference", "Will remove current Reference"));
+//
+//						menu.AddSeparator("");
+//						menu.AddItem(new GUIContent($"Create {objName}",              "Will create it in the root asset folder"),  false, () => CreateObject(property));
+//						menu.AddItem(new GUIContent($"Create {objName} At Path",      "Will create at the path of your choosing"), false, () => CreateObjectAtPath(property));
+//						menu.AddItem(new GUIContent($"Create {objName} In AdvFolder", "Will create as a child of an AdvFolder"),   false, () => CreateObjectOnAdvFolder(property));
+//						menu.ShowAsContext();
+//						Event.current.Use();
+//					}
 
 					if(changeCheckScope.changed && (property.objectReferenceValue != null))
 					{
@@ -111,6 +137,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 			return height;
 		}
+
+//		private void CreateObjectOnAdvFolder(SerializedProperty property) { }
+//		private void CreateObjectAtPath(SerializedProperty property) { }
+//		private void CreateObject(SerializedProperty property) { }
 
 #region Storage
 		private static readonly Dictionary<string, ObjectReferenceDrawer> objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(10);
