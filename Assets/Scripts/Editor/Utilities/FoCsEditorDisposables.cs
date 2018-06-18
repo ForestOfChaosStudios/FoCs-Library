@@ -43,6 +43,7 @@ namespace ForestOfChaosLib.Editor
 #endregion
 #region UnityDisposables
 			public static EditorGUI.DisabledGroupScope DisabledScope(bool val = true) => new EditorGUI.DisabledGroupScope(val);
+			public static EditorGUILayout.ToggleGroupScope ToggleGroupScope(string label, bool toggle) => new EditorGUILayout.ToggleGroupScope(label, toggle);
 			public static EditorGUI.ChangeCheckScope ChangeCheck() => new EditorGUI.ChangeCheckScope();
 #region LayoutScopes
 #region HorizontalScope
