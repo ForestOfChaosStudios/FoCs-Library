@@ -10,6 +10,7 @@ namespace ForestOfChaosLib.Extensions
 		public static bool DoesStringHaveInvalidCharsOrWhiteSpace(this      string str) => StringRegexMatch(str, INVALID_CHARS_WHITESPACE);
 		public static bool DoesStringHaveInvalidChars(this                  string str) => StringRegexMatch(str, INVALID_CHARS);
 		public static bool IsNullOrEmpty(this                               string str) => string.IsNullOrEmpty(str);
+		public static bool HasContent(this                                  string str) => !string.IsNullOrEmpty(str);
 		public static bool DoesStringHaveWhiteSpace(this                    string str) => StringRegexMatch(str, WHITESPACE);
 		public static string ReplaceWhiteSpace(this                         string str, string replaceChar = "") => str.Replace(" ", replaceChar).Replace("\n", replaceChar).Replace("\t", replaceChar);
 		public static string ReplaceStringHaveInvalidCharsOrWhiteSpace(this string str, char   replaceChar) => StringRegexReplace(str,      INVALID_CHARS_WHITESPACE, replaceChar);
