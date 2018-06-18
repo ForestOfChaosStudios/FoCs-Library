@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
-	public class OnCollision2DEvents: FoCsBehavior
+	public class OnCollision2DEvents: FoCsBehaviour
 	{
 		public event Action<Collision2D> OnCollEnter;
 		public event Action<Collision2D> OnCollStay;

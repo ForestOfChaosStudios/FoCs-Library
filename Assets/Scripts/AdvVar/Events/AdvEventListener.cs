@@ -2,7 +2,7 @@
 
 namespace ForestOfChaosLib.AdvVar.Events
 {
-	public class AdvEventListener: FoCsBehavior
+	public class AdvEventListener: FoCsBehaviour
 	{
 		public AdvEvent   Event;
 		public UnityEvent Response;

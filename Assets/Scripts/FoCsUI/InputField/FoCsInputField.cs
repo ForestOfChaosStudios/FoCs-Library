@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.FoCsUI.InputField
 {
-	public abstract class FoCsInputField: FoCsBehavior
+	public abstract class FoCsInputField: FoCsBehaviour
 	{
 		/// <summary>
 		///     May not be called

@@ -2,7 +2,7 @@
 
 namespace ForestOfChaosLib.Components.Linker
 {
-	public abstract class ComponentLinker<T>: FoCsBehavior
+	public abstract class ComponentLinker<T>: FoCsBehaviour
 	{
 		public abstract T Link { get; protected set; }
 	}

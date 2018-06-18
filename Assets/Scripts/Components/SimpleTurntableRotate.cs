@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
-	public class SimpleTurntableRotate: FoCsBehavior
+	public class SimpleTurntableRotate: FoCsBehaviour
 	{
 		public Vector3   rotateAngle;
 		public Space     transformSpace;

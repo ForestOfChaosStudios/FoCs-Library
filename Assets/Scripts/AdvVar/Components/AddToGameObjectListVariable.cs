@@ -1,6 +1,6 @@
 ﻿namespace ForestOfChaosLib.AdvVar.Components
 {
-	public class AddToGameObjectListVariable: FoCsBehavior
+	public class AddToGameObjectListVariable: FoCsBehaviour
 	{
 		public GameObjectListReference GameObjectListReference;
 

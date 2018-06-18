@@ -1,6 +1,6 @@
 ﻿namespace ForestOfChaosLib.AdvVar.Components
 {
-	public class AddToTransformVariable: FoCsBehavior
+	public class AddToTransformVariable: FoCsBehaviour
 	{
 		public bool               RemoveOnDisable = true;
 		public TransformReference TransformReference;

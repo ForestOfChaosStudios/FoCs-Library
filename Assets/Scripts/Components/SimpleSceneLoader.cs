@@ -2,7 +2,7 @@ using UnityEngine.SceneManagement;
 
 namespace ForestOfChaosLib.Components
 {
-	public class SimpleSceneLoader: FoCsBehavior
+	public class SimpleSceneLoader: FoCsBehaviour
 	{
 		public static void LoadSceneAsync(int s)
 		{

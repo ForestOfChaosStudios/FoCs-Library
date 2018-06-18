@@ -2,7 +2,7 @@
 using ForestOfChaosLib.AdvVar;
 using UnityEngine;
 
-public class AdvTestComp: FoCsBehavior
+public class AdvTestComp: FoCsBehaviour
 {
 	public FloatVariable Float = 10;
 

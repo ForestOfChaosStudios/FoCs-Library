@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
-	public class SetParent: FoCsBehavior
+	public class SetParent: FoCsBehaviour
 	{
 		public enum Mode
 		{

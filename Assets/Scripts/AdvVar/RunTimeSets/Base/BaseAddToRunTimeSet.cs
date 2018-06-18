@@ -1,6 +1,6 @@
 ﻿namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
-	public abstract class BaseAddToRunTimeSet<T, RT_T>: FoCsBehavior where RT_T: RunTimeList<T>
+	public abstract class BaseAddToRunTimeSet<T, RT_T>: FoCsBehaviour where RT_T: RunTimeList<T>
 	{
 		public          RT_T Set;
 		public abstract T    Value { get; }

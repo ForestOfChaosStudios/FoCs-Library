@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace ForestOfChaosLib.Components
 {
-	public class SimpleTimedScene: FoCsBehavior
+	public class SimpleTimedScene: FoCsBehaviour
 	{
 		public int   levelNum;
 		public float timeLoad = 10;

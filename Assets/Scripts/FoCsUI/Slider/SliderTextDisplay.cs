@@ -3,7 +3,7 @@ using TMPro;
 
 namespace ForestOfChaosLib.FoCsUI.Slider
 {
-	public class SliderTextDisplay: FoCsBehavior
+	public class SliderTextDisplay: FoCsBehaviour
 	{
 		public FoCsSlider      FoCsSlider;
 		public string          NumberFormat = "0%";

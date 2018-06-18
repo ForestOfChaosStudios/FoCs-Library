@@ -2,7 +2,7 @@
 
 namespace ForestOfChaosLib.AdvVar.Components
 {
-	public class ToggleBoolReferenceToButtonEvents: FoCsBehavior
+	public class ToggleBoolReferenceToButtonEvents: FoCsBehaviour
 	{
 		public BoolReference BoolReference;
 		public FoCsButton    FoCsButton;

@@ -1,6 +1,6 @@
 ﻿namespace ForestOfChaosLib.AdvVar.Components
 {
-	public class SyncGameObjectActiveToBoolReference: FoCsBehavior
+	public class SyncGameObjectActiveToBoolReference: FoCsBehaviour
 	{
 		public BoolReference Reference;
 

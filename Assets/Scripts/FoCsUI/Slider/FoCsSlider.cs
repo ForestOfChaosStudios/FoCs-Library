@@ -5,7 +5,7 @@ using USlider = UnityEngine.UI.Slider;
 
 namespace ForestOfChaosLib.FoCsUI.Slider
 {
-	public class FoCsSlider: FoCsBehavior
+	public class FoCsSlider: FoCsBehaviour
 	{
 		public Action<float>  OnValueChanged;
 		public FloatReference ReferencedFloat;

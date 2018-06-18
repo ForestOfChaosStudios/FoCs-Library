@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib
 {
-	public class FoCsBehavior: FoCsBe
+	public class FoCsBehaviour: FoCsBe
 	{
 		private Transform m_Transform;
 

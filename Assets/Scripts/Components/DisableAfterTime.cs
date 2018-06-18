@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
-	public class DisableAfterTime: FoCsBehavior
+	public class DisableAfterTime: FoCsBehaviour
 	{
 		public float lifeTime = 1f; //My lifetime
 

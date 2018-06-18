@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace ForestOfChaosLib.FoCsUI
 {
 	[RequireComponent(typeof(Dropdown))]
-	public class DropDownEvent: FoCsBehavior
+	public class DropDownEvent: FoCsBehaviour
 	{
 		public Dropdown    _DropDown;
 		public Action<int> onValueChanged;

@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.ScreenCap
 	public class Timelapse
 	{
 		private static   GameObject    obj;
-		private static   FoCsBehavior  com;
+		private static   FoCsBehaviour  com;
 		private readonly TimelapseArgs Args;
 		private readonly Coroutine     Routine;
 		private readonly DateTime      Start;
@@ -30,10 +30,10 @@ namespace ForestOfChaosLib.ScreenCap
 				obj = new GameObject("Timelapse_OBJ");
 
 			if(com == null)
-				com = obj.GetComponent<FoCsBehavior>();
+				com = obj.GetComponent<FoCsBehaviour>();
 
 			if(com == null)
-				com = obj.AddComponent<FoCsBehavior>();
+				com = obj.AddComponent<FoCsBehaviour>();
 
 			WaitTime = waitTime;
 			Times    = times;

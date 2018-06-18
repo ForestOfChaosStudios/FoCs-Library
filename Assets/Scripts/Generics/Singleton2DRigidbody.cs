@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ForestOfChaosLib.Generics
 {
 	[Serializable]
-	public class Singleton2DRigidbody<S>: FoCs2DRigidbodyBehavior where S: FoCs2DRigidbodyBehavior
+	public class Singleton2DRigidbody<S>: FoCs2DRigidbodyBehaviour where S: FoCs2DRigidbodyBehaviour
 	{
 		protected static S    instance;
 		public static    bool instanceNull => instance == null;

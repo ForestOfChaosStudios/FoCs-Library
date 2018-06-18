@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
-	public class OnTrigger2DEvents: FoCsBehavior
+	public class OnTrigger2DEvents: FoCsBehaviour
 	{
 		public event Action<Collider2D> OnTrigEnter;
 		public event Action<Collider2D> OnTrigStay;

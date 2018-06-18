@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Animation
 {
-	public class IKControl: FoCsBehavior
+	public class IKControl: FoCsBehaviour
 	{
 		[SerializeField] protected Animator  animator;
 		public                     bool      headIkActive;

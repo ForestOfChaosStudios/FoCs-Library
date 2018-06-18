@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace ForestOfChaosLib.FoCsUI
 {
 	[RequireComponent(typeof(Toggle))]
-	public class ToggleEvents: FoCsBehavior
+	public class ToggleEvents: FoCsBehaviour
 	{
 		public Toggle       _Toggle;
 		public Action<bool> onValueChanged;

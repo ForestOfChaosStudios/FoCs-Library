@@ -2,7 +2,7 @@
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
-	public abstract class BaseSetRunTimeRef<T, RT_T>: FoCsBehavior where RT_T: RunTimeRef<T> where T: class
+	public abstract class BaseSetRunTimeRef<T, RT_T>: FoCsBehaviour where RT_T: RunTimeRef<T> where T: class
 	{
 		public          RT_T Ref;
 		public          bool RemoveOnDisable = true;

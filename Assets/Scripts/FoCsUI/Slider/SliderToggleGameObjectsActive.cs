@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.FoCsUI.Slider
 {
-	public class SliderToggleGameObjectsActive: FoCsBehavior
+	public class SliderToggleGameObjectsActive: FoCsBehaviour
 	{
 		public List<GameObject>  GameObjects2Toggle = new List<GameObject>();
 		public SliderToggle      Toggle;

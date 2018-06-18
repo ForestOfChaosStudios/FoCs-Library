@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ForestOfChaosLib.Generics
 {
 	[Serializable]
-	public class Singleton<S>: FoCsBehavior where S: FoCsBehavior
+	public class Singleton<S>: FoCsBehaviour where S: FoCsBehaviour
 	{
 		protected static S    instance;
 		public static    bool instanceNull => instance == null;

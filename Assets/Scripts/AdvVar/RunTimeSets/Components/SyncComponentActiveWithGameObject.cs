@@ -1,6 +1,6 @@
 ﻿namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
-	public class SyncComponentActiveWithGameObject: FoCsBehavior
+	public class SyncComponentActiveWithGameObject: FoCsBehaviour
 	{
 		public MonoBehaviourRunTimeRef MonoBehaviourRunTimeRef;
 

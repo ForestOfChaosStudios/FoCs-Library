@@ -1,6 +1,6 @@
 ﻿namespace ForestOfChaosLib.AdvVar.Components
 {
-	public class AddToTransformListVariable: FoCsBehavior
+	public class AddToTransformListVariable: FoCsBehaviour
 	{
 		public TransformListReference TransformListReference;
 

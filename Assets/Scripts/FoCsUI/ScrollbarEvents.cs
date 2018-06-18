@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace ForestOfChaosLib.FoCsUI
 {
 	[RequireComponent(typeof(Scrollbar))]
-	public class ScrollbarEvents: FoCsBehavior
+	public class ScrollbarEvents: FoCsBehaviour
 	{
 		public Scrollbar     _Scrollbar;
 		public Action<float> onValueChanged;
