@@ -3,9 +3,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-namespace ForestOfChaosLib
+namespace ForestOfChaosLib.IO
 {
-	public static class IO
+	public static class SimpleIO
 	{
 		public const string FILE_EXT = "FoCsdat";
 
