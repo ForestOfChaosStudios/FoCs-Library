@@ -78,6 +78,12 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			InitTypeList();
 		}
 
+		private void Update()
+		{
+			if(mouseOverWindow)
+				Repaint();
+		}
+
 		private static void InitTypeList()
 		{
 			TypeList = ReflectionUtilities.GetInheritedClasses<SearchAsset>();
