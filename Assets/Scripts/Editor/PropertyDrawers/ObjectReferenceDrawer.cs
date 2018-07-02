@@ -43,15 +43,20 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			if(serializedObject == null)
 				serializedObject = new SerializedObject(property.objectReferenceValue);
 
+			foldout = DrawReference(position, serializedObject, foldout);
+		}
+
+		public static bool DrawReference(Rect position ,SerializedObject serializedObject, bool foldout)
+		{
 			if(serializedObject.VisibleProperties() == 0)
-				return;
+				return false;
 
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);
-			foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(1)), foldout, foldoutGUIContent);
+			foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine),RectEdit.SetWidth(SingleLine),RectEdit.ChangeY(1)),foldout,foldoutGUIContent);
 
 			if(!foldout)
-				return;
+				return false;
 
 			DrawSurroundingBox(position);
 
@@ -59,12 +64,12 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			{
 				using(FoCsEditor.Disposables.Indent())
 				{
-					var drawPos = position.Edit(RectEdit.AddY(SingleLinePlusPadding), RectEdit.SubtractHeight(SingleLinePlusPadding),RectEdit.ChangeY(1));
+					var drawPos = position.Edit(RectEdit.AddY(SingleLinePlusPadding),RectEdit.SubtractHeight(SingleLinePlusPadding),RectEdit.ChangeY(1));
 
 					do
 					{
 						if(!FoCsEditor.IsPropertyHidden(iterator))
-							drawPos = DrawSubProp(iterator, drawPos);
+							drawPos = DrawSubProp(iterator,drawPos);
 					}
 					while(iterator.NextVisible(false));
 
@@ -72,6 +77,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 						serializedObject.ApplyModifiedProperties();
 				}
 			}
+
+			return true;
 		}
 
 		protected static void DrawSurroundingBox(Rect position)

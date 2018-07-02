@@ -84,12 +84,11 @@ namespace ForestOfChaosLib.Editor
 			{
 				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
 				{
-					var @event = FoCsGUI.Layout.Toggle(ActiveTab == index, key.Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
+					var @event = FoCsGUI.Layout.Toggle(key.Name.SplitCamelCase(), ActiveTab == index, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
 
 					if(@event)
 					{
 						ActiveTab = index;
-						//Window.ShowNotification(new GUIContent($"Clicked: {key.Name.SplitCamelCase()}"));
 					}
 				}
 

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Utilities
 {
@@ -20,6 +22,11 @@ namespace ForestOfChaosLib.Editor.Utilities
 			nexRect.x += nexRect.width;
 			NextRect  =  nexRect;
 			++CurrentIndex;
+		}
+		protected override Rect DoGetNextAmount(int amount, Rect retVal)
+		{
+			retVal = retVal.Edit(RectEdit.SetWidth(retVal.width * amount));
+			return retVal;
 		}
 	}
 }

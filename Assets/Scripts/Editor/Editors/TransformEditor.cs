@@ -54,7 +54,7 @@ namespace ForestOfChaosLib.Editor
 				{
 					for(var i = 0; i < TabName.Length; i++)
 					{
-						if(FoCsGUI.Layout.Toggle(TabNum == i, TabName[i].Key, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16)))
+						if(FoCsGUI.Layout.Toggle(TabName[i].Key, TabNum == i, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16)))
 							TabNum = i;
 					}
 				}

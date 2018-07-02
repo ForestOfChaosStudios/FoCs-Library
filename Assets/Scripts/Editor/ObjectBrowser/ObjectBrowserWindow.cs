@@ -132,8 +132,8 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 			using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar, ToggleOp))
 			{
-				Enable_Compo = FoCsGUI.Layout.Toggle(Enable_Compo, !Enable_Compo? "Components Hidden" : "Components Shown",                 FoCsGUI.Styles.ToolbarButton, GUILayout.Height(21));
-				Enable_Asset = FoCsGUI.Layout.Toggle(Enable_Asset, !Enable_Asset? "Scriptable Objects Hidden" : "Scriptable Objects Shown", FoCsGUI.Styles.ToolbarButton, GUILayout.Height(21));
+				Enable_Compo = FoCsGUI.Layout.Toggle(!Enable_Compo? "Components Hidden" : "Components Shown",                 Enable_Compo, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(21));
+				Enable_Asset = FoCsGUI.Layout.Toggle(!Enable_Asset? "Scriptable Objects Hidden" : "Scriptable Objects Shown", Enable_Asset, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(21));
 			}
 
 			using(var scroll = FoCsEditor.Disposables.ScrollViewScope(typeScrollPos, true, false, true))
@@ -170,7 +170,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 		private void DrawTypeLabel(int i)
 		{
-			var @event = FoCsGUI.Layout.Toggle(ActiveIndex == i, TypeList[i].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, ToggleOp);
+			var @event = FoCsGUI.Layout.Toggle(TypeList[i].Name.SplitCamelCase(), ActiveIndex == i,  FoCsGUI.Styles.ToolbarButton, ToggleOp);
 			TypePressed(i, @event);
 		}
 

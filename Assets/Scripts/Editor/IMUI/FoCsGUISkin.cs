@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using System;
+using ForestOfChaosLib.Utilities;
+using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
@@ -8,213 +10,143 @@ namespace ForestOfChaosLib.Editor
 	{
 		public static partial class Styles
 		{
-			private static GUIStyle downArrow;
-			private static GUIStyle down2Arrow;
-			private static GUIStyle upArrow;
-			private static GUIStyle up2Arrow;
-			private static GUIStyle inLineOptionsMenu;
-			private static GUIStyle buttonNoOutline;
-			private static GUIStyle crossCircle;
-			private static GUIStyle toolbar;
-			private static GUIStyle toolbarButton;
-			private static GUIStyle buttonDetailed;
-			private static GUIStyle buttonThick;
-			private static GUIStyle buttonThin;
-			private static GUIStyle find;
-
-			public static GUIStyle DownArrow
+			public static FoCsStyle DownArrow = new FoCsStyle(() =>
 			{
-				get
-				{
-					if(downArrow != null)
-						return downArrow;
+				var style = new GUIStyle("RL FooterButton") {normal = new GUIStyleState {background = GetTexture("FoCs_d_1_arrow")}, name = "DownArrow"};
 
-					downArrow = new GUIStyle("RL FooterButton") {normal = new GUIStyleState {background = GetTexture("FoCs_d_1_arrow")}, name = nameof(DownArrow)};
+				return style;
+			});
 
-					return downArrow;
-				}
-			}
-
-			public static GUIStyle Down2Arrow
+			public static FoCsStyle Down2Arrow = new FoCsStyle(() =>
 			{
-				get
-				{
-					if(down2Arrow != null)
-						return down2Arrow;
+				var style = new GUIStyle("RL FooterButton") {normal = new GUIStyleState {background = GetTexture("FoCs_d_2_arrow")}, name = "Down2Arrow"};
 
-					down2Arrow = new GUIStyle("RL FooterButton") {normal = new GUIStyleState {background = GetTexture("FoCs_d_2_arrow")}, name = nameof(Down2Arrow)};
+				return style;
+			});
 
-					return down2Arrow;
-				}
-			}
-
-			public static GUIStyle UpArrow
+			public static FoCsStyle UpArrow = new FoCsStyle(() =>
 			{
-				get
-				{
-					if(upArrow != null)
-						return upArrow;
+				var style = new GUIStyle("RL FooterButton") {normal = new GUIStyleState {background = GetTexture("FoCs_u_1_arrow")}, name = "UpArrow"};
 
-					upArrow = new GUIStyle("RL FooterButton") {normal = new GUIStyleState {background = GetTexture("FoCs_u_1_arrow")}, name = nameof(UpArrow)};
+				return style;
+			});
 
-					return upArrow;
-				}
-			}
-
-			public static GUIStyle Up2Arrow
+			public static FoCsStyle Up2Arrow = new FoCsStyle(() =>
 			{
-				get
-				{
-					if(up2Arrow != null)
-						return up2Arrow;
+				var style = new GUIStyle("RL FooterButton") {normal = new GUIStyleState {background = GetTexture("FoCs_u_2_arrow")}, name = "Up2Arrow"};
 
-					up2Arrow = new GUIStyle("RL FooterButton") {normal = new GUIStyleState {background = GetTexture("FoCs_u_2_arrow")}, name = nameof(Up2Arrow)};
+				return style;
+			});
 
-					return up2Arrow;
-				}
-			}
 
-			public static GUIStyle InLineOptionsMenu
+			public static FoCsStyle InLineOptionsMenu = new FoCsStyle(() =>
 			{
-				get
-				{
-					if(inLineOptionsMenu != null)
-						return inLineOptionsMenu;
+				var style = new GUIStyle("Icon.TrackOptions") {overflow = {top = -4, bottom = 4}, name = "InLineOptionsMenu"};
 
-					inLineOptionsMenu = new GUIStyle("Icon.TrackOptions") {overflow = {top = -4, bottom = 4}, name = nameof(InLineOptionsMenu)};
+				return style;
+			});
 
-					return inLineOptionsMenu;
-				}
-			}
-
-			public static GUIStyle ButtonNoOutline
+			public static FoCsStyle ButtonNoOutline = new FoCsStyle(() =>
 			{
-				get
-				{
-					if(buttonNoOutline != null)
-						return buttonNoOutline;
+				var style = new GUIStyle(GUI.skin.button) {normal = {background = null}, active = {background = null}, focused = {background = null}, hover = {background = null}, name = "ButtonNoOutline"};
 
-					buttonNoOutline = new GUIStyle(GUI.skin.button) {normal = {background = null}, active = {background = null}, focused = {background = null}, hover = {background = null}, name = nameof(ButtonNoOutline)};
+				return style;
+			});
 
-					return buttonNoOutline;
-				}
-			}
-
-			public static GUIStyle CrossCircle
+			public static FoCsStyle CrossCircle = new FoCsStyle(() =>
 			{
-				get
+				var style = new GUIStyle("TL SelectionBarCloseButton")
 				{
-					if(crossCircle != null)
-						return crossCircle;
+						fixedHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing,
+						fixedWidth  = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing,
+						name        = "CrossCircle"
+				};
 
-					crossCircle = new GUIStyle("TL SelectionBarCloseButton")
-					{
-							fixedHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing,
-							fixedWidth  = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing,
-							name        = nameof(CrossCircle)
-					};
+				return style;
+			});
 
-					return crossCircle;
-				}
-			}
-
-			public static GUIStyle Toolbar
+			public static FoCsStyle Toolbar = new FoCsStyle(() =>
 			{
-				get
-				{
-					if(toolbar != null)
-						return toolbar;
+				var style = new GUIStyle(Unity.Toolbar) {fixedHeight = 0, name = "Toolbar"};
 
-					toolbar = new GUIStyle(Unity.Toolbar) {fixedHeight = 0, name = nameof(Toolbar)};
+				return style;
+			});
 
-					return toolbar;
-				}
-			}
-
-			public static GUIStyle ToolbarButton
+			public static FoCsStyle ToolbarButton = new FoCsStyle(() =>
 			{
-				get
-				{
-					if(toolbarButton != null)
-						return toolbarButton;
+				var style = new GUIStyle(Unity.ToolbarButton) {fixedHeight = 0, name = "ToolbarButton"};
 
-					toolbarButton = new GUIStyle(Unity.ToolbarButton) {fixedHeight = 0, name = nameof(ToolbarButton)};
+				return style;
+			});
 
-					return toolbarButton;
-				}
-			}
 
-			public static GUIStyle ButtonDetailed
+			public static FoCsStyle Find = new FoCsStyle(() =>
 			{
-				get
-				{
-					if(buttonDetailed != null)
-						return buttonDetailed;
+				var style = new GUIStyle("RL FooterButton") {normal = {background = GetTexture("FoCs_find")}, hover = {background = GetTexture("FoCs_find_hover")}, active = {background = GetTexture("FoCs_find_active")}, name = "Find"};
 
-					buttonDetailed = new GUIStyle(Unity.Button)
-					{
-							normal = {background = GetTexture("FoCs_panel_detailed")},
-							hover  = {background = GetTexture("FoCs_panel_detailed_hover")},
-							active = {background = GetTexture("FoCs_panel_detailed_active")},
-							name   = nameof(ButtonDetailed)
-					};
+				return style;
+			});
 
-					return buttonDetailed;
-				}
-			}
 
-			public static GUIStyle ButtonThick
+			private const float RowField_ALPHA = 0.6f;
+
+			public static FoCsStyle RowField = new FoCsStyle(() =>
 			{
-				get
-				{
-					if(buttonThick != null)
-						return buttonThick;
+				var style = new GUIStyle("Button") {name = "RowField"};
 
-					buttonThick = new GUIStyle(Unity.Button)
-					{
-							normal = {background = GetTexture("FoCs_panel_thick")},
-							hover  = {background = GetTexture("FoCs_panel_thick_hover")},
-							active = {background = GetTexture("FoCs_panel_thick_active")},
-							name   = nameof(ButtonThick)
-					};
+				style.margin = new RectOffset(0, 0, 0, 0);
 
-					return buttonThick;
-				}
-			}
+				style.normal.textColor   = Color.white;
+				style.onNormal.textColor = Color.white;
 
-			public static GUIStyle ButtonThin
+				style.normal.background   = TextureUtilities.GetSolidTexture(new Color(0.6f, 0.6f, 0.6f, RowField_ALPHA));
+				style.onNormal.background = TextureUtilities.GetSolidTexture(new Color(0.7f, 0.7f, 0.7f, RowField_ALPHA));
+
+				style.hover.textColor   = Color.white;
+				style.onHover.textColor = Color.white;
+
+				style.hover.background   = TextureUtilities.GetSolidTexture(new Color(0.9f, 0.4f, 0f, RowField_ALPHA));
+				style.onHover.background = TextureUtilities.GetSolidTexture(new Color(1f,   0.5f, 0f, RowField_ALPHA));
+
+				style.active.textColor   = Color.white;
+				style.onActive.textColor = Color.white;
+
+				style.active.background   = TextureUtilities.GetSolidTexture(new Color(0.4f, 0.9f, 0.4f, RowField_ALPHA));
+				style.onActive.background = TextureUtilities.GetSolidTexture(new Color(0.5f, 1f,   0.5f, RowField_ALPHA));
+
+				style.onFocused.textColor  = Color.white;
+				style.onFocused.background = TextureUtilities.GetSolidTexture(new Color(0.17f, 0f, 0.69f, RowField_ALPHA));
+
+				return style;
+			});
+
+			public static FoCsStyle RowOddField = new FoCsStyle(() =>
 			{
-				get
-				{
-					if(buttonThin != null)
-						return buttonThin;
+				var style = new GUIStyle(RowField) {name = "RowOddField"};
 
-					buttonThin = new GUIStyle(Unity.Button)
-					{
-							normal = {background = GetTexture("FoCs_panel_thin")},
-							hover  = {background = GetTexture("FoCs_panel_thin_hover")},
-							active = {background = GetTexture("FoCs_panel_thin_active")},
-							name   = nameof(ButtonThin)
-					};
+				style.normal.background = TextureUtilities.GetSolidTexture(new Color(0.5f, 0.51f, 0.51f, 1));
 
-					return buttonThin;
-				}
-			}
+				return style;
+			});
 
-			public static GUIStyle Find
+
+			public class FoCsStyle
 			{
-				get
+				public GUIStyle Style { get; }
+
+				public FoCsStyle(GUIStyle _style)
 				{
-					if(find != null)
-						return find;
-
-					find = new GUIStyle("RL FooterButton") {normal = {background = GetTexture("FoCs_find")}, hover = {background = GetTexture("FoCs_find_hover")}, active = {background = GetTexture("FoCs_find_active")}, name = nameof(Find)};
-
-					return find;
+					Style = _style;
 				}
-			}
 
-			public static GUIStyle[] StylesArray => new[] {DownArrow, Down2Arrow, UpArrow, Up2Arrow, InLineOptionsMenu, ButtonNoOutline, CrossCircle, Toolbar, ToolbarButton, ButtonDetailed, ButtonThick, ButtonThin};
+				public FoCsStyle(Func<GUIStyle> _style)
+				{
+					Style = _style();
+				}
+
+				public static implicit operator GUIStyle(FoCsStyle input) => input.Style;
+				public static implicit operator FoCsStyle(GUIStyle input) => new FoCsStyle(input);
+			}
 		}
 	}
 }
