@@ -10,7 +10,6 @@ namespace ForestOfChaosLib.FoCsUI
 	{
 		public Scrollbar     _Scrollbar;
 		public Action<float> onValueChanged;
-
 		public float Value
 		{
 			get { return _Scrollbar.value; }

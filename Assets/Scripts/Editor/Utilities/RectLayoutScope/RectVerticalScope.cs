@@ -27,6 +27,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 		protected override Rect DoGetNextAmount(int amount, Rect retVal)
 		{
 			retVal = retVal.Edit(RectEdit.SetHeight(retVal.height * amount));
+
 			return retVal;
 		}
 	}

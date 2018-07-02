@@ -10,7 +10,6 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 	{
 		public                                       Action<bool> OnToggle;
 		[SerializeField] [GetSet("Toggled")] private bool         toggled;
-
 		public bool Toggled
 		{
 			get { return toggled; }

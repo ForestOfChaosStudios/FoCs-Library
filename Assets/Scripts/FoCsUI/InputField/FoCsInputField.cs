@@ -10,14 +10,11 @@ namespace ForestOfChaosLib.FoCsUI.InputField
 		///     May not be called
 		/// </summary>
 		public Action<string> OnDeselect;
-
 		public Action<string> OnEndEdit;
-
 		/// <summary>
 		///     May not be called
 		/// </summary>
 		public Action<string> OnSubmit;
-
 		public          Func<string, int, char, char> OnValidateInput;
 		public          Action<string>                OnValueChange;
 		public abstract string                        InputFieldText { get; set; }

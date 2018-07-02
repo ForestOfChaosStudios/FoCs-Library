@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.ScreenCap
 	public class Timelapse
 	{
 		private static   GameObject    obj;
-		private static   FoCsBehaviour  com;
+		private static   FoCsBehaviour com;
 		private readonly TimelapseArgs Args;
 		private readonly Coroutine     Routine;
 		private readonly DateTime      Start;

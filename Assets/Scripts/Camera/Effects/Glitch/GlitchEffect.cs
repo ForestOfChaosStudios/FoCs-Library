@@ -69,4 +69,3 @@ namespace ForestOfChaos.Camera.Effects.Glitch
 }
 */
 
-

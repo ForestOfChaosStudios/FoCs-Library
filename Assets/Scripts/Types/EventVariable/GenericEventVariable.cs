@@ -8,7 +8,6 @@ namespace ForestOfChaosLib.Types.EventVariable
 	public class GenericEventVariable<T>
 	{
 		[SerializeField] private T data;
-
 		public T Data
 		{
 			get { return data; }
@@ -19,7 +18,6 @@ namespace ForestOfChaosLib.Types.EventVariable
 				OnChange.Trigger(data);
 			}
 		}
-
 		public GenericEventVariable() { }
 
 		public GenericEventVariable(T data)

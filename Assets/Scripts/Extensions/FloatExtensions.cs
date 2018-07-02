@@ -4,12 +4,12 @@ namespace ForestOfChaosLib.Extensions
 {
 	public static class FloatExtensions
 	{
-		public static bool IsZero(this           float f) => f == 0;
-		public static bool IsZeroOrNegative(this float f) => f <= 0;
-		public static bool IsNegative(this       float f) => f < 0;
-		public static bool IsZeroOrPositive(this float f) => f >= 0;
-		public static bool IsPositive(this       float f) => f > 0;
-		public static float Abs(this             float f) => Math.Abs(f);
+		public static bool  IsZero(this           float f) => f == 0;
+		public static bool  IsZeroOrNegative(this float f) => f <= 0;
+		public static bool  IsNegative(this       float f) => f < 0;
+		public static bool  IsZeroOrPositive(this float f) => f >= 0;
+		public static bool  IsPositive(this       float f) => f > 0;
+		public static float Abs(this              float f) => Math.Abs(f);
 
 		public static float Clamp(this float f, float min = 0, float max = 1)
 		{

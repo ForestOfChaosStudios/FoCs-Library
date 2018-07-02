@@ -7,15 +7,15 @@ namespace ForestOfChaosLib.Extensions
 		private const string INVALID_CHARS            = "([=+{}[]\"'?.<>,\\|()*&^%$#@!;:-])+";
 		private const string WHITESPACE               = "\t\n\v\f\r ";
 		private const string INVALID_CHARS_WHITESPACE = INVALID_CHARS + WHITESPACE;
-		public static bool DoesStringHaveInvalidCharsOrWhiteSpace(this      string str) => StringRegexMatch(str, INVALID_CHARS_WHITESPACE);
-		public static bool DoesStringHaveInvalidChars(this                  string str) => StringRegexMatch(str, INVALID_CHARS);
-		public static bool IsNullOrEmpty(this                               string str) => string.IsNullOrEmpty(str);
-		public static bool HasContent(this                                  string str) => !string.IsNullOrEmpty(str);
-		public static bool DoesStringHaveWhiteSpace(this                    string str) => StringRegexMatch(str, WHITESPACE);
+		public static bool   DoesStringHaveInvalidCharsOrWhiteSpace(this    string str)                          => StringRegexMatch(str, INVALID_CHARS_WHITESPACE);
+		public static bool   DoesStringHaveInvalidChars(this                string str)                          => StringRegexMatch(str, INVALID_CHARS);
+		public static bool   IsNullOrEmpty(this                             string str)                          => string.IsNullOrEmpty(str);
+		public static bool   HasContent(this                                string str)                          => !string.IsNullOrEmpty(str);
+		public static bool   DoesStringHaveWhiteSpace(this                  string str)                          => StringRegexMatch(str, WHITESPACE);
 		public static string ReplaceWhiteSpace(this                         string str, string replaceChar = "") => str.Replace(" ", replaceChar).Replace("\n", replaceChar).Replace("\t", replaceChar);
-		public static string ReplaceStringHaveInvalidCharsOrWhiteSpace(this string str, char   replaceChar) => StringRegexReplace(str,      INVALID_CHARS_WHITESPACE, replaceChar);
+		public static string ReplaceStringHaveInvalidCharsOrWhiteSpace(this string str, char   replaceChar)      => StringRegexReplace(str, INVALID_CHARS_WHITESPACE, replaceChar);
 		public static string ReplaceStringHaveInvalidCharsOrWhiteSpace(this string str, string replaceChar = "") => StringRegexReplace(str, INVALID_CHARS_WHITESPACE, replaceChar);
-		public static string ReplaceStringHaveInvalidChars(this             string str, char   replaceChar) => StringRegexReplace(str,      INVALID_CHARS,            replaceChar);
+		public static string ReplaceStringHaveInvalidChars(this             string str, char   replaceChar)      => StringRegexReplace(str, INVALID_CHARS,            replaceChar);
 		public static string ReplaceStringHaveInvalidChars(this             string str, string replaceChar = "") => StringRegexReplace(str, INVALID_CHARS,            replaceChar);
 
 		//From Stack Overflow thread https://stackoverflow.com/questions/5796383/insert-spaces-between-words-on-a-camel-cased-token

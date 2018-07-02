@@ -102,4 +102,5 @@ namespace ForestOfChaosLib.AdvVar
 		public AdvFolderNameRunTimeAttribute(): base(InternalNames.RunTime) { }
 	}
 #endregion
+
 }

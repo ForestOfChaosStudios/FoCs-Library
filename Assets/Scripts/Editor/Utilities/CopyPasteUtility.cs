@@ -13,7 +13,6 @@ namespace ForestOfChaosLib.Editor.Utilities
 			get { return EditorGUIUtility.systemCopyBuffer; }
 			set { EditorGUIUtility.systemCopyBuffer = value; }
 		}
-
 		public static string CopyBufferNoTypeName => RemoveTypeFromCopyBuffer();
 		public static bool IsEditorCopyNoEntries(string str)
 		{
@@ -126,8 +125,8 @@ namespace ForestOfChaosLib.Editor.Utilities
 			EditorJsonUtility.FromJsonOverwrite(CopyBufferNoTypeName, obj);
 		}
 
-		private const string NEEDLE = "\".*\":";
-		private static bool IsValidObjectInBuffer() => CopyBuffer.Contains(COPY_SPLIT_S);
+		private const  string NEEDLE = "\".*\":";
+		private static bool   IsValidObjectInBuffer() => CopyBuffer.Contains(COPY_SPLIT_S);
 
 		public static bool IsTypeInBuffer(Object obj)
 		{

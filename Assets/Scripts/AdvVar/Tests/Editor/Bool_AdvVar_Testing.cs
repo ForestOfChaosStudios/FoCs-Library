@@ -33,8 +33,8 @@ namespace ForestOfChaosLib.AdvVar
 			var b = false;
 			var f = new BoolVariable {UseLocal = false};
 			f.InternalData.GlobalReference =  ScriptableObject.CreateInstance<BoolReference>();
-			f.OnValueChange               += () => b = true;
-			f.Value                       =  true;
+			f.OnValueChange                += () => b = true;
+			f.Value                        =  true;
 			Assert.True(b);
 		}
 	}

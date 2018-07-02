@@ -1,9 +1,7 @@
 using ForestOfChaosLib.AdvVar;
 using ForestOfChaosLib.AdvVar.Editor;
-using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
-using RangeAttribute = UnityEngine.RangeAttribute;
 
 namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 {
@@ -11,7 +9,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 	public class RangeAttributeDrawer: FoCsPropertyDrawerWithAttribute<RangeAttribute>
 	{
 		// Draw the property inside the given rect
-		private bool foldout = false;
+		private bool foldout;
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -57,7 +55,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 				}
 			}
 		}
-
 
 		private static void DrawErrorMessage(Rect position, GUIContent label)
 		{
@@ -126,17 +123,11 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			var obj = property.GetTargetObjectOfProperty();
 
 			if(obj is IntVariable)
-			{
-				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, (rect) => DoInt(rect, property.FindPropertyRelative("LocalValue"), label, range));
-			}
+				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, rect => DoInt(rect, property.FindPropertyRelative("LocalValue"), label, range));
 			else if(obj is FloatVariable)
-			{
-				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, (rect) => DoFloat(rect, property.FindPropertyRelative("LocalValue"), label, range));
-			}
+				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, rect => DoFloat(rect, property.FindPropertyRelative("LocalValue"), label, range));
 			else if(obj is StringVariable)
-			{
-				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, (rect) => DoString(position, property.FindPropertyRelative("LocalValue"), label, range));
-			}
+				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, rect => DoString(position, property.FindPropertyRelative("LocalValue"), label, range));
 
 			return foldout;
 		}

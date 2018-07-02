@@ -7,7 +7,6 @@ namespace ForestOfChaosLib.AdvVar.Base
 	public class AdvReference<T>: AdvReference
 	{
 		[SerializeField] protected T value;
-
 		public T Value
 		{
 			get { return value; }

@@ -22,12 +22,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 				//Check if we should draw the property
 				if(!GetAttribute.HideInInspector || enabled)
 				{
-					property.isExpanded   =  true;
+					property.isExpanded = true;
 
 					using(FoCsEditor.Disposables.Indent())
-					{
 						EditorGUI.PropertyField(position, property, label, true);
-					}
 				}
 				else
 					property.isExpanded = false;

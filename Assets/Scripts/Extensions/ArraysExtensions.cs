@@ -39,18 +39,18 @@ namespace ForestOfChaosLib.Extensions
 
 	public static class Array2DHelpers
 	{
-		public static T GetElementAt2DCoords<T>(this   T[]   array, int      width, Vector2I pos) => array[(pos.y * width) + pos.x];
-		public static int Get1DIndexOf2DCoords<T>(this T[]   array, int      width, Vector2I pos) => (pos.y * width) + pos.x;
-		public static T GetElementAt2DCoords<T>(this   T[]   array, int      width, int      x, int y) => array[(y * width) + x];
-		public static int Get1DIndexOf2DCoords<T>(this T[]   array, int      width, int      x, int y) => (y * width) + x;
-		public static int GetXOfIndexOf2DArray<T>(this T[]   array, int      width, int      index) => index % width;
-		public static int GetYOfIndexOf2DArray<T>(this T[]   array, int      width, int      index) => index / width;
-		public static int Get1DIndexOf2DCoords(int           width, Vector2I pos) => (pos.y  * width) + pos.x;
-		public static int Get1DIndexOf2DCoords(int           width, int      x, int y) => (y * width) + x;
-		public static int Get1DIndexOf2DCoords(this Vector2I pos,   int      width) => (pos.y * width) + pos.x;
-		public static int GetXOfIndexOf2DArray(int           width, int      index) => index % width;
-		public static int GetYOfIndexOf2DArray(int           width, int      index) => index / width;
-		public static Vector2I GetIndexOf2DArray(int         width, int      index) => new Vector2I(index % width, index / width);
+		public static T        GetElementAt2DCoords<T>(this T[]   array, int      width, Vector2I pos)      => array[(pos.y * width) + pos.x];
+		public static int      Get1DIndexOf2DCoords<T>(this T[]   array, int      width, Vector2I pos)      => (pos.y * width) + pos.x;
+		public static T        GetElementAt2DCoords<T>(this T[]   array, int      width, int      x, int y) => array[(y * width) + x];
+		public static int      Get1DIndexOf2DCoords<T>(this T[]   array, int      width, int      x, int y) => (y * width) + x;
+		public static int      GetXOfIndexOf2DArray<T>(this T[]   array, int      width, int      index) => index % width;
+		public static int      GetYOfIndexOf2DArray<T>(this T[]   array, int      width, int      index) => index / width;
+		public static int      Get1DIndexOf2DCoords(int           width, Vector2I pos)      => (pos.y * width) + pos.x;
+		public static int      Get1DIndexOf2DCoords(int           width, int      x, int y) => (y     * width) + x;
+		public static int      Get1DIndexOf2DCoords(this Vector2I pos,   int      width) => (pos.y * width) + pos.x;
+		public static int      GetXOfIndexOf2DArray(int           width, int      index) => index % width;
+		public static int      GetYOfIndexOf2DArray(int           width, int      index) => index / width;
+		public static Vector2I GetIndexOf2DArray(int              width, int      index) => new Vector2I(index % width, index / width);
 
 		public static void ForLoop2D(int xCount, int yCount, Action<int, int> loopAction, bool includeLastNum = false)
 		{

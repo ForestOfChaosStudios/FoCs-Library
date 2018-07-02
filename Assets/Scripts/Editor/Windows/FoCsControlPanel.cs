@@ -18,7 +18,6 @@ namespace ForestOfChaosLib.Editor
 		private static List<Type> tabList;
 		private static List<Type> WindowList => windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false));
 		private static List<Type> TabList    => tabList    ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTabAttribute>(false));
-
 		private static int ActiveTab
 		{
 			get { return EditorPrefs.GetInt("FoCsCP.ActiveIndex"); }
@@ -87,9 +86,7 @@ namespace ForestOfChaosLib.Editor
 					var @event = FoCsGUI.Layout.Toggle(key.Name.SplitCamelCase(), ActiveTab == index, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
 
 					if(@event)
-					{
 						ActiveTab = index;
-					}
 				}
 
 				++index;

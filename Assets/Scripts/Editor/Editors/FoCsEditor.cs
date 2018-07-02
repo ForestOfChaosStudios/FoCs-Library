@@ -23,11 +23,11 @@ namespace ForestOfChaosLib.Editor
 			Hidden
 		}
 
-		private        Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
-		protected      bool                    GUIChanged           { get; private set; }
-		public virtual bool                    HideDefaultProperty  => true;
-		public virtual bool                    ShowCopyPasteButtons => true;
-		public override bool UseDefaultMargins() => false;
+		private         Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
+		protected       bool                    GUIChanged           { get; private set; }
+		public virtual  bool                    HideDefaultProperty  => true;
+		public virtual  bool                    ShowCopyPasteButtons => true;
+		public override bool                    UseDefaultMargins()  => false;
 
 		~FoCsEditor()
 		{
@@ -62,6 +62,7 @@ namespace ForestOfChaosLib.Editor
 					}
 				}
 			}
+
 			EditorGUILayout.GetControlRect(false, 2);
 		}
 
@@ -134,8 +135,8 @@ namespace ForestOfChaosLib.Editor
 		public static bool IsDefaultScriptProperty(SerializedProperty property) =>
 				property.name.Equals("m_Script") && property.type.Equals("PPtr<MonoScript>") && (property.propertyType == SerializedPropertyType.ObjectReference) && property.propertyPath.Equals("m_Script");
 
-		public static bool IsPropertyHidden(SerializedProperty        property) => GetDefaultPropertyType(property) != DefaultPropertyType.NotDefault;
-		protected bool PropertyIsArrayAndNotString(SerializedProperty property) => property.isArray && (property.propertyType != SerializedPropertyType.String);
+		public static bool IsPropertyHidden(SerializedProperty            property) => GetDefaultPropertyType(property) != DefaultPropertyType.NotDefault;
+		protected     bool PropertyIsArrayAndNotString(SerializedProperty property) => property.isArray && (property.propertyType != SerializedPropertyType.String);
 
 		public void HandleArray(SerializedProperty property)
 		{
@@ -194,7 +195,7 @@ namespace ForestOfChaosLib.Editor
 			return localId;
 		}
 
-		public string AssetPath() => AssetPath(target);
+		public        string AssetPath()              => AssetPath(target);
 		public static string AssetPath(Object target) => AssetDatabase.GetAssetPath(target);
 	}
 

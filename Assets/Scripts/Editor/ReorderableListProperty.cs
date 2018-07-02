@@ -17,11 +17,10 @@ namespace ForestOfChaosLib.Editor
 		{
 			private static   ReorderableList.Defaults s_Defaults;
 			private static   Action                   OnLimitingChange;
+			private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
 			private          SerializedProperty       _property;
 			public           bool                     Animate;
 			public           ListLimiter              Limiter;
-			private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
-
 			public static bool LimitingEnabled
 			{
 				get { return EditorPrefs.GetInt("FoCsRLP.LimitingEnabled") == 0; }
@@ -31,11 +30,9 @@ namespace ForestOfChaosLib.Editor
 					OnLimitingChange.Trigger();
 				}
 			}
-
 			public        ReorderableList          List       { get; private set; }
 			public        AnimBool                 IsExpanded { get; set; }
 			public static ReorderableList.Defaults Defaults   => s_Defaults ?? (s_Defaults = new ReorderableList.Defaults());
-
 			public SerializedProperty Property
 			{
 				get { return _property; }
@@ -201,7 +198,7 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 
-			public void DrawHeader() => DrawDefaultHeader();
+			public void DrawHeader()          => DrawDefaultHeader();
 			public void DrawHeader(Rect rect) => DrawDefaultHeader(rect);
 
 			private void DrawDefaultHeader()
@@ -262,7 +259,6 @@ namespace ForestOfChaosLib.Editor
 				public static readonly GUIStyle   BoxBackground     = new GUIStyle("RL Background");
 				public static readonly GUIStyle   PreButton         = new GUIStyle("RL FooterButton");
 				public static readonly GUIStyle   ElementBackground = new GUIStyle("RL Element");
-
 				public static GUIStyle MiniLabel
 				{
 					get
@@ -285,7 +281,6 @@ namespace ForestOfChaosLib.Editor
 				private        int                     _min;
 				public         ReorderableListProperty MyListProperty;
 				private        bool                    Update;
-
 				private static int _TOTAL_VISIBLE_COUNT
 				{
 					get
@@ -299,7 +294,6 @@ namespace ForestOfChaosLib.Editor
 					}
 					set { EditorPrefs.SetInt("FoCsRLP._TOTAL_VISIBLE_COUNT", Mathf.Clamp(value, 0, int.MaxValue)); }
 				}
-
 				public static int TOTAL_VISIBLE_COUNT
 				{
 					get { return _TOTAL_VISIBLE_COUNT; }
@@ -309,15 +303,12 @@ namespace ForestOfChaosLib.Editor
 						ChangeCount.Trigger();
 					}
 				}
-
 				private int Count => MyListProperty.Property.arraySize;
-
 				public int Min
 				{
 					get { return _min; }
 					set { _min = Math.Max(0, value); }
 				}
-
 				public int Max
 				{
 					get { return _max; }
@@ -329,7 +320,7 @@ namespace ForestOfChaosLib.Editor
 					ChangeCount += UpdateRange;
 				}
 
-				public bool ShowElement(int                                  index) => (index >= Min) && (index < Max);
+				public        bool        ShowElement(int                    index)        => (index >= Min) && (index < Max);
 				public static ListLimiter GetLimiter(ReorderableListProperty listProperty) => new ListLimiter {MyListProperty = listProperty, Min = 0, Max = TOTAL_VISIBLE_COUNT};
 
 				public bool CanDecrease()
@@ -443,10 +434,12 @@ namespace ForestOfChaosLib.Editor
 					x -= 25f;
 
 				using(Disposables.IndentSet(0))
+				{
 					_property.isExpanded = EditorGUI.ToggleLeft(rect.Edit(RectEdit.SetWidth(x - 10)),
 					                                            $"{_property.displayName}\t[{_property.arraySize}]",
 					                                            _property.isExpanded,
 					                                            _property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none);
+				}
 
 				using(Disposables.DisabledScope(!_property.isExpanded))
 				{
@@ -568,6 +561,7 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 #endregion
+
 #region Delegate Setters
 			/// <summary>
 			///     SetAddCallBack
@@ -701,6 +695,7 @@ namespace ForestOfChaosLib.Editor
 				return this;
 			}
 #endregion
+
 #region Storage
 			private ORD GetObjectDrawer(SerializedProperty property)
 			{
@@ -739,6 +734,7 @@ namespace ForestOfChaosLib.Editor
 				return ret;
 			}
 #endregion
+
 		}
 	}
 }

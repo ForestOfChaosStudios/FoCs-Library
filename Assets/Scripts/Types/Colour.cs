@@ -104,6 +104,7 @@ namespace ForestOfChaosLib.Types
 		public static Colour operator *(Colour a, float  d) => new Colour(a.R * d,   a.G * d,   a.B * d,   a.A * d);
 		public static Colour operator *(float  d, Colour a) => new Colour(a.R * d,   a.G * d,   a.B * d,   a.A * d);
 		public static Colour operator /(Colour a, float  d) => new Colour(a.R / d,   a.G / d,   a.B / d,   a.A / d);
+
 #region PresetColours
 		public static Colour Red     => new Colour(255, 0,   0);
 		public static Colour Green   => new Colour(0,   255, 0);
@@ -118,4 +119,5 @@ namespace ForestOfChaosLib.Types
 		public static Colour Clear   => new Colour(0,   0,   0, 0);
 	}
 #endregion
+
 }

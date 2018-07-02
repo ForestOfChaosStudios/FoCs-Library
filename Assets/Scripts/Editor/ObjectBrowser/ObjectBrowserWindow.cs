@@ -31,31 +31,26 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 		private static          int               activeIndex;
 		private static readonly GUILayoutOption[] ToggleOp    = {GUILayout.ExpandWidth(true), GUILayout.Height(18)};
 		private static readonly GUIContent        PingContent = new GUIContent("", "Ping Object");
-
 		public static Type ActiveType
 		{
 			get { return TypeList[ActiveIndex]; }
 			set { ActiveIndex = TypeList.IndexOf(value); }
 		}
-
 		private static string TypeSearch
 		{
 			get { return typeSearch; }
 			set { EditorPrefs.SetString("FoCsOB.TypeSearch", typeSearch = value); }
 		}
-
 		private static string SceneSearch
 		{
 			get { return sceneSearch; }
 			set { EditorPrefs.SetString("FoCsOB.SceneSearch", sceneSearch = value); }
 		}
-
 		private static string AssetSearch
 		{
 			get { return assetSearch; }
 			set { EditorPrefs.SetString("FoCsOB.AssetSearch", assetSearch = value); }
 		}
-
 		private static int ActiveIndex
 		{
 			get { return activeIndex; }
@@ -165,12 +160,13 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 				typeScrollPos = scroll.scrollPosition;
 			}
+
 			return false;
 		}
 
 		private void DrawTypeLabel(int i)
 		{
-			var @event = FoCsGUI.Layout.Toggle(TypeList[i].Name.SplitCamelCase(), ActiveIndex == i,  FoCsGUI.Styles.ToolbarButton, ToggleOp);
+			var @event = FoCsGUI.Layout.Toggle(TypeList[i].Name.SplitCamelCase(), ActiveIndex == i, FoCsGUI.Styles.ToolbarButton, ToggleOp);
 			TypePressed(i, @event);
 		}
 
@@ -425,7 +421,6 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 				FoundAssetsObjects = new List<Object>();
 			else
 				FoundAssetsObjects.Clear();
-
 
 			FoundAssetsObjects.AddRange(FoCsAssetFinder.FindAssetsByTypeWithScene(ActiveType));
 

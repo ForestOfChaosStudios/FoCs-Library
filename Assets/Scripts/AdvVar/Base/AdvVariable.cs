@@ -8,27 +8,21 @@ namespace ForestOfChaosLib.AdvVar.Base
 	public class AdvVariable<T, aT>: AdvVariable where aT: AdvReference<T>
 	{
 		private AdvVariableInternals _InternalData;
-
 		/*[GetSetter("Value")] */
 		[SerializeField] private T LocalValue;
-
 		/*[GetSetter("Value")] */
 		[SerializeField] private aT Reference;
-
 		public T Value
 		{
 			get
 			{
 				if(UseLocal)
-				{
 					return LocalValue;
-				}
-				else
-				{
-					if(Reference == null)
-						throw new AdvVariableReferenceMissingError();
-					return Reference.Value;
-				}
+
+				if(Reference == null)
+					throw new AdvVariableReferenceMissingError();
+
+				return Reference.Value;
 			}
 			set
 			{
@@ -40,7 +34,6 @@ namespace ForestOfChaosLib.AdvVar.Base
 				OnValueChange.Trigger();
 			}
 		}
-
 		public AdvVariableInternals InternalData => _InternalData ?? (_InternalData = new AdvVariableInternals(this));
 		public AdvVariable() { }
 
@@ -52,14 +45,14 @@ namespace ForestOfChaosLib.AdvVar.Base
 
 		public AdvVariable(aT reference)
 		{
-			Reference    = reference;
-			UseLocal = false;
+			Reference = reference;
+			UseLocal  = false;
 		}
 
 		public AdvVariable(T localValue, aT reference, bool useLocal = false)
 		{
 			LocalValue = localValue;
-			Reference      = reference;
+			Reference  = reference;
 			UseLocal   = useLocal;
 		}
 
@@ -68,13 +61,11 @@ namespace ForestOfChaosLib.AdvVar.Base
 		public class AdvVariableInternals
 		{
 			private readonly AdvVariable<T, aT> classRef;
-
 			public aT GlobalReference
 			{
 				get { return classRef.Reference; }
 				set { classRef.Reference = value; }
 			}
-
 			public T LocalValue
 			{
 				get { return classRef.LocalValue; }
@@ -89,8 +80,7 @@ namespace ForestOfChaosLib.AdvVar.Base
 
 		public class AdvVariableReferenceMissingError: Exception
 		{
-			public AdvVariableReferenceMissingError():base($"Missing Reference of {typeof(aT)}, Set to Local, or add reference.")
-			{ }
+			public AdvVariableReferenceMissingError(): base($"Missing Reference of {typeof(aT)}, Set to Local, or add reference.") { }
 		}
 	}
 

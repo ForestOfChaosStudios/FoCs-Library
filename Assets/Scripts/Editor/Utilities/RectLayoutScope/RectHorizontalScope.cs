@@ -23,9 +23,11 @@ namespace ForestOfChaosLib.Editor.Utilities
 			NextRect  =  nexRect;
 			++CurrentIndex;
 		}
+
 		protected override Rect DoGetNextAmount(int amount, Rect retVal)
 		{
 			retVal = retVal.Edit(RectEdit.SetWidth(retVal.width * amount));
+
 			return retVal;
 		}
 	}

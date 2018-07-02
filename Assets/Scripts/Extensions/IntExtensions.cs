@@ -9,7 +9,7 @@ namespace ForestOfChaosLib.Extensions
 		public static bool IsNegative(this       int i) => i < 0;
 		public static bool IsZeroOrPositive(this int i) => i >= 0;
 		public static bool IsPositive(this       int i) => i > 0;
-		public static int Abs(this               int i) => Math.Abs(i);
+		public static int  Abs(this              int i) => Math.Abs(i);
 
 		public static int Clamp(this int i, int min = 0, int max = 1)
 		{

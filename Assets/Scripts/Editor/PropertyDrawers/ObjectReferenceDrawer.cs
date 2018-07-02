@@ -12,8 +12,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		protected static readonly GUIContent       foldoutGUIContent = new GUIContent("", "Open up the References Data");
 		protected                 bool             foldout;
 		protected                 SerializedObject serializedObject;
-
-		protected virtual bool AllowFoldout => true;
+		protected virtual         bool             AllowFoldout => true;
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -33,7 +32,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				}
 			}
 
-			if(property.objectReferenceValue == null || !AllowFoldout)
+			if((property.objectReferenceValue == null) || !AllowFoldout)
 			{
 				serializedObject = null;
 
@@ -46,14 +45,14 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			foldout = DrawReference(position, serializedObject, foldout);
 		}
 
-		public static bool DrawReference(Rect position ,SerializedObject serializedObject, bool foldout)
+		public static bool DrawReference(Rect position, SerializedObject serializedObject, bool foldout)
 		{
 			if(serializedObject.VisibleProperties() == 0)
 				return false;
 
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);
-			foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine),RectEdit.SetWidth(SingleLine),RectEdit.ChangeY(1)),foldout,foldoutGUIContent);
+			foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(1)), foldout, foldoutGUIContent);
 
 			if(!foldout)
 				return false;
@@ -64,12 +63,12 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			{
 				using(FoCsEditor.Disposables.Indent())
 				{
-					var drawPos = position.Edit(RectEdit.AddY(SingleLinePlusPadding),RectEdit.SubtractHeight(SingleLinePlusPadding),RectEdit.ChangeY(1));
+					var drawPos = position.Edit(RectEdit.AddY(SingleLinePlusPadding), RectEdit.SubtractHeight(SingleLinePlusPadding), RectEdit.ChangeY(1));
 
 					do
 					{
 						if(!FoCsEditor.IsPropertyHidden(iterator))
-							drawPos = DrawSubProp(iterator,drawPos);
+							drawPos = DrawSubProp(iterator, drawPos);
 					}
 					while(iterator.NextVisible(false));
 
@@ -136,5 +135,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			return objDraw;
 		}
 #endregion
+
 	}
 }

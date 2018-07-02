@@ -17,6 +17,7 @@ namespace ForestOfChaosLib.Extensions
 		public static Rect Edit(this Rect rect, params RectEdit[] editor)
 		{
 			var output = new Rect(rect);
+
 			foreach(var pair in editor)
 			{
 				switch(pair.Type)

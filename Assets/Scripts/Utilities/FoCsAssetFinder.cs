@@ -21,7 +21,7 @@ namespace ForestOfChaosLib.Utilities
 			var assets = new List<Object>();
 			var guids  = AssetDatabase.FindAssets($"t:{type.ToString().Replace("UnityEngine.", "")}");
 
-			for(int i = 0; i < guids.Length; i++)
+			for(var i = 0; i < guids.Length; i++)
 			{
 				var assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
 				var subAssets = AssetDatabase.LoadAllAssetsAtPath(assetPath);
@@ -30,13 +30,11 @@ namespace ForestOfChaosLib.Utilities
 				{
 					if(AssetDatabase.IsSubAsset(subAsset))
 					{
-						if(subAsset != null && subAsset.GetType() == type)
+						if((subAsset != null) && (subAsset.GetType() == type))
 							assets.AddWithDuplicateCheck(subAsset);
 					}
 					else
-					{
 						assets.AddWithDuplicateCheck(subAsset);
-					}
 				}
 			}
 
@@ -45,6 +43,7 @@ namespace ForestOfChaosLib.Utilities
 			return Resources.FindObjectsOfTypeAll(type);
 #endif
 		}
+
 		public static T[] FindAssetsByTypeWithScene<T>() where T: Object => FindAssetsByTypeWithScene(typeof(T)).Cast<T>().ToArray();
 
 		public static Object[] FindAssetsByTypeWithScene(Type type)
@@ -53,7 +52,7 @@ namespace ForestOfChaosLib.Utilities
 			var assets = new List<Object>();
 			var guids  = AssetDatabase.FindAssets($"t:{type.ToString().Replace("UnityEngine.", "")}");
 
-			for(int i = 0; i < guids.Length; i++)
+			for(var i = 0; i < guids.Length; i++)
 			{
 				var assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
 				var subAssets = AssetDatabase.LoadAllAssetsAtPath(assetPath);
@@ -62,7 +61,7 @@ namespace ForestOfChaosLib.Utilities
 				{
 					if(AssetDatabase.IsSubAsset(subAsset))
 					{
-						if(subAsset != null && subAsset.GetType() == type)
+						if((subAsset != null) && (subAsset.GetType() == type))
 							assets.AddWithDuplicateCheck(subAsset);
 					}
 				}

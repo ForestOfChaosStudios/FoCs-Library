@@ -10,7 +10,6 @@ namespace ForestOfChaosLib.Grid
 	{
 		[SerializeField] private GridPosition _center;
 		public                   bool         AllowCorners = true;
-
 		/// 000
 		/// 010
 		/// 000
@@ -19,7 +18,6 @@ namespace ForestOfChaosLib.Grid
 			get { return _center; }
 			set { _center = value; }
 		}
-
 		/// 000
 		/// 100
 		/// 000
@@ -33,7 +31,6 @@ namespace ForestOfChaosLib.Grid
 				return retVal;
 			}
 		}
-
 		/// 000
 		/// 001
 		/// 000
@@ -47,7 +44,6 @@ namespace ForestOfChaosLib.Grid
 				return retVal;
 			}
 		}
-
 		/// 010
 		/// 000
 		/// 000
@@ -61,7 +57,6 @@ namespace ForestOfChaosLib.Grid
 				return retVal;
 			}
 		}
-
 		/// 000
 		/// 000
 		/// 010
@@ -75,7 +70,6 @@ namespace ForestOfChaosLib.Grid
 				return retVal;
 			}
 		}
-
 		/// 100
 		/// 000
 		/// 000
@@ -90,7 +84,6 @@ namespace ForestOfChaosLib.Grid
 				return retVal;
 			}
 		}
-
 		/// 001
 		/// 000
 		/// 000
@@ -105,7 +98,6 @@ namespace ForestOfChaosLib.Grid
 				return retVal;
 			}
 		}
-
 		/// 000
 		/// 000
 		/// 100
@@ -120,7 +112,6 @@ namespace ForestOfChaosLib.Grid
 				return retVal;
 			}
 		}
-
 		/// 000
 		/// 000
 		/// 001

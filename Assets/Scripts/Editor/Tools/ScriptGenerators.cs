@@ -20,7 +20,6 @@ namespace ForestOfChaosLib.Editor.Tools
 				{Type.Byte, typeof(TypeWithNameAndData.ByteType)},
 				{Type.Bool, typeof(TypeWithNameAndData.BoolType)}
 		};
-
 		public static Dictionary<Type, object> TypeToData = new Dictionary<Type, object> {{Type.String, "\"\""}, {Type.Int, 0}, {Type.Int32, 0}, {Type.Int64, 0}, {Type.Float, 0}, {Type.Byte, 0}, {Type.Bool, false}};
 
 		[Serializable]
@@ -351,5 +350,6 @@ namespace ForestOfChaosLib.Editor.Tools
 			AssetDatabase.Refresh();
 		}
 #endregion
+
 	}
 }

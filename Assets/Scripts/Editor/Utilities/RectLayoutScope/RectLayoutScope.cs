@@ -56,10 +56,9 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 			LastRect = NextRect;
 			var retVal = NextRect;
-
 			retVal = DoGetNextAmount(amount, retVal);
 
-			for(var i = 0;i < amount;i++)
+			for(var i = 0; i < amount; i++)
 				DoNextRect();
 
 			return retVal;
@@ -68,6 +67,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 		protected virtual Rect DoGetNextAmount(int amount, Rect retVal)
 		{
 			retVal = retVal.Edit(RectEdit.SetWidth(retVal.width * amount));
+
 			return retVal;
 		}
 

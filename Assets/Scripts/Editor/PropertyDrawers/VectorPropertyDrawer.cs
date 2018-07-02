@@ -17,7 +17,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 	[CustomPropertyDrawer(typeof(Vector2))]
 	public class Vector2PropEditor: VectorPropEditor
 	{
-		public override void OnGUI(Rect                            position, SerializedProperty property, GUIContent label) => Draw(position, property, label);
+		public override void  OnGUI(Rect                           position, SerializedProperty property, GUIContent label) => Draw(position, property, label);
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent         label) => SingleLine;
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
@@ -60,7 +60,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 	[CustomPropertyDrawer(typeof(Vector3))]
 	public class Vector3PropEditor: VectorPropEditor
 	{
-		public override void OnGUI(Rect                            position, SerializedProperty property, GUIContent label) => Draw(position, property, label);
+		public override void  OnGUI(Rect                           position, SerializedProperty property, GUIContent label) => Draw(position, property, label);
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent         label) => SingleLine;
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
@@ -105,7 +105,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 	[CustomPropertyDrawer(typeof(Vector4))]
 	public class Vector4PropEditor: VectorPropEditor
 	{
-		public override void OnGUI(Rect                            position, SerializedProperty property, GUIContent label) => Draw(position, property, label);
+		public override void  OnGUI(Rect                           position, SerializedProperty property, GUIContent label) => Draw(position, property, label);
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent         label) => SingleLine;
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)

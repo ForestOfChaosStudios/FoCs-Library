@@ -16,7 +16,6 @@ namespace ForestOfChaosLib.Editor
 		private static          int                                _tabNum;
 		private readonly        KeyValuePair<GUIContent, Action>[] TabName;
 		public override         bool                               ShowCopyPasteButtons => true;
-
 		private static int TabNum
 		{
 			get { return _tabNum; }

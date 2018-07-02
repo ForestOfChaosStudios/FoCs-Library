@@ -11,31 +11,17 @@ namespace ForestOfChaosLib.InputManager
 		///     The Axis that the coder uses as Reference
 		/// </summary>
 		public string Axis;
-
 		[SerializeField] public  KeyPosition KeyPos = KeyPosition.Up;
 		[SerializeField] private float       deadZone;
 		[SerializeField] private float       value;
 		public                   bool        OnlyButtonEvents = false;
 		public                   bool        ValueInverted;
 		public                   bool        UseSmoothInput = true;
-#region Actions
-		public Action<float> OnKey;
-		public Action        OnKeyDown;
-		public Action        OnKeyNegativeDown;
-		public Action        OnKeyNegativeUp;
-		public Action<float> OnKeyNoDeadZone;
-		public Action        OnKeyNoValue;
-		public Action        OnKeyPositiveDown;
-		public Action        OnKeyPositiveUp;
-		public Action        OnKeyUp;
-#endregion
-
 		public float Value
 		{
 			get { return ValueInverted? value : -value; }
 			set { this.value = ValueInverted? value : -value; }
 		}
-
 		public float DeadZone
 		{
 			get { return deadZone; }
@@ -48,12 +34,12 @@ namespace ForestOfChaosLib.InputManager
 			ValueInverted = invert;
 		}
 
-		public static implicit operator float(InputAxis  fp) => fp.Value;
-		public static implicit operator string(InputAxis fp) => fp.Axis;
-		public static implicit operator bool(InputAxis   fp) => fp.ValueInverted;
-		public static implicit operator InputAxis(string fp) => new InputAxis(fp);
-		public bool InputInDeadZone() => Math.Abs(Value)               > DeadZone;
-		public bool InputInDeadZone(float deadZone) => Math.Abs(Value) > deadZone;
+		public static implicit operator float(InputAxis  fp)                 => fp.Value;
+		public static implicit operator string(InputAxis fp)                 => fp.Axis;
+		public static implicit operator bool(InputAxis   fp)                 => fp.ValueInverted;
+		public static implicit operator InputAxis(string fp)                 => new InputAxis(fp);
+		public                          bool InputInDeadZone()               => Math.Abs(Value) > DeadZone;
+		public                          bool InputInDeadZone(float deadZone) => Math.Abs(Value) > deadZone;
 
 		public void CallEvents()
 		{
@@ -171,6 +157,19 @@ namespace ForestOfChaosLib.InputManager
 			else if(key.Value < 0)
 				key.OnKeyNegativeUp.Trigger();
 		}
+
+#region Actions
+		public Action<float> OnKey;
+		public Action        OnKeyDown;
+		public Action        OnKeyNegativeDown;
+		public Action        OnKeyNegativeUp;
+		public Action<float> OnKeyNoDeadZone;
+		public Action        OnKeyNoValue;
+		public Action        OnKeyPositiveDown;
+		public Action        OnKeyPositiveUp;
+		public Action        OnKeyUp;
+#endregion
+
 	}
 
 	public enum KeyPosition

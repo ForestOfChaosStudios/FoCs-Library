@@ -28,15 +28,15 @@ namespace ForestOfChaosLib.AdvVar.InputSystem.Editor
 				if(IsAssetAFolder(Selection.activeObject))
 				{
 					var path = AssetDatabase.GetAssetPath(Selection.activeObject.GetInstanceID());
-					var obj = ScriptableObject.CreateInstance<AdvFolder>();
-
-					AssetDatabase.CreateAsset(obj,$"{path}/Input.asset" );
+					var obj  = ScriptableObject.CreateInstance<AdvFolder>();
+					AssetDatabase.CreateAsset(obj, $"{path}/Input.asset");
 					Undo.RegisterCreatedObjectUndo(obj, "Created Input AdvFolder");
 					Selection.activeObject = obj;
 				}
 			}
 
 			var strings = new List<string>();
+
 			foreach(var name in ReadInputManager.GetAxisNames())
 			{
 				if(strings.Contains(name))
@@ -52,27 +52,24 @@ namespace ForestOfChaosLib.AdvVar.InputSystem.Editor
 			EditorUtility.SetDirty(Selection.activeObject);
 			AssetDatabase.ImportAsset(FoCsEditor.AssetPath(Selection.activeObject));
 		}
-		private static bool IsAssetAFolder(Object obj){
-			string path = "";
 
-			if (obj == null){
+		private static bool IsAssetAFolder(Object obj)
+		{
+			var path = "";
+
+			if(obj == null)
 				return false;
-			}
 
 			path = AssetDatabase.GetAssetPath(obj.GetInstanceID());
 
-			if (path.Length > 0)
+			if(path.Length > 0)
 			{
-				if (Directory.Exists(path))
-				{
+				if(Directory.Exists(path))
 					return true;
-				}
-				else
-				{
-					return false;
-				}
+
+				return false;
 			}
- 
+
 			return false;
 		}
 	}

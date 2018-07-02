@@ -12,25 +12,21 @@ namespace ForestOfChaosLib.Curves
 		public const             int           TOTAL_COUNT    = 4;
 		public                   List<Vector3> Positions      = new List<Vector3>(TOTAL_COUNT);
 		[SerializeField] private bool          useGlobalSpace = true;
-
 		public Vector3 StartPos
 		{
 			get { return Positions[0]; }
 			set { Positions[0] = value; }
 		}
-
 		public Vector3 MidPosOne
 		{
 			get { return Positions[1]; }
 			set { Positions[1] = value; }
 		}
-
 		public Vector3 MidPosTwo
 		{
 			get { return Positions[2]; }
 			set { Positions[2] = value; }
 		}
-
 		public Vector3 EndPos
 		{
 			get { return Positions[3]; }
@@ -48,7 +44,6 @@ namespace ForestOfChaosLib.Curves
 			get { return useGlobalSpace; }
 			set { useGlobalSpace = value; }
 		}
-
 		public List<Vector3> CurvePositions
 		{
 			get
@@ -99,9 +94,8 @@ namespace ForestOfChaosLib.Curves
 				}
 			}
 		}
-
-		public bool IsFixedLength => true;
-		public int  Length        => TOTAL_COUNT;
+		public bool    IsFixedLength    => true;
+		public int     Length           => TOTAL_COUNT;
 		public Vector3 Lerp(float time) => BezierLerp.Lerp(this, time);
 	}
 }

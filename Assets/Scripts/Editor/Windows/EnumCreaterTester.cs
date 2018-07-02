@@ -11,7 +11,6 @@ namespace ForestOfChaosLib.Editor.Windows
 		protected override string       EnumName     => "EnumTester";
 		protected override string       EnumNewEntry => "NewEnum";
 		protected override string[]     EnumDefault  => new[] {"enumData"};
-
 		protected override List<string> EnumList
 		{
 			get { return DataList; }

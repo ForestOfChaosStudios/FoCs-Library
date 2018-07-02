@@ -10,7 +10,6 @@ namespace ForestOfChaosLib.FoCsUI
 	{
 		public Toggle       _Toggle;
 		public Action<bool> onValueChanged;
-
 		public bool Value
 		{
 			get { return _Toggle.isOn; }

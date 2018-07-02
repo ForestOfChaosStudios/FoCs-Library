@@ -8,7 +8,6 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 		public  Action OnBeforeValueChange = () => { };
 		public  Action OnValueChange       = () => { };
 		private T      reference;
-
 		public T Reference
 		{
 			get { return reference; }
@@ -19,7 +18,6 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 				OnValueChange.Trigger();
 			}
 		}
-
 		public override bool HasReference => reference != null;
 	}
 

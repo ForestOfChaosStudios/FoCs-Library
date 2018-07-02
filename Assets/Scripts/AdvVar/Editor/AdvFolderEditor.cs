@@ -110,7 +110,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 						using(var cc = Disposables.ChangeCheck())
 						{
-							var @event = FoCsGUI.Layout.Toggle(key.ToggleName.SplitCamelCase(), ActiveTab == index,  FoCsGUI.Styles.Unity.ToolbarButton);
+							var @event = FoCsGUI.Layout.Toggle(key.ToggleName.SplitCamelCase(), ActiveTab == index, FoCsGUI.Styles.Unity.ToolbarButton);
 
 							if(cc.changed && @event)
 							{

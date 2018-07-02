@@ -3,8 +3,9 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Base.HiddenClasses
 {
-	public partial class FoCsBe: MonoBehaviour
+	public class FoCsBe: MonoBehaviour
 	{
+
 #region GetComponentAdvanced
 		/// <summary>
 		///     Its GetComponent, but also checks for attached Linkers
@@ -49,7 +50,7 @@ namespace ForestOfChaosLib.Base.HiddenClasses
 		public T[] GetComponentsInParentAdvanced<T>() where T: class => gameObject.GetComponentsInParentAdvanced<T>();
 #endregion
 
-//#region ComponentTag
+		//#region ComponentTag
 		//public bool HasTags()
 		//{
 		//	return GetComponentAdvanced<ComponentTag>() != null;
@@ -68,6 +69,6 @@ namespace ForestOfChaosLib.Base.HiddenClasses
 		//		return null;
 		//	return GetComponentAdvanced<ComponentTag>().Tags;
 		//}
-//#endregion
+		//#endregion
 	}
 }

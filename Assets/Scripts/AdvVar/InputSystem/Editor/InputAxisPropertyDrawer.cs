@@ -19,10 +19,12 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		internal static readonly GUIContent   ProgressBarContent             = new GUIContent("Current Value", "Shows what the current value of the Axis is.");
 		internal static readonly GUIContent   PopupContent                   = new GUIContent("Input Axis",    "Chose from the available Unity Input Axis values.");
 		internal static readonly GUIContent[] OPTIONS_ARRAY                  = {enableSyncAxisNamesGUIContent, disableSyncAxisNamesGUIContent};
+
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
 			if(ShowLabel(label.text))
 				return SingleLinePlusPadding * 5;
+
 			return SingleLinePlusPadding * 4;
 		}
 
@@ -37,17 +39,17 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				if(EditorGUI.indentLevel <= 1)
 					position = position.Edit(RectEdit.ChangeX(16f));
 
-				var axisProp       = property.FindPropertyRelative("Axis");
-				var ValueInverted  = new EditorEntry("Invert Result",                                                    property.FindPropertyRelative("ValueInverted"));
-				var OnlyButtonEvents = new EditorEntry("Only Button Events",                                                      property.FindPropertyRelative("OnlyButtonEvents"));
-				var UseSmoothInput = new EditorEntry("Use Smooth Input",                                                 property.FindPropertyRelative("UseSmoothInput"));
-				var Axis           = new EditorEntry($"Axis: {axisProp.stringValue}",                                    axisProp);
-				var value          = new EditorEntry($"{(ValueInverted.Property.boolValue? "Non Inverted " : "")}Value", property.FindPropertyRelative("value"));
-				var deadZone       = new EditorEntry("DeadZone",                                                         property.FindPropertyRelative("deadZone"));
+				var axisProp         = property.FindPropertyRelative("Axis");
+				var ValueInverted    = new EditorEntry("Invert Result",                                                    property.FindPropertyRelative("ValueInverted"));
+				var OnlyButtonEvents = new EditorEntry("Only Button Events",                                               property.FindPropertyRelative("OnlyButtonEvents"));
+				var UseSmoothInput   = new EditorEntry("Use Smooth Input",                                                 property.FindPropertyRelative("UseSmoothInput"));
+				var Axis             = new EditorEntry($"Axis: {axisProp.stringValue}",                                    axisProp);
+				var value            = new EditorEntry($"{(ValueInverted.Property.boolValue? "Non Inverted " : "")}Value", property.FindPropertyRelative("value"));
+				var deadZone         = new EditorEntry("DeadZone",                                                         property.FindPropertyRelative("deadZone"));
 
 				using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, position))
 				{
-					using(FoCsEditor.Disposables.LabelFieldSetWidth((horizontalScope.FirstRect.width * LABEL_SIZE)))
+					using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
 					{
 						using(var verticalScope = FoCsEditor.Disposables.RectVerticalScope(showLabel? 5 : 4, horizontalScope.GetNext()))
 						{
@@ -79,8 +81,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		{
 			if(label == "Value")
 				return false;
+
 			return !label.Contains("element");
 		}
+
 		private static void DrawDropDown(SerializedProperty Axis, Rect pos)
 		{
 			var array = ReadInputManager.GetAxisNames();

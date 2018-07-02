@@ -9,6 +9,7 @@ using UnityEngine;
 public class AnimatorKeyEditor: FoCsEditor
 {
 	private static readonly GUIContent ValueContent = new GUIContent("Value");
+
 	public override void OnInspectorGUI()
 	{
 		serializedObject.Update();

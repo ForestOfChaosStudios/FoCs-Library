@@ -33,8 +33,8 @@ namespace ForestOfChaosLib.AdvVar
 			var b = false;
 			var f = new IntVariable {UseLocal = false};
 			f.InternalData.GlobalReference =  ScriptableObject.CreateInstance<IntReference>();
-			f.OnValueChange               += () => b = true;
-			f.Value                       =  6;
+			f.OnValueChange                += () => b = true;
+			f.Value                        =  6;
 			Assert.True(b);
 		}
 	}

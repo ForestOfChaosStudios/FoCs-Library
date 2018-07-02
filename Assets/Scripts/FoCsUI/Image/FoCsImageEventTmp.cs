@@ -6,7 +6,6 @@ namespace ForestOfChaosLib.FoCsUI.Image
 	public class FoCsImageEventTmp: FoCsImage
 	{
 		public TextMeshProUGUI TextObj;
-
 		public override string Text
 		{
 			get { return TextObj == null? "" : TextObj.text; }
@@ -16,7 +15,6 @@ namespace ForestOfChaosLib.FoCsUI.Image
 					TextObj.text = value;
 			}
 		}
-
 		public override GameObject TextGO => TextObj.gameObject;
 
 		private void Reset()

@@ -9,6 +9,6 @@ namespace ForestOfChaosLib.Curves
 		bool          IsFixedLength  { get; }
 		bool          UseGlobalSpace { get; set; }
 		int           Length         { get; }
-		Vector3 Lerp(float time);
+		Vector3       Lerp(float time);
 	}
 }

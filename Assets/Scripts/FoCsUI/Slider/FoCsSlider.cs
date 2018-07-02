@@ -10,7 +10,6 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 		public Action<float>  OnValueChanged;
 		public FloatReference ReferencedFloat;
 		public USlider        slider;
-
 		public float Value
 		{
 			get { return slider.value; }

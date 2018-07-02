@@ -10,7 +10,6 @@ namespace ForestOfChaosLib.FoCsUI
 	{
 		public Dropdown    _DropDown;
 		public Action<int> onValueChanged;
-
 		public int Value
 		{
 			get { return _DropDown.value; }

@@ -12,7 +12,6 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 	{
 		private const string                             Title = "Advanced Unity Settings Window";
 		private       Tab<AdvancedUnitySettingsWindow>[] _tabs;
-
 		public override Tab<AdvancedUnitySettingsWindow>[] Tabs
 		{
 			get
