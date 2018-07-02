@@ -1,7 +1,7 @@
 ﻿using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.PropertyDrawers;
+using ForestOfChaosLib.Utilities;
 using UnityEditor;
-using UnityEditor.PostProcessing;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Attributes
@@ -39,7 +39,7 @@ namespace ForestOfChaosLib.Attributes
 			if(!GetAttribute.CallSetter)
 				return;
 
-			var parent = ReflectionUtils.GetParentObject(property.propertyPath, property.serializedObject.targetObject);
+			var parent = ReflectionUtilities.GetParentObject(property.propertyPath, property.serializedObject.targetObject);
 			var type   = parent.GetType();
 			var info   = type.GetProperty(GetAttribute.name);
 

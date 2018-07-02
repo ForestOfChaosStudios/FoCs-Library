@@ -3,38 +3,37 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[FoCsTestingCategory]
 	[Category("AdvVar")]
-	internal static class String_AdvVar_Testing
+	internal static class Float_AdvVar_Testing
 	{
 		[Test(Author = "Jordan Miles", Description = "To Test the OnValueChanged Event")]
-		public static void String_Reference_OnChange_Event()
+		public static void Float_Reference_OnChange_Event()
 		{
 			var b = false;
-			var f = ScriptableObject.CreateInstance<StringReference>();
+			var f = ScriptableObject.CreateInstance<FloatReference>();
 			f.OnValueChange += () => b = true;
-			f.Value         =  " ";
+			f.Value         =  6;
 			Assert.True(b);
 		}
 
 		[Test(Author = "Jordan Miles", Description = "To Test the OnValueChanged Event")]
-		public static void String_Constant_OnChange_Event()
+		public static void Float_Constant_OnChange_Event()
 		{
-			var            b = false;
-			StringVariable f = "";
+			var           b = false;
+			FloatVariable f = 5;
 			f.OnValueChange += () => b = true;
-			f.Value         =  " ";
+			f.Value         =  6;
 			Assert.True(b);
 		}
 
 		[Test(Author = "Jordan Miles", Description = "To Test the OnValueChanged Event")]
-		public static void String_Global_OnChange_Event()
+		public static void Float_Global_OnChange_Event()
 		{
 			var b = false;
-			var f = new StringVariable {UseLocal = false};
-			f.InternalData.GlobalReference =  ScriptableObject.CreateInstance<StringReference>();
+			var f = new FloatVariable {UseLocal = false};
+			f.InternalData.GlobalReference =  ScriptableObject.CreateInstance<FloatReference>();
 			f.OnValueChange                += () => b = true;
-			f.Value                        =  " ";
+			f.Value                        =  6;
 			Assert.True(b);
 		}
 	}

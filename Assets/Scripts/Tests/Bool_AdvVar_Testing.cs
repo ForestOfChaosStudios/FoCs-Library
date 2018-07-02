@@ -1,9 +1,8 @@
-﻿using NUnit.Framework;
-using UnityEngine;
+﻿using UnityEngine;
+using NUnit.Framework;
 
 namespace ForestOfChaosLib.AdvVar
 {
-	[FoCsTestingCategory]
 	[Category("AdvVar")]
 	internal static class Bool_AdvVar_Testing
 	{

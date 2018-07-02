@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.RectEdits
 {
-	[FoCsTestingCategory]
 	[Category("Rect Edit")]
 	internal static class SetTests
 	{
@@ -56,7 +55,6 @@ namespace ForestOfChaosLib.RectEdits
 		}
 	}
 
-	[FoCsTestingCategory]
 	[Category("Rect Edit")]
 	internal static class AddTests
 	{
@@ -107,7 +105,6 @@ namespace ForestOfChaosLib.RectEdits
 		}
 	}
 
-	[FoCsTestingCategory]
 	[Category("Rect Edit")]
 	internal static class MultiplyTests
 	{
@@ -158,7 +155,7 @@ namespace ForestOfChaosLib.RectEdits
 		}
 	}
 
-	[FoCsTestingCategory]
+	[Category("Rect Edit")]
 	internal static class SubtractTests
 	{
 		private const           float NUM         = 7863;
@@ -208,7 +205,6 @@ namespace ForestOfChaosLib.RectEdits
 		}
 	}
 
-	[FoCsTestingCategory]
 	[Category("Rect Edit")]
 	internal static class ChangeTests
 	{
@@ -259,7 +255,6 @@ namespace ForestOfChaosLib.RectEdits
 		}
 	}
 
-	[FoCsTestingCategory]
 	[Category("Rect Edit")]
 	internal static class ModuloTests
 	{

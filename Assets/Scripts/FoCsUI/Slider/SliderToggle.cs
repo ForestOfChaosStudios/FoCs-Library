@@ -1,15 +1,15 @@
 ﻿using System;
+using ForestOfChaosLib.Attributes;
 using ForestOfChaosLib.Extensions;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.PostProcessing;
 
 namespace ForestOfChaosLib.FoCsUI.Slider
 {
 	public class SliderToggle: FoCsSlider, IPointerClickHandler
 	{
 		public                                       Action<bool> OnToggle;
-		[SerializeField] [GetSet("Toggled")] private bool         toggled;
+		[SerializeField] [GetSetter("Toggled")] private bool         toggled;
 		public bool Toggled
 		{
 			get { return toggled; }
