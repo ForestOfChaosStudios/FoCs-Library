@@ -5,12 +5,31 @@ namespace ForestOfChaosLib.Utilities
 {
 	public static class TextureUtilities
 	{
+		public static Texture2D GetSolidTexture(Color col)
+		{
+			var tex = new Texture2D(2, 2);
+			tex.SetPixels(new[] {col, col, col, col});
+			tex.Apply();
+
+			return tex;
+		}
+
+		public static Texture2D GetDevTexture(Color col, Color altColor)
+		{
+			var tex = new Texture2D(2, 2);
+			tex.SetPixels(new[] {col, altColor, altColor, col});
+			tex.Apply();
+
+			return tex;
+		}
+
 		public static Texture GetRotatedTexture(Texture2D tex)
 		{
 			if(tex.width != tex.height)
 				throw new Exception("Image Dimensions are not Square");
 
 			var newTex = new Texture2D(tex.width, tex.width);
+
 			var pixels = tex.GetPixels32();
 			pixels = RotateMatrix(pixels, tex.width);
 			newTex.SetPixels32(pixels);
