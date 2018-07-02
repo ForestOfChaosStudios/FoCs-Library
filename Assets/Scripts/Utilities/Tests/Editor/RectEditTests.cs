@@ -1,12 +1,13 @@
 ﻿using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Utilities;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace ForestOfChaosLib.Utilities.Tests
+namespace ForestOfChaosLib.RectEdits
 {
 	[FoCsTestingCategory]
 	[Category("Rect Edit")]
-	internal static class Set
+	internal static class SetTests
 	{
 		private const           float NUM         = 354745;
 		private const           float CHANGED_NUM = 23477;
@@ -57,7 +58,7 @@ namespace ForestOfChaosLib.Utilities.Tests
 
 	[FoCsTestingCategory]
 	[Category("Rect Edit")]
-	internal static class Add
+	internal static class AddTests
 	{
 		private const           float NUM         = 5641234;
 		private const           float CHANGED_NUM = 423423;
@@ -108,7 +109,7 @@ namespace ForestOfChaosLib.Utilities.Tests
 
 	[FoCsTestingCategory]
 	[Category("Rect Edit")]
-	internal static class Multiply
+	internal static class MultiplyTests
 	{
 		private const           float NUM         = 243;
 		private const           float CHANGED_NUM = 123;
@@ -158,8 +159,7 @@ namespace ForestOfChaosLib.Utilities.Tests
 	}
 
 	[FoCsTestingCategory]
-	[Category("Rect Edit")]
-	internal static class Subtract
+	internal static class SubtractTests
 	{
 		private const           float NUM         = 7863;
 		private const           float CHANGED_NUM = 3453;
@@ -210,7 +210,7 @@ namespace ForestOfChaosLib.Utilities.Tests
 
 	[FoCsTestingCategory]
 	[Category("Rect Edit")]
-	internal static class Change
+	internal static class ChangeTests
 	{
 		private const           float NUM         = 345;
 		private const           float CHANGED_NUM = 423;
@@ -261,7 +261,7 @@ namespace ForestOfChaosLib.Utilities.Tests
 
 	[FoCsTestingCategory]
 	[Category("Rect Edit")]
-	internal static class Modulo
+	internal static class ModuloTests
 	{
 		private const           float NUM         = 1234;
 		private const           float CHANGED_NUM = 72;
