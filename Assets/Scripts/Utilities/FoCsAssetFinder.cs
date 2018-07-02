@@ -33,6 +33,10 @@ namespace ForestOfChaosLib.Utilities
 						if(subAsset != null && subAsset.GetType() == type)
 							assets.AddWithDuplicateCheck(subAsset);
 					}
+					else
+					{
+						assets.AddWithDuplicateCheck(subAsset);
+					}
 				}
 			}
 
