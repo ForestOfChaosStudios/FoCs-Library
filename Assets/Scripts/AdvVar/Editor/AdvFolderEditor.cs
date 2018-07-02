@@ -152,7 +152,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 					}
 				}
 
-				var event2 = FoCsGUI.Layout.Button(FoCsGUI.Styles.CrossCircle, GUILayout.Width(FoCsGUI.Styles.CrossCircle.fixedWidth));
+				var event2 = FoCsGUI.Layout.Button(FoCsGUI.Styles.CrossCircle, GUILayout.Width(FoCsGUI.Styles.CrossCircle.Style.fixedWidth));
 
 				if(event2)
 				{
