@@ -6,13 +6,18 @@ namespace ForestOfChaosLib.AdvVar.Base
 {
 	public class AdvReference<T>: AdvReference
 	{
-		[SerializeField] protected T value;
+		[SerializeField] private T storedValue;
+		protected virtual T InternalValue
+		{
+			get { return storedValue; }
+			set { storedValue = value; }
+		}
 		public T Value
 		{
-			get { return value; }
+			get { return InternalValue; }
 			set
 			{
-				this.value = value;
+				this.InternalValue = value;
 				OnValueChange.Trigger();
 			}
 		}
