@@ -15,11 +15,12 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 	[FoCsWindow]
 	public class ObjectBrowserWindow: FoCsWindow<ObjectBrowserWindow>
 	{
-		private const           string            TITLE           = "Object Browser";
-		private const           float             TYPE_WIDTH      = 350;
-		private static          Vector2           typeScrollPos   = Vector2.zero;
-		private static          Vector2           sceneScrollPos  = Vector2.zero;
-		private static          Vector2           assetsScrollPos = Vector2.zero;
+		private const           string            GUI_SELECTION_LABEL = "ObjectBrowserSelectItemID";
+		private const           string            TITLE               = "Object Browser";
+		private const           float             TYPE_WIDTH          = 0.3f;
+		private static          Vector2           typeScrollPos       = Vector2.zero;
+		private static          Vector2           sceneScrollPos      = Vector2.zero;
+		private static          Vector2           assetsScrollPos     = Vector2.zero;
 		private static          List<Type>        TypeList;
 		private static          List<Object>      FoundSceneObjects  = new List<Object>();
 		private static          List<Object>      FoundAssetsObjects = new List<Object>();
@@ -29,33 +30,41 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 		private static          string            sceneSearch        = "";
 		private static          string            assetSearch        = "";
 		private static          int               activeIndex;
-		private static readonly GUILayoutOption[] ToggleOp    = {GUILayout.ExpandWidth(true), GUILayout.Height(18)};
-		private static readonly GUIContent        PingContent = new GUIContent("", "Ping Object");
+		private static readonly GUILayoutOption[] ToggleOp                = {GUILayout.ExpandWidth(true), GUILayout.Height(18)};
+		private static readonly GUIContent        PingContent             = new GUIContent("", "Ping Object");
+		private static          int               typeLabelHighlightIndex = 0;
+
 		public static Type ActiveType
 		{
 			get { return TypeList[ActiveIndex]; }
 			set { ActiveIndex = TypeList.IndexOf(value); }
 		}
+
 		private static string TypeSearch
 		{
 			get { return typeSearch; }
 			set { EditorPrefs.SetString("FoCsOB.TypeSearch", typeSearch = value); }
 		}
+
 		private static string SceneSearch
 		{
 			get { return sceneSearch; }
 			set { EditorPrefs.SetString("FoCsOB.SceneSearch", sceneSearch = value); }
 		}
+
 		private static string AssetSearch
 		{
 			get { return assetSearch; }
 			set { EditorPrefs.SetString("FoCsOB.AssetSearch", assetSearch = value); }
 		}
+
 		private static int ActiveIndex
 		{
 			get { return activeIndex; }
 			set { EditorPrefs.SetInt("FoCsOB.ActiveIndex", activeIndex = value); }
 		}
+
+		private static float TypeWidth => Screen.width * TYPE_WIDTH;
 
 		[MenuItem("Forest Of Chaos/" + TITLE)]
 		private static void Init()
@@ -90,6 +99,8 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 					TypeList.RemoveAt(i);
 			}
 
+			TypeList.AddWithDuplicateCheck(typeof(Transform));
+			TypeList.AddWithDuplicateCheck(typeof(GameObject));
 			TypeList.TrimExcess();
 		}
 
@@ -99,7 +110,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			{
 				using(FoCsEditor.Disposables.HorizontalScope())
 				{
-					using(FoCsEditor.Disposables.VerticalScope(GUILayout.Width(TYPE_WIDTH)))
+					using(FoCsEditor.Disposables.VerticalScope(GUILayout.Width(TypeWidth), GUILayout.Width(120)))
 					{
 						if(DrawTypePanel())
 							return;
@@ -133,6 +144,9 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 			using(var scroll = FoCsEditor.Disposables.ScrollViewScope(typeScrollPos, true, false, true))
 			{
+				typeScrollPos           = scroll.scrollPosition;
+				typeLabelHighlightIndex = 0;
+
 				for(var i = 0; i < TypeList.Count; i++)
 				{
 					if(!Enable_Compo)
@@ -157,8 +171,6 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 						DrawTypeLabel(i);
 					}
 				}
-
-				typeScrollPos = scroll.scrollPosition;
 			}
 
 			return false;
@@ -166,17 +178,20 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 
 		private void DrawTypeLabel(int i)
 		{
-			var @event = FoCsGUI.Layout.Toggle(TypeList[i].Name.SplitCamelCase(), ActiveIndex == i, FoCsGUI.Styles.ToolbarButton, ToggleOp);
-			TypePressed(i, @event);
-		}
+			GUI.SetNextControlName(GUI_SELECTION_LABEL);
 
-		private void TypePressed(int i, FoCsGUI.GUIEventBool @event)
-		{
-			if(!@event)
-				return;
+			using(var cc = FoCsEditor.Disposables.ChangeCheck())
+			{
+				var @event = FoCsGUI.Layout.Toggle(TypeList[i].Name.SplitCamelCase(), ActiveIndex == i, (typeLabelHighlightIndex % 2) == 0? FoCsGUI.Styles.RowField : FoCsGUI.Styles.RowFieldOdd, ToggleOp);
+				typeLabelHighlightIndex = (typeLabelHighlightIndex + 1) % 2;
 
-			ActiveIndex = i;
-			ChangeObjectType();
+				if(cc.changed && @event)
+				{
+					GUI.FocusControl(GUI_SELECTION_LABEL);
+					ActiveIndex = i;
+					ChangeObjectType();
+				}
+			}
 		}
 
 		private bool DrawTypeSearchBox()
