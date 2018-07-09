@@ -26,10 +26,10 @@ namespace ForestOfChaosLib.Editor
 		{
 			TabName = new[]
 			{
-					Pair.Create<GUIContent, Action>(new GUIContent("Hide Extra Options",      "Hides Any Extra Options"),                null),
+					Pair.Create<GUIContent, Action>(new GUIContent("Nothing",      "Hides Any Extra Options"),                null),
 					Pair.Create<GUIContent, Action>(new GUIContent("Scale Options",           "Scale Preset Options"),                   ScaleButtonsEnabled),
-					Pair.Create<GUIContent, Action>(new GUIContent("Global Transform Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions),
-					Pair.Create<GUIContent, Action>(new GUIContent("Local Transform Values",  "Force Display of Local Transform Data"),  DrawLocalTransformOptions)
+					Pair.Create<GUIContent, Action>(new GUIContent("Global Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions),
+					Pair.Create<GUIContent, Action>(new GUIContent("Local Values",  "Force Display of Local Transform Data"),  DrawLocalTransformOptions)
 			};
 		}
 
@@ -150,15 +150,18 @@ namespace ForestOfChaosLib.Editor
 				DrawCopyPasteButtons();
 			}
 		}
+        private static readonly GUIContent SetContent   = new GUIContent("Set:  ");
+		private static readonly GUIContent TimesContent = new GUIContent("Times:");
 
-		private void ScaleButtonsEnabled()
+        private void ScaleButtonsEnabled()
 		{
 			ScaleArea();
 
 			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
+				GUILayout.Label(SetContent, EditorStyles.toolbarButton, GUILayout.Width(60));
 				SetScaleBtn(0.5f);
-				SetScaleBtn(1);
+                SetScaleBtn(1);
 				SetScaleBtn(2);
 				SetScaleBtn(5);
 				SetScaleBtn(10);
@@ -169,7 +172,9 @@ namespace ForestOfChaosLib.Editor
 
 			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
-				TimesScaleBtn(0.5f);
+				GUILayout.Label(TimesContent, EditorStyles.toolbarButton, GUILayout.Width(60));
+
+                TimesScaleBtn(0.5f);
 				TimesScaleBtn(1);
 				TimesScaleBtn(2);
 				TimesScaleBtn(5);
@@ -182,7 +187,7 @@ namespace ForestOfChaosLib.Editor
 
 		private void SetScaleBtn(float multi = 1)
 		{
-			var resetContent = new GUIContent($"Set: {multi}x", $"Sets the Scale to ({multi}, {multi}, {multi})");
+			var resetContent = new GUIContent($"{multi}x", $"Sets the Scale to ({multi}, {multi}, {multi})");
 
 			if(GUILayout.Button(resetContent, EditorStyles.toolbarButton))
 			{
@@ -195,7 +200,7 @@ namespace ForestOfChaosLib.Editor
 
 		private void TimesScaleBtn(float multi = 1)
 		{
-			var resetContent = new GUIContent($"Times: {multi}x", $"Multiplies the Scale to ({Target.localScale.x * multi}, {Target.localScale.y * multi}, {Target.localScale.z * multi})");
+			var resetContent = new GUIContent($"{multi}x", $"Multiplies the Scale to ({Target.localScale.x * multi}, {Target.localScale.y * multi}, {Target.localScale.z * multi})");
 
 			if(GUILayout.Button(resetContent, EditorStyles.toolbarButton))
 			{
