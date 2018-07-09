@@ -11,11 +11,12 @@ namespace ForestOfChaosLib.Editor
 	{
 		private static          bool                               scaleToggle;
 		private static          float                              scaleAmount       = 1;
-		private static readonly GUIContent                         ResetContent      = new GUIContent("Reset Transform",       "Reset Transforms in global space");
-		private static readonly GUIContent                         ResetLocalContent = new GUIContent("Reset Local Transform", "Reset Transforms in local space");
+		private static readonly GUIContent                         ResetContent      = new GUIContent("Reset",       "Reset Transforms in global space");
+		private static readonly GUIContent                         ResetLocalContent = new GUIContent("Reset Local", "Reset Transforms in local space");
 		private static          int                                _tabNum;
 		private readonly        KeyValuePair<GUIContent, Action>[] TabName;
 		public override         bool                               ShowCopyPasteButtons => true;
+
 		private static int TabNum
 		{
 			get { return _tabNum; }
@@ -26,8 +27,8 @@ namespace ForestOfChaosLib.Editor
 		{
 			TabName = new[]
 			{
-					Pair.Create<GUIContent, Action>(new GUIContent("Nothing",      "Hides Any Extra Options"),                null),
-					Pair.Create<GUIContent, Action>(new GUIContent("Scale Options",           "Scale Preset Options"),                   ScaleButtonsEnabled),
+					Pair.Create<GUIContent, Action>(new GUIContent("Nothing",       "Hides Any Extra Options"),                null),
+					Pair.Create<GUIContent, Action>(new GUIContent("Scale Options", "Scale Preset Options"),                   ScaleButtonsEnabled),
 					Pair.Create<GUIContent, Action>(new GUIContent("Global Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions),
 					Pair.Create<GUIContent, Action>(new GUIContent("Local Values",  "Force Display of Local Transform Data"),  DrawLocalTransformOptions)
 			};
@@ -150,10 +151,11 @@ namespace ForestOfChaosLib.Editor
 				DrawCopyPasteButtons();
 			}
 		}
-        private static readonly GUIContent SetContent   = new GUIContent("Set:  ");
+
+		private static readonly GUIContent SetContent   = new GUIContent("Set:  ");
 		private static readonly GUIContent TimesContent = new GUIContent("Times:");
 
-        private void ScaleButtonsEnabled()
+		private void ScaleButtonsEnabled()
 		{
 			ScaleArea();
 
@@ -161,7 +163,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				GUILayout.Label(SetContent, EditorStyles.toolbarButton, GUILayout.Width(60));
 				SetScaleBtn(0.5f);
-                SetScaleBtn(1);
+				SetScaleBtn(1);
 				SetScaleBtn(2);
 				SetScaleBtn(5);
 				SetScaleBtn(10);
@@ -174,7 +176,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				GUILayout.Label(TimesContent, EditorStyles.toolbarButton, GUILayout.Width(60));
 
-                TimesScaleBtn(0.5f);
+				TimesScaleBtn(0.5f);
 				TimesScaleBtn(1);
 				TimesScaleBtn(2);
 				TimesScaleBtn(5);

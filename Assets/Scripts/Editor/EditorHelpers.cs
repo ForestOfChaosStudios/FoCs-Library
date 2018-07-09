@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.Editor
 	public class EditorHelpers: FoCsEditor
 	{
 		private static readonly GUIContent CP_CopyContent       = new GUIContent("Copy Data",          "Copies the data.");
-		private static readonly GUIContent CP_EditorCopyContent = new GUIContent("(Editor) Copy Data", "Copies the data.");
+		private static readonly GUIContent CP_EditorCopyContent = new GUIContent("Copy Data (Editor)", "Copies the data. (using the EditorJSONUtility)");
 		private static readonly GUIContent CopyContent          = new GUIContent("C",                  "Copies the vectors data.");
 		private static readonly GUIContent PasteContent         = new GUIContent("P",                  "Pastes the vectors data.");
 		private static readonly GUIContent ResetContent         = new GUIContent("R",                  "Resets the vectors data.");
@@ -18,36 +18,39 @@ namespace ForestOfChaosLib.Editor
 
 		public static Vector3 DrawVector3(GUIContent label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn, out bool GUIChanged)
 		{
-			using(Disposables.HorizontalScope())
+			using(Disposables.IndentSet(1))
 			{
-				using(var cc = Disposables.ChangeCheck())
+				using(Disposables.HorizontalScope())
 				{
-					vec        = EditorGUILayout.Vector3Field(label, vec);
-					GUIChanged = cc.changed;
-				}
-
-				var cachedGuiColor = GUI.color;
-
-				using(Disposables.HorizontalScope(EditorStyles.toolbar))
-				{
-					if(GUILayout.Button(ResetContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+					using(var cc = Disposables.ChangeCheck())
 					{
-						Undo.RecordObject(objectIAmOn, "Vector 3 Reset");
-						vec        = defaultValue;
-						GUIChanged = true;
+						vec        = EditorGUILayout.Vector3Field(label, vec);
+						GUIChanged = cc.changed;
 					}
 
-					if(GUILayout.Button(CopyContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
-						CopyPasteUtility.EditorCopy(vec);
+					var cachedGuiColor = GUI.color;
 
-					if(GUILayout.Button(PasteContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+					using(Disposables.HorizontalScope(EditorStyles.toolbar))
 					{
-						Undo.RecordObject(objectIAmOn, "Vector 3 Paste");
-						vec        = CopyPasteUtility.Paste<Vector3>();
-						GUIChanged = true;
-					}
+						if(GUILayout.Button(ResetContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+						{
+							Undo.RecordObject(objectIAmOn, "Vector 3 Reset");
+							vec        = defaultValue;
+							GUIChanged = true;
+						}
 
-					GUI.color = cachedGuiColor;
+						if(GUILayout.Button(CopyContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+							CopyPasteUtility.EditorCopy(vec);
+
+						if(GUILayout.Button(PasteContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+						{
+							Undo.RecordObject(objectIAmOn, "Vector 3 Paste");
+							vec        = CopyPasteUtility.Paste<Vector3>();
+							GUIChanged = true;
+						}
+
+						GUI.color = cachedGuiColor;
+					}
 				}
 			}
 
@@ -67,7 +70,7 @@ namespace ForestOfChaosLib.Editor
 
 				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
 				{
-					var PasteContent = new GUIContent("Paste Data", "Pastes the data.\n" + CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 2048? 2048 : CopyPasteUtility.CopyBuffer.Length));
+					var PasteContent = new GUIContent("Paste Data", "Pastes the data.\n" + CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 512? 512 : CopyPasteUtility.CopyBuffer.Length));
 
 					if(!isType)
 						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;
@@ -95,7 +98,8 @@ namespace ForestOfChaosLib.Editor
 
 				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
 				{
-					var PasteContent = new GUIContent("Paste Data (Editor)", "Pastes the data.\n" + CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 2048? 2048 : CopyPasteUtility.CopyBuffer.Length));
+					var PasteContent = new GUIContent("Paste Data (Editor)",
+					                                  $"Pastes the data. (using the EditorJSONUtility)\n{CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 512? 512 : CopyPasteUtility.CopyBuffer.Length)}");
 
 					if(!isType)
 						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;
