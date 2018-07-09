@@ -32,7 +32,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			if(@ref.objectReferenceValue)
 				serializedObject = new SerializedObject(@ref.objectReferenceValue);
 
-			return PropertyHeight(serializedObject, foldout);
+			return PropertyHeight(property, serializedObject, foldout);
 		}
 
 		public static bool DoDraw(Rect position, SerializedProperty property, bool foldout, ref GUIContent label)
