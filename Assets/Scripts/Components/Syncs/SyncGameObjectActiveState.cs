@@ -1,24 +1,31 @@
-﻿namespace ForestOfChaosLib.Components.Syncs
+﻿using UnityEngine;
+
+namespace ForestOfChaosLib.Components.Syncs
 {
 	public class SyncGameObjectActiveState: FoCsBehaviour
 	{
 		public GameObjectStateEvents GameObjectToSync;
+		private GameObject GameObject;
 
-		private void OnEnable()
-		{
-			GameObjectToSync.OnDisabled += OnDisabled;
-			GameObjectToSync.OnEnabled  += OnEnabled;
-			GameObjectToSync.OnDestroyed  += OnDestroy;
-        }
+        private void OnEnable()
+        {
+	        GameObject = gameObject;
+
+            GameObjectToSync.OnDisabled  += OnDisabled;
+			GameObjectToSync.OnEnabled   += OnEnabled;
+			GameObjectToSync.OnDestroyed += OnDestroy;
+		}
 
 		private void OnEnabled()
 		{
-			gameObject.SetActive(true);
+			if(GameObject != null)
+				GameObject.SetActive(true);
 		}
 
 		private void OnDisabled()
 		{
-			gameObject.SetActive(false);
+			if(GameObject != null)
+				GameObject.SetActive(false);
 		}
 
 		private void OnDestroy()
@@ -26,6 +33,6 @@
 			GameObjectToSync.OnDisabled  -= OnDisabled;
 			GameObjectToSync.OnEnabled   -= OnEnabled;
 			GameObjectToSync.OnDestroyed -= OnDestroy;
-        }
+		}
 	}
 }

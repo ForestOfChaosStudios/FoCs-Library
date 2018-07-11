@@ -28,13 +28,10 @@ namespace ForestOfChaosLib.Utilities
 
 				foreach(var subAsset in subAssets)
 				{
-					if(AssetDatabase.IsSubAsset(subAsset))
+					if(subAsset.GetType() == type)
 					{
-						if((subAsset != null) && (subAsset.GetType() == type))
-							assets.AddWithDuplicateCheck(subAsset);
-					}
-					else
 						assets.AddWithDuplicateCheck(subAsset);
+					}
 				}
 			}
 
@@ -59,10 +56,9 @@ namespace ForestOfChaosLib.Utilities
 
 				foreach(var subAsset in subAssets)
 				{
-					if(AssetDatabase.IsSubAsset(subAsset))
+					if (subAsset.GetType() == type)
 					{
-						if((subAsset != null) && (subAsset.GetType() == type))
-							assets.AddWithDuplicateCheck(subAsset);
+                        assets.AddWithDuplicateCheck(subAsset);
 					}
 				}
 			}
