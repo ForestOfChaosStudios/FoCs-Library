@@ -8,12 +8,8 @@ namespace ForestOfChaosLib.Editor.AssetPostProcessors
 		{
 			var textureImporter = (TextureImporter)assetImporter;
 
-			if(textureImporter.assetPath.Contains("Editor Resources"))
-			{
-				textureImporter.textureType    = TextureImporterType.GUI;
-				textureImporter.maxTextureSize = 128;
-			}
-			else if(textureImporter.assetPath.Contains("UI"))
+
+			if(textureImporter.assetPath.Contains("UI"))
 			{
 				textureImporter.textureType = TextureImporterType.Sprite;
 				//textureImporter.spritePixelsPerUnit = 512;
@@ -23,6 +19,11 @@ namespace ForestOfChaosLib.Editor.AssetPostProcessors
 				textureImporter.textureType = TextureImporterType.Sprite;
 				//textureImporter.spritePixelsPerUnit = 512;
 			}
-		}
-	}
+			//else if(textureImporter.assetPath.Contains("Editor Resources"))
+			//{
+			//	textureImporter.textureType    = TextureImporterType.GUI;
+			//	textureImporter.maxTextureSize = 128;
+			//}
+        }
+    }
 }
