@@ -79,10 +79,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static bool ShowLabel(string label)
 		{
-			if(label == "Value")
+			if(label == "Stored Value")
 				return false;
 
-			return !label.Contains("element");
+			return !label.ToLower().Contains("element");
 		}
 
 		private static void DrawDropDown(SerializedProperty Axis, Rect pos)
