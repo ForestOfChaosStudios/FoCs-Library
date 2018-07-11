@@ -97,12 +97,12 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			return drawPos;
 		}
 
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => PropertyHeight(property,serializedObject, foldout);
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => PropertyHeight(property, serializedObject, foldout);
 
 		public static float PropertyHeight(SerializedProperty property, SerializedObject serializedObject, bool foldout)
 		{
 			if ((serializedObject == null) || !foldout || (serializedObject.VisibleProperties() == 0))
-				return FoCsGUI.GetPropertyHeight(property);
+				return Mathf.Max(FoCsGUI.GetPropertyHeight(property), SingleLine);
 
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);

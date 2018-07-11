@@ -360,19 +360,13 @@ namespace ForestOfChaosLib.Editor
 
 		public static eInt DrawDisabledPropertyWithMenu(bool disabled, Rect position, SerProp property, GUICon label, GUICon[] Options, int active, bool autoLabelField = false)
 		{
-			var propRect  = position.Edit(RectEdit.SetWidth(position.width - MENU_BUTTON_SIZE         - 2), RectEdit.SubtractHeight(2));
+			var propRect  = position.Edit(RectEdit.SetWidth(position.width - MENU_BUTTON_SIZE         - 2));
 			var rectWidth = position.x + (position.width - (MENU_BUTTON_SIZE * (EditorGUI.indentLevel + 1)));
 			var menuRect  = new Rect(rectWidth, position.y, position.width - rectWidth, position.height);
 
-			if(property.hasVisibleChildren)
+			using(FoCsEditor.Disposables.DisabledScope(disabled))
 			{
-				using(FoCsEditor.Disposables.DisabledScope(disabled))
-					PropertyField(propRect, property, label, true, autoLabelField);
-			}
-			else
-			{
-				using(FoCsEditor.Disposables.DisabledScope(disabled))
-					PropertyField(propRect, property, label, false, autoLabelField);
+				PropertyField(propRect, property, label, property.hasVisibleChildren, autoLabelField);
 			}
 
 			var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);

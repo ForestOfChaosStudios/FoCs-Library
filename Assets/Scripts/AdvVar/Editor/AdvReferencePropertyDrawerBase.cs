@@ -25,16 +25,6 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			foldout = DoDraw(position, property, foldout, ref label);
 		}
 
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			var @ref = property.GetReference();
-
-			if(@ref.objectReferenceValue)
-				serializedObject = new SerializedObject(@ref.objectReferenceValue);
-
-			return PropertyHeight(property, serializedObject, foldout);
-		}
-
 		public static bool DoDraw(Rect position, SerializedProperty property, bool foldout, ref GUIContent label)
 		{
 			var useLocal        = property.GetUseLocal();
@@ -127,6 +117,16 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			}
 
 			return foldout;
+		}
+
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+		{
+			var @ref = property.GetReference();
+
+			if(@ref.objectReferenceValue)
+				serializedObject = new SerializedObject(@ref.objectReferenceValue);
+
+			return PropertyHeight(property, serializedObject, foldout);
 		}
 	}
 
