@@ -21,7 +21,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 				else
 				{
 					using(FoCsEditor.Disposables.DisabledScope(true))
-						FoCsGUI.PropertyField(position, property, label, true);
+						FoCsGUI.PropertyField(position, property, label, true, false);
 				}
 			}
 		}
