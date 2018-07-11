@@ -22,19 +22,18 @@ namespace ForestOfChaosLib.Animation
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(FoCsEditor.Disposables.Indent(-1))
-				DoDraw(position, property, label);
+			DoDraw(position, property, label);
 		}
 
 		public static void DoDraw(Rect position, SerializedProperty property, GUIContent label)
 		{
 			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
+				position.height = SingleLine;
 				label = propScope.content;
 				var labelPos = position.Edit(RectEdit.SetWidth(EditorGUIUtility.labelWidth));
 
-				using(FoCsEditor.Disposables.SetIndent(2))
-					EditorGUI.LabelField(labelPos, label);
+				EditorGUI.LabelField(labelPos, label);
 
 				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(6, position.Edit(RectEdit.AddX(labelPos.width), RectEdit.SetWidth(position.width - labelPos.width))))
 				{
@@ -66,6 +65,6 @@ namespace ForestOfChaosLib.Animation
 			return TRIGGER_DATA;
 		}
 
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => SingleLine;
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => SingleLinePlusPadding;
 	}
 }
