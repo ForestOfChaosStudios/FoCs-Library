@@ -18,7 +18,7 @@ public class AnimatorKeyEditor: FoCsEditor
 		{
 			using(var cc = Disposables.ChangeCheck())
 			{
-				AnimatorKeyDrawer.DoDraw(EditorGUILayout.GetControlRect(true, FoCsGUI.SingleLine), serializedObject.FindProperty("value"), ValueContent);
+				AnimatorKeyDrawer.DoDraw(EditorGUILayout.GetControlRect(true, FoCsGUI.SingleLine), serializedObject.FindProperty("storedValue"), ValueContent);
 
 				if(cc.changed)
 					serializedObject.ApplyModifiedProperties();
