@@ -20,7 +20,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 		public static SettingsFile TagManager           = new SettingsFile("TagManager");
 		public static SettingsFile TimeManager          = new SettingsFile("TimeManager");
 		public static SettingsFile UnityConnectSettings = new SettingsFile("UnityConnectSettings");
-		//public static SettingsFile ProjectVersion = new SettingsFile("ProjectVersion");
+
 		public static SettingsFile[] Assets => new[]
 		{
 				AudioManager,
@@ -38,7 +38,6 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 				TagManager,
 				TimeManager,
 				UnityConnectSettings
-				//ProjectVersion,
 		};
 
 		public class SettingsFile
