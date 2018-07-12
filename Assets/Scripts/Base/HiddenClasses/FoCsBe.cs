@@ -1,11 +1,11 @@
-﻿using ForestOfChaosLib.Components.Linker;
+﻿//using ForestOfChaosLib.Components.Linker;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Base.HiddenClasses
 {
 	public class FoCsBe: MonoBehaviour
 	{
-
+/*
 #region GetComponentAdvanced
 		/// <summary>
 		///     Its GetComponent, but also checks for attached Linkers
@@ -49,6 +49,7 @@ namespace ForestOfChaosLib.Base.HiddenClasses
 		/// <returns></returns>
 		public T[] GetComponentsInParentAdvanced<T>() where T: class => gameObject.GetComponentsInParentAdvanced<T>();
 #endregion
+*/
 
 		//#region ComponentTag
 		//public bool HasTags()
