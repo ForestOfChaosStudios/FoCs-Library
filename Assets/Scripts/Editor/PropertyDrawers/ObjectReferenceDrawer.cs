@@ -42,6 +42,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 			if(serializedObject == null)
 				serializedObject = new SerializedObject(property.objectReferenceValue);
+			else
+				serializedObject.Update();
 
 			foldout = DrawReference(position.Edit(RectEdit.ChangeY(elementHeight - SingleLine)), serializedObject, foldout);
 		}
