@@ -44,10 +44,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 						DoVector3(position, property, label, range, pos);
 
 						break;
-					case SerializedPropertyType.Generic:
-						foldout = DoGeneric(position, property, label, range, foldout);
-
-						break;
+					//case SerializedPropertyType.Generic:
+					//	foldout = DoGeneric(position, property, label, range, foldout);
+                    //
+					//	break;
 					default:
 						DrawErrorMessage(position, label);
 
@@ -118,19 +118,19 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 				property.stringValue = property.stringValue.Substring(0, (int)range.max);
 		}
 
-		private static bool DoGeneric(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout)
-		{
-			var obj = property.GetTargetObjectOfProperty();
-
-			if(obj is IntVariable)
-				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, rect => DoInt(rect, property.FindPropertyRelative("LocalValue"), label, range));
-			else if(obj is FloatVariable)
-				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, rect => DoFloat(rect, property.FindPropertyRelative("LocalValue"), label, range));
-			else if(obj is StringVariable)
-				foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, rect => DoString(position, property.FindPropertyRelative("LocalValue"), label, range));
-
-			return foldout;
-		}
+		//private static bool DoGeneric(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout)
+		//{
+		//	var obj = property.GetTargetObjectOfProperty();
+        //
+		//	if(obj is IntVariable)
+		//		foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, rect => DoInt(rect, property.FindPropertyRelative("LocalValue"), label, range));
+		//	else if(obj is FloatVariable)
+		//		foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, rect => DoFloat(rect, property.FindPropertyRelative("LocalValue"), label, range));
+		//	else if(obj is StringVariable)
+		//		foldout = AdvReferencePropertyDrawerBase.DoDraw(position, property, foldout, label, rect => DoString(position, property.FindPropertyRelative("LocalValue"), label, range));
+        //
+		//	return foldout;
+		//}
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
