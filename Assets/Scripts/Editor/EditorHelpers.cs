@@ -32,17 +32,17 @@ namespace ForestOfChaosLib.Editor
 
 					using(Disposables.HorizontalScope(EditorStyles.toolbar))
 					{
-						if(GUILayout.Button(ResetContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+						if(FoCsGUI.Layout.Button(ResetContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
 						{
 							Undo.RecordObject(objectIAmOn, "Vector 3 Reset");
 							vec        = defaultValue;
 							GUIChanged = true;
 						}
 
-						if(GUILayout.Button(CopyContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+						if(FoCsGUI.Layout.Button(CopyContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
 							CopyPasteUtility.EditorCopy(vec);
 
-						if(GUILayout.Button(PasteContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+						if(FoCsGUI.Layout.Button(PasteContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
 						{
 							Undo.RecordObject(objectIAmOn, "Vector 3 Paste");
 							vec        = CopyPasteUtility.Paste<Vector3>();
