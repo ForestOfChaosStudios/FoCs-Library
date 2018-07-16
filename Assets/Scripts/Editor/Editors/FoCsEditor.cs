@@ -111,10 +111,10 @@ namespace ForestOfChaosLib.Editor
 				else if((property.propertyType == SerializedPropertyType.ObjectReference) && (defaultType != DefaultPropertyType.Disabled))
 					HandleObjectReference(property);
 				else
-					EditorGUILayout.PropertyField(property, property.isExpanded);
+					FoCsGUI.Layout.PropertyField(property, property.isExpanded);
 			}
 			else
-				EditorGUILayout.PropertyField(property, property.isExpanded);
+				FoCsGUI.Layout.PropertyField(property, property.isExpanded);
 		}
 
 		private void HandleObjectReference(SerializedProperty property)

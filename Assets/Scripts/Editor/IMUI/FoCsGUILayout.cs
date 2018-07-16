@@ -476,11 +476,19 @@ namespace ForestOfChaosLib.Editor
 #endregion
 
 #region PropertyField
+			public static eBool PropertyField(SerializedProperty property, bool includeChildren) => PropertyFieldMaster(property, includeChildren, null);
+			public static eBool PropertyField(SerializedProperty property, bool includeChildren, params GUILayOpt[] options) => PropertyFieldMaster(property, includeChildren, options);
 			public static eBool PropertyField(string label, SerializedProperty property, bool includeChildren) => PropertyFieldMaster(new GUICon(label),                             property, includeChildren, null);
 			public static eBool PropertyField(string label, SerializedProperty property, bool includeChildren, params GUILayOpt[] options) => PropertyFieldMaster(new GUICon(label), property, includeChildren, options);
 			public static eBool PropertyField(GUICon label, SerializedProperty property, bool includeChildren) => PropertyFieldMaster(label,                             property, includeChildren, null);
 			public static eBool PropertyField(GUICon label, SerializedProperty property, bool includeChildren, params GUILayOpt[] options) => PropertyFieldMaster(label, property, includeChildren, options);
 
+			private static eBool PropertyFieldMaster(SerializedProperty property, bool includeChildren, params GUILayOpt[] options)
+			{
+				var val = EditorGUILayout.PropertyField(property, includeChildren, options);
+
+				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
+			}
 			private static eBool PropertyFieldMaster(GUICon label, SerializedProperty property, bool includeChildren, params GUILayOpt[] options)
 			{
 				var val = EditorGUILayout.PropertyField(property, label, includeChildren, options);
