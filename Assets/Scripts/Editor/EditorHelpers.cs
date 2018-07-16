@@ -7,8 +7,8 @@ namespace ForestOfChaosLib.Editor
 {
 	public class EditorHelpers: FoCsEditor
 	{
-		private static readonly GUIContent CP_CopyContent       = new GUIContent("Copy Data",          "Copies the data.");
-		private static readonly GUIContent CP_EditorCopyContent = new GUIContent("Copy Data (Editor)", "Copies the data. (using the EditorJSONUtility)");
+		private static readonly GUIContent CP_CopyContent       = new GUIContent("Copy",          "Copies the data.");
+		private static readonly GUIContent CP_EditorCopyContent = new GUIContent("Copy (E)",      "Copies the data. (using the EditorJSONUtility)");
 		private static readonly GUIContent CopyContent          = new GUIContent("C",                  "Copies the vectors data.");
 		private static readonly GUIContent PasteContent         = new GUIContent("P",                  "Pastes the vectors data.");
 		private static readonly GUIContent ResetContent         = new GUIContent("R",                  "Resets the vectors data.");
@@ -70,7 +70,7 @@ namespace ForestOfChaosLib.Editor
 
 				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
 				{
-					var PasteContent = new GUIContent("Paste Data", "Pastes the data.\n" + CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 512? 512 : CopyPasteUtility.CopyBuffer.Length));
+					var PasteContent = new GUIContent("Paste", "Pastes the data.\n" + CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 512? 512 : CopyPasteUtility.CopyBuffer.Length));
 
 					if(!isType)
 						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;
@@ -98,7 +98,7 @@ namespace ForestOfChaosLib.Editor
 
 				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
 				{
-					var PasteContent = new GUIContent("Paste Data (Editor)",
+					var PasteContent = new GUIContent("Paste (E)",
 					                                  $"Pastes the data. (using the EditorJSONUtility)\n{CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 512? 512 : CopyPasteUtility.CopyBuffer.Length)}");
 
 					if(!isType)

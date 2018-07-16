@@ -9,9 +9,8 @@ namespace ForestOfChaosLib.Editor
 	[CustomEditor(typeof(Transform))]
 	internal class TransformEditor: FoCsEditor<Transform>
 	{
-		private static          bool                               scaleToggle;
 		private static          float                              scaleAmount       = 1;
-		private static readonly GUIContent                         ResetContent      = new GUIContent("Reset",       "Reset Transforms in global space");
+		private static readonly GUIContent                         ResetContent      = new GUIContent("Reset Global","Reset Transforms in global space");
 		private static readonly GUIContent                         ResetLocalContent = new GUIContent("Reset Local", "Reset Transforms in local space");
 		private static          int                                _tabNum;
 		private readonly        KeyValuePair<GUIContent, Action>[] TabName;
@@ -29,8 +28,7 @@ namespace ForestOfChaosLib.Editor
 			{
 					Pair.Create<GUIContent, Action>(new GUIContent("Nothing",       "Hides Any Extra Options"),                null),
 					Pair.Create<GUIContent, Action>(new GUIContent("Scale Options", "Scale Preset Options"),                   ScaleButtonsEnabled),
-					Pair.Create<GUIContent, Action>(new GUIContent("Global Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions),
-					Pair.Create<GUIContent, Action>(new GUIContent("Local Values",  "Force Display of Local Transform Data"),  DrawLocalTransformOptions)
+					Pair.Create<GUIContent, Action>(new GUIContent("Global Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions)
 			};
 		}
 
@@ -134,18 +132,22 @@ namespace ForestOfChaosLib.Editor
 			{
 				var transform     = Target;
 				var resetBtn      = FoCsGUI.Layout.Button(ResetContent,      EditorStyles.toolbarButton);
-				var resetLocalBtn = FoCsGUI.Layout.Button(ResetLocalContent, EditorStyles.toolbarButton);
+
+				if(transform.parent)
+				{
+					var resetLocalBtn = FoCsGUI.Layout.Button(ResetLocalContent, EditorStyles.toolbarButton);
+
+					if(resetLocalBtn)
+					{
+						Undo.RecordObject(transform, "ResetLocalPosRotScale");
+						transform.ResetLocalPosRotScale();
+					}
+				}
 
 				if(resetBtn)
 				{
 					Undo.RecordObject(transform, "ResetPosRotScale");
 					transform.ResetPosRotScale();
-				}
-
-				if(resetLocalBtn)
-				{
-					Undo.RecordObject(transform, "ResetLocalPosRotScale");
-					transform.ResetLocalPosRotScale();
 				}
 
 				DrawCopyPasteButtons();
@@ -161,7 +163,7 @@ namespace ForestOfChaosLib.Editor
 
 			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
-				GUILayout.Label(SetContent, EditorStyles.toolbarButton, GUILayout.Width(60));
+				FoCsGUI.Layout.Label(SetContent, EditorStyles.toolbarButton, GUILayout.Width(60));
 				SetScaleBtn(0.5f);
 				SetScaleBtn(1);
 				SetScaleBtn(2);
@@ -174,7 +176,7 @@ namespace ForestOfChaosLib.Editor
 
 			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
-				GUILayout.Label(TimesContent, EditorStyles.toolbarButton, GUILayout.Width(60));
+				FoCsGUI.Layout.Label(TimesContent, EditorStyles.toolbarButton, GUILayout.Width(60));
 
 				TimesScaleBtn(0.5f);
 				TimesScaleBtn(1);
@@ -191,7 +193,7 @@ namespace ForestOfChaosLib.Editor
 		{
 			var resetContent = new GUIContent($"{multi}x", $"Sets the Scale to ({multi}, {multi}, {multi})");
 
-			if(GUILayout.Button(resetContent, EditorStyles.toolbarButton))
+			if(FoCsGUI.Layout.Button(resetContent, EditorStyles.toolbarButton))
 			{
 				var transform = Target;
 				Undo.RecordObject(transform, "Scale reset");
@@ -204,7 +206,7 @@ namespace ForestOfChaosLib.Editor
 		{
 			var resetContent = new GUIContent($"{multi}x", $"Multiplies the Scale to ({Target.localScale.x * multi}, {Target.localScale.y * multi}, {Target.localScale.z * multi})");
 
-			if(GUILayout.Button(resetContent, EditorStyles.toolbarButton))
+			if(FoCsGUI.Layout.Button(resetContent, EditorStyles.toolbarButton))
 			{
 				var transform = Target;
 				Undo.RecordObject(transform, "Scale reset");
