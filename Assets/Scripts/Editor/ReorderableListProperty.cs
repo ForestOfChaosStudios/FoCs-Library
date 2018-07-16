@@ -15,17 +15,26 @@ namespace ForestOfChaosLib.Editor
 	{
 		public class ReorderableListProperty
 		{
+			public static int GLOBAL_CURRENT_ID = 0;
+
 			private static   ReorderableList.Defaults s_Defaults;
 			private static   Action                   OnLimitingChange;
 			private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
 			private          SerializedProperty       _property;
 			public           bool                     Animate;
 			public           ListLimiter              Limiter;
+			private static bool? _LimitingEnabled;
 			public static bool LimitingEnabled
 			{
-				get { return EditorPrefs.GetInt("FoCsRLP.LimitingEnabled") == 0; }
+				get
+				{
+					if(!_LimitingEnabled.HasValue)
+						_LimitingEnabled = EditorPrefs.GetInt("FoCsRLP.LimitingEnabled") == 0;
+					return _LimitingEnabled.Value;
+				}
 				set
 				{
+					_LimitingEnabled = value;
 					EditorPrefs.SetInt("FoCsRLP.LimitingEnabled", value? 0 : 1);
 					OnLimitingChange.Trigger();
 				}
@@ -43,18 +52,23 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 
-			public ReorderableListProperty(SerializedProperty property)
+			public int ID;
+
+			private ReorderableListProperty()
+			{
+				ID = GLOBAL_CURRENT_ID;
+				++GLOBAL_CURRENT_ID;
+			}
+
+			public ReorderableListProperty(SerializedProperty property):this()
 			{
 				_property = property;
 				Animate   = false;
 
-				if(Animate)
-					IsExpanded = new AnimBool(property.isExpanded) {speed = 1f};
-
 				InitList();
 			}
 
-			public ReorderableListProperty(SerializedProperty property, bool dragAble, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true, bool animate = false)
+			public ReorderableListProperty(SerializedProperty property, bool dragAble, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true, bool animate = false):this()
 			{
 				_property = property;
 				Animate   = animate;
@@ -93,10 +107,17 @@ namespace ForestOfChaosLib.Editor
 
 			private void CheckLimiter()
 			{
-				if((Limiter == null) && LimitingEnabled)
-					Limiter = ListLimiter.GetLimiter(this);
-				else
-					Limiter?.UpdateRange();
+				if(LimitingEnabled)
+				{
+					if(Limiter == null)
+					{
+						Limiter = ListLimiter.GetLimiter(this);
+					}
+					else
+					{
+						Limiter.UpdateRange();
+					}
+				}
 			}
 
 			private void DrawElement(Rect rect, int index, bool active, bool focused)
@@ -226,6 +247,7 @@ namespace ForestOfChaosLib.Editor
 				if(Property.isExpanded && (List.serializedProperty.arraySize == 0))
 					return List.elementHeight + height;
 
+				CheckLimiter();
 				if(Limiter == null)
 				{
 					for(var i = 0; i < List.serializedProperty.arraySize; i++)
@@ -304,6 +326,7 @@ namespace ForestOfChaosLib.Editor
 					}
 				}
 				private int Count => MyListProperty.Property.arraySize;
+
 				public int Min
 				{
 					get { return _min; }
@@ -315,13 +338,18 @@ namespace ForestOfChaosLib.Editor
 					set { _max = Math.Min(Count, value); }
 				}
 
-				private ListLimiter()
-				{
-					ChangeCount += UpdateRange;
-				}
-
 				public        bool        ShowElement(int                    index)        => (index >= Min) && (index < Max);
-				public static ListLimiter GetLimiter(ReorderableListProperty listProperty) => new ListLimiter {MyListProperty = listProperty, Min = 0, Max = TOTAL_VISIBLE_COUNT};
+
+				public static ListLimiter GetLimiter(ReorderableListProperty listProperty)
+				{
+					if(listProperty.Property.arraySize < TOTAL_VISIBLE_COUNT)
+						return null;
+
+					var limiter = new ListLimiter {MyListProperty = listProperty, Min = 0, Max = TOTAL_VISIBLE_COUNT, Update = true};
+					ChangeCount += limiter.UpdateRange;
+
+					return limiter;
+				}
 
 				public bool CanDecrease()
 				{
@@ -342,7 +370,6 @@ namespace ForestOfChaosLib.Editor
 					if(amount != 0)
 						CheckUpdate();
 
-					//Debug.Log($"Change Amount: {amount}");
 					var newMin = Min    + amount;
 					var newMax = newMin + TOTAL_VISIBLE_COUNT;
 
@@ -394,6 +421,9 @@ namespace ForestOfChaosLib.Editor
 				{
 					ChangeCount -= UpdateRange;
 				}
+
+				/// <inheritdoc />
+				public override string ToString() => $"Min: {Min}. Max: {Max}";
 			}
 
 #region Delegate Methods
@@ -505,7 +535,7 @@ namespace ForestOfChaosLib.Editor
 						Limiter.ChangeRange(-maxAmount);
 				}
 
-				var minString  = Limiter.Min.ToString();
+				var minString  = (Limiter.Min + 1).ToString();
 				var maxString  = Limiter.Max.ToString();
 				var shortLabel = $"{(minString.Length + maxString.Length < 5? "Index" : "I")}: {minString}-{maxString}";
 				var toolTip    = $"Viewable Indices: Min:{minString} Max:{maxString}";
@@ -710,31 +740,7 @@ namespace ForestOfChaosLib.Editor
 
 				return objDraw;
 			}
-
-			private static readonly Dictionary<string, ReorderableListProperty> ReorderableListPropertyList = new Dictionary<string, ReorderableListProperty>(10);
-
-			public static ReorderableListProperty GetReorderableList(SerializedProperty property)
-			{
-				var                     id = $"{property.propertyPath}-{property.name}";
-				ReorderableListProperty ret;
-
-				if(ReorderableListPropertyList.TryGetValue(id, out ret))
-				{
-					ret.Property = property;
-
-					return ret;
-				}
-#if FoCsEditor_ANIMATED
-				ret = new ReorderableListProperty(property, true, true, true, true, true);
-#else
-				ret = new ReorderableListProperty(property, true);
-#endif
-				ReorderableListPropertyList.Add(id, ret);
-
-				return ret;
-			}
 #endregion
-
 		}
 	}
 }

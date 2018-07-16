@@ -23,7 +23,7 @@ namespace ForestOfChaosLib.Editor
 			Hidden
 		}
 
-		private         Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
+		internal         Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
 		protected       bool                    GUIChanged           { get; private set; }
 		public virtual  bool                    HideDefaultProperty  => true;
 		public virtual  bool                    ShowCopyPasteButtons => true;
@@ -104,10 +104,15 @@ namespace ForestOfChaosLib.Editor
 
 		private void DoPropertyDraw(SerializedProperty property, DefaultPropertyType defaultType = DefaultPropertyType.NotDefault)
 		{
-			if(PropertyIsArrayAndNotString(property))
-				HandleArray(property);
-			else if((property.propertyType == SerializedPropertyType.ObjectReference) && (defaultType != DefaultPropertyType.Disabled))
-				HandleObjectReference(property);
+			if(!property.hasMultipleDifferentValues)
+			{
+				if(PropertyIsArrayAndNotString(property))
+					HandleArray(property);
+				else if((property.propertyType == SerializedPropertyType.ObjectReference) && (defaultType != DefaultPropertyType.Disabled))
+					HandleObjectReference(property);
+				else
+					EditorGUILayout.PropertyField(property, property.isExpanded);
+			}
 			else
 				EditorGUILayout.PropertyField(property, property.isExpanded);
 		}
@@ -149,22 +154,6 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private ORD GetObjectDrawer(SerializedProperty property)
-		{
-			var id = $"{property.propertyPath}-{property.name}";
-			ORD objDraw;
-
-			if(objectDrawers.TryGetValue(id, out objDraw))
-				return objDraw;
-
-			objDraw = new ORD();
-			objectDrawers.Add(id, objDraw);
-
-			return objDraw;
-		}
-
-		private static RLP GetReorderableList(SerializedProperty property) => RLP.GetReorderableList(property);
-
 		public override bool RequiresConstantRepaint()
 		{
 #if FoCsEditor_ANIMATED
@@ -197,6 +186,44 @@ namespace ForestOfChaosLib.Editor
 
 		public        string AssetPath()              => AssetPath(target);
 		public static string AssetPath(Object target) => AssetDatabase.GetAssetPath(target);
+//#region Storage
+		private ORD GetObjectDrawer(SerializedProperty property)
+		{
+			var id = $"{property.propertyPath}-{property.name}";
+			ORD objDraw;
+
+			if(objectDrawers.TryGetValue(id, out objDraw))
+				return objDraw;
+
+			objDraw = new ORD();
+			objectDrawers.Add(id, objDraw);
+
+			return objDraw;
+		}
+		internal static Dictionary<string, RLP> RLPList = new Dictionary<string, RLP>(10);
+
+		public static RLP GetReorderableList(SerializedProperty property)
+		{
+			var id = $"{property.serializedObject.targetObject.GetInstanceID()}:{property.propertyPath}-{property.name}";
+
+			RLP ret;
+
+			if(RLPList.TryGetValue(id, out ret))
+			{
+				ret.Property = property;
+
+				return ret;
+			}
+#if FoCsEditor_ANIMATED
+				ret = new RLP(property, true, true, true, true, true);
+#else
+			ret = new RLP(property, true);
+#endif
+			RLPList.Add(id, ret);
+
+			return ret;
+		}
+
 	}
 
 	public class FoCsEditor<T>: FoCsEditor where T: Object

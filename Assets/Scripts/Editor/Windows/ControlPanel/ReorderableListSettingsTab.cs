@@ -2,11 +2,14 @@
 
 namespace ForestOfChaosLib.Editor
 {
-	[FoCsControlPanel.ControlPanelTabAttribute]
+	[FoCsControlPanel.ControlPanelTab]
 	public static class ReorderableListSettingsTab
 	{
-		private static readonly GUIContent Enabled  = new GUIContent("List Limiter Enabled");
-		private static readonly GUIContent Disabled = new GUIContent("List Limiter Disabled");
+		private static readonly GUIContent Enabled       = new GUIContent("List Limiter Enabled");
+		private static readonly GUIContent Disabled      = new GUIContent("List Limiter Disabled");
+		private static          bool       ShowDebug     = false;
+		private static readonly GUIContent DebugEnabled  = new GUIContent("Enable Debug Info");
+		private static readonly GUIContent DebugDisabled = new GUIContent("Disable Debug Info");
 
 		public static void DrawGUI(FoCsControlPanel owner)
 		{
@@ -24,6 +27,44 @@ namespace ForestOfChaosLib.Editor
 
 					if(cc.changed)
 						FoCsEditor.ReorderableListProperty.ListLimiter.TOTAL_VISIBLE_COUNT = num;
+				}
+
+				FoCsGUI.Layout.Label();
+				FoCsGUI.Layout.Label();
+
+				ShowDebug = FoCsGUI.Layout.Toggle(ShowDebug? DebugEnabled : DebugDisabled, ShowDebug);
+
+				if(ShowDebug)
+				{
+					ReorderableListCacheTab.DrawGUI(owner);
+				}
+			}
+		}
+	}
+
+	//[FoCsControlPanel.ControlPanelTab]
+	public static class ReorderableListCacheTab
+	{
+		public static void DrawGUI(FoCsControlPanel owner)
+		{
+			using(FoCsEditor.Disposables.VerticalScope())
+			{
+				foreach(var reorderableListProperty in FoCsEditor.RLPList)
+				{
+					using(FoCsEditor.Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box))
+					{
+						using(FoCsEditor.Disposables.HorizontalScope())
+						{
+							FoCsGUI.Layout.Label("Key");
+							FoCsGUI.Layout.Label(reorderableListProperty.Key);
+						}
+
+						using(FoCsEditor.Disposables.HorizontalScope())
+						{
+							FoCsGUI.Layout.Label("Limiter");
+							FoCsGUI.Layout.Label(reorderableListProperty.Value.Limiter != null? reorderableListProperty.Value.Limiter.ToString() : "NULL");
+						}
+					}
 				}
 			}
 		}
