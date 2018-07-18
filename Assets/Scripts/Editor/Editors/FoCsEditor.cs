@@ -189,7 +189,7 @@ namespace ForestOfChaosLib.Editor
 			return false;
 		}
 
-		public        string AssetPath()
+		public int FileID()
 		{
 			//From https://forum.unity.com/threads/how-to-get-the-local-identifier-in-file-for-scene-objects.265686/
 
