@@ -9,7 +9,12 @@ namespace ForestOfChaosLib.Utilities
 		public        Vector3       Position;
 		public        Quaternion    Rotation;
 		public        Vector3       Scale;
-		public static TransformData Empty { get; } = new TransformData(Vector3.zero, Quaternion.identity, Vector3.one);
+		private static readonly TransformData empty = new TransformData(Vector3.zero, Quaternion.identity, Vector3.one);
+
+		public static TransformData Empty
+		{
+			get { return empty; }
+		}
 
 		public TransformData(Transform transform)
 		{
@@ -88,9 +93,20 @@ namespace ForestOfChaosLib.Utilities
 			transform.position   = Position;
 		}
 
-		public static implicit operator TransformData(Transform  input) => new TransformData(input);
-		public static implicit operator TransformData(Component  input) => new TransformData(input.transform);
-		public static implicit operator TransformData(GameObject input) => new TransformData(input.transform);
+		public static implicit operator TransformData(Transform  input)
+		{
+			return new TransformData(input);
+		}
+
+		public static implicit operator TransformData(Component  input)
+		{
+			return new TransformData(input.transform);
+		}
+
+		public static implicit operator TransformData(GameObject input)
+		{
+			return new TransformData(input.transform);
+		}
 
 		public static TransformData Create(Transform transform)
 		{

@@ -14,7 +14,10 @@ namespace ForestOfChaosLib.Editor
 		private static readonly GUIContent                         ResetLocalContent = new GUIContent("Reset Local", "Reset Transforms in local space");
 		private static          int                                _tabNum;
 		private readonly        KeyValuePair<GUIContent, Action>[] TabName;
-		public override         bool                               ShowCopyPasteButtons => true;
+		public override         bool                               ShowCopyPasteButtons
+		{
+			get { return true; }
+		}
 
 		private static int TabNum
 		{
@@ -32,7 +35,10 @@ namespace ForestOfChaosLib.Editor
 			};
 		}
 
-		public override bool UseDefaultMargins() => false;
+		public override bool UseDefaultMargins()
+		{
+			return false;
+		}
 
 		protected void OnEnable()
 		{
@@ -191,7 +197,7 @@ namespace ForestOfChaosLib.Editor
 
 		private void SetScaleBtn(float multi = 1)
 		{
-			var resetContent = new GUIContent($"{multi}x", $"Sets the Scale to ({multi}, {multi}, {multi})");
+			var resetContent = new GUIContent(string.Format("{0}x", multi), string.Format("Sets the Scale to ({0}, {1}, {2})", multi, multi, multi));
 
 			if(FoCsGUI.Layout.Button(resetContent, EditorStyles.toolbarButton))
 			{
@@ -204,7 +210,7 @@ namespace ForestOfChaosLib.Editor
 
 		private void TimesScaleBtn(float multi = 1)
 		{
-			var resetContent = new GUIContent($"{multi}x", $"Multiplies the Scale to ({Target.localScale.x * multi}, {Target.localScale.y * multi}, {Target.localScale.z * multi})");
+			var resetContent = new GUIContent(string.Format("{0}x", multi), string.Format("Multiplies the Scale to ({0}, {1}, {2})", Target.localScale.x * multi, Target.localScale.y * multi, Target.localScale.z * multi));
 
 			if(FoCsGUI.Layout.Button(resetContent, EditorStyles.toolbarButton))
 			{
@@ -223,7 +229,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				var content = new GUIContent("Scale amount", "Set amount to uniformly scale the object");
 				scaleAmount = EditorGUILayout.FloatField(content, scaleAmount, EditorStyles.toolbarTextField);
-				var scaleContent = new GUIContent("Set Scale", $"Sets the scale ({scaleAmount},{scaleAmount},{scaleAmount})");
+				var scaleContent = new GUIContent("Set Scale", string.Format("Sets the scale ({0},{1},{2})", scaleAmount, scaleAmount, scaleAmount));
 
 				if(GUILayout.Button(scaleContent, EditorStyles.toolbarButton))
 				{
@@ -231,7 +237,7 @@ namespace ForestOfChaosLib.Editor
 					transform.localScale = Vector3.one * scaleAmount;
 				}
 
-				var scaleTimesContent = new GUIContent("Times Scale", $"Sets the scale ({transform.position.x * scaleAmount},{transform.position.y * scaleAmount},{transform.position.z * scaleAmount})");
+				var scaleTimesContent = new GUIContent("Times Scale", string.Format("Sets the scale ({0},{1},{2})", transform.position.x * scaleAmount, transform.position.y * scaleAmount, transform.position.z * scaleAmount));
 
 				if(GUILayout.Button(scaleTimesContent, EditorStyles.toolbarButton))
 				{

@@ -121,6 +121,9 @@ namespace ForestOfChaosLib.Editor.Utilities
 				yield return GetNext();
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
 	}
 }

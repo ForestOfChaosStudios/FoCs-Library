@@ -21,7 +21,10 @@ namespace ForestOfChaosLib.Editor.Windows
 		public          TitleBarPos TitleBarPosition   = TitleBarPos.Top;
 		public          bool        TitleBarScrollable;
 		public abstract Tab<T>[]    Tabs                    { get; }
-		public          float       TitleBarLabelWidthTotal => TitleBarScrollable? TitleBarLabelWidth + 20 : TitleBarLabelWidth;
+		public          float       TitleBarLabelWidthTotal
+		{
+			get { return TitleBarScrollable? TitleBarLabelWidth + 20 : TitleBarLabelWidth; }
+		}
 
 		protected override void OnGUI()
 		{

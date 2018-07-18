@@ -41,7 +41,11 @@ namespace ForestOfChaosLib.Editor
 			}
 			public        ReorderableList          List       { get; private set; }
 			public        AnimBool                 IsExpanded { get; set; }
-			public static ReorderableList.Defaults Defaults   => s_Defaults ?? (s_Defaults = new ReorderableList.Defaults());
+			public static ReorderableList.Defaults Defaults
+			{
+				get { return s_Defaults ?? (s_Defaults = new ReorderableList.Defaults()); }
+			}
+
 			public SerializedProperty Property
 			{
 				get { return _property; }
@@ -152,7 +156,10 @@ namespace ForestOfChaosLib.Editor
 				drawer.OnGUI(rect, property, GuiCont);
 			}
 
-			private float ObjectReferenceElementHeight(SerializedProperty property) => ObjectReferenceElementHeight(property, new GUIContent(property.displayName));
+			private float ObjectReferenceElementHeight(SerializedProperty property)
+			{
+				return ObjectReferenceElementHeight(property, new GUIContent(property.displayName));
+			}
 
 			private float ObjectReferenceElementHeight(SerializedProperty property, GUIContent content)
 			{
@@ -219,8 +226,15 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 
-			public void DrawHeader()          => DrawDefaultHeader();
-			public void DrawHeader(Rect rect) => DrawDefaultHeader(rect);
+			public void DrawHeader()
+			{
+				DrawDefaultHeader();
+			}
+
+			public void DrawHeader(Rect rect)
+			{
+				DrawDefaultHeader(rect);
+			}
 
 			private void DrawDefaultHeader()
 			{
@@ -265,8 +279,15 @@ namespace ForestOfChaosLib.Editor
 				return height;
 			}
 
-			public static implicit operator ReorderableListProperty(SerializedProperty input) => new ReorderableListProperty(input);
-			public static implicit operator SerializedProperty(ReorderableListProperty input) => input.Property;
+			public static implicit operator ReorderableListProperty(SerializedProperty input)
+			{
+				return new ReorderableListProperty(input);
+			}
+
+			public static implicit operator SerializedProperty(ReorderableListProperty input)
+			{
+				return input.Property;
+			}
 
 			public static class ListStyles
 			{
@@ -325,7 +346,10 @@ namespace ForestOfChaosLib.Editor
 						ChangeCount.Trigger();
 					}
 				}
-				private int Count => MyListProperty.Property.arraySize;
+				private int Count
+				{
+					get { return MyListProperty.Property.arraySize; }
+				}
 
 				public int Min
 				{
@@ -338,7 +362,10 @@ namespace ForestOfChaosLib.Editor
 					set { _max = Math.Min(Count, value); }
 				}
 
-				public        bool        ShowElement(int                    index)        => (index >= Min) && (index < Max);
+				public        bool        ShowElement(int                    index)
+				{
+					return (index >= Min) && (index < Max);
+				}
 
 				public static ListLimiter GetLimiter(ReorderableListProperty listProperty)
 				{
@@ -423,7 +450,10 @@ namespace ForestOfChaosLib.Editor
 				}
 
 				/// <inheritdoc />
-				public override string ToString() => $"Min: {Min}. Max: {Max}";
+				public override string ToString()
+				{
+					return string.Format("Min: {0}. Max: {1}", Min, Max);
+				}
 			}
 
 #region Delegate Methods
@@ -450,7 +480,10 @@ namespace ForestOfChaosLib.Editor
 				return 0;
 			}
 
-			private bool OnListOnCanRemoveCallback(ReorderableList list) => List.count > 0;
+			private bool OnListOnCanRemoveCallback(ReorderableList list)
+			{
+				return List.count > 0;
+			}
 
 			private void OnListDrawHeaderCallback(Rect rect)
 			{
@@ -466,7 +499,7 @@ namespace ForestOfChaosLib.Editor
 				using(Disposables.IndentSet(0))
 				{
 					_property.isExpanded = EditorGUI.ToggleLeft(rect.Edit(RectEdit.SetWidth(x - 10)),
-					                                            $"{_property.displayName}\t[{_property.arraySize}]",
+					                                            string.Format("{0}\t[{1}]", _property.displayName, _property.arraySize),
 					                                            _property.isExpanded,
 					                                            _property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none);
 				}
@@ -520,10 +553,10 @@ namespace ForestOfChaosLib.Editor
 			{
 				var minAmount  = 1;
 				var maxAmount  = 5;
-				var upArrow    = new GUIContent("", $"Increase Displayed Index {minAmount}");
-				var up2Arrow   = new GUIContent("", $"Increase Displayed Index {maxAmount}");
-				var downArrow  = new GUIContent("", $"Decrease Displayed Index {minAmount}");
-				var down2Arrow = new GUIContent("", $"Decrease Displayed Index {maxAmount}");
+				var upArrow    = new GUIContent("", string.Format("Increase Displayed Index {0}", minAmount));
+				var up2Arrow   = new GUIContent("", string.Format("Increase Displayed Index {0}", maxAmount));
+				var downArrow  = new GUIContent("", string.Format("Decrease Displayed Index {0}", minAmount));
+				var down2Arrow = new GUIContent("", string.Format("Decrease Displayed Index {0}", maxAmount));
 				var horScope   = Disposables.RectHorizontalScope(11, rect.Edit(RectEdit.ChangeX(5), RectEdit.AddWidth(-16)));
 
 				using(Disposables.DisabledScope(!Limiter.CanDecrease()))
@@ -537,8 +570,8 @@ namespace ForestOfChaosLib.Editor
 
 				var minString  = (Limiter.Min + 1).ToString();
 				var maxString  = Limiter.Max.ToString();
-				var shortLabel = $"{(minString.Length + maxString.Length < 5? "Index" : "I")}: {minString}-{maxString}";
-				var toolTip    = $"Viewable Indices: Min:{minString} Max:{maxString}";
+				var shortLabel = string.Format("{0}: {1}-{2}", minString.Length + maxString.Length < 5? "Index" : "I", minString, maxString);
+				var toolTip    = string.Format("Viewable Indices: Min:{0} Max:{1}", minString, maxString);
 				FoCsGUI.Label(horScope.GetNext(5, RectEdit.ChangeY(-3)), new GUIContent(shortLabel, toolTip));
 
 				using(Disposables.DisabledScope(!Limiter.CanIncrease()))
@@ -567,7 +600,8 @@ namespace ForestOfChaosLib.Editor
 						if(List.onChangedCallback != null)
 							List.onChangedCallback(List);
 
-						Limiter?.ChangeEnd();
+						if(Limiter != null)
+							Limiter.ChangeEnd();
 					}
 				}
 			}
@@ -586,7 +620,8 @@ namespace ForestOfChaosLib.Editor
 						if(List.onChangedCallback != null)
 							List.onChangedCallback(List);
 
-						Limiter?.ChangeRange(-1);
+						if(Limiter != null)
+							Limiter.ChangeRange(-1);
 					}
 				}
 			}
@@ -729,7 +764,7 @@ namespace ForestOfChaosLib.Editor
 #region Storage
 			private ORD GetObjectDrawer(SerializedProperty property)
 			{
-				var id = $"{property.propertyPath}-{property.name}";
+				var id = string.Format("{0}-{1}", property.propertyPath, property.name);
 				ORD objDraw;
 
 				if(objectDrawers.TryGetValue(id, out objDraw))

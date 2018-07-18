@@ -9,14 +9,45 @@ namespace ForestOfChaosLib.Editor
 		{
 			public                          Event Event;
 			public                          Rect  Rect;
-			public                          bool  EventOccurredInRect => Rect.Contains(Event.mousePosition);
-			public                          bool  EventIsMouseL       => (Event.type == EventType.MouseUp) && (Event.button == 0);
-			public                          bool  EventIsMouseR       => (Event.type == EventType.MouseUp) && (Event.button == 1);
-			public                          bool  EventIsMouseLInRect => EventIsMouseL                     && EventOccurredInRect;
-			public                          bool  EventIsMouseRInRect => EventIsMouseR                     && EventOccurredInRect;
-			public virtual                  bool  Pressed             => EventIsMouseLInRect;
-			public static implicit operator Event(GUIEvent input)     => input.Event;
-			public static implicit operator Rect(GUIEvent  input)     => input.Rect;
+			public                          bool  EventOccurredInRect
+			{
+				get { return Rect.Contains(Event.mousePosition); }
+			}
+
+			public                          bool  EventIsMouseL
+			{
+				get { return (Event.type == EventType.MouseUp) && (Event.button == 0); }
+			}
+
+			public                          bool  EventIsMouseR
+			{
+				get { return (Event.type == EventType.MouseUp) && (Event.button == 1); }
+			}
+
+			public                          bool  EventIsMouseLInRect
+			{
+				get { return EventIsMouseL && EventOccurredInRect; }
+			}
+
+			public                          bool  EventIsMouseRInRect
+			{
+				get { return EventIsMouseR && EventOccurredInRect; }
+			}
+
+			public virtual                  bool  Pressed
+			{
+				get { return EventIsMouseLInRect; }
+			}
+
+			public static implicit operator Event(GUIEvent input)
+			{
+				return input.Event;
+			}
+
+			public static implicit operator Rect(GUIEvent  input)
+			{
+				return input.Rect;
+			}
 
 			public static GUIEvent Create()
 			{
@@ -73,13 +104,19 @@ namespace ForestOfChaosLib.Editor
 		public class GUIEvent<T>: GUIEvent
 		{
 			public                          T Value;
-			public static implicit operator T(GUIEvent<T> input) => input.Value;
+			public static implicit operator T(GUIEvent<T> input)
+			{
+				return input.Value;
+			}
 		}
 
 		public class GUIEventBool: GUIEvent<bool>
 		{
 			/// <inheritdoc />
-			public override bool Pressed => Value;
+			public override bool Pressed
+			{
+				get { return Value; }
+			}
 		}
 	}
 }

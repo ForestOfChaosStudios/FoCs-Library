@@ -228,7 +228,10 @@ namespace ForestOfChaosLib.Maths
 
 	public static class ConvertColours
 	{
-		public static string HexNumberFromColour(Color col) => ColorUtility.ToHtmlStringRGBA(col);
+		public static string HexNumberFromColour(Color col)
+		{
+			return ColorUtility.ToHtmlStringRGBA(col);
+		}
 
 		public static Color HexNumberToColour(string colString)
 		{

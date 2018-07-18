@@ -64,7 +64,10 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			set { EditorPrefs.SetInt("FoCsOB.ActiveIndex", activeIndex = value); }
 		}
 
-		private static float TypeWidth => Screen.width * TYPE_WIDTH;
+		private static float TypeWidth
+		{
+			get { return Screen.width * TYPE_WIDTH; }
+		}
 
 		[MenuItem("Forest Of Chaos/" + TITLE)]
 		private static void Init()
@@ -290,7 +293,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 				using(FoCsEditor.Disposables.VerticalScope())
 				{
 					if(FoundSceneObjects.Count == 0)
-						FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name} In scene.");
+						FoCsGUI.Layout.InfoBox(string.Format("No Objects of {0} In scene.", ActiveType.Name));
 					else
 					{
 						if(SceneSearch.IsNullOrEmpty())
@@ -324,7 +327,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 				using(FoCsEditor.Disposables.VerticalScope(GUILayout.ExpandHeight(true)))
 				{
 					if(FoundAssetsObjects.Count == 0)
-						FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name}. Can be found in the Assets Database.");
+						FoCsGUI.Layout.InfoBox(string.Format("No Objects of {0}. Can be found in the Assets Database.", ActiveType.Name));
 					else
 					{
 						if(AssetSearch.IsNullOrEmpty())
@@ -349,8 +352,15 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			}
 		}
 
-		private static bool SearchString(Object foundObject, string search) => SearchString(foundObject.name, search);
-		private static bool SearchString(string foundObject, string search) => foundObject.ToLower().Contains(search.ToLower());
+		private static bool SearchString(Object foundObject, string search)
+		{
+			return SearchString(foundObject.name, search);
+		}
+
+		private static bool SearchString(string foundObject, string search)
+		{
+			return foundObject.ToLower().Contains(search.ToLower());
+		}
 
 		private static void DrawFoundObject(Object foundObject)
 		{
@@ -359,7 +369,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 				var eventPingButton = FoCsGUI.Layout.Button(PingContent, FoCsGUI.Styles.Find, GUILayout.Width(16));
 				FoCsGUI.Layout.Label("  ", GUILayout.Width(8));
 				FoCsGUI.Layout.Button(foundObject.name,                                            FoCsGUI.Styles.Unity.Label, GUILayout.Width(300));
-				FoCsGUI.Layout.Button($"Full Type: {foundObject.GetType().Name.SplitCamelCase()}", FoCsGUI.Styles.Unity.Label);
+				FoCsGUI.Layout.Button(string.Format("Full Type: {0}", foundObject.GetType().Name.SplitCamelCase()), FoCsGUI.Styles.Unity.Label);
 
 				if(eventPingButton.Pressed)
 					EditorGUIUtility.PingObject(foundObject);
@@ -415,7 +425,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 							}
 
 							genArg.Append('>');
-							FoCsGUI.Layout.Label($"{TypeList[ActiveIndex].BaseType.Name.Replace("`1", "")}{genArg}");
+							FoCsGUI.Layout.Label(string.Format("{0}{1}", TypeList[ActiveIndex].BaseType.Name.Replace("`1", ""), genArg));
 						}
 						else
 							FoCsGUI.Layout.Label(TypeList[ActiveIndex].BaseType.Name.SplitCamelCase());
@@ -461,7 +471,10 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			FoundSceneObjects.TrimExcess();
 		}
 
-		private static int Sorter(Object x, Object y) => string.Compare(x.name, y.name, StringComparison.Ordinal);
+		private static int Sorter(Object x, Object y)
+		{
+			return string.Compare(x.name, y.name, StringComparison.Ordinal);
+		}
 
 		private static void SceneObjectChange()
 		{

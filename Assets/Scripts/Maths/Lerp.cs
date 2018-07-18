@@ -5,7 +5,10 @@ namespace ForestOfChaosLib.Maths
 {
 	public static class Lerps
 	{
-		public static float Lerp(float value1, float value2, float time) => value1 + ((value2 - value1) * time);
+		public static float Lerp(float value1, float value2, float time)
+		{
+			return value1 + ((value2 - value1) * time);
+		}
 
 		public static float Lerp(float value1, float value2, float value3, float time)
 		{
@@ -47,7 +50,10 @@ namespace ForestOfChaosLib.Maths
 			return posOne + ((posTwo - posOne) * time);
 		}
 
-		public static float Lerp(int value1, int value2, float time) => value1 + ((value2 - value1) * time);
+		public static float Lerp(int value1, int value2, float time)
+		{
+			return value1 + ((value2 - value1) * time);
+		}
 
 		public static float Lerp(int value1, int value2, int value3, float time)
 		{
@@ -89,7 +95,14 @@ namespace ForestOfChaosLib.Maths
 			return posOne + ((posTwo - posOne) * time);
 		}
 
-		public static Vector3 Lerp(Vector3 value1, Vector3 value2, float time) => value1 + ((value2 - value1) * time);
-		public static Vector2 Lerp(Vector2 value1, Vector2 value2, float time) => value1 + ((value2 - value1) * time);
+		public static Vector3 Lerp(Vector3 value1, Vector3 value2, float time)
+		{
+			return value1 + ((value2 - value1) * time);
+		}
+
+		public static Vector2 Lerp(Vector2 value1, Vector2 value2, float time)
+		{
+			return value1 + ((value2 - value1) * time);
+		}
 	}
 }
