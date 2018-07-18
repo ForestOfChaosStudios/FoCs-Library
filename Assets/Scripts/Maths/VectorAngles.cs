@@ -4,7 +4,10 @@ namespace ForestOfChaosLib.Maths
 {
 	public static class VectorAngles
 	{
-		public static Vector3 ClampAngle(Vector3 angle, float min, float max) => new Vector3(ClampAngle(angle.x, min, max), ClampAngle(angle.y, min, max), ClampAngle(angle.z, min, max));
+		public static Vector3 ClampAngle(Vector3 angle, float min, float max)
+		{
+			return new Vector3(ClampAngle(angle.x, min, max), ClampAngle(angle.y, min, max), ClampAngle(angle.z, min, max));
+		}
 
 		///Normalize angles to a range from -180 to 180 an then clamp the angle with min and max.
 		public static float ClampAngle(float angle, float min, float max)

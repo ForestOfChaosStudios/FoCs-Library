@@ -18,7 +18,10 @@ namespace ForestOfChaosLib.Editor.Utilities
 			while(iterator.NextVisible(enterChildren) && (iterator.depth >= property.depth));
 		}
 
-		public static int GetChildrenCount(this SerializedProperty property, bool enterChildren = false) => property.GetChildren(enterChildren).Count();
+		public static int GetChildrenCount(this SerializedProperty property, bool enterChildren = false)
+		{
+			return property.GetChildren(enterChildren).Count();
+		}
 
 		public static int GetIndex(SerializedProperty property)
 		{

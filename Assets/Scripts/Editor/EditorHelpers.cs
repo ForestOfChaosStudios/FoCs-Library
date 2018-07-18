@@ -1,3 +1,4 @@
+using System;
 using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -13,8 +14,10 @@ namespace ForestOfChaosLib.Editor
 		private static readonly GUIContent PasteContent         = new GUIContent("P",                  "Pastes the vectors data.");
 		private static readonly GUIContent ResetContent         = new GUIContent("R",                  "Resets the vectors data.");
 
-		public static Vector3 DrawVector3(string label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn, out bool GUIChanged) =>
-				DrawVector3(new GUIContent(label, "The vectors X,Y,Z values."), vec, defaultValue, objectIAmOn, out GUIChanged);
+		public static Vector3 DrawVector3(string label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn, out bool GUIChanged)
+		{
+			return DrawVector3(new GUIContent(label, "The vectors X,Y,Z values."), vec, defaultValue, objectIAmOn, out GUIChanged);
+		}
 
 		public static Vector3 DrawVector3(GUIContent label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn, out bool GUIChanged)
 		{
@@ -99,7 +102,8 @@ namespace ForestOfChaosLib.Editor
 				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
 				{
 					var PasteContent = new GUIContent("Paste (E)",
-					                                  $"Pastes the data. (using the EditorJSONUtility)\n{CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 512? 512 : CopyPasteUtility.CopyBuffer.Length)}");
+					                                  string.Format("Pastes the data. (using the EditorJSONUtility)\n{0}",
+					                                                CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 512? 512 : CopyPasteUtility.CopyBuffer.Length)));
 
 					if(!isType)
 						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;

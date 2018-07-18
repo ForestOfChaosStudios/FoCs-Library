@@ -13,7 +13,11 @@ namespace ForestOfChaosLib.Editor.Utilities
 			get { return EditorGUIUtility.systemCopyBuffer; }
 			set { EditorGUIUtility.systemCopyBuffer = value; }
 		}
-		public static string CopyBufferNoTypeName => RemoveTypeFromCopyBuffer();
+		public static string CopyBufferNoTypeName
+		{
+			get { return RemoveTypeFromCopyBuffer(); }
+		}
+
 		public static bool IsEditorCopyNoEntries(string str)
 		{
 			string[] types = {"UnityEngine.MonoBehaviour", "UnityEngine.AudioListener", "UnityEngine.GUILayer", "UnityEngine.FlareLayer"};
@@ -126,7 +130,10 @@ namespace ForestOfChaosLib.Editor.Utilities
 		}
 
 		private const  string NEEDLE = "\".*\":";
-		private static bool   IsValidObjectInBuffer() => CopyBuffer.Contains(COPY_SPLIT_S);
+		private static bool   IsValidObjectInBuffer()
+		{
+			return CopyBuffer.Contains(COPY_SPLIT_S);
+		}
 
 		public static bool IsTypeInBuffer(Object obj)
 		{

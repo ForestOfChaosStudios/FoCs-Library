@@ -15,9 +15,20 @@ namespace ForestOfChaosLib.JSON
 
 	public class JsonAble<JSON_DATA>: IJson<JSON_DATA>
 	{
-		public static JSON_DATA JsonCtor(string data) => JsonUtility.FromJson<JSON_DATA>(data);
-		public        string    ToJson()              => JsonUtility.ToJson(this, true);
-		public        JSON_DATA FromJson(string data) => JsonUtility.FromJson<JSON_DATA>(data);
+		public static JSON_DATA JsonCtor(string data)
+		{
+			return JsonUtility.FromJson<JSON_DATA>(data);
+		}
+
+		public        string    ToJson()
+		{
+			return JsonUtility.ToJson(this, true);
+		}
+
+		public        JSON_DATA FromJson(string data)
+		{
+			return JsonUtility.FromJson<JSON_DATA>(data);
+		}
 
 		public void FromJsonOverwrite(string data)
 		{

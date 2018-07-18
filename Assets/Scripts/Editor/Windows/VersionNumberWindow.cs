@@ -19,7 +19,10 @@ namespace ForestOfChaosLib.Editor.Windows
 		private static readonly GUIContent         Heading = new GUIContent("Bundle Version");
 		private                 string             versionNumber;
 		private static          SerializedObject   SerializedObject;
-		private static          SerializedProperty BundleVersion => SerializedObject.FindProperty("bundleVersion");
+		private static          SerializedProperty BundleVersion
+		{
+			get { return SerializedObject.FindProperty("bundleVersion"); }
+		}
 
 		private void OnEnable()
 		{

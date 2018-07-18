@@ -15,7 +15,10 @@ namespace ForestOfChaosLib.Editor.Windows
 	public abstract class FoCsWindow<T>: EditorWindow where T: EditorWindow
 	{
 		private static   T window;
-		protected static T Window => window ?? (window = GetWindow());
+		protected static T Window
+		{
+			get { return window ?? (window = GetWindow()); }
+		}
 
 		protected static T GetWindow()
 		{

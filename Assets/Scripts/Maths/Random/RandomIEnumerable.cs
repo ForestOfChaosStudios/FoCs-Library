@@ -5,7 +5,10 @@ namespace ForestOfChaosLib.Maths.Random
 {
 	public static class RandomIEnumerable
 	{
-		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> iEnumerable) => Shuffle(iEnumerable, RandomMaster.Random);
+		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> iEnumerable)
+		{
+			return Shuffle(iEnumerable, RandomMaster.Random);
+		}
 
 		public static T[] Shuffle<T>(this IEnumerable<T> iEnumerable, System.Random rng)
 		{

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
@@ -12,7 +13,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		protected static readonly GUIContent       foldoutGUIContent = new GUIContent("", "Open up the References Data");
 		protected                 bool             foldout;
 		protected                 SerializedObject serializedObject;
-		protected virtual         bool             AllowFoldout => true;
+		protected virtual         bool             AllowFoldout
+		{
+			get { return true; }
+		}
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -99,7 +103,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			return drawPos;
 		}
 
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => PropertyHeight(property, serializedObject, foldout);
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+		{
+			return PropertyHeight(property, serializedObject, foldout);
+		}
 
 		public static float PropertyHeight(SerializedProperty property, SerializedObject serializedObject, bool foldout)
 		{
@@ -126,7 +133,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property)
 		{
-			var                   id = $"{property.serializedObject.targetObject.name}:{property.propertyPath}-{property.name}";
+			var                   id = string.Format("{0}:{1}-{2}", property.serializedObject.targetObject.name, property.propertyPath, property.name);
 			ObjectReferenceDrawer objDraw;
 
 			if(objectDrawers.TryGetValue(id, out objDraw))

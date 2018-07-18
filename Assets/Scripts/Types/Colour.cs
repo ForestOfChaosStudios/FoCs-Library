@@ -57,8 +57,15 @@ namespace ForestOfChaosLib.Types
 			B = (byte)Rnd.Range(min, max);
 		}
 
-		public static implicit operator Color(Colour col) => new Color(Mathf.InverseLerp(0f, 255f, col.R), Mathf.InverseLerp(0f, 255f, col.G), Mathf.InverseLerp(0f, 255f, col.B), Mathf.InverseLerp(0f, 255f, col.A));
-		public static implicit operator Colour(Color col) => new Colour((byte)Mathf.Lerp(0f, 255f, col.r), (byte)Mathf.Lerp(0f, 255f, col.g), (byte)Mathf.Lerp(0f, 255f, col.b), (byte)Mathf.Lerp(0f, 255f, col.a));
+		public static implicit operator Color(Colour col)
+		{
+			return new Color(Mathf.InverseLerp(0f, 255f, col.R), Mathf.InverseLerp(0f, 255f, col.G), Mathf.InverseLerp(0f, 255f, col.B), Mathf.InverseLerp(0f, 255f, col.A));
+		}
+
+		public static implicit operator Colour(Color col)
+		{
+			return new Colour((byte)Mathf.Lerp(0f, 255f, col.r), (byte)Mathf.Lerp(0f, 255f, col.g), (byte)Mathf.Lerp(0f, 255f, col.b), (byte)Mathf.Lerp(0f, 255f, col.a));
+		}
 
 		public static implicit operator Colour(byte[] col)
 		{
@@ -99,24 +106,86 @@ namespace ForestOfChaosLib.Types
 			}
 		}
 
-		public static Colour operator +(Colour a, Colour b) => new Colour(a.R + b.R, a.G + b.G, a.B + b.B, a.A + b.A);
-		public static Colour operator -(Colour a, Colour b) => new Colour(a.R - b.R, a.G - b.G, a.B - b.B, a.A - b.A);
-		public static Colour operator *(Colour a, float  d) => new Colour(a.R * d,   a.G * d,   a.B * d,   a.A * d);
-		public static Colour operator *(float  d, Colour a) => new Colour(a.R * d,   a.G * d,   a.B * d,   a.A * d);
-		public static Colour operator /(Colour a, float  d) => new Colour(a.R / d,   a.G / d,   a.B / d,   a.A / d);
+		public static Colour operator +(Colour a, Colour b)
+		{
+			return new Colour(a.R + b.R, a.G + b.G, a.B + b.B, a.A + b.A);
+		}
+
+		public static Colour operator -(Colour a, Colour b)
+		{
+			return new Colour(a.R - b.R, a.G - b.G, a.B - b.B, a.A - b.A);
+		}
+
+		public static Colour operator *(Colour a, float  d)
+		{
+			return new Colour(a.R * d, a.G * d, a.B * d, a.A * d);
+		}
+
+		public static Colour operator *(float  d, Colour a)
+		{
+			return new Colour(a.R * d, a.G * d, a.B * d, a.A * d);
+		}
+
+		public static Colour operator /(Colour a, float  d)
+		{
+			return new Colour(a.R / d, a.G / d, a.B / d, a.A / d);
+		}
 
 #region PresetColours
-		public static Colour Red     => new Colour(255, 0,   0);
-		public static Colour Green   => new Colour(0,   255, 0);
-		public static Colour Blue    => new Colour(0,   0,   255);
-		public static Colour White   => new Colour(255, 255, 255);
-		public static Colour Black   => new Colour(0,   0,   0);
-		public static Colour Yellow  => new Colour(255, 255, 0);
-		public static Colour Cyan    => new Colour(0,   255, 255);
-		public static Colour Magenta => new Colour(255, 0,   255);
-		public static Colour Pink    => new Colour(255, 128, 255);
-		public static Colour Grey    => new Colour(128, 128, 128);
-		public static Colour Clear   => new Colour(0,   0,   0, 0);
+		public static Colour Red
+		{
+			get { return new Colour(255, 0, 0); }
+		}
+
+		public static Colour Green
+		{
+			get { return new Colour(0, 255, 0); }
+		}
+
+		public static Colour Blue
+		{
+			get { return new Colour(0, 0, 255); }
+		}
+
+		public static Colour White
+		{
+			get { return new Colour(255, 255, 255); }
+		}
+
+		public static Colour Black
+		{
+			get { return new Colour(0, 0, 0); }
+		}
+
+		public static Colour Yellow
+		{
+			get { return new Colour(255, 255, 0); }
+		}
+
+		public static Colour Cyan
+		{
+			get { return new Colour(0, 255, 255); }
+		}
+
+		public static Colour Magenta
+		{
+			get { return new Colour(255, 0, 255); }
+		}
+
+		public static Colour Pink
+		{
+			get { return new Colour(255, 128, 255); }
+		}
+
+		public static Colour Grey
+		{
+			get { return new Colour(128, 128, 128); }
+		}
+
+		public static Colour Clear
+		{
+			get { return new Colour(0, 0, 0, 0); }
+		}
 	}
 #endregion
 

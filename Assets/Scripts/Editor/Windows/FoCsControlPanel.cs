@@ -16,8 +16,16 @@ namespace ForestOfChaosLib.Editor
 		public static  GUISkin    skin;
 		private static List<Type> windowList;
 		private static List<Type> tabList;
-		private static List<Type> WindowList => windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false));
-		private static List<Type> TabList    => tabList    ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTabAttribute>(false));
+		private static List<Type> WindowList
+		{
+			get { return windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false)); }
+		}
+
+		private static List<Type> TabList
+		{
+			get { return tabList ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTabAttribute>(false)); }
+		}
+
 		private static int ActiveTab
 		{
 			get { return EditorPrefs.GetInt("FoCsCP.ActiveIndex"); }
@@ -46,7 +54,14 @@ namespace ForestOfChaosLib.Editor
 						DrawTabButtons();
 
 					if(TabList.InRange(ActiveTab))
-						TabList[ActiveTab].GetMethod("DrawGUI")?.Invoke(null, new object[] {this});
+					{
+						var meth = TabList[ActiveTab].GetMethod("DrawGUI");
+
+						if(meth != null)
+						{
+							meth.Invoke(null, new object[] {this});
+						}
+					}
 				}
 			}
 		}
@@ -68,7 +83,11 @@ namespace ForestOfChaosLib.Editor
 					if(@event.Value)
 					{
 						//Window.ShowNotification(new GUIContent($"Clicked: {key.Name.SplitCamelCase()}"));
-						key.GetMethod("Init", BindingFlags.NonPublic | BindingFlags.Static)?.Invoke(null, null);
+						var meth = key.GetMethod("Init", BindingFlags.NonPublic | BindingFlags.Static);
+
+						if(meth != null)
+							meth.Invoke(null, null);
+
 						//var otherWin = GetWindow(key);
 					}
 				}

@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Windows
@@ -26,7 +27,7 @@ namespace ForestOfChaosLib.Editor.Windows
                 var tex = new Texture2D(2, 2);
                 tex.SetPixels(new[] {color, color, color, color});
                 tex.Apply();
-                AssetDatabase.CreateAsset(tex, $"Assets/Solid_{ColorUtility.ToHtmlStringRGB(color)}.asset");
+                AssetDatabase.CreateAsset(tex, string.Format("Assets/Solid_{0}.asset", ColorUtility.ToHtmlStringRGB(color)));
             }
         }
     }
