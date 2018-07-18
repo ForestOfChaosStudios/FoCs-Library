@@ -42,7 +42,6 @@ namespace ForestOfChaosLib.Editor
 		}
 	}
 
-	//[FoCsControlPanel.ControlPanelTab]
 	public static class ReorderableListCacheTab
 	{
 		public static void DrawGUI(FoCsControlPanel owner)
