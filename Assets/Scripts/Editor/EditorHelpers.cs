@@ -62,18 +62,23 @@ namespace ForestOfChaosLib.Editor
 
 		public static Obj CopyPastObjectButtons(Obj obj)
 		{
-			var canCopy       = CopyPasteUtility.CanCopy(obj);
-			var canEditorCopy = CopyPasteUtility.CanEditorCopy(obj);
+			var canCopy        = CopyPasteUtility.CanCopy(obj);
+			var canEditorCopy  = CopyPasteUtility.CanEditorCopy(obj);
+			var guiEnableCache = GUI.enabled;
+
+			var copyBuff = CopyPasteUtility.CopyBuffer;
 
 			if(canCopy)
 			{
-				var                  isType = CopyPasteUtility.IsTypeInBuffer(obj);
+				var                  isType = CopyPasteUtility.IsTypeInBuffer(obj, copyBuff);
 				FoCsGUI.GUIEventBool pasteEvent;
-				var                  copyEvent = FoCsGUI.Layout.Button(CP_CopyContent, EditorStyles.toolbarButton);
+				GUI.enabled = true;
+				var copyEvent = FoCsGUI.Layout.Button(CP_CopyContent, EditorStyles.toolbarButton);
+				GUI.enabled = guiEnableCache;
 
 				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
 				{
-					var PasteContent = new GUIContent("Paste", "Pastes the data.\n" + CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 512? 512 : CopyPasteUtility.CopyBuffer.Length));
+					var PasteContent = new GUIContent("Paste", "Pastes the data.\n" + copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length));
 
 					if(!isType)
 						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;
@@ -82,28 +87,31 @@ namespace ForestOfChaosLib.Editor
 				}
 
 				if(copyEvent)
+				{
 					CopyPasteUtility.Copy(obj);
+					return obj;
+				}
 
 				if(!pasteEvent)
 					return obj;
 
 				Undo.RecordObject(obj, "Before Paste Settings");
-				CopyPasteUtility.Paste(ref obj);
+				CopyPasteUtility.Paste(ref obj, copyBuff, true);
 
 				return obj;
 			}
 
 			if(canEditorCopy)
 			{
-				var                  isType = CopyPasteUtility.IsTypeInBuffer(obj);
+				var                  isType = CopyPasteUtility.IsTypeInBuffer(obj, copyBuff);
 				FoCsGUI.GUIEventBool pasteEvent;
-				var                  copyEvent = FoCsGUI.Layout.Button(CP_EditorCopyContent, EditorStyles.toolbarButton);
+				GUI.enabled = true;
+				var copyEvent = FoCsGUI.Layout.Button(CP_EditorCopyContent, EditorStyles.toolbarButton);
+				GUI.enabled = guiEnableCache;
 
 				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
 				{
-					var PasteContent = new GUIContent("Paste (E)",
-					                                  string.Format("Pastes the data. (using the EditorJSONUtility)\n{0}",
-					                                                CopyPasteUtility.CopyBuffer.Substring(0, CopyPasteUtility.CopyBuffer.Length >= 512? 512 : CopyPasteUtility.CopyBuffer.Length)));
+					var PasteContent = new GUIContent("Paste (E)", string.Format("Pastes the data. (using the EditorJSONUtility)\n{0}", copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length)));
 
 					if(!isType)
 						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;
@@ -112,12 +120,15 @@ namespace ForestOfChaosLib.Editor
 				}
 
 				if(copyEvent)
+				{
 					CopyPasteUtility.EditorCopy(obj);
+					return obj;
+				}
 
 				if(pasteEvent)
 				{
 					Undo.RecordObject(obj, "Before Paste Settings");
-					CopyPasteUtility.EditorPaste(ref obj);
+					CopyPasteUtility.EditorPaste(ref obj, copyBuff, true);
 				}
 			}
 

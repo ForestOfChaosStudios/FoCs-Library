@@ -13,16 +13,12 @@ namespace ForestOfChaosLib.Editor.Utilities
 			get { return EditorGUIUtility.systemCopyBuffer; }
 			set { EditorGUIUtility.systemCopyBuffer = value; }
 		}
-		public static string CopyBufferNoTypeName
-		{
-			get { return RemoveTypeFromCopyBuffer(); }
-		}
+
+		private static readonly string[] nonCopyTypes = {"UnityEngine.MonoBehaviour", "UnityEngine.AudioListener", "UnityEngine.GUILayer", "UnityEngine.FlareLayer"};
 
 		public static bool IsEditorCopyNoEntries(string str)
 		{
-			string[] types = {"UnityEngine.MonoBehaviour", "UnityEngine.AudioListener", "UnityEngine.GUILayer", "UnityEngine.FlareLayer"};
-
-			foreach(var s in types)
+			foreach(var s in nonCopyTypes)
 			{
 				if(str == s)
 					return true;
@@ -109,33 +105,112 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 		public static T Paste<T>()
 		{
-			var value = JsonUtility.FromJson<T>(CopyBufferNoTypeName);
+			return Paste<T>(RemoveTypeFromCopyBuffer());
+		}
+
+		private static T Paste<T>(string buffer)
+		{
+			var value = JsonUtility.FromJson<T>(buffer);
+
+			return value;
+		}
+
+		public static T Paste<T>(string buffer, bool checkForTypeDetails)
+		{
+			T value;
+
+			if(checkForTypeDetails && IsValidObjectInBuffer(buffer))
+			{
+				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+				value = JsonUtility.FromJson<T>(checkedBuffer);
+			}
+			else
+				value = JsonUtility.FromJson<T>(buffer);
 
 			return value;
 		}
 
 		public static void Paste<T>(ref T obj)
 		{
-			JsonUtility.FromJsonOverwrite(CopyBufferNoTypeName, obj);
+			Paste(ref obj, RemoveTypeFromCopyBuffer());
+		}
+
+		private static void Paste<T>(ref T obj, string buffer)
+		{
+			JsonUtility.FromJsonOverwrite(buffer, obj);
+		}
+
+		public static void Paste<T>(ref T obj, string buffer, bool checkForTypeDetails)
+		{
+			if(checkForTypeDetails && IsValidObjectInBuffer(buffer))
+			{
+				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+				JsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+			}
+			else
+				JsonUtility.FromJsonOverwrite(buffer, obj);
 		}
 
 		public static void EditorPaste<T>(ref T obj)
 		{
-			EditorJsonUtility.FromJsonOverwrite(CopyBufferNoTypeName, obj);
+			EditorPaste(obj, RemoveTypeFromCopyBuffer());
+		}
+
+		private static void EditorPaste<T>(ref T obj, string buffer)
+		{
+			EditorJsonUtility.FromJsonOverwrite(buffer, obj);
+		}
+
+		public static void EditorPaste<T>(ref T obj, string buffer, bool checkForTypeDetails)
+		{
+			if(checkForTypeDetails && IsValidObjectInBuffer(buffer))
+			{
+				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+				EditorJsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+			}
+			else
+				EditorJsonUtility.FromJsonOverwrite(buffer, obj);
 		}
 
 		public static void EditorPaste<T>(T obj)
 		{
-			EditorJsonUtility.FromJsonOverwrite(CopyBufferNoTypeName, obj);
+			EditorPaste(obj, RemoveTypeFromCopyBuffer());
 		}
 
-		private const  string NEEDLE = "\".*\":";
-		private static bool   IsValidObjectInBuffer()
+		private static void EditorPaste<T>(T obj, string buffer)
 		{
-			return CopyBuffer.Contains(COPY_SPLIT_S);
+			EditorJsonUtility.FromJsonOverwrite(buffer, obj);
+		}
+
+		public static void EditorPaste<T>(T obj, string buffer, bool checkForTypeDetails)
+		{
+			if(checkForTypeDetails && IsValidObjectInBuffer(buffer))
+			{
+				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+				EditorJsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+			}
+			else
+				EditorJsonUtility.FromJsonOverwrite(buffer, obj);
+		}
+
+		private const string NEEDLE = "\".*\":";
+
+		private static bool IsValidObjectInBuffer()
+		{
+			return IsValidObjectInBuffer(CopyBuffer);
+		}
+
+		private static bool IsValidObjectInBuffer(string buffer)
+		{
+			return buffer.Contains(COPY_SPLIT_S);
 		}
 
 		public static bool IsTypeInBuffer(Object obj)
+		{
+			return IsTypeInBuffer(obj, CopyBuffer);
+		}
+
+		public static bool IsTypeInBuffer(Object obj, string buffer)
 		{
 			var bufferContainsAType = IsValidObjectInBuffer();
 
@@ -144,12 +219,17 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 			var t = obj.GetType();
 
-			return t.ToString() == GetJSONStoredType(CopyBuffer);
+			return t.ToString() == GetJSONStoredType(buffer);
 		}
 
 		private static string RemoveTypeFromCopyBuffer()
 		{
-			var copyBufferSplit = CopyBuffer.Split(new[] {COPY_SPLIT_S}, StringSplitOptions.None);
+			return RemoveTypeFromCopyBuffer(CopyBuffer);
+		}
+
+		public static string RemoveTypeFromCopyBuffer(string buffer)
+		{
+			var copyBufferSplit = buffer.Split(new[] {COPY_SPLIT_S}, StringSplitOptions.None);
 
 			if(copyBufferSplit.Length > 1)
 			{
@@ -159,7 +239,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 				return string.Join(string.Empty, list.ToArray());
 			}
 
-			return CopyBuffer;
+			return buffer;
 		}
 
 		public static string GetJSONStoredType(string json)
