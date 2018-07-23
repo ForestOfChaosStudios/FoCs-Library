@@ -14,13 +14,13 @@ namespace ForestOfChaosLib.Editor.Utilities
 			set { EditorGUIUtility.systemCopyBuffer = value; }
 		}
 
-		private static readonly string[] nonCopyTypes = {"UnityEngine.MonoBehaviour", "UnityEngine.AudioListener", "UnityEngine.GUILayer", "UnityEngine.FlareLayer"};
+		private static readonly string[] nonCopyTypes = {"MonoBehaviour", "AudioListener", "GUILayer", "FlareLayer"};
 
 		public static bool IsEditorCopyNoEntries(string str)
 		{
 			foreach(var s in nonCopyTypes)
 			{
-				if(str == s)
+				if(str.Contains(s))
 					return true;
 			}
 
@@ -28,9 +28,11 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 			switch(removeTypeFromCopyBuffer)
 			{
-				case "":                                                                                                                                                                             return true;
-				case @"{}":                                                                                                                                                                          return true;
-				case "{\n    \"MonoBehaviour\": {\n        \"m_Enabled\": true,\n        \"m_EditorHideFlags\": 0,\n        \"m_Name\": \"\",\n        \"m_EditorClassIdentifier\": \"\"\n    }\n}": return true;
+				case "":
+				case null:
+				case "{}":
+				case "{\n    \"MonoBehaviour\": {\n        \"m_Enabled\": true,\n        \"m_EditorHideFlags\": 0,\n        \"m_Name\": \"\",\n        \"m_EditorClassIdentifier\": \"\"\n    }\n}":
+					return true;
 			}
 
 			return false;
@@ -119,7 +121,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 		{
 			T value;
 
-			if(checkForTypeDetails && IsValidObjectInBuffer(buffer))
+			if(checkForTypeDetails)
 			{
 				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
 				value = JsonUtility.FromJson<T>(checkedBuffer);
@@ -142,7 +144,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 		public static void Paste<T>(ref T obj, string buffer, bool checkForTypeDetails)
 		{
-			if(checkForTypeDetails && IsValidObjectInBuffer(buffer))
+			if(checkForTypeDetails)
 			{
 				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
 				JsonUtility.FromJsonOverwrite(checkedBuffer, obj);
@@ -163,7 +165,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 		public static void EditorPaste<T>(ref T obj, string buffer, bool checkForTypeDetails)
 		{
-			if(checkForTypeDetails && IsValidObjectInBuffer(buffer))
+			if(checkForTypeDetails)
 			{
 				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
 				EditorJsonUtility.FromJsonOverwrite(checkedBuffer, obj);
@@ -184,7 +186,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 		public static void EditorPaste<T>(T obj, string buffer, bool checkForTypeDetails)
 		{
-			if(checkForTypeDetails && IsValidObjectInBuffer(buffer))
+			if(checkForTypeDetails)
 			{
 				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
 				EditorJsonUtility.FromJsonOverwrite(checkedBuffer, obj);
@@ -212,6 +214,9 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 		public static bool IsTypeInBuffer(Object obj, string buffer)
 		{
+			if(obj == null)
+				return false;
+
 			var bufferContainsAType = IsValidObjectInBuffer();
 
 			if(!bufferContainsAType)

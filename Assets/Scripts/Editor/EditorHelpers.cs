@@ -1,4 +1,3 @@
-using System;
 using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -8,11 +7,11 @@ namespace ForestOfChaosLib.Editor
 {
 	public class EditorHelpers: FoCsEditor
 	{
-		private static readonly GUIContent CP_CopyContent       = new GUIContent("Copy",          "Copies the data.");
-		private static readonly GUIContent CP_EditorCopyContent = new GUIContent("Copy (E)",      "Copies the data. (using the EditorJSONUtility)");
-		private static readonly GUIContent CopyContent          = new GUIContent("C",                  "Copies the vectors data.");
-		private static readonly GUIContent PasteContent         = new GUIContent("P",                  "Pastes the vectors data.");
-		private static readonly GUIContent ResetContent         = new GUIContent("R",                  "Resets the vectors data.");
+		private static readonly GUIContent CP_CopyContent       = new GUIContent("Copy",     "Copies the data.");
+		private static readonly GUIContent CP_EditorCopyContent = new GUIContent("Copy (E)", "Copies the data. (using the EditorJSONUtility)");
+		private static readonly GUIContent CopyContent          = new GUIContent("C",        "Copies the vectors data.");
+		private static readonly GUIContent PasteContent         = new GUIContent("P",        "Pastes the vectors data.");
+		private static readonly GUIContent ResetContent         = new GUIContent("R",        "Resets the vectors data.");
 
 		public static Vector3 DrawVector3(string label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn, out bool GUIChanged)
 		{
@@ -35,17 +34,23 @@ namespace ForestOfChaosLib.Editor
 
 					using(Disposables.HorizontalScope(EditorStyles.toolbar))
 					{
-						if(FoCsGUI.Layout.Button(ResetContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+						var resetBtn = FoCsGUI.Layout.Button(ResetContent, EditorStyles.toolbarButton, GUILayout.Width(25));
+						var copyBtn  = FoCsGUI.Layout.Button(CopyContent,  EditorStyles.toolbarButton, GUILayout.Width(25));
+						var pasteBtn = FoCsGUI.Layout.Button(PasteContent, EditorStyles.toolbarButton, GUILayout.Width(25));
+
+						if(resetBtn)
 						{
 							Undo.RecordObject(objectIAmOn, "Vector 3 Reset");
 							vec        = defaultValue;
 							GUIChanged = true;
 						}
 
-						if(FoCsGUI.Layout.Button(CopyContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+						else if(copyBtn)
+						{
 							CopyPasteUtility.EditorCopy(vec);
+						}
 
-						if(FoCsGUI.Layout.Button(PasteContent, EditorStyles.toolbarButton, GUILayout.Width(25)))
+						else if(pasteBtn)
 						{
 							Undo.RecordObject(objectIAmOn, "Vector 3 Paste");
 							vec        = CopyPasteUtility.Paste<Vector3>();
@@ -63,7 +68,6 @@ namespace ForestOfChaosLib.Editor
 		public static Obj CopyPastObjectButtons(Obj obj)
 		{
 			var canCopy        = CopyPasteUtility.CanCopy(obj);
-			var canEditorCopy  = CopyPasteUtility.CanEditorCopy(obj);
 			var guiEnableCache = GUI.enabled;
 
 			var copyBuff = CopyPasteUtility.CopyBuffer;
@@ -89,6 +93,7 @@ namespace ForestOfChaosLib.Editor
 				if(copyEvent)
 				{
 					CopyPasteUtility.Copy(obj);
+
 					return obj;
 				}
 
@@ -100,6 +105,7 @@ namespace ForestOfChaosLib.Editor
 
 				return obj;
 			}
+			var canEditorCopy = CopyPasteUtility.CanEditorCopy(obj);
 
 			if(canEditorCopy)
 			{
@@ -122,14 +128,15 @@ namespace ForestOfChaosLib.Editor
 				if(copyEvent)
 				{
 					CopyPasteUtility.EditorCopy(obj);
+
 					return obj;
 				}
 
-				if(pasteEvent)
-				{
-					Undo.RecordObject(obj, "Before Paste Settings");
-					CopyPasteUtility.EditorPaste(ref obj, copyBuff, true);
-				}
+				if(!pasteEvent)
+					return obj;
+
+				Undo.RecordObject(obj, "Before Paste Settings");
+				CopyPasteUtility.EditorPaste(ref obj, copyBuff, true);
 			}
 
 			return obj;
