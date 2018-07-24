@@ -249,7 +249,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 		public static string GetJSONStoredType(string json)
 		{
-			if(json.Contains('|'))
+			if(json.Contains(COPY_SPLIT))
 			{
 				var copyBufferSplit = json.Split(new[] {COPY_SPLIT}, StringSplitOptions.None);
 
