@@ -157,9 +157,12 @@ namespace ForestOfChaosLib.Editor
 
 		public static SerializedObject CopyPastObjectButtons(SerializedObject obj, GUIStyle style)
 		{
-			using(Disposables.HorizontalScope(style))
+			if(CopyPasteUtility.GetCopyMode(obj.targetObject) != (CopyPasteUtility.CopyMode.Unknown | CopyPasteUtility.CopyMode.None))
 			{
-				CopyPastObjectButtons(obj.targetObject);
+				using(Disposables.HorizontalScope(style))
+				{
+					CopyPastObjectButtons(obj.targetObject);
+				}
 			}
 
 			return obj;

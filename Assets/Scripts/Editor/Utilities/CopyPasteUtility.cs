@@ -9,49 +9,43 @@ namespace ForestOfChaosLib.Editor.Utilities
 {
 	public static class CopyPasteUtility
 	{
-		internal static Dictionary<Type, CopyMode> TypeCopyData = new Dictionary<Type, CopyMode>();
+		static CopyPasteUtility()
+		{
+			TypeCopyData = new Dictionary<Type, CopyMode>
+			{
+					{typeof(FlareLayer),    CopyMode.None},
+					{typeof(AudioListener), CopyMode.None},
+					{typeof(Transform),     CopyMode.Editor},
+					{typeof(Object),        CopyMode.Unknown},
+					{typeof(GUILayer),      CopyMode.None},
+			};
+		}
+
+
+		internal static Dictionary<Type, CopyMode> TypeCopyData;
 		public static string CopyBuffer
 		{
 			get { return EditorGUIUtility.systemCopyBuffer; }
 			set { EditorGUIUtility.systemCopyBuffer = value; }
 		}
 
-		private static readonly string[] nonCopyTypes = {"MonoBehaviour", "AudioListener", "GUILayer", "FlareLayer"};
-
-		public static bool IsEditorCopyNoEntries(string str)
-		{
-			foreach(var s in nonCopyTypes)
-			{
-				if(str.Contains(s))
-					return true;
-			}
-
-			var removeTypeFromCopyBuffer = RemoveTypeFromCopyBuffer();
-
-			switch(removeTypeFromCopyBuffer)
-			{
-				case "":
-				case null:
-				case "{}":
-				case "{\n    \"MonoBehaviour\": {\n        \"m_Enabled\": true,\n        \"m_EditorHideFlags\": 0,\n        \"m_Name\": \"\",\n        \"m_EditorClassIdentifier\": \"\"\n    }\n}":
-
-					return true;
-			}
-
-			return false;
-		}
-
 		private static CopyMode DoAddToDictionary<T>(T value)
 		{
 			var type = value == null? typeof(T) : value.GetType();
 
-			if(!TypeCopyData.ContainsKey(type))
+			if(TypeCopyData.ContainsKey(type))
+			{
+				if(TypeCopyData[type] != CopyMode.Unknown)
+					return TypeCopyData[type];
+			}
+			else
 				TypeCopyData.Add(type, CopyMode.Unknown);
 
 			var copy = InternalCanCopy(value);
 
 			if(copy)
 				return TypeCopyData[type] = CopyMode.Normal;
+
 			var editorCopy = InternalCanEditorCopy(value);
 			if(editorCopy)
 				return TypeCopyData[type] = CopyMode.Editor;
@@ -67,6 +61,15 @@ namespace ForestOfChaosLib.Editor.Utilities
 			TypeCopyData.Add(type, CopyMode.Unknown);
 
 			return CopyMode.Unknown;
+		}
+		public static CopyMode GetCopyMode<T>(T value)
+		{
+			var val = GetCopyTypeFromDictionary(typeof(T));
+
+			if(val == CopyMode.Unknown)
+				val = DoAddToDictionary(value);
+
+			return val;
 		}
 
 		public static bool CanCopy<T>(T value)
@@ -116,9 +119,6 @@ namespace ForestOfChaosLib.Editor.Utilities
 			{
 				return false;
 			}
-
-			if(IsEditorCopyNoEntries(value.GetType().ToString()))
-				return false;
 
 			return (s != "") || (s != "{}");
 		}
@@ -308,12 +308,13 @@ namespace ForestOfChaosLib.Editor.Utilities
 			return "";
 		}
 
+		[Flags]
 		public enum CopyMode
 		{
-			Unknown,
-			None,
-			Normal,
-			Editor
+			Unknown = 0,
+			None    = 1,
+			Normal  = 2,
+			Editor  = 4
 		}
 	}
 }
