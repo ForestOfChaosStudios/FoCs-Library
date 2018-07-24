@@ -2,7 +2,7 @@
 
 namespace ForestOfChaosLib.Editor
 {
-	[FoCsControlPanel.ControlPanelTabAttribute]
+	[FoCsControlPanel.ControlPanelTab]
 	public static class FoCsInfoTab
 	{
 		public static void DrawGUI(FoCsControlPanel owner)
