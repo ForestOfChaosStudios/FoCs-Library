@@ -64,7 +64,13 @@ namespace ForestOfChaosLib.Editor
 
 			return vec;
 		}
+		public static Obj CopyPastObjectButtons(Obj obj, GUIStyle style)
+		{
+			using(Disposables.HorizontalScope(style))
+				CopyPastObjectButtons(obj);
 
+			return obj;
+		}
 		public static Obj CopyPastObjectButtons(Obj obj)
 		{
 			var canCopy        = CopyPasteUtility.CanCopy(obj);
@@ -145,6 +151,16 @@ namespace ForestOfChaosLib.Editor
 		public static SerializedObject CopyPastObjectButtons(SerializedObject obj)
 		{
 			CopyPastObjectButtons(obj.targetObject);
+
+			return obj;
+		}
+
+		public static SerializedObject CopyPastObjectButtons(SerializedObject obj, GUIStyle style)
+		{
+			using(Disposables.HorizontalScope(style))
+			{
+				CopyPastObjectButtons(obj.targetObject);
+			}
 
 			return obj;
 		}

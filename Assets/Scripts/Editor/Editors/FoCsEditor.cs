@@ -87,8 +87,7 @@ namespace ForestOfChaosLib.Editor
 
 		protected void DrawCopyPasteButtonsHeader()
 		{
-			using(Disposables.HorizontalScope(EditorStyles.toolbar))
-				DrawCopyPasteButtons();
+			EditorHelpers.CopyPastObjectButtons(serializedObject, EditorStyles.toolbar);
 		}
 
 		public virtual void OnSceneGUI() { }
