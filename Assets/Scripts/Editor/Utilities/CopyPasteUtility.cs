@@ -256,12 +256,12 @@ namespace ForestOfChaosLib.Editor.Utilities
 			return buffer.Contains(COPY_SPLIT_S);
 		}
 
-		public static bool IsTypeInBuffer(Object obj)
+		public static bool IsTypeInBuffer(object obj)
 		{
 			return IsTypeInBuffer(obj, CopyBuffer);
 		}
 
-		public static bool IsTypeInBuffer(Object obj, string buffer)
+		public static bool IsTypeInBuffer(object obj, string buffer)
 		{
 			if(obj == null)
 				return false;

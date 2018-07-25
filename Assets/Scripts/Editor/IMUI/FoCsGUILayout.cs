@@ -310,7 +310,7 @@ namespace ForestOfChaosLib.Editor
 
 			private static GUIEvent LabelMaster(GUICon guiCon, GUIStyle style, params GUILayOpt[] options)
 			{
-				GUILayout.Label(guiCon, style, options);
+				EditorGUILayout.LabelField(guiCon, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Types;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,7 +33,8 @@ namespace ForestOfChaosLib.Editor
 			{
 					Pair.Create<GUIContent, Action>(new GUIContent("Nothing",       "Hides Any Extra Options"),                null),
 					Pair.Create<GUIContent, Action>(new GUIContent("Scale Options", "Scale Preset Options"),                   ScaleButtonsEnabled),
-					Pair.Create<GUIContent, Action>(new GUIContent("Global Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions)
+					Pair.Create<GUIContent, Action>(new GUIContent("Global Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions),
+					Pair.Create<GUIContent, Action>(new GUIContent("T Data", "Transform Data Copy Paste"),                     DrawTDCopyPaste),
 			};
 		}
 
@@ -102,6 +105,41 @@ namespace ForestOfChaosLib.Editor
 				Undo.RecordObject(Target, "scale Changed");
 				Target.localScale = scale;
 			}
+		}
+		private static readonly GUIContent CopyContent  = new GUIContent("Copy Transform Data", "Copies a new TransformData");
+		private static readonly GUIContent PasteContent = new GUIContent("Paste Transform Data", "Pastes the TransformData");
+
+		private void DrawTDCopyPaste()
+		{
+			var cachedGuiColor = GUI.color;
+			using(Disposables.HorizontalScope(EditorStyles.toolbar))
+			{
+				var copyBuff = CopyPasteUtility.CopyBuffer;
+				var td = new TransformData();
+				var isType = CopyPasteUtility.IsTypeInBuffer(td, copyBuff);
+
+
+				var copyBtn  = FoCsGUI.Layout.Button(CopyContent,  EditorStyles.toolbarButton);
+				FoCsGUI.GUIEventBool pasteBtn;
+				PasteContent.tooltip = "Pastes: " + copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length);
+				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
+				{
+					pasteBtn = FoCsGUI.Layout.Button(PasteContent, EditorStyles.toolbarButton);
+				}
+
+				if(copyBtn)
+				{
+					CopyPasteUtility.Copy(new TransformData(Target));
+				}
+
+				else if(pasteBtn)
+				{
+					Undo.RecordObject(target, "TransformData Paste");
+					Target.SetFromTD(CopyPasteUtility.Paste<TransformData>(copyBuff, true));
+				}
+
+			}
+			GUI.color = cachedGuiColor;
 		}
 
 		private void DrawLocalTransformOptions()
