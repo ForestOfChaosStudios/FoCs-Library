@@ -97,7 +97,7 @@ namespace ForestOfChaosLib.Editor
 		private static GUIEvent LabelMaster(Rect rect, GUICon guiCon, GUIStyle style)
 		{
 			var data = new GUIEvent {Event = new Event(Event.current), Rect = rect};
-			GUI.Label(rect, guiCon, style);
+			EditorGUI.LabelField(rect, guiCon, style);
 
 			return data;
 		}

@@ -37,7 +37,7 @@ namespace ForestOfChaosLib.Curves.Editor
 
 
 				resolution = EditorGUILayout.Slider(new GUIContent("Resolution", "The Curve Display Resolution"), resolution, 0.01f, 0.5f);
-				debugTransform = FoCsGUI.Layout.ObjectField<Transform>(new GUIContent("Example"), debugTransform, true);
+				debugTransform = FoCsGUI.Layout.ObjectField<Transform>(debugTransform, new GUIContent("Example"), true);
 				DebugTime = EditorGUILayout.Slider(new GUIContent("Lerp Time: ", "Lerp Time"), DebugTime, 0f, 1f);
 
 				if(debugTransform)

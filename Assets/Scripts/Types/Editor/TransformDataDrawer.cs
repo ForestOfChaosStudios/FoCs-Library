@@ -23,39 +23,42 @@ namespace ForestOfChaosLib.Curves.Editor
 				var owner = GetOwner(property);
 				FoCsGUI.Label(position.Edit(RectEdit.SetHeight(SingleLine)), prop.content);
 
-				var Position = property.FindPropertyRelative("Position");
-				var Scale    = property.FindPropertyRelative("Scale");
-				var Rotation = property.FindPropertyRelative("Rotation");
-
-				using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, position.Edit(RectEdit.SetHeight(SingleLine-2), RectEdit.DivideWidth(2), RectEdit.AddX(position.width * 0.5f))))
+				using(FoCsEditor.Disposables.Indent())
 				{
-					var                  copyBtn = FoCsGUI.Button(horizontalScope.GetNext(), CopyContent);
-					var                  isType  = CopyPasteUtility.IsTypeInBuffer(owner);
-					FoCsGUI.GUIEventBool pasteBtn;
+					var Position = property.FindPropertyRelative("Position");
+					var Scale    = property.FindPropertyRelative("Scale");
+					var Rotation = property.FindPropertyRelative("Rotation");
 
-					using(FoCsEditor.Disposables.ColorChanger(isType? GUI.color : Color.red))
+					using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, position.Edit(RectEdit.SetHeight(SingleLine - 2), RectEdit.DivideWidth(2), RectEdit.AddX(position.width * 0.5f))))
 					{
-						pasteBtn = FoCsGUI.Button(horizontalScope.GetNext(), PasteContent);
+						var                  copyBtn = FoCsGUI.Button(horizontalScope.GetNext(), CopyContent);
+						var                  isType  = CopyPasteUtility.IsTypeInBuffer(owner);
+						FoCsGUI.GUIEventBool pasteBtn;
+
+						using(FoCsEditor.Disposables.ColorChanger(isType? GUI.color : Color.red))
+						{
+							pasteBtn = FoCsGUI.Button(horizontalScope.GetNext(), PasteContent);
+						}
+
+						if(copyBtn)
+						{
+							CopyPasteUtility.Copy(GetOwner(property));
+						}
+						else if(pasteBtn)
+						{
+							var tD = CopyPasteUtility.Paste<TransformData>();
+							Position.vector3Value    = tD.Position;
+							Scale.vector3Value       = tD.Scale;
+							Rotation.quaternionValue = tD.Rotation;
+						}
 					}
 
-					if(copyBtn)
+					using(var vertScope = FoCsEditor.Disposables.RectVerticalScope(3, position.Edit(RectEdit.SetHeight(SingleLine * 3), RectEdit.AddY(SingleLine))))
 					{
-						CopyPasteUtility.Copy(GetOwner(property));
+						FoCsGUI.PropertyField(vertScope.GetNext(), Position);
+						FoCsGUI.PropertyField(vertScope.GetNext(), Scale);
+						FoCsGUI.PropertyField(vertScope.GetNext(), Rotation);
 					}
-					else if(pasteBtn)
-					{
-						var tD = CopyPasteUtility.Paste<TransformData>();
-						Position.vector3Value    = tD.Position;
-						Scale.vector3Value       = tD.Scale;
-						Rotation.quaternionValue = tD.Rotation;
-					}
-				}
-
-				using(var vertScope = FoCsEditor.Disposables.RectVerticalScope(3, position.Edit(RectEdit.SetHeight(SingleLine * 3), RectEdit.AddY(SingleLine))))
-				{
-					FoCsGUI.PropertyField(vertScope.GetNext(), Position);
-					FoCsGUI.PropertyField(vertScope.GetNext(), Scale);
-					FoCsGUI.PropertyField(vertScope.GetNext(), Rotation);
 				}
 			}
 		}
