@@ -195,8 +195,13 @@ namespace ForestOfChaosLib.Editor.Utilities
 		{
 			if(checkForTypeDetails)
 			{
-				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
-				JsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+				if(IsTypeInBuffer(obj, buffer))
+				{
+					var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+					JsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+				}
+				else
+					JsonUtility.FromJsonOverwrite(buffer, obj);
 			}
 			else
 				JsonUtility.FromJsonOverwrite(buffer, obj);
@@ -216,8 +221,13 @@ namespace ForestOfChaosLib.Editor.Utilities
 		{
 			if(checkForTypeDetails)
 			{
-				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
-				EditorJsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+				if(IsTypeInBuffer(obj, buffer))
+				{
+					var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+					EditorJsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+				}
+				else
+					EditorJsonUtility.FromJsonOverwrite(buffer, obj);
 			}
 			else
 				EditorJsonUtility.FromJsonOverwrite(buffer, obj);
@@ -253,7 +263,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 		private static bool IsValidObjectInBuffer(string buffer)
 		{
-			return buffer.Contains(COPY_SPLIT_S);
+			return buffer.Contains(COPY_SPLIT);
 		}
 
 		public static bool IsTypeInBuffer(object obj)
@@ -283,7 +293,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 		public static string RemoveTypeFromCopyBuffer(string buffer)
 		{
-			var copyBufferSplit = buffer.Split(new[] {COPY_SPLIT_S}, StringSplitOptions.None);
+			var copyBufferSplit = buffer.Split(new[] {COPY_SPLIT}, StringSplitOptions.None);
 
 			if(copyBufferSplit.Length > 1)
 			{
