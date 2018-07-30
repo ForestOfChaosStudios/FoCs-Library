@@ -31,7 +31,7 @@ namespace ForestOfChaosLib.Curves.Components
 
 		public override TransformData Lerp(float time)
 		{
-			if(UseGlobalSpace)
+			if(!UseGlobalSpace)
 			{
 				var lerpTime = Curve.Lerp(time);
 				lerpTime.Position += transform.position;
@@ -40,18 +40,9 @@ namespace ForestOfChaosLib.Curves.Components
 			}
 			else
 			{
-				if(!UseGlobalSpace)
-				{
-					var lerpTime = Curve.Lerp(time);
-					lerpTime.Position += transform.position;
-					return lerpTime ;
-				}
-				else
-				{
-					var lerpTime = Curve.Lerp(time);
+				var lerpTime = Curve.Lerp(time);
 
-					return lerpTime;
-				}
+				return lerpTime;
 			}
 		}
 	}
