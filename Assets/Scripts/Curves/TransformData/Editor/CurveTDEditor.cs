@@ -53,8 +53,8 @@ namespace ForestOfChaosLib.Curves.Editor
 					{
 						var tdPos = Curve.CurvePositions[i].Position;
 
-						if(!Target.UseGlobalSpace)
-							tdPos += Target.transform.position;
+						if(Target.UseGlobalSpace)
+							tdPos = Target.transform.TransformPoint(tdPos);
 
 						var tdScl = Curve.CurvePositions[i].Scale;
 						var tdRot = Curve.CurvePositions[i].Rotation;
@@ -85,8 +85,8 @@ namespace ForestOfChaosLib.Curves.Editor
 								break;
 						}
 						Handles.Label(pos[i].Position, new GUIContent(string.Format("Index: {0}", i)));
-						if(!Target.UseGlobalSpace)
-							tdPos -= Target.transform.position;
+						if(Target.UseGlobalSpace)
+							tdPos = Target.transform.InverseTransformPoint(tdPos);
 						pos[i].UpdateData(tdPos, tdRot, tdScl);
 
 						if(undoCheck.changed)
@@ -98,8 +98,12 @@ namespace ForestOfChaosLib.Curves.Editor
 
 				for(float i = 0; i < 1f; i += resolution)
 				{
-					if(!Target.UseGlobalSpace)
-						Handles.DrawLine(TransformDataBezierLerp.Lerp(Curve.CurvePositions, i).Position + Target.transform.position, TransformDataBezierLerp.Lerp(Curve.CurvePositions, (i + resolution).Clamp()).Position + Target.transform.position);
+					if(Target.UseGlobalSpace)
+					{
+						var a = Target.transform.InverseTransformPoint(TransformDataBezierLerp.Lerp(Curve.CurvePositions, i).Position);
+						var b = Target.transform.InverseTransformPoint(TransformDataBezierLerp.Lerp(Curve.CurvePositions, (i + resolution).Clamp()).Position);
+						Handles.DrawLine(a, b);
+					}
 					else
 						Handles.DrawLine(TransformDataBezierLerp.Lerp(Curve.CurvePositions, i).Position, TransformDataBezierLerp.Lerp(Curve.CurvePositions, (i + resolution).Clamp()).Position);
 				}

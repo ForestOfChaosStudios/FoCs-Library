@@ -53,14 +53,14 @@ namespace ForestOfChaosLib.Curves.Editor
 					{
 						using(var undoCheck = Disposables.ChangeCheck())
 						{
-							if(!Curve.UseGlobalSpace)
-								pos[i] = pos[i] + Target.transform.position;
+							if(Curve.UseGlobalSpace)
+								pos[i] = Target.transform.TransformPoint(pos[i]);
 
 							pos[i] = Handles.DoPositionHandle(Curve.CurvePositions[i], Quaternion.identity);
 							Handles.Label(pos[i], new GUIContent(string.Format("Index: {0}", i)));
 
-							if(!Curve.UseGlobalSpace)
-								pos[i] = pos[i] - Target.transform.position;
+							if(Curve.UseGlobalSpace)
+								pos[i] = Target.transform.InverseTransformPoint(pos[i]);
 
 							if(undoCheck.changed)
 								Undo.RecordObject(Curve, "Changed Curve Position");
@@ -72,14 +72,12 @@ namespace ForestOfChaosLib.Curves.Editor
 
 				for(float i = 0; i < 1f; i += resolution)
 				{
-					if(!Curve.UseGlobalSpace)
+					if(Curve.UseGlobalSpace)
 					{
-						var globalArry = new List<Vector3>(Curve.CurvePositions);
+						var a = Target.transform.TransformPoint(Vector3BezierLerp.Lerp(Curve.CurvePositions, i));
+						var b = Target.transform.TransformPoint(Vector3BezierLerp.Lerp(Curve.CurvePositions, (i + resolution).Clamp()));
 
-						for(var index = 0; index < globalArry.Count; index++)
-							globalArry[index] = globalArry[index] + Target.transform.position;
-
-						Handles.DrawLine(Vector3BezierLerp.Lerp(globalArry, i), Vector3BezierLerp.Lerp(globalArry, (i + resolution).Clamp()));
+						Handles.DrawLine(a, b);
 					}
 					else
 						Handles.DrawLine(Vector3BezierLerp.Lerp(Curve.CurvePositions, i), Vector3BezierLerp.Lerp(Curve.CurvePositions, (i + resolution).Clamp()));

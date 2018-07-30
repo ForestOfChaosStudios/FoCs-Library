@@ -34,7 +34,8 @@ namespace ForestOfChaosLib.Curves.Components
 			if(!UseGlobalSpace)
 			{
 				var lerpTime = Curve.Lerp(time);
-				lerpTime.Position += transform.position;
+
+				lerpTime.Position = transform.TransformPoint(lerpTime.Position);
 
 				return lerpTime;
 			}
