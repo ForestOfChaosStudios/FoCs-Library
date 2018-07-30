@@ -24,10 +24,12 @@ namespace ForestOfChaosLib.Curves.Editor
 			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
-				var positionsProp     = property.FindPropertyRelative("Positions");
-				var useGlobalBoolRect = position;
+				var useGlobalSpaceProp = property.FindPropertyRelative("useGlobalSpace");
+				var positionsProp      = property.FindPropertyRelative("Positions");
+				var useGlobalBoolRect  = position;
 				useGlobalBoolRect.height = SingleLine;
 				position                 = position.Edit(RectEdit.ChangeY(SingleLine));
+				EditorGUI.PropertyField(useGlobalBoolRect, useGlobalSpaceProp);
 				var targ = property.GetTargetObjectOfProperty<ICurveTD>();
 
 				if(targ.IsFixedLength)

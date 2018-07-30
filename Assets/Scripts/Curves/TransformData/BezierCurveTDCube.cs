@@ -98,6 +98,15 @@ namespace ForestOfChaosLib.Curves
 			get { return true; }
 		}
 
+		private bool useGlobalSpace;
+
+		/// <inheritdoc />
+		public bool UseGlobalSpace
+		{
+			get { return useGlobalSpace; }
+			set { useGlobalSpace = value; }
+		}
+
 		public int Length
 		{
 			get { return TOTAL_COUNT; }

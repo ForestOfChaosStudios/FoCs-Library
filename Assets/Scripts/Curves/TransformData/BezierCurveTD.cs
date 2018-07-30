@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using ForestOfChaosLib.Maths;
 using ForestOfChaosLib.Types;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Curves
 {
@@ -19,6 +20,16 @@ namespace ForestOfChaosLib.Curves
 		public bool IsFixedLength
 		{
 			get { return false; }
+		}
+
+		[SerializeField]
+		private bool useGlobalSpace;
+
+		/// <inheritdoc />
+		public bool UseGlobalSpace
+		{
+			get { return useGlobalSpace; }
+			set { useGlobalSpace = value; }
 		}
 
 		public int Length

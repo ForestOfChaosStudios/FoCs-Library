@@ -1,4 +1,5 @@
-﻿using ForestOfChaosLib.Curves.Components;
+﻿using System.Collections.Generic;
+using ForestOfChaosLib.Curves.Components;
 using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Maths;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Curves.Editor
 {
-	public class CurveV3DEditor<T>: FoCsEditor<T> where T: MonoBehaviour, ICurveV3D
+	public class CurveV3DEditor<T>: FoCsEditor<T> where T: ICurveV3DComponent
 	{
 		private static float     resolution = 0.1f;
 		private static Mode      MyMode     = Mode.Move;
@@ -27,13 +28,13 @@ namespace ForestOfChaosLib.Curves.Editor
 			using(Disposables.IndentSet(1))
 			{
 				FoCsGUI.Layout.Label("Editor Only:");
-				MyMode         = (Mode)FoCsGUI.Layout.EnumPopup(MyMode);
+				MyMode         = (Mode)EditorGUILayout.EnumPopup(MyMode);
 				resolution     = FoCsGUI.Layout.Slider(new GUIContent("Resolution", "The Curve Display Resolution"), resolution, 0.01f, 0.5f);
 				debugTransform = FoCsGUI.Layout.ObjectField(debugTransform, new GUIContent("Example"), true);
 				DebugTime      = FoCsGUI.Layout.Slider(new GUIContent("Lerp Time: ", "Lerp Time"), DebugTime, 0f, 1f);
 
 				if(debugTransform)
-					debugTransform.position = Curve.Lerp(DebugTime);
+					debugTransform.position = Target.Lerp(DebugTime);
 			}
 		}
 
@@ -52,8 +53,14 @@ namespace ForestOfChaosLib.Curves.Editor
 					{
 						using(var undoCheck = Disposables.ChangeCheck())
 						{
+							if(!Curve.UseGlobalSpace)
+								pos[i] = pos[i] + Target.transform.position;
+
 							pos[i] = Handles.DoPositionHandle(Curve.CurvePositions[i], Quaternion.identity);
 							Handles.Label(pos[i], new GUIContent(string.Format("Index: {0}", i)));
+
+							if(!Curve.UseGlobalSpace)
+								pos[i] = pos[i] - Target.transform.position;
 
 							if(undoCheck.changed)
 								Undo.RecordObject(Curve, "Changed Curve Position");
@@ -64,14 +71,26 @@ namespace ForestOfChaosLib.Curves.Editor
 				}
 
 				for(float i = 0; i < 1f; i += resolution)
-					Handles.DrawLine(Vector3BezierLerp.Lerp(Curve, i), Vector3BezierLerp.Lerp(Curve, (i + resolution).Clamp()));
+				{
+					if(!Curve.UseGlobalSpace)
+					{
+						var globalArry = new List<Vector3>(Curve.CurvePositions);
+
+						for(var index = 0; index < globalArry.Count; index++)
+							globalArry[index] = globalArry[index] + Target.transform.position;
+
+						Handles.DrawLine(Vector3BezierLerp.Lerp(globalArry, i), Vector3BezierLerp.Lerp(globalArry, (i + resolution).Clamp()));
+					}
+					else
+						Handles.DrawLine(Vector3BezierLerp.Lerp(Curve.CurvePositions, i), Vector3BezierLerp.Lerp(Curve.CurvePositions, (i + resolution).Clamp()));
+				}
 
 				if(cc.changed)
 					EditorUtility.SetDirty(target);
 			}
 		}
 
-		private enum Mode
+		public enum Mode
 		{
 			Hide,
 			Move

@@ -11,7 +11,14 @@ namespace ForestOfChaosLib.Curves
 	{
 		public const int                 TOTAL_COUNT = 2;
 		public       List<TransformData> Positions   = new List<TransformData>(TOTAL_COUNT);
+		private bool useGlobalSpace;
 
+		/// <inheritdoc />
+		public bool UseGlobalSpace
+		{
+			get { return useGlobalSpace; }
+			set { useGlobalSpace = value; }
+		}
 		public TransformData StartPos
 		{
 			get { return Positions[0]; }

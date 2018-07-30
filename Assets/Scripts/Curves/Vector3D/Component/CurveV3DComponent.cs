@@ -31,8 +31,8 @@ namespace ForestOfChaosLib.Curves.Components
 
 		public override Vector3 Lerp(float time)
 		{
-			if(!UseGlobalSpace)
-				return transform.TransformDirection(Curve.Lerp(time));
+			if(UseGlobalSpace)
+				return transform.TransformDirection(Curve.Lerp(time) + transform.position);
 
 			return Curve.Lerp(time);
 		}

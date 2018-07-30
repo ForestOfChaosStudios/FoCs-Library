@@ -961,14 +961,14 @@ namespace ForestOfChaosLib.Editor
 
 			public static eFloat Slider(string label, float value, float leftValue, float rightValue, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Slider(value, leftValue, rightValue, options);
+				var val = EGuiLay.Slider(label, value, leftValue, rightValue, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			public static eFloat Slider(GUICon label, float value, float leftValue, float rightValue, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Slider(value, leftValue, rightValue, options);
+				var val = EGuiLay.Slider(label, value, leftValue, rightValue, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}

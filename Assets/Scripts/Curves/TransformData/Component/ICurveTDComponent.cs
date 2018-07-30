@@ -7,6 +7,11 @@ namespace ForestOfChaosLib.Curves.Components
 	public class ICurveTDComponent<T>: ICurveTDComponent, ICurveTD where T: ICurveTD
 	{
 		public T Curve;
+		public override bool UseGlobalSpace
+		{
+			get { return Curve.UseGlobalSpace; }
+			set { Curve.UseGlobalSpace = value; }
+		}
 
 		public override List<TransformData> CurvePositions
 		{
@@ -26,9 +31,28 @@ namespace ForestOfChaosLib.Curves.Components
 
 		public override TransformData Lerp(float time)
 		{
-			var lerpTime = Curve.Lerp(time);
+			if(UseGlobalSpace)
+			{
+				var lerpTime = Curve.Lerp(time);
+				lerpTime.Position += transform.position;
 
-			return lerpTime;
+				return lerpTime;
+			}
+			else
+			{
+				if(!UseGlobalSpace)
+				{
+					var lerpTime = Curve.Lerp(time);
+					lerpTime.Position += transform.position;
+					return lerpTime ;
+				}
+				else
+				{
+					var lerpTime = Curve.Lerp(time);
+
+					return lerpTime;
+				}
+			}
 		}
 	}
 
@@ -36,6 +60,7 @@ namespace ForestOfChaosLib.Curves.Components
 	{
 		public abstract List<TransformData> CurvePositions { get; set; }
 		public abstract bool                IsFixedLength  { get; }
+		public abstract bool                UseGlobalSpace { get; set; }
 		public abstract int                 Length         { get; }
 		public abstract TransformData Lerp(float time);
 	}

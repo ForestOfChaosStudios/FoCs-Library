@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Curves.Editor
 {
-	public class CurveTDEditor<T>: FoCsEditor<T> where T: MonoBehaviour, ICurveTD
+	public class CurveTDEditor<T>: FoCsEditor<T> where T: ICurveTDComponent
 	{
 		private static float     resolution = 0.1f;
 		private static Mode      MyMode     = Mode.Move;
@@ -28,7 +28,7 @@ namespace ForestOfChaosLib.Curves.Editor
 			using(Disposables.IndentSet(1))
 			{
 				FoCsGUI.Layout.Label("Editor Only:");
-				MyMode         = (Mode)FoCsGUI.Layout.EnumPopup(MyMode);
+				MyMode         = (Mode)EditorGUILayout.EnumPopup(MyMode);
 				resolution     = FoCsGUI.Layout.Slider(new GUIContent("Resolution", "The Curve Display Resolution"), resolution, 0.01f, 0.5f);
 				debugTransform = FoCsGUI.Layout.ObjectField(debugTransform, new GUIContent("Example"), true);
 				DebugTime      = FoCsGUI.Layout.Slider(new GUIContent("Lerp Time: ", "Lerp Time"), DebugTime, 0f, 1f);
@@ -52,6 +52,10 @@ namespace ForestOfChaosLib.Curves.Editor
 					using(var undoCheck = Disposables.ChangeCheck())
 					{
 						var tdPos = Curve.CurvePositions[i].Position;
+
+						if(!Target.UseGlobalSpace)
+							tdPos += Target.transform.position;
+
 						var tdScl = Curve.CurvePositions[i].Scale;
 						var tdRot = Curve.CurvePositions[i].Rotation;
 
@@ -80,9 +84,10 @@ namespace ForestOfChaosLib.Curves.Editor
 
 								break;
 						}
-
-						pos[i].UpdateData(tdPos, tdRot, tdScl);
 						Handles.Label(pos[i].Position, new GUIContent(string.Format("Index: {0}", i)));
+						if(!Target.UseGlobalSpace)
+							tdPos -= Target.transform.position;
+						pos[i].UpdateData(tdPos, tdRot, tdScl);
 
 						if(undoCheck.changed)
 							Undo.RecordObject(Curve, "Changed Curve Position");
@@ -92,14 +97,19 @@ namespace ForestOfChaosLib.Curves.Editor
 				Curve.CurvePositions = pos;
 
 				for(float i = 0; i < 1f; i += resolution)
-					Handles.DrawLine(TransformDataBezierLerp.Lerp(Curve, i).Position, TransformDataBezierLerp.Lerp(Curve, (i + resolution).Clamp()).Position);
+				{
+					if(!Target.UseGlobalSpace)
+						Handles.DrawLine(TransformDataBezierLerp.Lerp(Curve.CurvePositions, i).Position + Target.transform.position, TransformDataBezierLerp.Lerp(Curve.CurvePositions, (i + resolution).Clamp()).Position + Target.transform.position);
+					else
+						Handles.DrawLine(TransformDataBezierLerp.Lerp(Curve.CurvePositions, i).Position, TransformDataBezierLerp.Lerp(Curve.CurvePositions, (i + resolution).Clamp()).Position);
+				}
 
 				if(cc.changed)
 					EditorUtility.SetDirty(target);
 			}
 		}
 
-		private enum Mode
+		public enum Mode
 		{
 			Hide,
 			Move,
