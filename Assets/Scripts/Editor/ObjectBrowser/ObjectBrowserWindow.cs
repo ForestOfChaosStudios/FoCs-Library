@@ -270,7 +270,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 				FoCsGUI.Layout.Label(TypeList[ActiveIndex].Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
 
 			if(!Enable_Compo && !Enable_Asset)
-				EditorGUILayout.GetControlRect(GUILayout.ExpandHeight(true));
+				FoCsGUI.Layout.GetControlRect(GUILayout.ExpandHeight(true));
 			else if(!Enable_Compo && Enable_Asset)
 				DrawFoundAsset(GUILayout.ExpandHeight(true));
 			else

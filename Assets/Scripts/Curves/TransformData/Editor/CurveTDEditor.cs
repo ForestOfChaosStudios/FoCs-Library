@@ -28,10 +28,10 @@ namespace ForestOfChaosLib.Curves.Editor
 			using(Disposables.IndentSet(1))
 			{
 				FoCsGUI.Layout.Label("Editor Only:");
-				MyMode         = (Mode)EditorGUILayout.EnumPopup(MyMode);
-				resolution     = EditorGUILayout.Slider(new GUIContent("Resolution", "The Curve Display Resolution"), resolution, 0.01f, 0.5f);
+				MyMode         = (Mode)FoCsGUI.Layout.EnumPopup(MyMode);
+				resolution     = FoCsGUI.Layout.Slider(new GUIContent("Resolution", "The Curve Display Resolution"), resolution, 0.01f, 0.5f);
 				debugTransform = FoCsGUI.Layout.ObjectField(debugTransform, new GUIContent("Example"), true);
-				DebugTime      = EditorGUILayout.Slider(new GUIContent("Lerp Time: ", "Lerp Time"), DebugTime, 0f, 1f);
+				DebugTime      = FoCsGUI.Layout.Slider(new GUIContent("Lerp Time: ", "Lerp Time"), DebugTime, 0f, 1f);
 
 				if(debugTransform)
 					debugTransform.SetFromTD(Target.Lerp(DebugTime));

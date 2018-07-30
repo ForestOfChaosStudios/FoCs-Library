@@ -4,8 +4,43 @@ using UnityEngine;
 namespace ForestOfChaosLib.Editor
 {
 	// ReSharper disable once MismatchedFileName
-	public partial class FoCsGUI
+	public static partial class FoCsGUI
 	{
+		private static GUIStyle LabelStyle
+		{
+			get { return Styles.Unity.Label; }
+		}
+
+		private static GUIStyle ToggleStyle
+		{
+			get { return Styles.Unity.Toggle; }
+		}
+
+		private static GUIStyle ButtonStyle
+		{
+			get { return Styles.Unity.Button; }
+		}
+
+		private static GUIStyle FoldoutStyle
+		{
+			get { return Styles.Unity.Foldout; }
+		}
+
+		private static GUIStyle TextFieldStyle
+		{
+			get { return Styles.Unity.TextField_Editor; }
+		}
+
+		private static GUIStyle NumberFieldStyle
+		{
+			get { return Styles.Unity.NumberField; }
+		}
+
+		private static GUIStyle TextAreaStyle
+		{
+			get { return Styles.Unity.TextArea_Editor; }
+		}
+
 		public static partial class Styles
 		{
 			private static SkinRef unitySkins;

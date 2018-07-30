@@ -137,7 +137,7 @@ namespace ForestOfChaosLib.Editor
 			var drawer  = GetObjectDrawer(property);
 			var GuiCont = new GUIContent(property.displayName);
 			var height  = drawer.GetPropertyHeight(property, GuiCont);
-			var rect    = EditorGUILayout.GetControlRect(true, height);
+			var rect    = FoCsGUI.Layout.GetControlRect(true, height);
 			drawer.OnGUI(rect, property, GuiCont);
 		}
 
@@ -173,7 +173,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				var listData = GetReorderableList(property);
 				var height   = listData.GetTotalHeight();
-				var rect     = EditorGUILayout.GetControlRect(true, height); //.ChangeX(16);
+				var rect     = FoCsGUI.Layout.GetControlRect(true, height); //.ChangeX(16);
 				listData.HandleDrawing(rect);
 			}
 		}

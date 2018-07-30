@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ForestOfChaosLib.Editor
 {
 	// ReSharper disable once MismatchedFileName
-	public partial class FoCsGUI
+	public static partial class FoCsGUI
 	{
 		public static partial class Styles
 		{

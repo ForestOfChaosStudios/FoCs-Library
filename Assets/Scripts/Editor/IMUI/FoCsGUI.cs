@@ -8,6 +8,7 @@ using GUICon = UnityEngine.GUIContent;
 using eInt = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<int>;
 using eBool = ForestOfChaosLib.Editor.FoCsGUI.GUIEventBool;
 using eFloat = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<float>;
+using eDouble = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<double>;
 using eString = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<string>;
 using SerProp = UnityEditor.SerializedProperty;
 using eProp = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<UnityEditor.SerializedProperty>;
@@ -18,41 +19,6 @@ namespace ForestOfChaosLib.Editor
 {
 	public static partial class FoCsGUI
 	{
-		internal static GUIStyle LabelStyle
-		{
-			get { return Styles.Unity.Label; }
-		}
-
-		internal static GUIStyle ToggleStyle
-		{
-			get { return Styles.Unity.Toggle; }
-		}
-
-		internal static GUIStyle ButtonStyle
-		{
-			get { return Styles.Unity.Button; }
-		}
-
-		internal static GUIStyle FoldoutStyle
-		{
-			get { return Styles.Unity.Foldout; }
-		}
-
-		internal static GUIStyle TextFieldStyle
-		{
-			get { return Styles.Unity.TextField_Editor; }
-		}
-
-		internal static GUIStyle NumberFieldStyle
-		{
-			get { return Styles.Unity.NumberField; }
-		}
-
-		internal static GUIStyle TextAreaStyle
-		{
-			get { return Styles.Unity.TextArea_Editor; }
-		}
-
 #region Label
 		public static GUIEvent Label(Rect rect)
 		{
@@ -283,6 +249,40 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+#region DelayedIntField
+		public static eInt DelayedIntField(Rect rect, int value)
+		{
+			return DelayedIntFieldMaster(rect, GUICon.none, value, NumberFieldStyle);
+		}
+
+		public static eInt DelayedIntField(Rect rect, string label, int value)
+		{
+			return DelayedIntFieldMaster(rect, new GUICon(label), value, NumberFieldStyle);
+		}
+
+		public static eInt DelayedIntField(Rect rect, string label, int value, GUIStyle style)
+		{
+			return DelayedIntFieldMaster(rect, new GUICon(label), value, style);
+		}
+
+		public static eInt DelayedIntField(Rect rect, GUICon guiCon, int value)
+		{
+			return DelayedIntFieldMaster(rect, guiCon, value, NumberFieldStyle);
+		}
+
+		public static eInt DelayedIntField(Rect rect, GUICon guiCon, int value, GUIStyle style)
+		{
+			return DelayedIntFieldMaster(rect, guiCon, value, style);
+		}
+
+		private static eInt DelayedIntFieldMaster(Rect rect, GUICon guiCon, int value, GUIStyle style)
+		{
+			var data = new eInt {Event = new Event(Event.current), Rect = rect};
+			data.Value = EditorGUI.DelayedIntField(rect, guiCon, value, style);
+
+			return data;
+		}
+#endregion
 #region FloatField
 		public static eFloat FloatField(Rect rect, float value)
 		{
@@ -318,6 +318,123 @@ namespace ForestOfChaosLib.Editor
 		{
 			var data = new eFloat {Event = new Event(Event.current), Rect = rect};
 			data.Value = EditorGUI.FloatField(rect, guiCon, value, style);
+
+			return data;
+		}
+#endregion
+#region DelayedFloatField
+		public static eFloat DelayedFloatField(Rect rect, float value)
+		{
+			return DelayedFloatFieldMaster(rect, GUICon.none, value, NumberFieldStyle);
+		}
+
+		public static eFloat DelayedFloatField(Rect rect, float value, GUIStyle style)
+		{
+			return DelayedFloatFieldMaster(rect, GUICon.none, value, style);
+		}
+
+		public static eFloat DelayedFloatField(Rect rect, string label, float value)
+		{
+			return DelayedFloatFieldMaster(rect, new GUICon(label), value, NumberFieldStyle);
+		}
+
+		public static eFloat DelayedFloatField(Rect rect, string label, float value, GUIStyle style)
+		{
+			return DelayedFloatFieldMaster(rect, new GUICon(label), value, style);
+		}
+
+		public static eFloat DelayedFloatField(Rect rect, GUICon guiCon, float value)
+		{
+			return DelayedFloatFieldMaster(rect, guiCon, value, NumberFieldStyle);
+		}
+
+		public static eFloat DelayedFloatField(Rect rect, GUICon guiCon, float value, GUIStyle style)
+		{
+			return DelayedFloatFieldMaster(rect, guiCon, value, style);
+		}
+
+		private static eFloat DelayedFloatFieldMaster(Rect rect, GUICon guiCon, float value, GUIStyle style)
+		{
+			var data = new eFloat {Event = new Event(Event.current), Rect = rect};
+			data.Value = EditorGUI.DelayedFloatField(rect, guiCon, value, style);
+
+			return data;
+		}
+#endregion
+#region DoubleField
+		public static eDouble DoubleField(Rect rect, double value)
+		{
+			return DoubleFieldMaster(rect, GUICon.none, value, NumberFieldStyle);
+		}
+
+		public static eDouble DoubleField(Rect rect, double value, GUIStyle style)
+		{
+			return DoubleFieldMaster(rect, GUICon.none, value, style);
+		}
+
+		public static eDouble DoubleField(Rect rect, string label, double value)
+		{
+			return DoubleFieldMaster(rect, new GUICon(label), value, NumberFieldStyle);
+		}
+
+		public static eDouble DoubleField(Rect rect, string label, double value, GUIStyle style)
+		{
+			return DoubleFieldMaster(rect, new GUICon(label), value, style);
+		}
+
+		public static eDouble DoubleField(Rect rect, GUICon guiCon, double value)
+		{
+			return DoubleFieldMaster(rect, guiCon, value, NumberFieldStyle);
+		}
+
+		public static eDouble DoubleField(Rect rect, GUICon guiCon, double value, GUIStyle style)
+		{
+			return DoubleFieldMaster(rect, guiCon, value, style);
+		}
+
+		private static eDouble DoubleFieldMaster(Rect rect, GUICon guiCon, double value, GUIStyle style)
+		{
+			var data = new eDouble {Event = new Event(Event.current), Rect = rect};
+			data.Value = EditorGUI.DoubleField(rect, guiCon, value, style);
+
+			return data;
+		}
+#endregion
+#region DelayedDoubleField
+		public static eDouble DelayedDoubleField(Rect rect, double value)
+		{
+			return DelayedDoubleFieldMaster(rect, GUICon.none, value, NumberFieldStyle);
+		}
+
+		public static eDouble DelayedDoubleField(Rect rect, double value, GUIStyle style)
+		{
+			return DelayedDoubleFieldMaster(rect, GUICon.none, value, style);
+		}
+
+		public static eDouble DelayedDoubleField(Rect rect, string label, double value)
+		{
+			return DelayedDoubleFieldMaster(rect, new GUICon(label), value, NumberFieldStyle);
+		}
+
+		public static eDouble DelayedDoubleField(Rect rect, string label, double value, GUIStyle style)
+		{
+			return DelayedDoubleFieldMaster(rect, new GUICon(label), value, style);
+		}
+
+		public static eDouble DelayedDoubleField(Rect rect, GUICon guiCon, double value)
+		{
+			return DelayedDoubleFieldMaster(rect, guiCon, value, NumberFieldStyle);
+		}
+
+		public static eDouble DelayedDoubleField(Rect rect, GUICon guiCon, double value, GUIStyle style)
+		{
+			return DelayedDoubleFieldMaster(rect, guiCon, value, style);
+		}
+
+		private static eDouble DelayedDoubleFieldMaster(Rect rect, GUICon guiCon, double value, GUIStyle style)
+		{
+			var data = new eDouble {Event = new Event(Event.current), Rect = rect};
+			data.Value = EditorGUI.DelayedDoubleField(rect, guiCon, value, style);
 
 			return data;
 		}
@@ -361,6 +478,45 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+#region DelayedTextField
+		public static eString DelayedTextField(Rect rect, string value)
+		{
+			return DelayedTextFieldMaster(rect, GUICon.none, value, TextFieldStyle);
+		}
+
+		public static eString DelayedTextField(Rect rect, string value, GUIStyle style)
+		{
+			return DelayedTextFieldMaster(rect, GUICon.none, value, style);
+		}
+
+		public static eString DelayedTextField(Rect rect, string label, string value)
+		{
+			return DelayedTextFieldMaster(rect, new GUICon(label), value, TextFieldStyle);
+		}
+
+		public static eString DelayedTextField(Rect rect, string label, string value, GUIStyle style)
+		{
+			return DelayedTextFieldMaster(rect, new GUICon(label), value, style);
+		}
+
+		public static eString DelayedTextField(Rect rect, GUICon guiCon, string value)
+		{
+			return DelayedTextFieldMaster(rect, guiCon, value, TextFieldStyle);
+		}
+
+		public static eString DelayedTextField(Rect rect, GUICon guiCon, string value, GUIStyle style)
+		{
+			return DelayedTextFieldMaster(rect, guiCon, value, style);
+		}
+
+		private static eString DelayedTextFieldMaster(Rect rect, GUICon guiCon, string value, GUIStyle style)
+		{
+			var data = new eString {Event = new Event(Event.current), Rect = rect};
+			data.Value = EditorGUI.DelayedTextField(rect, guiCon, value, style);
+
+			return data;
+		}
+#endregion
 #region TextArea
 		public static eString TextArea(Rect rect, string value)
 		{
@@ -380,7 +536,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-#region ObjectField
+#region RawObjectField
 		public static eObject RawObjectField(Rect rect, Object value, Type type, bool allowSceneObjects)
 		{
 			return RawObjectFieldMaster(rect, GUICon.none, value, type, allowSceneObjects);
@@ -404,7 +560,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-#region ObjectField
+#region ObjectFieldGeneric
 		public static GUIEvent<T> ObjectField<T>(Rect rect, T value, Type type, bool allowSceneObjects) where T: Object
 		{
 			return ObjectFieldMaster(rect, GUICon.none, value, type, allowSceneObjects);

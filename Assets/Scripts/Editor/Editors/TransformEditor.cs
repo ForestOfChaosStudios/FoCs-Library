@@ -260,7 +260,7 @@ namespace ForestOfChaosLib.Editor
 			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
 				var content = new GUIContent("Scale amount", "Set amount to uniformly scale the object");
-				scaleAmount = EditorGUILayout.FloatField(content, scaleAmount, EditorStyles.toolbarTextField);
+				scaleAmount = FoCsGUI.Layout.FloatField(content, scaleAmount, EditorStyles.toolbarTextField);
 				var scaleContent = new GUIContent("Set Scale", string.Format("Sets the scale ({0},{1},{2})", scaleAmount, scaleAmount, scaleAmount));
 
 				if(GUILayout.Button(scaleContent, EditorStyles.toolbarButton))

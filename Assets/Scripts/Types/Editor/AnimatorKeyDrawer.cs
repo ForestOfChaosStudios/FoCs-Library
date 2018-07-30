@@ -11,10 +11,10 @@ namespace ForestOfChaosLib.Animation
 	public class AnimatorKeyDrawer: FoCsPropertyDrawer<AnimatorKey>
 	{
 		private const string KEY            = "Key";
-		private const string KEY_LABEL      = "Key ID";
+		private const string KEY_LABEL      = "ID:";
 		private const string KEY_TYPE       = "KeyType";
-		private const string KEY_TYPE_LABEL = "Key Type";
-		private const string LABEL          = "Key Data";
+		private const string KEY_TYPE_LABEL = "Type:";
+		private const string LABEL          = "Data:";
 		private const string INT_DATA       = "IntData";
 		private const string FLOAT_DATA     = "FloatData";
 		private const string BOOL_DATA      = "BoolData";
@@ -32,20 +32,31 @@ namespace ForestOfChaosLib.Animation
 				position.height = SingleLine;
 				label           = propScope.content;
 				var labelPos = position.Edit(RectEdit.SetWidth(EditorGUIUtility.labelWidth));
-				EditorGUI.LabelField(labelPos, label);
+				FoCsGUI.Label(labelPos, label);
 
 				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(6, position.Edit(RectEdit.AddX(labelPos.width), RectEdit.SetWidth(position.width - labelPos.width))))
 				{
-					using(FoCsEditor.Disposables.Indent(-1))
+					using(FoCsEditor.Disposables.IndentSet(0))
 					{
-						EditorGUI.LabelField(scope.GetNext(), KEY_LABEL);
-						EditorGUI.PropertyField(scope.GetNext(RectEdit.SubtractX(4)), property.FindPropertyRelative(KEY), GUIContent.none);
-						EditorGUI.LabelField(scope.GetNext(), KEY_TYPE_LABEL);
-						EditorGUI.PropertyField(scope.GetNext(RectEdit.SubtractX(4)), property.FindPropertyRelative(KEY_TYPE), GUIContent.none);
-						var key     = property.GetTargetObjectOfProperty<AnimatorKey>();
-						var typeStr = GetDisplayString(key);
-						EditorGUI.LabelField(scope.GetNext(), LABEL);
-						EditorGUI.PropertyField(scope.GetNext(), property.FindPropertyRelative(typeStr), GUIContent.none);
+						using(var innerScope = FoCsEditor.Disposables.RectHorizontalScope(3, scope.GetNext(2)))
+						{
+							FoCsGUI.Label(innerScope.GetNext(), KEY_LABEL);
+							FoCsGUI.PropertyField(innerScope.GetNext(2), property.FindPropertyRelative(KEY), GUIContent.none);
+						}
+
+						using(var innerScope = FoCsEditor.Disposables.RectHorizontalScope(5, scope.GetNext(2)))
+						{
+							FoCsGUI.Label(innerScope.GetNext(2), KEY_TYPE_LABEL);
+							FoCsGUI.PropertyField(innerScope.GetNext(3), property.FindPropertyRelative(KEY_TYPE), GUIContent.none);
+						}
+
+						using(var innerScope = FoCsEditor.Disposables.RectHorizontalScope(5, scope.GetNext(2)))
+						{
+							var key     = property.GetTargetObjectOfProperty<AnimatorKey>();
+							var typeStr = GetDisplayString(key);
+							FoCsGUI.Label(innerScope.GetNext(2), LABEL);
+							FoCsGUI.PropertyField(innerScope.GetNext(3), property.FindPropertyRelative(typeStr), GUIContent.none);
+						}
 					}
 				}
 			}

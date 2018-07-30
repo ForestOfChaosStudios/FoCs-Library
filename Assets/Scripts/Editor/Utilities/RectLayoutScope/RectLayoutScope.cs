@@ -97,16 +97,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 			if((CurrentIndex == Count) || (CurrentIndex + amount > Count))
 				throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
 
-			LastRect = NextRect;
-			var retVal = NextRect;
-
-			for(var i = 0; i < amount; i++)
-			{
-				DoNextRect();
-				retVal.width += NextRect.width;
-			}
-
-			return retVal.Edit(edits);
+			return GetNext(amount).Edit(edits);
 		}
 
 		public void Dispose()
