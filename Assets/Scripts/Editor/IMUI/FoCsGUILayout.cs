@@ -17,117 +17,6 @@ namespace ForestOfChaosLib.Editor
 	{
 		public static class Layout
 		{
-
-#region LayoutScopes
-#region HorizontalScope
-			public static GUILayout.HorizontalScope HorizontalScope()
-			{
-				return FoCsEditor.Disposables.HorizontalScope();
-			}
-
-			public static GUILayout.HorizontalScope HorizontalScope(GUIStyle skinBox)
-			{
-				return FoCsEditor.Disposables.HorizontalScope(skinBox);
-			}
-
-			public static GUILayout.HorizontalScope HorizontalScope(params GUILayOpt[] options)
-			{
-				return FoCsEditor.Disposables.HorizontalScope(options);
-			}
-
-			public static GUILayout.HorizontalScope HorizontalScope(GUIStyle skinBox, params GUILayOpt[] options)
-			{
-				return FoCsEditor.Disposables.HorizontalScope(skinBox, options);
-			}
-#endregion
-
-#region VerticalScope
-			public static GUILayout.VerticalScope VerticalScope()
-			{
-				return FoCsEditor.Disposables.VerticalScope();
-			}
-
-			public static GUILayout.VerticalScope VerticalScope(GUIStyle skinBox)
-			{
-				return FoCsEditor.Disposables.VerticalScope(skinBox);
-			}
-
-			public static GUILayout.VerticalScope VerticalScope(params GUILayOpt[] options)
-			{
-				return FoCsEditor.Disposables.VerticalScope(options);
-			}
-
-			public static GUILayout.VerticalScope VerticalScope(GUIStyle skinBox, params GUILayOpt[] options)
-			{
-				return FoCsEditor.Disposables.VerticalScope(skinBox, options);
-			}
-#endregion
-
-#region AreaScope
-			public static GUILayout.AreaScope AreaScope(Rect rect)
-			{
-				return FoCsEditor.Disposables.AreaScope(rect);
-			}
-
-			public static GUILayout.AreaScope AreaScope(Rect rect, string content)
-			{
-				return FoCsEditor.Disposables.AreaScope(rect, content);
-			}
-
-			public static GUILayout.AreaScope AreaScope(Rect rect, string content, GUIStyle style)
-			{
-				return FoCsEditor.Disposables.AreaScope(rect, content, style);
-			}
-
-			public static GUILayout.AreaScope AreaScope(Rect rect, GUIContent content)
-			{
-				return FoCsEditor.Disposables.AreaScope(rect, content);
-			}
-
-			public static GUILayout.AreaScope AreaScope(Rect rect, GUIContent content, GUIStyle style)
-			{
-				return FoCsEditor.Disposables.AreaScope(rect, content, style);
-			}
-
-			public static GUILayout.AreaScope AreaScope(Rect rect, Texture texture)
-			{
-				return FoCsEditor.Disposables.AreaScope(rect, texture);
-			}
-
-			public static GUILayout.AreaScope AreaScope(Rect rect, Texture texture, GUIStyle style)
-			{
-				return FoCsEditor.Disposables.AreaScope(rect, texture, style);
-			}
-#endregion
-
-#region ScrollViewScope
-			public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos)
-			{
-				return FoCsEditor.Disposables.ScrollViewScope(scrollPos, true);
-			}
-
-			public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos, bool handleScrollWheel)
-			{
-				return FoCsEditor.Disposables.ScrollViewScope(scrollPos, handleScrollWheel);
-			}
-
-			public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos, params GUILayOpt[] options)
-			{
-				return FoCsEditor.Disposables.ScrollViewScope(scrollPos, true, options);
-			}
-
-			public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos, bool handleScrollWheel, params GUILayOpt[] options)
-			{
-				return FoCsEditor.Disposables.ScrollViewScope(scrollPos, handleScrollWheel, options);
-			}
-
-			public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos, bool handleScrollWheel, bool alwaysShowHorizontal, bool alwaysShowVertical, params GUILayOpt[] options)
-			{
-				return FoCsEditor.Disposables.ScrollViewScope(scrollPos, handleScrollWheel, alwaysShowHorizontal, alwaysShowVertical, options);
-			}
-#endregion
-#endregion
-
 #region LabelField
 			public static GUIEvent LabelField()
 			{
@@ -1271,54 +1160,54 @@ namespace ForestOfChaosLib.Editor
 #endregion
 
 #region ObjectFieldGeneric
-			public static GUIEvent<T> ObjectField<T>(Object value, bool allowSceneObjects) where T: Object
+			public static GUIEvent<T> ObjectField<T>(T value, bool allowSceneObjects) where T: Object
 			{
 				return ObjectFieldMaster<T>(value, allowSceneObjects);
 			}
 
-			public static GUIEvent<T> ObjectField<T>(Object value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
+			public static GUIEvent<T> ObjectField<T>(T value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
 			{
 				return ObjectFieldMaster<T>(value, allowSceneObjects, options);
 			}
 
-			public static GUIEvent<T> ObjectField<T>(Object value, string guiCon,  bool allowSceneObjects) where T: Object
+			public static GUIEvent<T> ObjectField<T>(T value, string guiCon,  bool allowSceneObjects) where T: Object
 			{
 				return ObjectFieldMaster<T>(new GUICon(guiCon), value, allowSceneObjects);
 			}
 
-			public static GUIEvent<T> ObjectField<T>(Object value, string guiCon,  bool allowSceneObjects, params GUILayOpt[] options) where T: Object
+			public static GUIEvent<T> ObjectField<T>(T value, string guiCon,  bool allowSceneObjects, params GUILayOpt[] options) where T: Object
 			{
 				return ObjectFieldMaster<T>(new GUICon(guiCon), value, allowSceneObjects, options);
 			}
 
-			public static GUIEvent<T> ObjectField<T>(Object value, GUICon guiCon,  bool allowSceneObjects) where T: Object
+			public static GUIEvent<T> ObjectField<T>(T value, GUICon guiCon,  bool allowSceneObjects) where T: Object
 			{
 				return ObjectFieldMaster<T>(guiCon, value, allowSceneObjects);
 			}
 
-			public static GUIEvent<T> ObjectField<T>(Object value, GUICon guiCon,  bool allowSceneObjects, params GUILayOpt[] options) where T: Object
+			public static GUIEvent<T> ObjectField<T>(T value, GUICon guiCon,  bool allowSceneObjects, params GUILayOpt[] options) where T: Object
 			{
 				return ObjectFieldMaster<T>(guiCon, value, allowSceneObjects, options);
 			}
 
-			private static GUIEvent<T> ObjectFieldMaster<T>(Object value, bool allowSceneObjects) where T: Object
+			private static GUIEvent<T> ObjectFieldMaster<T>(T value, bool allowSceneObjects) where T: Object
 			{
 				return ObjectFieldMaster<T>(value, allowSceneObjects, null);
 			}
 
-			private static GUIEvent<T> ObjectFieldMaster<T>(Object value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
+			private static GUIEvent<T> ObjectFieldMaster<T>(T value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
 			{
 				var val = (T)EditorGUILayout.ObjectField(value, typeof(T), allowSceneObjects, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
-			private static GUIEvent<T> ObjectFieldMaster<T>(GUICon guiCon, Object value, bool allowSceneObjects) where T: Object
+			private static GUIEvent<T> ObjectFieldMaster<T>(GUICon guiCon, T value, bool allowSceneObjects) where T: Object
 			{
 				return ObjectFieldMaster<T>(guiCon, value, allowSceneObjects, null);
 			}
 
-			private static GUIEvent<T> ObjectFieldMaster<T>(GUICon guiCon, Object value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
+			private static GUIEvent<T> ObjectFieldMaster<T>(GUICon guiCon, T value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
 			{
 				var val = (T)EditorGUILayout.ObjectField(guiCon, value, typeof(T), allowSceneObjects, options);
 

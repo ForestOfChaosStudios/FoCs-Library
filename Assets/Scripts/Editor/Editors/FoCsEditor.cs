@@ -77,7 +77,7 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 
-			EditorGUILayout.GetControlRect(false, 2);
+			//EditorGUILayout.GetControlRect(false, 2);
 		}
 
 		protected void DrawCopyPasteButtons()

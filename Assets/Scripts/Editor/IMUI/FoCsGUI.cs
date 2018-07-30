@@ -64,32 +64,32 @@ namespace ForestOfChaosLib.Editor
 			return LabelMaster(rect, GUICon.none, style);
 		}
 
-		public static GUIEvent Label(Rect rect, string   label)
+		public static GUIEvent Label(Rect rect, string label)
 		{
 			return LabelMaster(rect, new GUICon(label), LabelStyle);
 		}
 
-		public static GUIEvent Label(Rect rect, string   label, GUIStyle style)
+		public static GUIEvent Label(Rect rect, string label, GUIStyle style)
 		{
 			return LabelMaster(rect, new GUICon(label), style);
 		}
 
-		public static GUIEvent Label(Rect rect, GUICon   guiCon)
+		public static GUIEvent Label(Rect rect, GUICon guiCon)
 		{
 			return LabelMaster(rect, guiCon, LabelStyle);
 		}
 
-		public static GUIEvent Label(Rect rect, GUICon   guiCon, GUIStyle style)
+		public static GUIEvent Label(Rect rect, GUICon guiCon, GUIStyle style)
 		{
 			return LabelMaster(rect, guiCon, style);
 		}
 
-		public static GUIEvent Label(Rect rect, Texture  texture)
+		public static GUIEvent Label(Rect rect, Texture texture)
 		{
 			return LabelMaster(rect, new GUICon(texture), LabelStyle);
 		}
 
-		public static GUIEvent Label(Rect rect, Texture  texture, GUIStyle style)
+		public static GUIEvent Label(Rect rect, Texture texture, GUIStyle style)
 		{
 			return LabelMaster(rect, new GUICon(texture), style);
 		}
@@ -114,32 +114,32 @@ namespace ForestOfChaosLib.Editor
 			return ButtonMaster(rect, GUICon.none, style);
 		}
 
-		public static eBool Button(Rect rect, string   label)
+		public static eBool Button(Rect rect, string label)
 		{
 			return ButtonMaster(rect, new GUICon(label), ButtonStyle);
 		}
 
-		public static eBool Button(Rect rect, string   label, GUIStyle style)
+		public static eBool Button(Rect rect, string label, GUIStyle style)
 		{
 			return ButtonMaster(rect, new GUICon(label), style);
 		}
 
-		public static eBool Button(Rect rect, GUICon   guiCon)
+		public static eBool Button(Rect rect, GUICon guiCon)
 		{
 			return ButtonMaster(rect, guiCon, ButtonStyle);
 		}
 
-		public static eBool Button(Rect rect, GUICon   guiCon, GUIStyle style)
+		public static eBool Button(Rect rect, GUICon guiCon, GUIStyle style)
 		{
 			return ButtonMaster(rect, guiCon, style);
 		}
 
-		public static eBool Button(Rect rect, Texture  texture)
+		public static eBool Button(Rect rect, Texture texture)
 		{
 			return ButtonMaster(rect, new GUICon(texture), ButtonStyle);
 		}
 
-		public static eBool Button(Rect rect, Texture  texture, GUIStyle style)
+		public static eBool Button(Rect rect, Texture texture, GUIStyle style)
 		{
 			return ButtonMaster(rect, new GUICon(texture), style);
 		}
@@ -164,32 +164,32 @@ namespace ForestOfChaosLib.Editor
 			return ToggleMaster(rect, toggle, GUICon.none, style);
 		}
 
-		public static eBool Toggle(Rect rect, bool toggle, string   label)
+		public static eBool Toggle(Rect rect, bool toggle, string label)
 		{
 			return ToggleMaster(rect, toggle, new GUICon(label), ToggleStyle);
 		}
 
-		public static eBool Toggle(Rect rect, bool toggle, string   label, GUIStyle style)
+		public static eBool Toggle(Rect rect, bool toggle, string label, GUIStyle style)
 		{
 			return ToggleMaster(rect, toggle, new GUICon(label), style);
 		}
 
-		public static eBool Toggle(Rect rect, bool toggle, GUICon   guiCon)
+		public static eBool Toggle(Rect rect, bool toggle, GUICon guiCon)
 		{
 			return ToggleMaster(rect, toggle, guiCon, ToggleStyle);
 		}
 
-		public static eBool Toggle(Rect rect, bool toggle, GUICon   guiCon, GUIStyle style)
+		public static eBool Toggle(Rect rect, bool toggle, GUICon guiCon, GUIStyle style)
 		{
 			return ToggleMaster(rect, toggle, guiCon, style);
 		}
 
-		public static eBool Toggle(Rect rect, bool toggle, Texture  texture)
+		public static eBool Toggle(Rect rect, bool toggle, Texture texture)
 		{
 			return ToggleMaster(rect, toggle, new GUICon(texture), ToggleStyle);
 		}
 
-		public static eBool Toggle(Rect rect, bool toggle, Texture  texture, GUIStyle style)
+		public static eBool Toggle(Rect rect, bool toggle, Texture texture, GUIStyle style)
 		{
 			return ToggleMaster(rect, toggle, new GUICon(texture), style);
 		}
@@ -214,32 +214,32 @@ namespace ForestOfChaosLib.Editor
 			return FoldoutMaster(rect, foldout, GUICon.none, style);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, string   label)
+		public static GUIEvent Foldout(Rect rect, bool foldout, string label)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(label), FoldoutStyle);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, string   label, GUIStyle style)
+		public static GUIEvent Foldout(Rect rect, bool foldout, string label, GUIStyle style)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(label), style);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, GUICon   guiCon)
+		public static GUIEvent Foldout(Rect rect, bool foldout, GUICon guiCon)
 		{
 			return FoldoutMaster(rect, foldout, guiCon, FoldoutStyle);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, GUICon   guiCon, GUIStyle style)
+		public static GUIEvent Foldout(Rect rect, bool foldout, GUICon guiCon, GUIStyle style)
 		{
 			return FoldoutMaster(rect, foldout, guiCon, style);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, Texture  texture)
+		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(texture), FoldoutStyle);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, Texture  texture, GUIStyle style)
+		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture, GUIStyle style)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(texture), style);
 		}
@@ -254,17 +254,17 @@ namespace ForestOfChaosLib.Editor
 #endregion
 
 #region IntField
-		public static eInt IntField(Rect rect, int    value)
+		public static eInt IntField(Rect rect, int value)
 		{
 			return IntFieldMaster(rect, GUICon.none, value, NumberFieldStyle);
 		}
 
-		public static eInt IntField(Rect rect, string label,  int value)
+		public static eInt IntField(Rect rect, string label, int value)
 		{
 			return IntFieldMaster(rect, new GUICon(label), value, NumberFieldStyle);
 		}
 
-		public static eInt IntField(Rect rect, string label,  int value, GUIStyle style)
+		public static eInt IntField(Rect rect, string label, int value, GUIStyle style)
 		{
 			return IntFieldMaster(rect, new GUICon(label), value, style);
 		}
@@ -289,32 +289,32 @@ namespace ForestOfChaosLib.Editor
 #endregion
 
 #region FloatField
-		public static eFloat FloatField(Rect rect, float  value)
+		public static eFloat FloatField(Rect rect, float value)
 		{
 			return FloatFieldMaster(rect, GUICon.none, value, NumberFieldStyle);
 		}
 
-		public static eFloat FloatField(Rect rect, float  value,  GUIStyle style)
+		public static eFloat FloatField(Rect rect, float value, GUIStyle style)
 		{
 			return FloatFieldMaster(rect, GUICon.none, value, style);
 		}
 
-		public static eFloat FloatField(Rect rect, string label,  float    value)
+		public static eFloat FloatField(Rect rect, string label, float value)
 		{
 			return FloatFieldMaster(rect, new GUICon(label), value, NumberFieldStyle);
 		}
 
-		public static eFloat FloatField(Rect rect, string label,  float    value, GUIStyle style)
+		public static eFloat FloatField(Rect rect, string label, float value, GUIStyle style)
 		{
 			return FloatFieldMaster(rect, new GUICon(label), value, style);
 		}
 
-		public static eFloat FloatField(Rect rect, GUICon guiCon, float    value)
+		public static eFloat FloatField(Rect rect, GUICon guiCon, float value)
 		{
 			return FloatFieldMaster(rect, guiCon, value, NumberFieldStyle);
 		}
 
-		public static eFloat FloatField(Rect rect, GUICon guiCon, float    value, GUIStyle style)
+		public static eFloat FloatField(Rect rect, GUICon guiCon, float value, GUIStyle style)
 		{
 			return FloatFieldMaster(rect, guiCon, value, style);
 		}
@@ -334,27 +334,27 @@ namespace ForestOfChaosLib.Editor
 			return TextFieldMaster(rect, GUICon.none, value, TextFieldStyle);
 		}
 
-		public static eString TextField(Rect rect, string value,  GUIStyle style)
+		public static eString TextField(Rect rect, string value, GUIStyle style)
 		{
 			return TextFieldMaster(rect, GUICon.none, value, style);
 		}
 
-		public static eString TextField(Rect rect, string label,  string   value)
+		public static eString TextField(Rect rect, string label, string value)
 		{
 			return TextFieldMaster(rect, new GUICon(label), value, TextFieldStyle);
 		}
 
-		public static eString TextField(Rect rect, string label,  string   value, GUIStyle style)
+		public static eString TextField(Rect rect, string label, string value, GUIStyle style)
 		{
 			return TextFieldMaster(rect, new GUICon(label), value, style);
 		}
 
-		public static eString TextField(Rect rect, GUICon guiCon, string   value)
+		public static eString TextField(Rect rect, GUICon guiCon, string value)
 		{
 			return TextFieldMaster(rect, guiCon, value, TextFieldStyle);
 		}
 
-		public static eString TextField(Rect rect, GUICon guiCon, string   value, GUIStyle style)
+		public static eString TextField(Rect rect, GUICon guiCon, string value, GUIStyle style)
 		{
 			return TextFieldMaster(rect, guiCon, value, style);
 		}
@@ -389,25 +389,50 @@ namespace ForestOfChaosLib.Editor
 #endregion
 
 #region ObjectField
-		public static eObject ObjectField(Rect rect, Object value,  Type   type,  bool allowSceneObjects)
+		public static eObject RawObjectField(Rect rect, Object value, Type type, bool allowSceneObjects)
 		{
-			return ObjectFieldMaster(rect, GUICon.none, value, type, allowSceneObjects);
+			return RawObjectFieldMaster(rect, GUICon.none, value, type, allowSceneObjects);
 		}
 
-		public static eObject ObjectField(Rect rect, string label,  Object value, Type type, bool allowSceneObjects)
+		public static eObject RawObjectField(Rect rect, string label, Object value, Type type, bool allowSceneObjects)
 		{
-			return ObjectFieldMaster(rect, new GUICon(label), value, type, allowSceneObjects);
+			return RawObjectFieldMaster(rect, new GUICon(label), value, type, allowSceneObjects);
 		}
 
-		public static eObject ObjectField(Rect rect, GUICon guiCon, Object value, Type type, bool allowSceneObjects)
+		public static eObject RawObjectField(Rect rect, GUICon guiCon, Object value, Type type, bool allowSceneObjects)
 		{
-			return ObjectFieldMaster(rect, guiCon, value, type, allowSceneObjects);
+			return RawObjectFieldMaster(rect, guiCon, value, type, allowSceneObjects);
 		}
 
-		private static eObject ObjectFieldMaster(Rect rect, GUICon guiCon, Object value, Type type, bool allowSceneObjects)
+		private static eObject RawObjectFieldMaster(Rect rect, GUICon guiCon, Object value, Type type, bool allowSceneObjects)
 		{
 			var data = new eObject {Event = new Event(Event.current), Rect = rect};
 			data.Value = EditorGUI.ObjectField(rect, guiCon, value, type, allowSceneObjects);
+
+			return data;
+		}
+#endregion
+
+#region ObjectField
+		public static GUIEvent<T> ObjectField<T>(Rect rect, T value, Type type, bool allowSceneObjects) where T: Object
+		{
+			return ObjectFieldMaster<T>(rect, GUICon.none, value, type, allowSceneObjects);
+		}
+
+		public static GUIEvent<T> ObjectField<T>(Rect rect, string label, T value, Type type, bool allowSceneObjects) where T: Object
+		{
+			return ObjectFieldMaster<T>(rect, new GUICon(label), value, type, allowSceneObjects);
+		}
+
+		public static GUIEvent<T> ObjectField<T>(Rect rect, GUICon guiCon, T value, Type type, bool allowSceneObjects) where T: Object
+		{
+			return ObjectFieldMaster<T>(rect, guiCon, value, type, allowSceneObjects);
+		}
+
+		private static GUIEvent<T> ObjectFieldMaster<T>(Rect rect, GUICon guiCon, T value, Type type, bool allowSceneObjects) where T: Object
+		{
+			var data = new GUIEvent<T> {Event = new Event(Event.current), Rect = rect};
+			data.Value = (T)EditorGUI.ObjectField(rect, guiCon, value, type, allowSceneObjects);
 
 			return data;
 		}
