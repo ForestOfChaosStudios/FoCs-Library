@@ -6,14 +6,14 @@ namespace ForestOfChaosLib.Types
 	[Serializable]
 	public class TransformData
 	{
+		private static readonly TransformData empty = new TransformData(Vector3.zero, Quaternion.identity, Vector3.one);
 		public                  Vector3       Position;
 		public                  Quaternion    Rotation;
 		public                  Vector3       Scale;
-		private static readonly TransformData empty = new TransformData(Vector3.zero, Quaternion.identity, Vector3.one);
 
 		public static TransformData Empty
 		{
-			get { return new TransformData(empty);}
+			get { return new TransformData(empty); }
 		}
 
 		public TransformData()

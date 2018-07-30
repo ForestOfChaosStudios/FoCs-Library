@@ -16,7 +16,7 @@ namespace ForestOfChaosLib.Curves.Editor
 		{
 			ListNullCheck(property);
 
-			return (SingleLine) + list.GetTotalHeight();
+			return SingleLine + list.GetTotalHeight();
 		}
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -24,10 +24,10 @@ namespace ForestOfChaosLib.Curves.Editor
 			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
-				var positionsProp      = property.FindPropertyRelative("Positions");
-				var useGlobalBoolRect  = position;
+				var positionsProp     = property.FindPropertyRelative("Positions");
+				var useGlobalBoolRect = position;
 				useGlobalBoolRect.height = SingleLine;
-				position = position.Edit(RectEdit.ChangeY(SingleLine));
+				position                 = position.Edit(RectEdit.ChangeY(SingleLine));
 				var targ = property.GetTargetObjectOfProperty<ICurveTD>();
 
 				if(targ.IsFixedLength)

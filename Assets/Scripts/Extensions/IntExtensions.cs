@@ -4,7 +4,7 @@ namespace ForestOfChaosLib.Extensions
 {
 	public static class IntExtensions
 	{
-		public static bool IsZero(this           int i)
+		public static bool IsZero(this int i)
 		{
 			return i == 0;
 		}
@@ -14,7 +14,7 @@ namespace ForestOfChaosLib.Extensions
 			return i <= 0;
 		}
 
-		public static bool IsNegative(this       int i)
+		public static bool IsNegative(this int i)
 		{
 			return i < 0;
 		}
@@ -24,12 +24,12 @@ namespace ForestOfChaosLib.Extensions
 			return i >= 0;
 		}
 
-		public static bool IsPositive(this       int i)
+		public static bool IsPositive(this int i)
 		{
 			return i > 0;
 		}
 
-		public static int  Abs(this              int i)
+		public static int Abs(this int i)
 		{
 			return Math.Abs(i);
 		}

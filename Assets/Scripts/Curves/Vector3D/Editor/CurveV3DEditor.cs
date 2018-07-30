@@ -9,17 +9,11 @@ namespace ForestOfChaosLib.Curves.Editor
 {
 	public class CurveV3DEditor<T>: FoCsEditor<T> where T: MonoBehaviour, ICurveV3D
 	{
-		private static float resolution = 0.1f;
-		private        T     Curve;
-		private static Mode MyMode = Mode.Move;
-		enum Mode
-		{
-			Hide,Move
-		}
-
+		private static float     resolution = 0.1f;
+		private static Mode      MyMode     = Mode.Move;
 		private static Transform debugTransform;
-
-		public static float DebugTime = 0.5f;
+		public static  float     DebugTime = 0.5f;
+		private        T         Curve;
 
 		protected void OnEnable()
 		{
@@ -33,17 +27,13 @@ namespace ForestOfChaosLib.Curves.Editor
 			using(Disposables.IndentSet(1))
 			{
 				FoCsGUI.Layout.Label("Editor Only:");
-				MyMode = (Mode)EditorGUILayout.EnumPopup(MyMode);
-
-
+				MyMode         = (Mode)EditorGUILayout.EnumPopup(MyMode);
 				resolution     = EditorGUILayout.Slider(new GUIContent("Resolution", "The Curve Display Resolution"), resolution, 0.01f, 0.5f);
-				debugTransform = FoCsGUI.Layout.ObjectField<Transform>(debugTransform, new GUIContent("Example"), true);
+				debugTransform = FoCsGUI.Layout.ObjectField(debugTransform, new GUIContent("Example"), true);
 				DebugTime      = EditorGUILayout.Slider(new GUIContent("Lerp Time: ", "Lerp Time"), DebugTime, 0f, 1f);
 
 				if(debugTransform)
-				{
 					debugTransform.position = Curve.Lerp(DebugTime);
-				}
 			}
 		}
 
@@ -76,10 +66,15 @@ namespace ForestOfChaosLib.Curves.Editor
 				for(float i = 0; i < 1f; i += resolution)
 					Handles.DrawLine(Vector3BezierLerp.Lerp(Curve, i), Vector3BezierLerp.Lerp(Curve, (i + resolution).Clamp()));
 
-
 				if(cc.changed)
 					EditorUtility.SetDirty(target);
 			}
+		}
+
+		private enum Mode
+		{
+			Hide,
+			Move
 		}
 	}
 

@@ -6,6 +6,7 @@ namespace ForestOfChaosLib.Maths.Random
 	public static class RandomMaster
 	{
 		private static RAND p_Random;
+
 		public static RAND Random
 		{
 			get { return p_Random ?? (p_Random = GetRandomWithNewSeed()); }

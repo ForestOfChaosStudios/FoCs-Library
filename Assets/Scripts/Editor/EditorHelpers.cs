@@ -44,12 +44,8 @@ namespace ForestOfChaosLib.Editor
 							vec        = defaultValue;
 							GUIChanged = true;
 						}
-
 						else if(copyBtn)
-						{
 							CopyPasteUtility.EditorCopy(vec);
-						}
-
 						else if(pasteBtn)
 						{
 							Undo.RecordObject(objectIAmOn, "Vector 3 Paste");
@@ -64,6 +60,7 @@ namespace ForestOfChaosLib.Editor
 
 			return vec;
 		}
+
 		public static Obj CopyPastObjectButtons(Obj obj, GUIStyle style)
 		{
 			using(Disposables.HorizontalScope(style))
@@ -71,12 +68,12 @@ namespace ForestOfChaosLib.Editor
 
 			return obj;
 		}
+
 		public static Obj CopyPastObjectButtons(Obj obj)
 		{
 			var canCopy        = CopyPasteUtility.CanCopy(obj);
 			var guiEnableCache = GUI.enabled;
-
-			var copyBuff = CopyPasteUtility.CopyBuffer;
+			var copyBuff       = CopyPasteUtility.CopyBuffer;
 
 			if(canCopy)
 			{
@@ -111,6 +108,7 @@ namespace ForestOfChaosLib.Editor
 
 				return obj;
 			}
+
 			var canEditorCopy = CopyPasteUtility.CanEditorCopy(obj);
 
 			if(canEditorCopy)
@@ -160,9 +158,7 @@ namespace ForestOfChaosLib.Editor
 			if(CopyPasteUtility.GetCopyMode(obj.targetObject) != (CopyPasteUtility.CopyMode.Unknown | CopyPasteUtility.CopyMode.None))
 			{
 				using(Disposables.HorizontalScope(style))
-				{
 					CopyPastObjectButtons(obj.targetObject);
-				}
 			}
 
 			return obj;

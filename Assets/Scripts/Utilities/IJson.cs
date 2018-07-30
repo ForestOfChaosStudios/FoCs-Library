@@ -5,7 +5,7 @@ namespace ForestOfChaosLib.JSON
 	public interface IJson
 	{
 		string ToJson();
-		void   FromJsonOverwrite(string data);
+		void FromJsonOverwrite(string data);
 	}
 
 	public interface IJson<out T>: IJson
@@ -20,12 +20,12 @@ namespace ForestOfChaosLib.JSON
 			return JsonUtility.FromJson<JSON_DATA>(data);
 		}
 
-		public        string    ToJson()
+		public string ToJson()
 		{
 			return JsonUtility.ToJson(this, true);
 		}
 
-		public        JSON_DATA FromJson(string data)
+		public JSON_DATA FromJson(string data)
 		{
 			return JsonUtility.FromJson<JSON_DATA>(data);
 		}

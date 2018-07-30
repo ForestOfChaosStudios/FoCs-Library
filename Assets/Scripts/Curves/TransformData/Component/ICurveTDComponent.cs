@@ -35,11 +35,8 @@ namespace ForestOfChaosLib.Curves.Components
 	public abstract class ICurveTDComponent: MonoBehaviour
 	{
 		public abstract List<TransformData> CurvePositions { get; set; }
-
-		public abstract bool IsFixedLength { get; }
-
-		public abstract int Length { get; }
-
+		public abstract bool                IsFixedLength  { get; }
+		public abstract int                 Length         { get; }
 		public abstract TransformData Lerp(float time);
 	}
 }

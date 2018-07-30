@@ -2,12 +2,12 @@
 
 public static class Pair
 {
-	public static KeyValuePair<T1, T1>                   Create<T1>(T1         one, T1 two)
+	public static KeyValuePair<T1, T1> Create<T1>(T1 one, T1 two)
 	{
 		return new KeyValuePair<T1, T1>(one, two);
 	}
 
-	public static KeyValuePair<T1, T2>                   Create<T1, T2>(T1     one, T2 two)
+	public static KeyValuePair<T1, T2> Create<T1, T2>(T1 one, T2 two)
 	{
 		return new KeyValuePair<T1, T2>(one, two);
 	}

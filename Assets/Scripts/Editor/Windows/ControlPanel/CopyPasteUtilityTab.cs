@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
 {
-	[FoCsControlPanel.ControlPanelTab]
+	[FoCsControlPanel.ControlPanelTabAttribute]
 	public static class CopyPasteUtilityTab
 	{
 		public static void DrawGUI(FoCsControlPanel owner)
@@ -18,7 +18,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				using(FoCsEditor.Disposables.HorizontalScope())
 				{
-					FoCsGUI.Layout.Label(copyMode.Key.ToString(), GUILayout.Width( Screen.width * 0.4f));
+					FoCsGUI.Layout.Label(copyMode.Key.ToString(), GUILayout.Width(Screen.width * 0.4f));
 					FoCsGUI.Layout.Label(copyMode.Value.ToString());
 				}
 			}

@@ -7,34 +7,35 @@ namespace ForestOfChaosLib.Editor
 	{
 		public class GUIEvent
 		{
-			public                          Event Event;
-			public                          Rect  Rect;
-			public                          bool  EventOccurredInRect
+			public Event Event;
+			public Rect  Rect;
+
+			public bool EventOccurredInRect
 			{
 				get { return Rect.Contains(Event.mousePosition); }
 			}
 
-			public                          bool  EventIsMouseL
+			public bool EventIsMouseL
 			{
 				get { return (Event.type == EventType.MouseUp) && (Event.button == 0); }
 			}
 
-			public                          bool  EventIsMouseR
+			public bool EventIsMouseR
 			{
 				get { return (Event.type == EventType.MouseUp) && (Event.button == 1); }
 			}
 
-			public                          bool  EventIsMouseLInRect
+			public bool EventIsMouseLInRect
 			{
 				get { return EventIsMouseL && EventOccurredInRect; }
 			}
 
-			public                          bool  EventIsMouseRInRect
+			public bool EventIsMouseRInRect
 			{
 				get { return EventIsMouseR && EventOccurredInRect; }
 			}
 
-			public virtual                  bool  Pressed
+			public virtual bool Pressed
 			{
 				get { return EventIsMouseLInRect; }
 			}
@@ -44,7 +45,7 @@ namespace ForestOfChaosLib.Editor
 				return input.Event;
 			}
 
-			public static implicit operator Rect(GUIEvent  input)
+			public static implicit operator Rect(GUIEvent input)
 			{
 				return input.Rect;
 			}
@@ -103,7 +104,8 @@ namespace ForestOfChaosLib.Editor
 
 		public class GUIEvent<T>: GUIEvent
 		{
-			public                          T Value;
+			public T Value;
+
 			public static implicit operator T(GUIEvent<T> input)
 			{
 				return input.Value;

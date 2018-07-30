@@ -30,9 +30,9 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 		private static          string            sceneSearch        = "";
 		private static          string            assetSearch        = "";
 		private static          int               activeIndex;
-		private static readonly GUILayoutOption[] ToggleOp                = {GUILayout.ExpandWidth(true), GUILayout.Height(18)};
-		private static readonly GUIContent        PingContent             = new GUIContent("", "Ping Object");
-		private static          int               typeLabelHighlightIndex = 0;
+		private static readonly GUILayoutOption[] ToggleOp    = {GUILayout.ExpandWidth(true), GUILayout.Height(18)};
+		private static readonly GUIContent        PingContent = new GUIContent("", "Ping Object");
+		private static          int               typeLabelHighlightIndex;
 
 		public static Type ActiveType
 		{
@@ -368,7 +368,7 @@ namespace ForestOfChaosLib.Editor.ObjectBrowser
 			{
 				var eventPingButton = FoCsGUI.Layout.Button(PingContent, FoCsGUI.Styles.Find, GUILayout.Width(16));
 				FoCsGUI.Layout.Label("  ", GUILayout.Width(8));
-				FoCsGUI.Layout.Button(foundObject.name,                                            FoCsGUI.Styles.Unity.Label, GUILayout.Width(300));
+				FoCsGUI.Layout.Button(foundObject.name,                                                             FoCsGUI.Styles.Unity.Label, GUILayout.Width(300));
 				FoCsGUI.Layout.Button(string.Format("Full Type: {0}", foundObject.GetType().Name.SplitCamelCase()), FoCsGUI.Styles.Unity.Label);
 
 				if(eventPingButton.Pressed)

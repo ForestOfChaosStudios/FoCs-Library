@@ -4,7 +4,6 @@ namespace ForestOfChaosLib.Utilities
 {
 	public static class VectorUtilities
 	{
-
 #region GetPosOnY
 #region Extensions
 		public static Vector3 GetPosOnY(this Ray ray)
@@ -12,7 +11,7 @@ namespace ForestOfChaosLib.Utilities
 			return GetPosOnY(0, ray);
 		}
 
-		public static Vector3 GetPosOnY(this Ray ray, float   yAxis)
+		public static Vector3 GetPosOnY(this Ray ray, float yAxis)
 		{
 			return GetPosOnYAxis(yAxis, ray);
 		}
@@ -23,7 +22,7 @@ namespace ForestOfChaosLib.Utilities
 		}
 #endregion
 
-		public static Vector3 GetPosOnY(float   yAxis, Ray ray)
+		public static Vector3 GetPosOnY(float yAxis, Ray ray)
 		{
 			return GetPosOnYAxis(yAxis, ray);
 		}
@@ -40,6 +39,5 @@ namespace ForestOfChaosLib.Utilities
 			return ray.origin + (ray.direction * dst);
 		}
 #endregion
-
 	}
 }

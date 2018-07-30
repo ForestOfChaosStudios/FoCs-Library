@@ -16,6 +16,7 @@ namespace ForestOfChaosLib.Editor
 		public static  GUISkin    skin;
 		private static List<Type> windowList;
 		private static List<Type> tabList;
+
 		private static List<Type> WindowList
 		{
 			get { return windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false)); }
@@ -58,9 +59,7 @@ namespace ForestOfChaosLib.Editor
 						var meth = TabList[ActiveTab].GetMethod("DrawGUI");
 
 						if(meth != null)
-						{
 							meth.Invoke(null, new object[] {this});
-						}
 					}
 				}
 			}

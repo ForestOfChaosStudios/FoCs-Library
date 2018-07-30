@@ -102,7 +102,6 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-
 #region Button
 		public static eBool Button(Rect rect)
 		{
@@ -152,7 +151,6 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-
 #region Toggle
 		public static eBool Toggle(Rect rect, bool toggle)
 		{
@@ -202,7 +200,6 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-
 #region Foldout
 		public static GUIEvent Foldout(Rect rect, bool foldout)
 		{
@@ -252,7 +249,6 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-
 #region IntField
 		public static eInt IntField(Rect rect, int value)
 		{
@@ -287,7 +283,6 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-
 #region FloatField
 		public static eFloat FloatField(Rect rect, float value)
 		{
@@ -327,7 +322,6 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-
 #region TextField
 		public static eString TextField(Rect rect, string value)
 		{
@@ -367,7 +361,6 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-
 #region TextArea
 		public static eString TextArea(Rect rect, string value)
 		{
@@ -387,7 +380,6 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-
 #region ObjectField
 		public static eObject RawObjectField(Rect rect, Object value, Type type, bool allowSceneObjects)
 		{
@@ -412,21 +404,20 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-
 #region ObjectField
 		public static GUIEvent<T> ObjectField<T>(Rect rect, T value, Type type, bool allowSceneObjects) where T: Object
 		{
-			return ObjectFieldMaster<T>(rect, GUICon.none, value, type, allowSceneObjects);
+			return ObjectFieldMaster(rect, GUICon.none, value, type, allowSceneObjects);
 		}
 
 		public static GUIEvent<T> ObjectField<T>(Rect rect, string label, T value, Type type, bool allowSceneObjects) where T: Object
 		{
-			return ObjectFieldMaster<T>(rect, new GUICon(label), value, type, allowSceneObjects);
+			return ObjectFieldMaster(rect, new GUICon(label), value, type, allowSceneObjects);
 		}
 
 		public static GUIEvent<T> ObjectField<T>(Rect rect, GUICon guiCon, T value, Type type, bool allowSceneObjects) where T: Object
 		{
-			return ObjectFieldMaster<T>(rect, guiCon, value, type, allowSceneObjects);
+			return ObjectFieldMaster(rect, guiCon, value, type, allowSceneObjects);
 		}
 
 		private static GUIEvent<T> ObjectFieldMaster<T>(Rect rect, GUICon guiCon, T value, Type type, bool allowSceneObjects) where T: Object
@@ -437,14 +428,13 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-
 #region HelpBox
-		public static GUIEvent ErrorBox(Rect   rect, string text)
+		public static GUIEvent ErrorBox(Rect rect, string text)
 		{
 			return HelpBoxMaster(rect, text, MessageType.Error);
 		}
 
-		public static GUIEvent InfoBox(Rect    rect, string text)
+		public static GUIEvent InfoBox(Rect rect, string text)
 		{
 			return HelpBoxMaster(rect, text, MessageType.Info);
 		}
@@ -454,7 +444,7 @@ namespace ForestOfChaosLib.Editor
 			return HelpBoxMaster(rect, text, MessageType.Warning);
 		}
 
-		public static GUIEvent HelpBox(Rect    rect, string text)
+		public static GUIEvent HelpBox(Rect rect, string text)
 		{
 			return HelpBoxMaster(rect, text, MessageType.None);
 		}
@@ -467,7 +457,6 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
-
 #region PropertyField
 		private static eProp PropFieldMaster(Rect pos, SerProp prop, GUICon cont, bool includeChildren, AttributeCheck ignoreCheck, bool autoLabelField = false)
 		{
@@ -583,7 +572,7 @@ namespace ForestOfChaosLib.Editor
 			return GetPropertyHeightMaster(prop, new GUICon(prop.displayName), true, AttributeCheck.DoCheck);
 		}
 
-		public static float GetPropertyHeight(SerProp prop, bool   includeChildren)
+		public static float GetPropertyHeight(SerProp prop, bool includeChildren)
 		{
 			return GetPropertyHeightMaster(prop, new GUICon(prop.displayName), includeChildren, AttributeCheck.DoCheck);
 		}
@@ -618,7 +607,6 @@ namespace ForestOfChaosLib.Editor
 			return GetPropertyHeightMaster(prop, cont, true, ignoreCheck);
 		}
 #endregion
-
 #region Other
 		public static GUIEvent ProgressBar(Rect rect, float fillAmount, string label = "")
 		{
@@ -672,7 +660,8 @@ namespace ForestOfChaosLib.Editor
 		}
 
 		private const float MENU_BUTTON_SIZE = 16f;
-		public static eInt  DrawPropertyWithMenu(Rect position, SerProp property, GUICon label, GUICon[] Options, int active, bool autoLabelField = false)
+
+		public static eInt DrawPropertyWithMenu(Rect position, SerProp property, GUICon label, GUICon[] Options, int active, bool autoLabelField = false)
 		{
 			return DrawDisabledPropertyWithMenu(false, position, property, label, Options, active, autoLabelField);
 		}
@@ -684,9 +673,7 @@ namespace ForestOfChaosLib.Editor
 			var menuRect  = new Rect(rectWidth, position.y, position.width - rectWidth, position.height);
 
 			using(FoCsEditor.Disposables.DisabledScope(disabled))
-			{
 				PropertyField(propRect, property, label, property.hasVisibleChildren, autoLabelField);
-			}
 
 			var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);
 
@@ -712,6 +699,5 @@ namespace ForestOfChaosLib.Editor
 			return GUIEvent.Create(position, index);
 		}
 #endregion
-
 	}
 }

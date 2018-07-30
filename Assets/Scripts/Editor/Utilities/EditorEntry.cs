@@ -25,7 +25,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 			return editorString.Property;
 		}
 
-		public static implicit operator string(EditorEntry             editorString)
+		public static implicit operator string(EditorEntry editorString)
 		{
 			return editorString.LabelName;
 		}

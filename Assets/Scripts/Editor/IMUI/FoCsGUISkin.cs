@@ -104,25 +104,18 @@ namespace ForestOfChaosLib.Editor
 				style.margin               = new RectOffset(0, 0, 0, 0);
 				style.normal.textColor     = Color.white;
 				style.normal.background    = TextureUtilities.GetSolidTexture(new Color(0.6f, 0.6f, 0.6f, RowField_ALPHA));
-
 				style.onNormal.textColor   = Color.white;
 				style.onNormal.background  = TextureUtilities.GetSolidTexture(new Color(0.3f, 0.7f, 0.7f, RowField_ALPHA));
-
 				style.hover.textColor      = Color.white;
 				style.hover.background     = TextureUtilities.GetSolidTexture(new Color(0.9f, 0.4f, 0f, RowField_ALPHA));
-
 				style.onHover.textColor    = Color.white;
-				style.onHover.background   = TextureUtilities.GetSolidTexture(new Color(1f,   0.5f, 0f, RowField_ALPHA));
-
+				style.onHover.background   = TextureUtilities.GetSolidTexture(new Color(1f, 0.5f, 0f, RowField_ALPHA));
 				style.active.textColor     = Color.white;
 				style.active.background    = TextureUtilities.GetSolidTexture(new Color(0.4f, 0.9f, 0.4f, RowField_ALPHA));
-
 				style.onActive.textColor   = Color.white;
-				style.onActive.background  = TextureUtilities.GetSolidTexture(new Color(0.5f, 1f,   0.5f, RowField_ALPHA));
-
-				style.focused.textColor  = Color.white;
-				style.focused.background = TextureUtilities.GetSolidTexture(new Color(0.17f, 0f, 0.69f, RowField_ALPHA));
-
+				style.onActive.background  = TextureUtilities.GetSolidTexture(new Color(0.5f, 1f, 0.5f, RowField_ALPHA));
+				style.focused.textColor    = Color.white;
+				style.focused.background   = TextureUtilities.GetSolidTexture(new Color(0.17f, 0f, 0.69f, RowField_ALPHA));
 				style.onFocused.textColor  = Color.white;
 				style.onFocused.background = TextureUtilities.GetSolidTexture(new Color(0.25f, 0f, 1f, RowField_ALPHA));
 

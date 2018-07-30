@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Maths
 {
-
 #region DataTypes
 	/// <summary>
 	///     Lets you specify a colour type.
@@ -15,14 +14,12 @@ namespace ForestOfChaosLib.Maths
 		Alpha
 	}
 #endregion
-
 #region CreateColours
 	/// <summary>
 	///     This Class has all of my custom color builders in it.
 	/// </summary>
 	public static class CreateColours
 	{
-
 #region BuildSingleColourInt
 		/// <summary>
 		///     This will build a color from an Int value divided by 255.
@@ -58,7 +55,6 @@ namespace ForestOfChaosLib.Maths
 			return c;
 		}
 #endregion
-
 #region BuildSingleColourFloat
 		/// <summary>
 		///     This will build a color from an float from 0.0 - 1.0.
@@ -94,7 +90,6 @@ namespace ForestOfChaosLib.Maths
 			return c;
 		}
 #endregion
-
 #region BuildColorWithoutTypeInt
 		/// <summary>
 		///     This will build a color from three Int values divided by 255.
@@ -140,7 +135,6 @@ namespace ForestOfChaosLib.Maths
 			return c;
 		}
 #endregion
-
 #region BuildColorWithoutTypeFloat
 		/// <summary>
 		///     This will build a color from three float values.
@@ -186,7 +180,6 @@ namespace ForestOfChaosLib.Maths
 			return c;
 		}
 #endregion
-
 #region BuildColor255
 		/// <summary>
 		///     This will build a color from three float values.
@@ -204,7 +197,6 @@ namespace ForestOfChaosLib.Maths
 			return c;
 		}
 #endregion
-
 #region BuildColorNoAlphaFloat
 		/// <summary>
 		///     This will build a color from three float values.
@@ -222,7 +214,6 @@ namespace ForestOfChaosLib.Maths
 			return c;
 		}
 #endregion
-
 	}
 #endregion
 

@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.Curves
 	[Serializable]
 	public class BezierCurveTD: ICurveTD
 	{
-		public                   List<TransformData> Positions;
+		public List<TransformData> Positions;
 
 		public List<TransformData> CurvePositions
 		{

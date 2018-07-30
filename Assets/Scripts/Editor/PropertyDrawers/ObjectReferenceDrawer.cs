@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
@@ -13,7 +12,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		protected static readonly GUIContent       foldoutGUIContent = new GUIContent("", "Open up the References Data");
 		protected                 bool             foldout;
 		protected                 SerializedObject serializedObject;
-		protected virtual         bool             AllowFoldout
+
+		protected virtual bool AllowFoldout
 		{
 			get { return true; }
 		}
@@ -21,11 +21,12 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			var elementHeight = FoCsGUI.GetPropertyHeight(property, FoCsGUI.AttributeCheck.DoCheck);
+
 			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
-            {
+			{
 				label = propScope.content;
 
-                using (var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
+				using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
 				{
 					FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(elementHeight)), property, label);
 
@@ -64,9 +65,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			if(!foldout)
 				return false;
 
-            DrawSurroundingBox(position);
+			DrawSurroundingBox(position);
 
-            using (var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
+			using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
 			{
 				using(FoCsEditor.Disposables.Indent())
 				{
@@ -110,7 +111,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static float PropertyHeight(SerializedProperty property, SerializedObject serializedObject, bool foldout)
 		{
-			if ((serializedObject == null) || !foldout || (serializedObject.VisibleProperties() == 0))
+			if((serializedObject == null) || !foldout || (serializedObject.VisibleProperties() == 0))
 				return Mathf.Max(FoCsGUI.GetPropertyHeight(property), SingleLine);
 
 			var iterator = serializedObject.GetIterator();
@@ -120,16 +121,16 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 			do
 			{
-				if (!FoCsEditor.IsPropertyHidden(iterator))
+				if(!FoCsEditor.IsPropertyHidden(iterator))
 					height += FoCsGUI.GetPropertyHeight(iterator, iterator.isExpanded, FoCsGUI.AttributeCheck.DoCheck) + Padding;
 			}
-			while (iterator.NextVisible(false));
+			while(iterator.NextVisible(false));
 
 			return height;
 		}
 
-        #region Storage
-        private static readonly Dictionary<string, ObjectReferenceDrawer> objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(10);
+#region Storage
+		private static readonly Dictionary<string, ObjectReferenceDrawer> objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(10);
 
 		public static ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property)
 		{
@@ -145,6 +146,5 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			return objDraw;
 		}
 #endregion
-
 	}
 }

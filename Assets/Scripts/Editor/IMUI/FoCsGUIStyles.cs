@@ -8,13 +8,14 @@ namespace ForestOfChaosLib.Editor
 	{
 		public static partial class Styles
 		{
-			private static SkinRef   unitySkins;
-			public static  SkinRef   Unity
+			private static SkinRef unitySkins;
+
+			public static SkinRef Unity
 			{
 				get { return unitySkins ?? (unitySkins = new SkinRef()); }
 			}
 
-			public static  Texture2D GetTexture(string search)
+			public static Texture2D GetTexture(string search)
 			{
 				return GetAsset<Texture2D>(search);
 			}

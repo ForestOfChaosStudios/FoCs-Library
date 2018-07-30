@@ -7,37 +7,38 @@ namespace ForestOfChaosLib.Extensions
 		private const string INVALID_CHARS            = "([=+{}[]\"'?.<>,\\|()*&^%$#@!;:-])+";
 		private const string WHITESPACE               = "\t\n\v\f\r ";
 		private const string INVALID_CHARS_WHITESPACE = INVALID_CHARS + WHITESPACE;
-		public static bool   DoesStringHaveInvalidCharsOrWhiteSpace(this    string str)
+
+		public static bool DoesStringHaveInvalidCharsOrWhiteSpace(this string str)
 		{
 			return StringRegexMatch(str, INVALID_CHARS_WHITESPACE);
 		}
 
-		public static bool   DoesStringHaveInvalidChars(this                string str)
+		public static bool DoesStringHaveInvalidChars(this string str)
 		{
 			return StringRegexMatch(str, INVALID_CHARS);
 		}
 
-		public static bool   IsNullOrEmpty(this                             string str)
+		public static bool IsNullOrEmpty(this string str)
 		{
 			return string.IsNullOrEmpty(str);
 		}
 
-		public static bool   HasContent(this                                string str)
+		public static bool HasContent(this string str)
 		{
 			return !string.IsNullOrEmpty(str);
 		}
 
-		public static bool   DoesStringHaveWhiteSpace(this                  string str)
+		public static bool DoesStringHaveWhiteSpace(this string str)
 		{
 			return StringRegexMatch(str, WHITESPACE);
 		}
 
-		public static string ReplaceWhiteSpace(this                         string str, string replaceChar = "")
+		public static string ReplaceWhiteSpace(this string str, string replaceChar = "")
 		{
 			return str.Replace(" ", replaceChar).Replace("\n", replaceChar).Replace("\t", replaceChar);
 		}
 
-		public static string ReplaceStringHaveInvalidCharsOrWhiteSpace(this string str, char   replaceChar)
+		public static string ReplaceStringHaveInvalidCharsOrWhiteSpace(this string str, char replaceChar)
 		{
 			return StringRegexReplace(str, INVALID_CHARS_WHITESPACE, replaceChar);
 		}
@@ -47,12 +48,12 @@ namespace ForestOfChaosLib.Extensions
 			return StringRegexReplace(str, INVALID_CHARS_WHITESPACE, replaceChar);
 		}
 
-		public static string ReplaceStringHaveInvalidChars(this             string str, char   replaceChar)
+		public static string ReplaceStringHaveInvalidChars(this string str, char replaceChar)
 		{
 			return StringRegexReplace(str, INVALID_CHARS, replaceChar);
 		}
 
-		public static string ReplaceStringHaveInvalidChars(this             string str, string replaceChar = "")
+		public static string ReplaceStringHaveInvalidChars(this string str, string replaceChar = "")
 		{
 			return StringRegexReplace(str, INVALID_CHARS, replaceChar);
 		}

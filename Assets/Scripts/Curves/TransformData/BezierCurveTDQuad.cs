@@ -9,8 +9,8 @@ namespace ForestOfChaosLib.Curves
 	[Serializable]
 	public class BezierCurveTDQuad: ICurveTD
 	{
-		public const             int                 TOTAL_COUNT    = 3;
-		public                   List<TransformData> Positions      = new List<TransformData>(TOTAL_COUNT);
+		public const int                 TOTAL_COUNT = 3;
+		public       List<TransformData> Positions   = new List<TransformData>(TOTAL_COUNT);
 
 		public TransformData StartPos
 		{

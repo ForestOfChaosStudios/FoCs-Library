@@ -21,7 +21,7 @@ namespace ForestOfChaosLib.Maths
 			var output = TransformData.Empty;
 			output.Position = Vector3BezierLerp.Lerp(value1.Position, value2.Position, value3.Position, time);
 			output.Rotation = QuaternionBezierLerp.Lerp(value1.Rotation, value2.Rotation, value3.Rotation, time);
-			output.Scale = Vector3BezierLerp.Lerp(value1.Scale, value2.Scale, value3.Scale, time);
+			output.Scale    = Vector3BezierLerp.Lerp(value1.Scale, value2.Scale, value3.Scale, time);
 
 			return output;
 		}
@@ -31,10 +31,11 @@ namespace ForestOfChaosLib.Maths
 			var output = TransformData.Empty;
 			output.Position = Vector3BezierLerp.Lerp(value1.Position, value2.Position, value3.Position, value4.Position, time);
 			output.Rotation = QuaternionBezierLerp.Lerp(value1.Rotation, value2.Rotation, value3.Rotation, value4.Rotation, time);
-			output.Scale    = Vector3BezierLerp.Lerp(value1.Scale,    value2.Scale, value3.Scale, value4.Scale, time);
+			output.Scale    = Vector3BezierLerp.Lerp(value1.Scale, value2.Scale, value3.Scale, value4.Scale, time);
 
 			return output;
 		}
+
 		public static TransformData Lerp(BezierCurveTDQuad curve, float time)
 		{
 			return Lerp(curve.CurvePositions.ToArray(), time);
@@ -54,6 +55,7 @@ namespace ForestOfChaosLib.Maths
 		{
 			return Lerp(curve.CurvePositions.ToArray(), time);
 		}
+
 		public static TransformData Lerp(List<TransformData> curve, float time)
 		{
 			return Lerp(curve.ToArray(), time);
@@ -69,7 +71,7 @@ namespace ForestOfChaosLib.Maths
 				case 1: return curve[0];
 				case 2: return Lerp(curve[0], curve[1], time);
 				case 3: return Lerp(curve[0], curve[1], curve[2], time);
-				case 4: return Lerp(curve[0], curve[1], curve[2], curve[3],                             time);
+				case 4: return Lerp(curve[0], curve[1], curve[2], curve[3],                       time);
 				case 5: return Lerp(curve[0], curve[1], curve[2], Lerp(curve[3], curve[4], time), time);
 			}
 

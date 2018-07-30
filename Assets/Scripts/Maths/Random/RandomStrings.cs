@@ -4,12 +4,13 @@ namespace ForestOfChaosLib.Maths.Random
 {
 	public static class RandomStrings
 	{
-		public const  string ALPHA           = "abcdefghijklmnopqrstuvwxyz";
-		public const  string NUMERIC         = "1234567890";
-		public const  string SYMBOLS         = "!@#$%^&*()-_=+`~,<.>/?;:'";
-		public const  string ALL_CHARS       = ALPHA + NUMERIC + SYMBOLS;
-		public const  string ALPHA_SYMBOLS   = ALPHA           + SYMBOLS;
-		public const  string NUMERIC_SYMBOLS = NUMERIC         + SYMBOLS;
+		public const string ALPHA           = "abcdefghijklmnopqrstuvwxyz";
+		public const string NUMERIC         = "1234567890";
+		public const string SYMBOLS         = "!@#$%^&*()-_=+`~,<.>/?;:'";
+		public const string ALL_CHARS       = ALPHA + NUMERIC + SYMBOLS;
+		public const string ALPHA_SYMBOLS   = ALPHA           + SYMBOLS;
+		public const string NUMERIC_SYMBOLS = NUMERIC         + SYMBOLS;
+
 		public static string GetRandomString(int length)
 		{
 			return GetRandomString(ALL_CHARS, length, DateTime.UtcNow.Millisecond);

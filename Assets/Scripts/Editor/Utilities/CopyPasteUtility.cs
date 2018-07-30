@@ -9,24 +9,36 @@ namespace ForestOfChaosLib.Editor.Utilities
 {
 	public static class CopyPasteUtility
 	{
-		static CopyPasteUtility()
+		private const   string                     COPY_SPLIT   = ">||>";
+		private const   string                     COPY_SPLIT_S = COPY_SPLIT + "\n";
+		private const   string                     NEEDLE       = "\".*\":";
+		internal static Dictionary<Type, CopyMode> TypeCopyData;
+
+		[Flags]
+		public enum CopyMode
 		{
-			TypeCopyData = new Dictionary<Type, CopyMode>
-			{
-					{typeof(FlareLayer),    CopyMode.None},
-					{typeof(AudioListener), CopyMode.None},
-					{typeof(Transform),     CopyMode.Editor},
-					{typeof(Object),        CopyMode.Unknown},
-					{typeof(GUILayer),      CopyMode.None},
-			};
+			Unknown = 0,
+			None    = 1,
+			Normal  = 2,
+			Editor  = 4
 		}
 
-
-		internal static Dictionary<Type, CopyMode> TypeCopyData;
 		public static string CopyBuffer
 		{
 			get { return EditorGUIUtility.systemCopyBuffer; }
 			set { EditorGUIUtility.systemCopyBuffer = value; }
+		}
+
+		static CopyPasteUtility()
+		{
+			TypeCopyData = new Dictionary<Type, CopyMode>
+			{
+					{typeof(FlareLayer), CopyMode.None},
+					{typeof(AudioListener), CopyMode.None},
+					{typeof(Transform), CopyMode.Editor},
+					{typeof(Object), CopyMode.Unknown},
+					{typeof(GUILayer), CopyMode.None}
+			};
 		}
 
 		private static CopyMode DoAddToDictionary<T>(T value)
@@ -47,6 +59,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 				return TypeCopyData[type] = CopyMode.Normal;
 
 			var editorCopy = InternalCanEditorCopy(value);
+
 			if(editorCopy)
 				return TypeCopyData[type] = CopyMode.Editor;
 
@@ -62,6 +75,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 			return CopyMode.Unknown;
 		}
+
 		public static CopyMode GetCopyMode<T>(T value)
 		{
 			var val = GetCopyTypeFromDictionary(typeof(T));
@@ -107,6 +121,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 			return val == CopyMode.Editor;
 		}
+
 		public static bool InternalCanEditorCopy<T>(T value)
 		{
 			string s;
@@ -122,9 +137,6 @@ namespace ForestOfChaosLib.Editor.Utilities
 
 			return (s != "") || (s != "{}");
 		}
-
-		private const string COPY_SPLIT   = ">||>";
-		private const string COPY_SPLIT_S = COPY_SPLIT + "\n";
 
 		public static bool EditorCopy<T>(T value)
 		{
@@ -254,8 +266,6 @@ namespace ForestOfChaosLib.Editor.Utilities
 				EditorJsonUtility.FromJsonOverwrite(buffer, obj);
 		}
 
-		private const string NEEDLE = "\".*\":";
-
 		private static bool IsValidObjectInBuffer()
 		{
 			return IsValidObjectInBuffer(CopyBuffer);
@@ -316,15 +326,6 @@ namespace ForestOfChaosLib.Editor.Utilities
 			}
 
 			return "";
-		}
-
-		[Flags]
-		public enum CopyMode
-		{
-			Unknown = 0,
-			None    = 1,
-			Normal  = 2,
-			Editor  = 4
 		}
 	}
 }

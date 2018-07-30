@@ -17,6 +17,15 @@ namespace ForestOfChaosLib.Editor
 	{
 		public static class Layout
 		{
+#region Other
+			public static GUIEvent ProgressBar(float fillAmount, string label = "", params GUILayOpt[] options)
+			{
+				var data = new GUIEvent {Event = new Event(Event.current), Rect = GetControlRect(options)};
+				EditorGUI.ProgressBar(data.Rect, fillAmount, label);
+
+				return data;
+			}
+#endregion
 #region LabelField
 			public static GUIEvent LabelField()
 			{
@@ -110,7 +119,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
 #endregion
-
 #region Label
 			public static GUIEvent Label()
 			{
@@ -204,7 +212,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
 #endregion
-
 #region Button
 			public static eBool Button()
 			{
@@ -298,7 +305,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), b);
 			}
 #endregion
-
 #region Toggle
 			public static eBool Toggle(bool toggle)
 			{
@@ -392,7 +398,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
-
 #region Toggle
 			public static eBool ToggleField(bool toggle)
 			{
@@ -486,7 +491,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
-
 #region Foldout
 			public static eBool Foldout(bool foldout)
 			{
@@ -555,7 +559,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
-
 #region IntField
 			public static eInt IntField(int value)
 			{
@@ -726,7 +729,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
-
 #region FloatField
 			public static eFloat FloatField(float value)
 			{
@@ -897,7 +899,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
-
 #region TextField
 			public static eString TextField(string value)
 			{
@@ -1068,7 +1069,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
-
 #region TextArea
 			public static eString TextArea(string value)
 			{
@@ -1102,7 +1102,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
-
 #region ObjectField
 			public static eObject RawObjectField(Object value, Type type, bool allowSceneObjects)
 			{
@@ -1158,41 +1157,40 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
-
 #region ObjectFieldGeneric
 			public static GUIEvent<T> ObjectField<T>(T value, bool allowSceneObjects) where T: Object
 			{
-				return ObjectFieldMaster<T>(value, allowSceneObjects);
+				return ObjectFieldMaster(value, allowSceneObjects);
 			}
 
 			public static GUIEvent<T> ObjectField<T>(T value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
 			{
-				return ObjectFieldMaster<T>(value, allowSceneObjects, options);
+				return ObjectFieldMaster(value, allowSceneObjects, options);
 			}
 
-			public static GUIEvent<T> ObjectField<T>(T value, string guiCon,  bool allowSceneObjects) where T: Object
+			public static GUIEvent<T> ObjectField<T>(T value, string guiCon, bool allowSceneObjects) where T: Object
 			{
-				return ObjectFieldMaster<T>(new GUICon(guiCon), value, allowSceneObjects);
+				return ObjectFieldMaster(new GUICon(guiCon), value, allowSceneObjects);
 			}
 
-			public static GUIEvent<T> ObjectField<T>(T value, string guiCon,  bool allowSceneObjects, params GUILayOpt[] options) where T: Object
+			public static GUIEvent<T> ObjectField<T>(T value, string guiCon, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
 			{
-				return ObjectFieldMaster<T>(new GUICon(guiCon), value, allowSceneObjects, options);
+				return ObjectFieldMaster(new GUICon(guiCon), value, allowSceneObjects, options);
 			}
 
-			public static GUIEvent<T> ObjectField<T>(T value, GUICon guiCon,  bool allowSceneObjects) where T: Object
+			public static GUIEvent<T> ObjectField<T>(T value, GUICon guiCon, bool allowSceneObjects) where T: Object
 			{
-				return ObjectFieldMaster<T>(guiCon, value, allowSceneObjects);
+				return ObjectFieldMaster(guiCon, value, allowSceneObjects);
 			}
 
-			public static GUIEvent<T> ObjectField<T>(T value, GUICon guiCon,  bool allowSceneObjects, params GUILayOpt[] options) where T: Object
+			public static GUIEvent<T> ObjectField<T>(T value, GUICon guiCon, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
 			{
-				return ObjectFieldMaster<T>(guiCon, value, allowSceneObjects, options);
+				return ObjectFieldMaster(guiCon, value, allowSceneObjects, options);
 			}
 
 			private static GUIEvent<T> ObjectFieldMaster<T>(T value, bool allowSceneObjects) where T: Object
 			{
-				return ObjectFieldMaster<T>(value, allowSceneObjects, null);
+				return ObjectFieldMaster(value, allowSceneObjects, null);
 			}
 
 			private static GUIEvent<T> ObjectFieldMaster<T>(T value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
@@ -1204,7 +1202,7 @@ namespace ForestOfChaosLib.Editor
 
 			private static GUIEvent<T> ObjectFieldMaster<T>(GUICon guiCon, T value, bool allowSceneObjects) where T: Object
 			{
-				return ObjectFieldMaster<T>(guiCon, value, allowSceneObjects, null);
+				return ObjectFieldMaster(guiCon, value, allowSceneObjects, null);
 			}
 
 			private static GUIEvent<T> ObjectFieldMaster<T>(GUICon guiCon, T value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
@@ -1214,7 +1212,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
-
 #region HelpBox
 			public static GUIEvent ErrorBox(string text)
 			{
@@ -1236,7 +1233,6 @@ namespace ForestOfChaosLib.Editor
 				return FoCsGUI.HelpBox(GUILayoutUtility.GetRect(0, SingleLine * 2.5f, Styles.Unity.HelpBox, null), text);
 			}
 #endregion
-
 #region PropertyField
 			public static eBool PropertyField(SerializedProperty property, bool includeChildren)
 			{
@@ -1282,7 +1278,6 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
-
 #region GetControlRect
 			public static Rect GetControlRect(params GUILayOpt[] options)
 			{
@@ -1302,15 +1297,6 @@ namespace ForestOfChaosLib.Editor
 			public static Rect GetControlRect(bool hasLabel, float height, GUIStyle style, params GUILayOpt[] options)
 			{
 				return EditorGUILayout.GetControlRect(hasLabel, height, style, options);
-			}
-#endregion
-#region Other
-			public static GUIEvent ProgressBar(float fillAmount, string label = "", params GUILayOpt[] options)
-			{
-				var data = new GUIEvent {Event = new Event(Event.current), Rect = GetControlRect(options)};
-				EditorGUI.ProgressBar(data.Rect, fillAmount, label);
-
-				return data;
 			}
 #endregion
 		}

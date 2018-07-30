@@ -2,12 +2,12 @@
 
 namespace ForestOfChaosLib.Editor
 {
-	[FoCsControlPanel.ControlPanelTab]
+	[FoCsControlPanel.ControlPanelTabAttribute]
 	public static class ReorderableListSettingsTab
 	{
-		private static readonly GUIContent Enabled       = new GUIContent("List Limiter Enabled");
-		private static readonly GUIContent Disabled      = new GUIContent("List Limiter Disabled");
-		private static          bool       ShowDebug     = false;
+		private static readonly GUIContent Enabled  = new GUIContent("List Limiter Enabled");
+		private static readonly GUIContent Disabled = new GUIContent("List Limiter Disabled");
+		private static          bool       ShowDebug;
 		private static readonly GUIContent DebugEnabled  = new GUIContent("Enable Debug Info");
 		private static readonly GUIContent DebugDisabled = new GUIContent("Disable Debug Info");
 
@@ -31,13 +31,10 @@ namespace ForestOfChaosLib.Editor
 
 				FoCsGUI.Layout.Label();
 				FoCsGUI.Layout.Label();
-
 				ShowDebug = FoCsGUI.Layout.Toggle(ShowDebug? DebugEnabled : DebugDisabled, ShowDebug);
 
 				if(ShowDebug)
-				{
 					ReorderableListCacheTab.DrawGUI(owner);
-				}
 			}
 		}
 	}

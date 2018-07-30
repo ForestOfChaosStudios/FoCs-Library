@@ -16,7 +16,7 @@ namespace ForestOfChaosLib.Curves.Editor
 		{
 			ListNullCheck(property);
 
-			return (SingleLine) + list.GetTotalHeight();
+			return SingleLine + list.GetTotalHeight();
 		}
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

@@ -15,21 +15,23 @@ namespace ForestOfChaosLib.Editor
 	{
 		public class ReorderableListProperty
 		{
-			public static int GLOBAL_CURRENT_ID = 0;
-
+			public static    int                      GLOBAL_CURRENT_ID;
 			private static   ReorderableList.Defaults s_Defaults;
 			private static   Action                   OnLimitingChange;
+			private static   bool?                    _LimitingEnabled;
 			private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
 			private          SerializedProperty       _property;
 			public           bool                     Animate;
+			public           int                      ID;
 			public           ListLimiter              Limiter;
-			private static bool? _LimitingEnabled;
+
 			public static bool LimitingEnabled
 			{
 				get
 				{
 					if(!_LimitingEnabled.HasValue)
 						_LimitingEnabled = EditorPrefs.GetInt("FoCsRLP.LimitingEnabled") == 0;
+
 					return _LimitingEnabled.Value;
 				}
 				set
@@ -39,8 +41,10 @@ namespace ForestOfChaosLib.Editor
 					OnLimitingChange.Trigger();
 				}
 			}
-			public        ReorderableList          List       { get; private set; }
-			public        AnimBool                 IsExpanded { get; set; }
+
+			public ReorderableList List       { get; private set; }
+			public AnimBool        IsExpanded { get; set; }
+
 			public static ReorderableList.Defaults Defaults
 			{
 				get { return s_Defaults ?? (s_Defaults = new ReorderableList.Defaults()); }
@@ -56,23 +60,20 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 
-			public int ID;
-
 			private ReorderableListProperty()
 			{
 				ID = GLOBAL_CURRENT_ID;
 				++GLOBAL_CURRENT_ID;
 			}
 
-			public ReorderableListProperty(SerializedProperty property):this()
+			public ReorderableListProperty(SerializedProperty property): this()
 			{
 				_property = property;
 				Animate   = false;
-
 				InitList();
 			}
 
-			public ReorderableListProperty(SerializedProperty property, bool dragAble, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true, bool animate = false):this()
+			public ReorderableListProperty(SerializedProperty property, bool dragAble, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true, bool animate = false): this()
 			{
 				_property = property;
 				Animate   = animate;
@@ -114,13 +115,9 @@ namespace ForestOfChaosLib.Editor
 				if(LimitingEnabled)
 				{
 					if(Limiter == null)
-					{
 						Limiter = ListLimiter.GetLimiter(this);
-					}
 					else
-					{
 						Limiter.UpdateRange();
-					}
 				}
 			}
 
@@ -262,6 +259,7 @@ namespace ForestOfChaosLib.Editor
 					return List.elementHeight + height;
 
 				CheckLimiter();
+
 				if(Limiter == null)
 				{
 					for(var i = 0; i < List.serializedProperty.arraySize; i++)
@@ -289,6 +287,22 @@ namespace ForestOfChaosLib.Editor
 				return input.Property;
 			}
 
+#region Storage
+			private ORD GetObjectDrawer(SerializedProperty property)
+			{
+				var id = string.Format("{0}-{1}", property.propertyPath, property.name);
+				ORD objDraw;
+
+				if(objectDrawers.TryGetValue(id, out objDraw))
+					return objDraw;
+
+				objDraw = new ORD();
+				objectDrawers.Add(id, objDraw);
+
+				return objDraw;
+			}
+#endregion
+
 			public static class ListStyles
 			{
 				public static readonly GUIContent IconToolbarPlus     = EditorGUIUtility.IconContent("Toolbar Plus",      "|Add to list");
@@ -302,6 +316,7 @@ namespace ForestOfChaosLib.Editor
 				public static readonly GUIStyle   BoxBackground     = new GUIStyle("RL Background");
 				public static readonly GUIStyle   PreButton         = new GUIStyle("RL FooterButton");
 				public static readonly GUIStyle   ElementBackground = new GUIStyle("RL Element");
+
 				public static GUIStyle MiniLabel
 				{
 					get
@@ -324,6 +339,7 @@ namespace ForestOfChaosLib.Editor
 				private        int                     _min;
 				public         ReorderableListProperty MyListProperty;
 				private        bool                    Update;
+
 				private static int _TOTAL_VISIBLE_COUNT
 				{
 					get
@@ -337,6 +353,7 @@ namespace ForestOfChaosLib.Editor
 					}
 					set { EditorPrefs.SetInt("FoCsRLP._TOTAL_VISIBLE_COUNT", Mathf.Clamp(value, 0, int.MaxValue)); }
 				}
+
 				public static int TOTAL_VISIBLE_COUNT
 				{
 					get { return _TOTAL_VISIBLE_COUNT; }
@@ -346,6 +363,7 @@ namespace ForestOfChaosLib.Editor
 						ChangeCount.Trigger();
 					}
 				}
+
 				private int Count
 				{
 					get { return MyListProperty.Property.arraySize; }
@@ -356,13 +374,14 @@ namespace ForestOfChaosLib.Editor
 					get { return _min; }
 					set { _min = Math.Max(0, value); }
 				}
+
 				public int Max
 				{
 					get { return _max; }
 					set { _max = Math.Min(Count, value); }
 				}
 
-				public        bool        ShowElement(int                    index)
+				public bool ShowElement(int index)
 				{
 					return (index >= Min) && (index < Max);
 				}
@@ -570,8 +589,8 @@ namespace ForestOfChaosLib.Editor
 
 				var minString  = (Limiter.Min + 1).ToString();
 				var maxString  = Limiter.Max.ToString();
-				var shortLabel = string.Format("{0}: {1}-{2}", minString.Length + maxString.Length < 5? "Index" : "I", minString, maxString);
-				var toolTip    = string.Format("Viewable Indices: Min:{0} Max:{1}", minString, maxString);
+				var shortLabel = string.Format("{0}: {1}-{2}",                      minString.Length + maxString.Length < 5? "Index" : "I", minString, maxString);
+				var toolTip    = string.Format("Viewable Indices: Min:{0} Max:{1}", minString,                                              maxString);
 				FoCsGUI.Label(horScope.GetNext(5, RectEdit.ChangeY(-3)), new GUIContent(shortLabel, toolTip));
 
 				using(Disposables.DisabledScope(!Limiter.CanIncrease()))
@@ -626,7 +645,6 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 #endregion
-
 #region Delegate Setters
 			/// <summary>
 			///     SetAddCallBack
@@ -758,22 +776,6 @@ namespace ForestOfChaosLib.Editor
 				List.onSelectCallback = a;
 
 				return this;
-			}
-#endregion
-
-#region Storage
-			private ORD GetObjectDrawer(SerializedProperty property)
-			{
-				var id = string.Format("{0}-{1}", property.propertyPath, property.name);
-				ORD objDraw;
-
-				if(objectDrawers.TryGetValue(id, out objDraw))
-					return objDraw;
-
-				objDraw = new ORD();
-				objectDrawers.Add(id, objDraw);
-
-				return objDraw;
 			}
 #endregion
 		}

@@ -17,6 +17,7 @@ namespace ForestOfChaosLib.Maths
 		{
 			var posOne = Quaternion.Lerp(value1, value2, time);
 			var posTwo = Quaternion.Lerp(value2, value3, time);
+
 			return Quaternion.Lerp(posOne, posTwo, time);
 		}
 

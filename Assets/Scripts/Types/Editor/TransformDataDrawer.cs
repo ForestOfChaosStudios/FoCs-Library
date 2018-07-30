@@ -36,14 +36,10 @@ namespace ForestOfChaosLib.Curves.Editor
 						FoCsGUI.GUIEventBool pasteBtn;
 
 						using(FoCsEditor.Disposables.ColorChanger(isType? GUI.color : Color.red))
-						{
 							pasteBtn = FoCsGUI.Button(horizontalScope.GetNext(), PasteContent);
-						}
 
 						if(copyBtn)
-						{
 							CopyPasteUtility.Copy(GetOwner(property));
-						}
 						else if(pasteBtn)
 						{
 							var tD = CopyPasteUtility.Paste<TransformData>();

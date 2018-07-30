@@ -4,7 +4,7 @@ namespace ForestOfChaosLib.Extensions
 {
 	public static class MethodInfoUtil
 	{
-		public static bool IsOverride(this          MethodInfo methodInfo)
+		public static bool IsOverride(this MethodInfo methodInfo)
 		{
 			return methodInfo.GetBaseDefinition().DeclaringType != methodInfo.DeclaringType;
 		}

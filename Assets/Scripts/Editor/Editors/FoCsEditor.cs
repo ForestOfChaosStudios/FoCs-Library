@@ -1,12 +1,10 @@
 //#define FoCsEditor_ANIMATED
 
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
 using ORD = ForestOfChaosLib.Editor.PropertyDrawers.ObjectReferenceDrawer;
 
@@ -18,6 +16,8 @@ namespace ForestOfChaosLib.Editor
 	[CustomEditor(typeof(object), true, isFallback = true)]
 	public partial class FoCsEditor: UnityEditor.Editor
 	{
+		internal static Dictionary<string, RLP> RLPList = new Dictionary<string, RLP>(10);
+
 		public enum DefaultPropertyType
 		{
 			NotDefault,
@@ -25,19 +25,20 @@ namespace ForestOfChaosLib.Editor
 			Hidden
 		}
 
-		internal         Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
-		protected       bool                    GUIChanged           { get; private set; }
-		public virtual  bool                    HideDefaultProperty
+		internal  Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
+		protected bool                    GUIChanged { get; private set; }
+
+		public virtual bool HideDefaultProperty
 		{
 			get { return true; }
 		}
 
-		public virtual  bool                    ShowCopyPasteButtons
+		public virtual bool ShowCopyPasteButtons
 		{
 			get { return true; }
 		}
 
-		public override bool                    UseDefaultMargins()
+		public override bool UseDefaultMargins()
 		{
 			return false;
 		}
@@ -46,6 +47,7 @@ namespace ForestOfChaosLib.Editor
 		{
 			if(objectDrawers != null)
 				objectDrawers.Clear();
+
 			objectDrawers = null;
 		}
 
@@ -155,12 +157,12 @@ namespace ForestOfChaosLib.Editor
 			return property.name.Equals("m_Script") && property.type.Equals("PPtr<MonoScript>") && (property.propertyType == SerializedPropertyType.ObjectReference) && property.propertyPath.Equals("m_Script");
 		}
 
-		public static bool IsPropertyHidden(SerializedProperty            property)
+		public static bool IsPropertyHidden(SerializedProperty property)
 		{
 			return GetDefaultPropertyType(property) != DefaultPropertyType.NotDefault;
 		}
 
-		protected     bool PropertyIsArrayAndNotString(SerializedProperty property)
+		protected bool PropertyIsArrayAndNotString(SerializedProperty property)
 		{
 			return property.isArray && (property.propertyType != SerializedPropertyType.String);
 		}
@@ -191,18 +193,18 @@ namespace ForestOfChaosLib.Editor
 		public int FileID()
 		{
 			//From https://forum.unity.com/threads/how-to-get-the-local-identifier-in-file-for-scene-objects.265686/
-
 			var inspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
-
 			int localId;
+
 			{
-				var seriObject = new SerializedObject(target);
-				var inspectorModeInfoValue = inspectorModeInfo.GetValue(seriObject,  null);
+				var seriObject             = new SerializedObject(target);
+				var inspectorModeInfoValue = inspectorModeInfo.GetValue(seriObject, null);
 				inspectorModeInfo.SetValue(seriObject, InspectorMode.Debug, null);
 				var localIdProp = seriObject.FindProperty("m_LocalIdentfierInFile"); //note the misspelling
 				inspectorModeInfo.SetValue(seriObject, inspectorModeInfoValue, null);
 				localId = localIdProp.intValue;
 			}
+
 			return localId;
 		}
 
@@ -230,12 +232,10 @@ namespace ForestOfChaosLib.Editor
 
 			return objDraw;
 		}
-		internal static Dictionary<string, RLP> RLPList = new Dictionary<string, RLP>(10);
 
 		public static RLP GetReorderableList(SerializedProperty property)
 		{
 			var id = string.Format("{0}:{1}-{2}", property.serializedObject.targetObject.GetInstanceID(), property.propertyPath, property.name);
-
 			RLP ret;
 
 			if(RLPList.TryGetValue(id, out ret))
@@ -253,7 +253,6 @@ namespace ForestOfChaosLib.Editor
 
 			return ret;
 		}
-
 	}
 
 	public class FoCsEditor<T>: FoCsEditor where T: Object

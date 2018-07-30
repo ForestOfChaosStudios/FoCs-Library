@@ -26,21 +26,19 @@ namespace ForestOfChaosLib.Editor
 				return new EditorGUILayout.FadeGroupScope(value);
 			}
 #endregion
-
 #region PropertyScope
 			public static EditorGUI.PropertyScope PropertyScope(Rect rect, GUIContent label, SerializedProperty prop)
 			{
 				return new EditorGUI.PropertyScope(rect, label, prop);
 			}
 #endregion
-
 #region Indent
 			public static EditorIndent Indent()
 			{
 				return new EditorIndent();
 			}
 
-			public static EditorIndent Indent(int    indentLevel)
+			public static EditorIndent Indent(int indentLevel)
 			{
 				return new EditorIndent(indentLevel);
 			}
@@ -60,7 +58,6 @@ namespace ForestOfChaosLib.Editor
 				return new EditorIndent(0, true);
 			}
 #endregion
-
 #region ColorChanger
 			public static EditorColorChanger ColorChanger(Color col)
 			{
@@ -72,24 +69,23 @@ namespace ForestOfChaosLib.Editor
 				return new EditorColorChanger(col, type);
 			}
 #endregion
-
 #region LabelField
-			public static EditorWidth LabelSetWidth(float      size)
+			public static EditorWidth LabelSetWidth(float size)
 			{
 				return new EditorWidth(size, EditorWidth.WidthType.Label, EditorWidth.ChangeType.Set);
 			}
 
-			public static EditorWidth FieldSetWidth(float      size)
+			public static EditorWidth FieldSetWidth(float size)
 			{
 				return new EditorWidth(size, EditorWidth.WidthType.Field, EditorWidth.ChangeType.Set);
 			}
 
-			public static EditorWidth LabelAddWidth(float      size)
+			public static EditorWidth LabelAddWidth(float size)
 			{
 				return new EditorWidth(size, EditorWidth.WidthType.Label, EditorWidth.ChangeType.Add);
 			}
 
-			public static EditorWidth FieldAddWidth(float      size)
+			public static EditorWidth FieldAddWidth(float size)
 			{
 				return new EditorWidth(size, EditorWidth.WidthType.Field, EditorWidth.ChangeType.Add);
 			}
@@ -104,9 +100,8 @@ namespace ForestOfChaosLib.Editor
 				return new EditorWidth(size, EditorWidth.WidthType.Both, EditorWidth.ChangeType.Set);
 			}
 #endregion
-
 #region UnityDisposables
-			public static EditorGUI.DisabledGroupScope     DisabledScope(bool      val = true)
+			public static EditorGUI.DisabledGroupScope DisabledScope(bool val = true)
 			{
 				return new EditorGUI.DisabledGroupScope(val);
 			}
@@ -116,7 +111,7 @@ namespace ForestOfChaosLib.Editor
 				return new EditorGUILayout.ToggleGroupScope(label, toggle);
 			}
 
-			public static EditorGUI.ChangeCheckScope       ChangeCheck()
+			public static EditorGUI.ChangeCheckScope ChangeCheck()
 			{
 				return new EditorGUI.ChangeCheckScope();
 			}
@@ -128,7 +123,7 @@ namespace ForestOfChaosLib.Editor
 				return new GUILayout.HorizontalScope();
 			}
 
-			public static GUILayout.HorizontalScope HorizontalScope(GUIStyle                 skinBox)
+			public static GUILayout.HorizontalScope HorizontalScope(GUIStyle skinBox)
 			{
 				return new GUILayout.HorizontalScope(skinBox);
 			}
@@ -138,19 +133,18 @@ namespace ForestOfChaosLib.Editor
 				return new GUILayout.HorizontalScope(options);
 			}
 
-			public static GUILayout.HorizontalScope HorizontalScope(GUIStyle                 skinBox, params GUILayoutOption[] options)
+			public static GUILayout.HorizontalScope HorizontalScope(GUIStyle skinBox, params GUILayoutOption[] options)
 			{
 				return new GUILayout.HorizontalScope(skinBox, options);
 			}
 #endregion
-
 #region VerticalScope
 			public static GUILayout.VerticalScope VerticalScope()
 			{
 				return new GUILayout.VerticalScope();
 			}
 
-			public static GUILayout.VerticalScope VerticalScope(GUIStyle                 skinBox)
+			public static GUILayout.VerticalScope VerticalScope(GUIStyle skinBox)
 			{
 				return new GUILayout.VerticalScope(skinBox);
 			}
@@ -160,24 +154,23 @@ namespace ForestOfChaosLib.Editor
 				return new GUILayout.VerticalScope(options);
 			}
 
-			public static GUILayout.VerticalScope VerticalScope(GUIStyle                 skinBox, params GUILayoutOption[] options)
+			public static GUILayout.VerticalScope VerticalScope(GUIStyle skinBox, params GUILayoutOption[] options)
 			{
 				return new GUILayout.VerticalScope(skinBox, options);
 			}
 #endregion
-
 #region AreaScope
 			public static GUILayout.AreaScope AreaScope(Rect rect)
 			{
 				return new GUILayout.AreaScope(rect);
 			}
 
-			public static GUILayout.AreaScope AreaScope(Rect rect, string     content)
+			public static GUILayout.AreaScope AreaScope(Rect rect, string content)
 			{
 				return new GUILayout.AreaScope(rect, content);
 			}
 
-			public static GUILayout.AreaScope AreaScope(Rect rect, string     content, GUIStyle style)
+			public static GUILayout.AreaScope AreaScope(Rect rect, string content, GUIStyle style)
 			{
 				return new GUILayout.AreaScope(rect, content, style);
 			}
@@ -192,24 +185,23 @@ namespace ForestOfChaosLib.Editor
 				return new GUILayout.AreaScope(rect, content, style);
 			}
 
-			public static GUILayout.AreaScope AreaScope(Rect rect, Texture    texture)
+			public static GUILayout.AreaScope AreaScope(Rect rect, Texture texture)
 			{
 				return new GUILayout.AreaScope(rect, texture);
 			}
 
-			public static GUILayout.AreaScope AreaScope(Rect rect, Texture    texture, GUIStyle style)
+			public static GUILayout.AreaScope AreaScope(Rect rect, Texture texture, GUIStyle style)
 			{
 				return new GUILayout.AreaScope(rect, texture, style);
 			}
 #endregion
-
 #region ScrollViewScope
 			public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos)
 			{
 				return new EditorGUILayout.ScrollViewScope(scrollPos);
 			}
 
-			public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos, bool                     handleScrollWheel)
+			public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos, bool handleScrollWheel)
 			{
 				return new EditorGUILayout.ScrollViewScope(scrollPos) {handleScrollWheel = handleScrollWheel};
 			}
@@ -231,19 +223,17 @@ namespace ForestOfChaosLib.Editor
 #endregion
 #endregion
 #endregion
-
 #region RectLayout
 			public static RectHorizontalScope RectHorizontalScope(int count, Rect rect)
 			{
 				return new RectHorizontalScope(count, rect);
 			}
 
-			public static RectVerticalScope   RectVerticalScope(int   count, Rect rect)
+			public static RectVerticalScope RectVerticalScope(int count, Rect rect)
 			{
 				return new RectVerticalScope(count, rect);
 			}
 #endregion
-
 		}
 	}
 }

@@ -2,7 +2,7 @@ namespace ForestOfChaosLib.Maths
 {
 	public class MiscMaths
 	{
-		public static bool IsOdd(int  value)
+		public static bool IsOdd(int value)
 		{
 			return (value % 2) != 0;
 		}

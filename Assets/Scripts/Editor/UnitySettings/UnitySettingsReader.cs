@@ -1,6 +1,5 @@
-﻿using System;
-using UnityEditor;
-using Object = UnityEngine.Object;
+﻿using UnityEditor;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.UnitySettings
 {
@@ -27,7 +26,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 			get
 			{
 				return new[]
- {
+				{
 						AudioManager,
 						ClusterInputManager,
 						DynamicsManager,
@@ -51,6 +50,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 		{
 			private Object _Asset;
 			public  string FileName;
+
 			public Object Asset
 			{
 				get
@@ -67,12 +67,12 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 				FileName = fileName;
 			}
 
-			public static implicit operator Object(SettingsFile           input)
+			public static implicit operator Object(SettingsFile input)
 			{
 				return input.Asset;
 			}
 
-			public static implicit operator string(SettingsFile           input)
+			public static implicit operator string(SettingsFile input)
 			{
 				return input.FileName;
 			}
@@ -82,7 +82,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 				return input.GetInputAxisSerializedObject();
 			}
 
-			public                          SerializedObject GetInputAxisSerializedObject()
+			public SerializedObject GetInputAxisSerializedObject()
 			{
 				return new SerializedObject(Asset);
 			}

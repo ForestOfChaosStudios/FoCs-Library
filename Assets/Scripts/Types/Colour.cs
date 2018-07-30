@@ -116,17 +116,17 @@ namespace ForestOfChaosLib.Types
 			return new Colour(a.R - b.R, a.G - b.G, a.B - b.B, a.A - b.A);
 		}
 
-		public static Colour operator *(Colour a, float  d)
+		public static Colour operator *(Colour a, float d)
 		{
 			return new Colour(a.R * d, a.G * d, a.B * d, a.A * d);
 		}
 
-		public static Colour operator *(float  d, Colour a)
+		public static Colour operator *(float d, Colour a)
 		{
 			return new Colour(a.R * d, a.G * d, a.B * d, a.A * d);
 		}
 
-		public static Colour operator /(Colour a, float  d)
+		public static Colour operator /(Colour a, float d)
 		{
 			return new Colour(a.R / d, a.G / d, a.B / d, a.A / d);
 		}
@@ -188,5 +188,4 @@ namespace ForestOfChaosLib.Types
 		}
 	}
 #endregion
-
 }

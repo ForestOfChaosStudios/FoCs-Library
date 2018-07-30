@@ -38,16 +38,12 @@ namespace ForestOfChaosLib.Curves.Components
 		}
 	}
 
-	public abstract class ICurveV3DComponent : MonoBehaviour
+	public abstract class ICurveV3DComponent: MonoBehaviour
 	{
-		public abstract bool UseGlobalSpace { get; set; }
-
+		public abstract bool          UseGlobalSpace { get; set; }
 		public abstract List<Vector3> CurvePositions { get; set; }
-
-		public abstract bool IsFixedLength { get; }
-
-		public abstract int Length { get; }
-
+		public abstract bool          IsFixedLength  { get; }
+		public abstract int           Length         { get; }
 		public abstract Vector3 Lerp(float time);
 	}
 }
