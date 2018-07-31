@@ -4,23 +4,15 @@ using UnityEngine;
 namespace ForestOfChaosLib.Types
 {
 	[Serializable]
-	public class TransformData
+	public struct TransformData
 	{
-		private static readonly TransformData empty = new TransformData(Vector3.zero, Quaternion.identity, Vector3.one);
 		public                  Vector3       Position;
 		public                  Quaternion    Rotation;
 		public                  Vector3       Scale;
 
 		public static TransformData Empty
 		{
-			get { return new TransformData(empty); }
-		}
-
-		public TransformData()
-		{
-			Position = Vector3.zero;
-			Rotation = Quaternion.identity;
-			Scale    = Vector3.one;
+			get { return new TransformData(Vector3.zero, Quaternion.identity, Vector3.one); }
 		}
 
 		public TransformData(Transform transform)

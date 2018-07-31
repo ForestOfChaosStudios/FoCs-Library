@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Maths;
 using ForestOfChaosLib.Types;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Curves
 {
 	[Serializable]
 	public class BezierCurveTDDouble: ICurveTD
 	{
-		public const int                 TOTAL_COUNT = 2;
-		public       List<TransformData> Positions   = new List<TransformData>(TOTAL_COUNT);
-		private bool useGlobalSpace;
+		public const             int                 TOTAL_COUNT = 2;
+		[SerializeField] private List<TransformData> Positions   = new List<TransformData>(TOTAL_COUNT);
+		[SerializeField] private bool                useGlobalSpace;
 
-		/// <inheritdoc />
 		public bool UseGlobalSpace
 		{
 			get { return useGlobalSpace; }
 			set { useGlobalSpace = value; }
 		}
+
 		public TransformData StartPos
 		{
 			get { return Positions[0]; }
@@ -43,7 +44,7 @@ namespace ForestOfChaosLib.Curves
 			{
 				PosNullCheck();
 
-				return new List<TransformData>(Positions);
+				return Positions;
 			}
 			set
 			{
@@ -80,7 +81,7 @@ namespace ForestOfChaosLib.Curves
 
 		public TransformData Lerp(float time)
 		{
-			return TransformDataBezierLerp.Lerp(this, time);
+			return TransformDataBezierLerp.Lerp(Positions, time);
 		}
 	}
 }

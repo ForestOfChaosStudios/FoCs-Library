@@ -10,8 +10,14 @@ namespace ForestOfChaosLib.Curves
 	public class BezierCurveV3DCube: ICurveV3D
 	{
 		public const             int           TOTAL_COUNT    = 4;
-		public                   List<Vector3> Positions      = new List<Vector3>(TOTAL_COUNT);
+		[SerializeField] private List<Vector3> Positions      = new List<Vector3>(TOTAL_COUNT);
 		[SerializeField] private bool          useGlobalSpace = true;
+
+		public bool UseGlobalSpace
+		{
+			get { return useGlobalSpace; }
+			set { useGlobalSpace = value; }
+		}
 
 		public Vector3 StartPos
 		{
@@ -40,13 +46,7 @@ namespace ForestOfChaosLib.Curves
 		private void PosNullCheck()
 		{
 			if(Positions == null)
-				Positions = new List<Vector3>(4);
-		}
-
-		public bool UseGlobalSpace
-		{
-			get { return useGlobalSpace; }
-			set { useGlobalSpace = value; }
+				Positions = new List<Vector3>(TOTAL_COUNT);
 		}
 
 		public List<Vector3> CurvePositions
@@ -55,7 +55,7 @@ namespace ForestOfChaosLib.Curves
 			{
 				PosNullCheck();
 
-				return new List<Vector3>(Positions);
+				return Positions;
 			}
 			set
 			{
@@ -112,7 +112,7 @@ namespace ForestOfChaosLib.Curves
 
 		public Vector3 Lerp(float time)
 		{
-			return Vector3BezierLerp.Lerp(this, time);
+			return Vector3BezierLerp.Lerp(Positions, time);
 		}
 	}
 }

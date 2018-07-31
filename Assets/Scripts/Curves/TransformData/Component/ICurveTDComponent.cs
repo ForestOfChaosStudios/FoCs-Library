@@ -7,6 +7,7 @@ namespace ForestOfChaosLib.Curves.Components
 	public class ICurveTDComponent<T>: ICurveTDComponent, ICurveTD where T: ICurveTD
 	{
 		public T Curve;
+
 		public override bool UseGlobalSpace
 		{
 			get { return Curve.UseGlobalSpace; }
@@ -34,7 +35,6 @@ namespace ForestOfChaosLib.Curves.Components
 			if(!UseGlobalSpace)
 			{
 				var lerpTime = Curve.Lerp(time);
-
 				lerpTime.Position = transform.TransformPoint(lerpTime.Position);
 
 				return lerpTime;

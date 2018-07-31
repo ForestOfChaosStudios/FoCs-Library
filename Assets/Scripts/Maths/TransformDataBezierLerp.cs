@@ -36,29 +36,37 @@ namespace ForestOfChaosLib.Maths
 			return output;
 		}
 
-		public static TransformData Lerp(BezierCurveTDQuad curve, float time)
-		{
-			return Lerp(curve.CurvePositions.ToArray(), time);
-		}
-
-		public static TransformData Lerp(BezierCurveTDCube curve, float time)
-		{
-			return Lerp(curve.CurvePositions.ToArray(), time);
-		}
-
-		public static TransformData Lerp(BezierCurveTD curve, float time)
-		{
-			return Lerp(curve.Positions.ToArray(), time);
-		}
-
-		public static TransformData Lerp(ICurveTD curve, float time)
-		{
-			return Lerp(curve.CurvePositions.ToArray(), time);
-		}
-
 		public static TransformData Lerp(List<TransformData> curve, float time)
 		{
-			return Lerp(curve.ToArray(), time);
+			var count = curve.Count;
+
+			switch(count)
+			{
+				case 0: return new TransformData();
+				case 1: return curve[0];
+				case 2: return Lerp(curve[0], curve[1], time);
+				case 3: return Lerp(curve[0], curve[1], curve[2], time);
+				case 4: return Lerp(curve[0], curve[1], curve[2], curve[3],                       time);
+				case 5: return Lerp(curve[0], curve[1], curve[2], Lerp(curve[3], curve[4], time), time);
+			}
+
+			//FROM HERE IS IS SAFE
+			//For there to be at leat 5 hard coded positions
+			var posOne   = Lerp(curve[0], curve[1], time);
+			var posTwo   = Lerp(curve[1], curve[2], time);
+			var posThree = Lerp(curve[2], curve[3], time);
+
+			for(var i = 4; i < count - 1; i++)
+			{
+				posOne   = Lerp(posOne,   posTwo,       time);
+				posTwo   = Lerp(posTwo,   posThree,     time);
+				posThree = Lerp(curve[i], curve[i + 1], time);
+			}
+
+			posOne = Lerp(posOne, posTwo,   time);
+			posTwo = Lerp(posTwo, posThree, time);
+
+			return Lerp(posOne, posTwo, time);
 		}
 
 		public static TransformData Lerp(TransformData[] curve, float time)
@@ -67,7 +75,7 @@ namespace ForestOfChaosLib.Maths
 
 			switch(count)
 			{
-				case 0: return TransformData.Empty;
+				case 0: return new TransformData();
 				case 1: return curve[0];
 				case 2: return Lerp(curve[0], curve[1], time);
 				case 3: return Lerp(curve[0], curve[1], curve[2], time);

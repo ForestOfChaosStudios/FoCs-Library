@@ -9,7 +9,14 @@ namespace ForestOfChaosLib.Curves
 	[Serializable]
 	public class BezierCurveTD: ICurveTD
 	{
-		public List<TransformData> Positions;
+		[SerializeField] private List<TransformData> Positions;
+		[SerializeField] private bool                useGlobalSpace;
+
+		public bool UseGlobalSpace
+		{
+			get { return useGlobalSpace; }
+			set { useGlobalSpace = value; }
+		}
 
 		public List<TransformData> CurvePositions
 		{
@@ -22,16 +29,6 @@ namespace ForestOfChaosLib.Curves
 			get { return false; }
 		}
 
-		[SerializeField]
-		private bool useGlobalSpace;
-
-		/// <inheritdoc />
-		public bool UseGlobalSpace
-		{
-			get { return useGlobalSpace; }
-			set { useGlobalSpace = value; }
-		}
-
 		public int Length
 		{
 			get { return Positions.Count; }
@@ -39,7 +36,7 @@ namespace ForestOfChaosLib.Curves
 
 		public TransformData Lerp(float time)
 		{
-			return TransformDataBezierLerp.Lerp(this, time);
+			return TransformDataBezierLerp.Lerp(Positions, time);
 		}
 	}
 }

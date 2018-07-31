@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.Curves
 	[Serializable]
 	public class BezierCurveV3D: ICurveV3D
 	{
-		public                   List<Vector3> Positions;
+		[SerializeField] private List<Vector3> Positions;
 		[SerializeField] private bool          useGlobalSpace = true;
 
 		public bool UseGlobalSpace
@@ -35,7 +35,7 @@ namespace ForestOfChaosLib.Curves
 
 		public Vector3 Lerp(float time)
 		{
-			return Vector3BezierLerp.Lerp(this, time);
+			return Vector3BezierLerp.Lerp(Positions, time);
 		}
 	}
 }
