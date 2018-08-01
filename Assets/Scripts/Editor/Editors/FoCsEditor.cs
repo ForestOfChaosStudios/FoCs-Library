@@ -79,8 +79,20 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 
-			//EditorGUILayout.GetControlRect(false, 2);
+			DoExtraDraw();
+
+			DoBottomPadding();
 		}
+
+		protected static void DoBottomPadding()
+		{
+			EditorGUILayout.GetControlRect(false,2);
+		}
+
+		/// <summary>
+		/// Override this in sub classes to draw extra stuff, to also have the padding after it
+		/// </summary>
+		protected virtual void DoExtraDraw(){}
 
 		protected void DrawCopyPasteButtons()
 		{

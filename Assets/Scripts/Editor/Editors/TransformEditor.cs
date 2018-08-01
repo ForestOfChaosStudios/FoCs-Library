@@ -74,6 +74,7 @@ namespace ForestOfChaosLib.Editor
 				TabName[TabNum].Value.Trigger();
 				serializedObject.ApplyModifiedProperties();
 			}
+			DoBottomPadding();
 		}
 
 		private void DrawTransformOptions()

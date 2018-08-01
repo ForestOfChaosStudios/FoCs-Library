@@ -21,10 +21,8 @@ namespace ForestOfChaosLib.Curves.Editor
 			Curve = target as T;
 		}
 
-		public override void OnInspectorGUI()
+		protected override void DoExtraDraw()
 		{
-			base.OnInspectorGUI();
-
 			using(Disposables.IndentSet(1))
 			{
 				FoCsGUI.Layout.Label("Editor Only:");
