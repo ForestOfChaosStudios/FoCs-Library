@@ -4,6 +4,11 @@ namespace ForestOfChaosLib.Attributes
 {
 	public class EnumFlagsAttribute: PropertyAttribute
 	{
-		public EnumFlagsAttribute() { }
+		public readonly bool DrawButtons;
+
+		public EnumFlagsAttribute(bool drawButtons = false)
+		{
+			DrawButtons = drawButtons;
+		}
 	}
 }
