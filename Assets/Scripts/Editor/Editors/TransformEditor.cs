@@ -11,15 +11,15 @@ namespace ForestOfChaosLib.Editor
 	[CustomEditor(typeof(Transform))]
 	internal class TransformEditor: FoCsEditor<Transform>
 	{
-		private static          float                              scaleAmount       = 1;
-		private static readonly GUIContent                         ResetContent      = new GUIContent("Reset Global", "Reset Transforms in global space");
-		private static readonly GUIContent                         ResetLocalContent = new GUIContent("Reset Local",  "Reset Transforms in local space");
-		private static          int                                _tabNum;
-		private static readonly GUIContent                         CopyContent  = new GUIContent("Copy Transform Data",  "Copies a new TransformData");
-		private static readonly GUIContent                         PasteContent = new GUIContent("Paste Transform Data", "Pastes the TransformData");
-		private static readonly GUIContent                         SetContent   = new GUIContent("Set:  ");
-		private static readonly GUIContent                         TimesContent = new GUIContent("Times:");
-		private readonly        KeyValuePair<GUIContent, Action>[] TabName;
+		private static          float                                    scaleAmount       = 1;
+		private static readonly GUIContent                               ResetContent      = new GUIContent("Reset Global", "Reset Transforms in global space");
+		private static readonly GUIContent                               ResetLocalContent = new GUIContent("Reset Local",  "Reset Transforms in local space");
+		private static          int                                      _tabNum;
+		private static readonly GUIContent                               CopyContent  = new GUIContent("Copy Transform Data",  "Copies a new TransformData");
+		private static readonly GUIContent                               PasteContent = new GUIContent("Paste Transform Data", "Pastes the TransformData");
+		private static readonly GUIContent                               SetContent   = new GUIContent("Set:  ");
+		private static readonly GUIContent                               TimesContent = new GUIContent("Times:");
+		private readonly        KeyValuePair<Func<bool, bool>, Action>[] TabName;
 
 		public override bool ShowCopyPasteButtons
 		{
@@ -36,10 +36,11 @@ namespace ForestOfChaosLib.Editor
 		{
 			TabName = new[]
 			{
-					Pair.Create<GUIContent, Action>(new GUIContent("Nothing",       "Hides Any Extra Options"),                null),
-					Pair.Create<GUIContent, Action>(new GUIContent("Scale Options", "Scale Preset Options"),                   ScaleButtonsEnabled),
-					Pair.Create<GUIContent, Action>(new GUIContent("Global Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions),
-					Pair.Create<GUIContent, Action>(new GUIContent("T Data",        "Transform Data Copy Paste"),              DrawTDCopyPaste)
+					Pair.Create<Func<bool, bool>, Action>((a) => NormalHeaderButton(a, new GUIContent("Nothing",       "Hides Any Extra Options")),                null),
+					Pair.Create<Func<bool, bool>, Action>((a) => NormalHeaderButton(a, new GUIContent("Scale Options", "Scale Preset Options")),                   ScaleButtonsEnabled),
+					Pair.Create<Func<bool, bool>, Action>((a) => NormalHeaderButton(a, new GUIContent("Global Values", "Force Display of Global Transform Data")), DrawGlobalTransformOptions),
+					Pair.Create<Func<bool, bool>, Action>((a) => NormalHeaderButton(a, new GUIContent("T Data",        "Transform Data Copy Paste")),              DrawTDCopyPaste),
+					Pair.Create<Func<bool, bool>, Action>(PingObject,                                                                                              null),
 			};
 		}
 
@@ -66,7 +67,7 @@ namespace ForestOfChaosLib.Editor
 				{
 					for(var i = 0; i < TabName.Length; i++)
 					{
-						if(FoCsGUI.Layout.Toggle(TabName[i].Key, TabNum == i, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16)))
+						if(TabName[i].Key.Invoke(i == TabNum))
 							TabNum = i;
 					}
 				}
@@ -74,7 +75,13 @@ namespace ForestOfChaosLib.Editor
 				TabName[TabNum].Value.Trigger();
 				serializedObject.ApplyModifiedProperties();
 			}
+
 			DoBottomPadding();
+		}
+
+		private static bool NormalHeaderButton(bool active, GUIContent con)
+		{
+			return FoCsGUI.Layout.Toggle(con, active, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
 		}
 
 		private void DrawTransformOptions()
@@ -111,6 +118,16 @@ namespace ForestOfChaosLib.Editor
 				Undo.RecordObject(Target, "scale Changed");
 				Target.localScale = scale;
 			}
+		}
+
+		private bool PingObject(bool val)
+		{
+			if(FoCsGUI.Layout.Toggle("Ping Object", val, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16)))
+			{
+				EditorGUIUtility.PingObject(Target);
+			}
+
+			return false;
 		}
 
 		private void DrawTDCopyPaste()

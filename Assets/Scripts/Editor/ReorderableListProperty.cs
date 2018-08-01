@@ -314,9 +314,15 @@ namespace ForestOfChaosLib.Editor
 					property.InsertArrayElementAtIndex(length);
 					var prop = property.GetArrayElementAtIndex(length);
 
+					prop.objectReferenceValue = obj;
+
+					if(prop.objectReferenceValue != null)
+						continue;
+
 					if(prop.type.Contains(typeName))
 					{
 						prop.objectReferenceValue = obj;
+
 						continue;
 					}
 
@@ -325,12 +331,15 @@ namespace ForestOfChaosLib.Editor
 
 					if(transform)
 					{
-						switch(typeName) {
+						switch(typeName)
+						{
 							case "Transform":
 								prop.objectReferenceValue = transform;
+
 								continue;
 							case "GameObject":
 								prop.objectReferenceValue = transform.gameObject;
+
 								continue;
 						}
 
@@ -338,23 +347,30 @@ namespace ForestOfChaosLib.Editor
 					}
 					else if(gameObject)
 					{
-						switch(typeName) {
+						switch(typeName)
+						{
 							case "Transform":
 								prop.objectReferenceValue = gameObject.transform;
+
 								continue;
 							case "GameObject":
 								prop.objectReferenceValue = gameObject;
+
 								continue;
 						}
 					}
 
-					foreach(var component in gameObject.GetComponents<Component>())
+					if(gameObject)
 					{
-						if(!prop.type.Contains(component.GetType().Name))
-							continue;
+						foreach(var component in gameObject.GetComponents<Component>())
+						{
+							if(!prop.type.Contains(component.GetType().Name))
+								continue;
 
-						prop.objectReferenceValue = component;
-						break;
+							prop.objectReferenceValue = component;
+
+							break;
+						}
 					}
 
 					if(prop.objectReferenceValue == null)

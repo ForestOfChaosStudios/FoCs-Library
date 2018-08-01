@@ -214,11 +214,20 @@ namespace ForestOfChaosLib.Editor.Utilities
 					var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
 					JsonUtility.FromJsonOverwrite(checkedBuffer, obj);
 				}
+				else if (IsValidObjectInBuffer(buffer))
+				{
+					var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+					JsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+				}
 				else
+				{
 					JsonUtility.FromJsonOverwrite(buffer, obj);
+				}
 			}
 			else
+			{
 				JsonUtility.FromJsonOverwrite(buffer, obj);
+			}
 		}
 
 		public static void EditorPaste<T>(ref T obj)

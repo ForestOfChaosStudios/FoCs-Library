@@ -53,29 +53,29 @@ namespace ForestOfChaosLib.Editor
 
 		public override void OnInspectorGUI()
 		{
+			serializedObject.Update();
 			GUIChanged = false;
 
 			if(ShowCopyPasteButtons)
 				DrawCopyPasteButtonsHeader();
 
-			using(Disposables.Indent())
+			using(var changeCheckScope = Disposables.ChangeCheck())
 			{
-				using(var changeCheckScope = Disposables.ChangeCheck())
+				using(Disposables.Indent())
 				{
 					var cachedGuiColor = GUI.color;
-					serializedObject.Update();
 
 					foreach(var serializedProperty in serializedObject.Properties())
 					{
 						GUI.color = cachedGuiColor;
 						HandleProperty(serializedProperty);
 					}
+				}
 
-					if(changeCheckScope.changed)
-					{
-						serializedObject.ApplyModifiedProperties();
-						GUIChanged = true;
-					}
+				if(changeCheckScope.changed)
+				{
+					serializedObject.ApplyModifiedProperties();
+					GUIChanged = true;
 				}
 			}
 
