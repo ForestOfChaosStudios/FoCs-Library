@@ -37,7 +37,9 @@ namespace ForestOfChaosLib.Editor.Utilities
 					{typeof(AudioListener), CopyMode.None},
 					{typeof(Transform), CopyMode.Editor},
 					{typeof(Object), CopyMode.Unknown},
+#pragma warning disable 618
 					{typeof(GUILayer), CopyMode.None}
+#pragma warning restore 618
 			};
 		}
 

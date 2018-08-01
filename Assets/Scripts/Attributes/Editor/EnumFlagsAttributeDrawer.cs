@@ -23,7 +23,6 @@ namespace ForestOfChaosLib.Attributes
 			var labelWidth      = EditorGUIUtility.labelWidth;
 			var enumLength      = property.enumNames.Length;
 			var buttonPressed   = new bool[enumLength];
-			var buttonWidth     = (position.width - labelWidth) / enumLength;
 			FoCsGUI.Label(new Rect(position.x, position.y, labelWidth, position.height), label);
 
 			using(var cc = FoCsEditor.Disposables.ChangeCheck())
