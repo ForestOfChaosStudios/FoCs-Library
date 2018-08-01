@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEditorInternal;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using ORD = ForestOfChaosLib.Editor.PropertyDrawers.ObjectReferenceDrawer;
 
 namespace ForestOfChaosLib.Editor
@@ -18,9 +19,9 @@ namespace ForestOfChaosLib.Editor
 			public static    int                      GLOBAL_CURRENT_ID;
 			private static   ReorderableList.Defaults s_Defaults;
 			private static   Action                   OnLimitingChange;
-			private static   bool?                    _LimitingEnabled;
+			private static   bool?                    limitingEnabled;
 			private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
-			private          SerializedProperty       _property;
+			private          SerializedProperty       property;
 			public           bool                     Animate;
 			public           int                      ID;
 			public           ListLimiter              Limiter;
@@ -29,14 +30,14 @@ namespace ForestOfChaosLib.Editor
 			{
 				get
 				{
-					if(!_LimitingEnabled.HasValue)
-						_LimitingEnabled = EditorPrefs.GetInt("FoCsRLP.LimitingEnabled") == 0;
+					if(!limitingEnabled.HasValue)
+						limitingEnabled = EditorPrefs.GetInt("FoCsRLP.LimitingEnabled") == 0;
 
-					return _LimitingEnabled.Value;
+					return limitingEnabled.Value;
 				}
 				set
 				{
-					_LimitingEnabled = value;
+					limitingEnabled = value;
 					EditorPrefs.SetInt("FoCsRLP.LimitingEnabled", value? 0 : 1);
 					OnLimitingChange.Trigger();
 				}
@@ -52,11 +53,11 @@ namespace ForestOfChaosLib.Editor
 
 			public SerializedProperty Property
 			{
-				get { return _property; }
+				get { return property; }
 				set
 				{
-					_property               = value;
-					List.serializedProperty = _property;
+					property                = value;
+					List.serializedProperty = property;
 				}
 			}
 
@@ -68,15 +69,15 @@ namespace ForestOfChaosLib.Editor
 
 			public ReorderableListProperty(SerializedProperty property): this()
 			{
-				_property = property;
-				Animate   = false;
+				this.property = property;
+				Animate       = false;
 				InitList();
 			}
 
 			public ReorderableListProperty(SerializedProperty property, bool dragAble, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true, bool animate = false): this()
 			{
-				_property = property;
-				Animate   = animate;
+				this.property = property;
+				Animate       = animate;
 
 				if(Animate)
 					IsExpanded = new AnimBool(property.isExpanded) {speed = 1f};
@@ -86,7 +87,7 @@ namespace ForestOfChaosLib.Editor
 
 			~ReorderableListProperty()
 			{
-				_property        =  null;
+				property         =  null;
 				List             =  null;
 				OnLimitingChange -= ChangeLimiting;
 			}
@@ -133,13 +134,15 @@ namespace ForestOfChaosLib.Editor
 
 			private void DoDrawElement(Rect rect, int index)
 			{
+				//Debug.Log(List.serializedProperty.GetArrayElementAtIndex(index).type);
+
 				if(List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
 					HandleObjectReference(rect, List.serializedProperty.GetArrayElementAtIndex(index));
 				else
 				{
-					List.elementHeight =  rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(_property.GetArrayElementAtIndex(index), _property.GetArrayElementAtIndex(index).isExpanded));
+					List.elementHeight =  rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(property.GetArrayElementAtIndex(index), property.GetArrayElementAtIndex(index).isExpanded));
 					rect.y             += 1;
-					var iProp = _property.GetArrayElementAtIndex(index);
+					var iProp = property.GetArrayElementAtIndex(index);
 					//EditorGUI.PropertyField(rect, iProp, iProp.propertyType == SerializedPropertyType.Generic? new GUIContent(iProp.displayName) : GUIContent.none, true);
 					EditorGUI.PropertyField(rect, iProp, new GUIContent(iProp.displayName), true);
 				}
@@ -238,6 +241,30 @@ namespace ForestOfChaosLib.Editor
 				DrawDefaultHeader(GUILayoutUtility.GetRect(0.0f, List.headerHeight, GUILayout.ExpandWidth(true)));
 			}
 
+			public static Object[] DropZone(Rect rect)
+			{
+				var eventType  = Event.current.type;
+				var isAccepted = false;
+
+				if(rect.Contains(Event.current.mousePosition))
+				{
+					if((eventType == EventType.DragUpdated) || (eventType == EventType.DragPerform))
+					{
+						DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+
+						if(eventType == EventType.DragPerform)
+						{
+							DragAndDrop.AcceptDrag();
+							isAccepted = true;
+						}
+
+						Event.current.Use();
+					}
+				}
+
+				return isAccepted? DragAndDrop.objectReferences : null;
+			}
+
 			private void DrawDefaultHeader(Rect headerRect)
 			{
 				Defaults.DrawHeaderBackground(headerRect);
@@ -246,6 +273,95 @@ namespace ForestOfChaosLib.Editor
 				headerRect.height -= 2f;
 				++headerRect.y;
 				List.drawHeaderCallback(headerRect);
+
+				if(property.arrayElementType.Contains("PPtr<"))
+				{
+					var @event = Event.current;
+
+					if(headerRect.Contains(@event.mousePosition))
+					{
+						if((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform))
+						{
+							Debug.Log(property.arrayElementType);
+
+							foreach(var dD in DragAndDrop.objectReferences)
+							{
+								Debug.Log(dD.GetType().Name);
+							}
+
+							DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+
+							if(@event.type == EventType.DragPerform)
+							{
+								DoDropAdd();
+								DragAndDrop.AcceptDrag();
+							}
+
+							@event.Use();
+						}
+					}
+				}
+			}
+
+			private void DoDropAdd()
+			{
+				for(var i = 0; i < DragAndDrop.objectReferences.Length; i++)
+				{
+					var obj      = DragAndDrop.objectReferences[i];
+					var typeName = obj.GetType().Name;
+
+					var length = property.arraySize;
+					property.InsertArrayElementAtIndex(length);
+					var prop = property.GetArrayElementAtIndex(length);
+
+					if(prop.type.Contains(typeName))
+					{
+						prop.objectReferenceValue = obj;
+						continue;
+					}
+
+					var transform  = obj as Transform;
+					var gameObject = obj as GameObject;
+
+					if(transform)
+					{
+						switch(typeName) {
+							case "Transform":
+								prop.objectReferenceValue = transform;
+								continue;
+							case "GameObject":
+								prop.objectReferenceValue = transform.gameObject;
+								continue;
+						}
+
+						gameObject = transform.gameObject;
+					}
+					else if(gameObject)
+					{
+						switch(typeName) {
+							case "Transform":
+								prop.objectReferenceValue = gameObject.transform;
+								continue;
+							case "GameObject":
+								prop.objectReferenceValue = gameObject;
+								continue;
+						}
+					}
+
+					foreach(var component in gameObject.GetComponents<Component>())
+					{
+						if(!prop.type.Contains(component.GetType().Name))
+							continue;
+
+						prop.objectReferenceValue = component;
+						break;
+					}
+
+					if(prop.objectReferenceValue == null)
+						property.DeleteArrayElementAtIndex(length);
+				}
+
+				GUI.changed = true;
 			}
 
 			public float GetTotalHeight()
@@ -517,13 +633,13 @@ namespace ForestOfChaosLib.Editor
 
 				using(Disposables.IndentSet(0))
 				{
-					_property.isExpanded = EditorGUI.ToggleLeft(rect.Edit(RectEdit.SetWidth(x - 10)),
-					                                            string.Format("{0}\t[{1}]", _property.displayName, _property.arraySize),
-					                                            _property.isExpanded,
-					                                            _property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none);
+					property.isExpanded = EditorGUI.ToggleLeft(rect.Edit(RectEdit.SetWidth(x - 10)),
+					                                           string.Format("{0}\t[{1}]", property.displayName, property.arraySize),
+					                                           property.isExpanded,
+					                                           property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none);
 				}
 
-				using(Disposables.DisabledScope(!_property.isExpanded))
+				using(Disposables.DisabledScope(!property.isExpanded))
 				{
 					var rect2            = new Rect(x, rect.y, xMax - x,   rect.height);
 					var addButtonRect    = new Rect(xMax - 29f      - 25f, rect2.y - 3f, 25f, 13f);
@@ -562,7 +678,7 @@ namespace ForestOfChaosLib.Editor
 					FooterLimiterGUI(rect);
 
 				if(List.displayAdd)
-					FooterAddGUI(addButtonRect);
+					{FooterAddGUI(addButtonRect);}
 
 				if(List.displayRemove)
 					FooterRemoveGUI(removeButtonRect);
@@ -607,21 +723,45 @@ namespace ForestOfChaosLib.Editor
 			{
 				using(Disposables.DisabledScope((List.onCanAddCallback != null) && !List.onCanAddCallback(List)))
 				{
-					if(GUI.Button(addButtonRect, List.onAddDropdownCallback == null? ListStyles.IconToolbarPlus : ListStyles.IconToolbarPlusMore, ListStyles.PreButton))
+					var @event = Event.current;
+					if(addButtonRect.Contains(@event.mousePosition))
 					{
-						if(List.onAddDropdownCallback != null)
-							List.onAddDropdownCallback(addButtonRect, List);
-						else if(List.onAddCallback != null)
-							List.onAddCallback(List);
-						else
-							Defaults.DoAddButton(List);
+						if((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform))
+						{
+							Debug.Log(property.arrayElementType);
 
-						if(List.onChangedCallback != null)
-							List.onChangedCallback(List);
+							foreach(var dD in DragAndDrop.objectReferences)
+							{
+								Debug.Log(dD.GetType().Name);
+							}
 
-						if(Limiter != null)
-							Limiter.ChangeEnd();
+							DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+
+							if(@event.type == EventType.DragPerform)
+							{
+								DoDropAdd();
+								DragAndDrop.AcceptDrag();
+							}
+
+							@event.Use();
+						}
 					}
+
+					if(!FoCsGUI.Button(addButtonRect, List.onAddDropdownCallback == null? ListStyles.IconToolbarPlus : ListStyles.IconToolbarPlusMore, ListStyles.PreButton))
+						return;
+
+					if(List.onAddDropdownCallback != null)
+						List.onAddDropdownCallback(addButtonRect, List);
+					else if(List.onAddCallback != null)
+						List.onAddCallback(List);
+					else
+						Defaults.DoAddButton(List);
+
+					if(List.onChangedCallback != null)
+						List.onChangedCallback(List);
+
+					if(Limiter != null)
+						Limiter.ChangeEnd();
 				}
 			}
 
@@ -629,19 +769,19 @@ namespace ForestOfChaosLib.Editor
 			{
 				using(Disposables.DisabledScope((List.index < 0) || (List.index >= List.count) || ((List.onCanRemoveCallback != null) && !List.onCanRemoveCallback(List))))
 				{
-					if(GUI.Button(removeButtonRect, ListStyles.IconToolbarMinus, ListStyles.PreButton))
-					{
-						if(List.onRemoveCallback == null)
-							Defaults.DoRemoveButton(List);
-						else
-							List.onRemoveCallback(List);
+					if(!FoCsGUI.Button(removeButtonRect, ListStyles.IconToolbarMinus, ListStyles.PreButton))
+						return;
 
-						if(List.onChangedCallback != null)
-							List.onChangedCallback(List);
+					if(List.onRemoveCallback == null)
+						Defaults.DoRemoveButton(List);
+					else
+						List.onRemoveCallback(List);
 
-						if(Limiter != null)
-							Limiter.ChangeRange(-1);
-					}
+					if(List.onChangedCallback != null)
+						List.onChangedCallback(List);
+
+					if(Limiter != null)
+						Limiter.ChangeRange(-1);
 				}
 			}
 #endregion
