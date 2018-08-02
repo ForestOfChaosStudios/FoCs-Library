@@ -74,6 +74,8 @@ namespace ForestOfChaosLib.Editor
 			serializedObject.Update();
 			GUIChanged = false;
 
+			DoTopPadding();
+
 			if(ShowCopyPasteButtons)
 				DrawCopyPasteButtonsHeader();
 
@@ -103,6 +105,11 @@ namespace ForestOfChaosLib.Editor
 				DrawContextMenuButtons();
 
 			DoBottomPadding();
+		}
+
+		protected static void DoTopPadding()
+		{
+			EditorGUILayout.GetControlRect(false, 0.3f);
 		}
 
 		protected static void DoBottomPadding()
