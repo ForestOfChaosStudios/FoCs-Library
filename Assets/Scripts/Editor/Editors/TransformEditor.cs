@@ -214,13 +214,23 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
+		private static GUILayoutOption[] SCALE_LABEL_OPTIONS
+		{
+			get { return new[] {GUILayout.Width(60), SCALE_BUTTON_HEIGHT}; }
+		}
+
+		private static GUILayoutOption SCALE_BUTTON_HEIGHT
+		{
+			get { return GUILayout.Height(16); }
+		}
+
 		private void ScaleButtonsEnabled()
 		{
 			ScaleArea();
 
-			using(Disposables.HorizontalScope(EditorStyles.toolbar))
+			using(Disposables.HorizontalScope())
 			{
-				FoCsGUI.Layout.Label(SetContent, EditorStyles.toolbarButton, GUILayout.Width(60));
+				FoCsGUI.Layout.Label(SetContent, SCALE_LABEL_OPTIONS);
 				SetScaleBtn(0.5f);
 				SetScaleBtn(1);
 				SetScaleBtn(2);
@@ -231,9 +241,9 @@ namespace ForestOfChaosLib.Editor
 				SetScaleBtn(100);
 			}
 
-			using(Disposables.HorizontalScope(EditorStyles.toolbar))
+			using(Disposables.HorizontalScope())
 			{
-				FoCsGUI.Layout.Label(TimesContent, EditorStyles.toolbarButton, GUILayout.Width(60));
+				FoCsGUI.Layout.LabelField(TimesContent, SCALE_LABEL_OPTIONS);
 				TimesScaleBtn(0.5f);
 				TimesScaleBtn(1);
 				TimesScaleBtn(2);
@@ -245,11 +255,11 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private void SetScaleBtn(float multi = 1)
+		private void SetScaleBtn(float multi)
 		{
 			var resetContent = new GUIContent(string.Format("{0}x", multi), string.Format("Sets the Scale to ({0}, {1}, {2})", multi, multi, multi));
 
-			if(FoCsGUI.Layout.Button(resetContent, EditorStyles.toolbarButton))
+			if(FoCsGUI.Layout.Button(resetContent, SCALE_BUTTON_HEIGHT))
 			{
 				var transform = Target;
 				Undo.RecordObject(transform, "Scale reset");
@@ -258,11 +268,11 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private void TimesScaleBtn(float multi = 1)
+		private void TimesScaleBtn(float multi)
 		{
 			var resetContent = new GUIContent(string.Format("{0}x", multi), string.Format("Multiplies the Scale to ({0}, {1}, {2})", Target.localScale.x * multi, Target.localScale.y * multi, Target.localScale.z * multi));
 
-			if(FoCsGUI.Layout.Button(resetContent, EditorStyles.toolbarButton))
+			if(FoCsGUI.Layout.Button(resetContent, SCALE_BUTTON_HEIGHT))
 			{
 				var transform = Target;
 				Undo.RecordObject(transform, "Scale reset");
@@ -275,13 +285,13 @@ namespace ForestOfChaosLib.Editor
 		{
 			var transform = Target;
 
-			using(Disposables.HorizontalScope(EditorStyles.toolbar))
+			using(Disposables.HorizontalScope())
 			{
 				var content = new GUIContent("Scale amount", "Set amount to uniformly scale the object");
-				scaleAmount = FoCsGUI.Layout.FloatField(content, scaleAmount, EditorStyles.toolbarTextField);
+				scaleAmount = FoCsGUI.Layout.FloatField(content, scaleAmount, SCALE_BUTTON_HEIGHT);
 				var scaleContent = new GUIContent("Set Scale", string.Format("Sets the scale ({0},{1},{2})", scaleAmount, scaleAmount, scaleAmount));
 
-				if(GUILayout.Button(scaleContent, EditorStyles.toolbarButton))
+				if(GUILayout.Button(scaleContent, SCALE_BUTTON_HEIGHT))
 				{
 					Undo.RecordObject(transform, "Scale set");
 					transform.localScale = Vector3.one * scaleAmount;
@@ -289,7 +299,7 @@ namespace ForestOfChaosLib.Editor
 
 				var scaleTimesContent = new GUIContent("Times Scale", string.Format("Sets the scale ({0},{1},{2})", transform.position.x * scaleAmount, transform.position.y * scaleAmount, transform.position.z * scaleAmount));
 
-				if(GUILayout.Button(scaleTimesContent, EditorStyles.toolbarButton))
+				if(GUILayout.Button(scaleTimesContent, SCALE_BUTTON_HEIGHT))
 				{
 					Undo.RecordObject(transform, "Scale set");
 					transform.localScale *= scaleAmount;
