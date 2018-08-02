@@ -42,9 +42,12 @@ namespace ForestOfChaosLib.Editor
 			get { return true; }
 		}
 
+		protected bool showContextMenuButtons = true;
+
 		public virtual bool ShowContextMenuButtons
 		{
-			get { return true; }
+			get { return showContextMenuButtons; }
+			private set { EditorPrefs.SetBool("FoCsEditor.showContextMenuButtons", showContextMenuButtons = value); }
 		}
 
 		public override bool UseDefaultMargins()
@@ -54,6 +57,7 @@ namespace ForestOfChaosLib.Editor
 
 		private void OnEnable()
 		{
+			showContextMenuButtons = EditorPrefs.GetBool("FoCsEditor.showContextMenuButtons");
 			FindContextMenu();
 		}
 
@@ -111,14 +115,24 @@ namespace ForestOfChaosLib.Editor
 		/// </summary>
 		protected virtual void DoExtraDraw() { }
 
-		protected void DrawCopyPasteButtons()
+		protected virtual void DrawCopyPasteButtons()
 		{
 			EditorHelpers.CopyPastObjectButtons(serializedObject);
 		}
 
-		protected void DrawCopyPasteButtonsHeader()
+		protected virtual void DrawCopyPasteButtonsHeader()
 		{
-			EditorHelpers.CopyPastObjectButtons(serializedObject, EditorStyles.toolbar);
+			using(Disposables.HorizontalScope(FoCsGUI.Styles.Unity.Toolbar))
+			{
+				EditorHelpers.CopyPastObjectButtons(serializedObject);
+				DoContextMenuHeader();
+			}
+		}
+
+		protected virtual void DoContextMenuHeader()
+		{
+			if(contextData.Count > 0)
+				ShowContextMenuButtons = FoCsGUI.Layout.Toggle(ShowContextMenuButtons? "Hide Context Buttons" : "Show Context Buttons", ShowContextMenuButtons, FoCsGUI.Styles.Unity.ToolbarButton);
 		}
 
 		public virtual void OnSceneGUI() { }
@@ -232,8 +246,8 @@ namespace ForestOfChaosLib.Editor
 
 				public LayoutOptions(int row, int column, int amountPerLine)
 				{
-					Row = row;
-					Column = column;
+					Row           = row;
+					Column        = column;
 					AmountPerLine = amountPerLine;
 				}
 
@@ -250,12 +264,9 @@ namespace ForestOfChaosLib.Editor
 
 		private static IEnumerable<MethodInfo> GetAllMethods(Type t)
 		{
-			if(t == null)
-				return Enumerable.Empty<MethodInfo>();
+			const BindingFlags binding = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-			var binding = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-
-			return t.GetMethods(binding).Concat(GetAllMethods(t.BaseType));
+			return t == null? Enumerable.Empty<MethodInfo>() : t.GetMethods(binding).Concat(GetAllMethods(t.BaseType));
 		}
 
 		private static readonly Type ContextMenuType       = typeof(ContextMenu);
@@ -265,8 +276,8 @@ namespace ForestOfChaosLib.Editor
 		{
 			if(contextData == null)
 				contextData = new Dictionary<string, ContextMenuData>();
-
-			contextData.Clear();
+			else
+				contextData.Clear();
 
 			// Get context menu
 			var targetType = target.GetType();
@@ -336,10 +347,9 @@ namespace ForestOfChaosLib.Editor
 			if(contextData.Count == 0)
 				return;
 
-			FoCsGUI.Layout.Space();
+			FoCsGUI.Layout.Space(4);
 			FoCsGUI.Layout.LabelField("Context Menu:", FoCsGUI.Styles.Unity.BoldLabel);
 			//TODO: Implement ContextMenuLayoutAttribute Logic
-
 			var rectRows = new Dictionary<int, Rect>();
 
 			foreach(var kv in contextData)
@@ -351,12 +361,14 @@ namespace ForestOfChaosLib.Editor
 					isEnabled = (bool)kv.Value.Validate.Invoke(target, null);
 
 				GUI.enabled = isEnabled;
+
 				if(kv.Value.Function != null)
 				{
 					if(kv.Value.Layout.HasValue)
 					{
-						var layout = kv.Value.Layout.Value;
+						var  layout = kv.Value.Layout.Value;
 						Rect rect;
+
 						if(rectRows.ContainsKey(layout.Column))
 						{
 							rect = rectRows[layout.Column];
@@ -387,15 +399,16 @@ namespace ForestOfChaosLib.Editor
 							InvokeMethod(kv);
 					}
 				}
+
 				GUI.enabled = enabledState;
 			}
 		}
 
 		private void InvokeMethod(KeyValuePair<string, ContextMenuData> kv)
 		{
-			kv.Value.Function.Invoke(target,null);
+			kv.Value.Function.Invoke(target, null);
 		}
-		#endregion
+#endregion
 
 		public override bool RequiresConstantRepaint()
 		{
@@ -459,8 +472,10 @@ namespace ForestOfChaosLib.Editor
 
 			if(RLPList.TryGetValue(id, out ret))
 			{
-				ret.Property = property;
-
+				if(ret.Property.serializedObject != null)
+					ret.Property = property;
+				else
+					ret = RLPList[id] = new RLP(property, true);
 				return ret;
 			}
 #if FoCsEditor_ANIMATED

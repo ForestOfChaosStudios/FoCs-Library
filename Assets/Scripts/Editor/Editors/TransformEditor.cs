@@ -12,13 +12,13 @@ namespace ForestOfChaosLib.Editor
 	internal class TransformEditor: FoCsEditor<Transform>
 	{
 		private static          float                                    scaleAmount       = 1;
-		private static readonly GUIContent                               ResetContent      = new GUIContent("Reset Global", "Reset Transforms in global space");
-		private static readonly GUIContent                               ResetLocalContent = new GUIContent("Reset Local",  "Reset Transforms in local space");
-		private static          int                                      _tabNum;
-		private static readonly GUIContent                               CopyContent  = new GUIContent("Copy Transform Data",  "Copies a new TransformData");
-		private static readonly GUIContent                               PasteContent = new GUIContent("Paste Transform Data", "Pastes the TransformData");
-		private static readonly GUIContent                               SetContent   = new GUIContent("Set:  ");
-		private static readonly GUIContent                               TimesContent = new GUIContent("Times:");
+		private static          int                                      tabNum            = 0;
+		private static readonly GUIContent                               ResetContent      = new GUIContent("Reset Global",         "Reset Transforms in global space");
+		private static readonly GUIContent                               ResetLocalContent = new GUIContent("Reset Local",          "Reset Transforms in local space");
+		private static readonly GUIContent                               CopyContent       = new GUIContent("Copy Transform Data",  "Copies a new TransformData");
+		private static readonly GUIContent                               PasteContent      = new GUIContent("Paste Transform Data", "Pastes the TransformData");
+		private static readonly GUIContent                               SetContent        = new GUIContent("Set:  ");
+		private static readonly GUIContent                               TimesContent      = new GUIContent("Times:");
 		private readonly        KeyValuePair<Func<bool, bool>, Action>[] TabName;
 
 		public override bool ShowCopyPasteButtons
@@ -28,8 +28,8 @@ namespace ForestOfChaosLib.Editor
 
 		private static int TabNum
 		{
-			get { return _tabNum; }
-			set { EditorPrefs.SetInt("FoCsTE.TabNum", _tabNum = value); }
+			get { return tabNum; }
+			set { EditorPrefs.SetInt("FoCsTE.TabNum", tabNum = value); }
 		}
 
 		public TransformEditor()
@@ -51,7 +51,7 @@ namespace ForestOfChaosLib.Editor
 
 		protected void OnEnable()
 		{
-			_tabNum = EditorPrefs.GetInt("FoCsTE.TabNum");
+			tabNum = EditorPrefs.GetInt("FoCsTE.TabNum");
 		}
 
 		public override void OnInspectorGUI()

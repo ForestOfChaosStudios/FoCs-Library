@@ -53,8 +53,6 @@ namespace ForestOfChaosLib.Editor
 			public static GUIEvent Create()
 			{
 				var data = new GUIEvent {Event = new Event(Event.current)};
-
-				//if(data.Event.type == EventType.Repaint)
 				data.Rect = GUILayoutUtility.GetLastRect();
 
 				return data;
@@ -70,8 +68,6 @@ namespace ForestOfChaosLib.Editor
 			public static GUIEvent<T> Create<T>(T val)
 			{
 				var data = new GUIEvent<T> {Event = new Event(Event.current), Value = val};
-
-				//if(data.Event.type == EventType.Repaint)
 				data.Rect = GUILayoutUtility.GetLastRect();
 
 				return data;
@@ -87,8 +83,6 @@ namespace ForestOfChaosLib.Editor
 			public static GUIEventBool Create(bool val)
 			{
 				var data = new GUIEventBool {Event = new Event(Event.current), Value = val};
-
-				//if(data.Event.type == EventType.Repaint)
 				data.Rect = GUILayoutUtility.GetLastRect();
 
 				return data;

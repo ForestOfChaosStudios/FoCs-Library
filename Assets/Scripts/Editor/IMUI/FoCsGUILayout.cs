@@ -11,7 +11,6 @@ using eLong = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<long>;
 using eString = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<string>;
 using Object = UnityEngine.Object;
 using eObject = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<UnityEngine.Object>;
-using EGuiLay = UnityEditor.EditorGUILayout;
 
 namespace ForestOfChaosLib.Editor
 {
@@ -20,10 +19,17 @@ namespace ForestOfChaosLib.Editor
 	{
 		public static class Layout
 		{
-			public static GUIEvent Space()
+			/// <summary>
+			/// Adds an empty amount of space using Unity calculated spaces.
+			/// Useful for adding non-Layout based drawing in an area
+			/// </summary>
+			/// <param name="height">Default Height is Unity's Singleline height of 16f</param>
+			/// <returns>A new <see cref="GUIEvent"/>(<see cref="GetControlRect(GUILayOpt[])"/>(GUILayout.Height(height)))</returns>
+			public static GUIEvent Space(float height = 16)
 			{
-				return Label();
+				return GUIEvent.Create(GetControlRect(GUILayout.Height(height)));
 			}
+
 #region Label
 			public static GUIEvent Label(params GUILayOpt[] options)
 			{
@@ -67,7 +73,7 @@ namespace ForestOfChaosLib.Editor
 
 			private static GUIEvent LabelMaster(GUICon guiCon, GUIStyle style, params GUILayOpt[] options)
 			{
-				EGuiLay.LabelField(guiCon, style, options);
+				EditorGUILayout.LabelField(guiCon, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
@@ -115,7 +121,7 @@ namespace ForestOfChaosLib.Editor
 
 			private static GUIEvent LabelFieldMaster(GUICon guiCon, GUIStyle style, params GUILayOpt[] options)
 			{
-				EGuiLay.LabelField(guiCon, style, options);
+				EditorGUILayout.LabelField(guiCon, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
@@ -259,7 +265,7 @@ namespace ForestOfChaosLib.Editor
 
 			private static eBool ToggleFieldMaster(bool toggle, GUICon guiCon, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Toggle(guiCon, toggle, style, options);
+				var val = EditorGUILayout.Toggle(guiCon, toggle, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -327,7 +333,7 @@ namespace ForestOfChaosLib.Editor
 
 			private static eBool FoldoutMaster(bool foldout, GUICon guiCon, GUIStyle style, bool toggleOnLabelClick = true)
 			{
-				var val = EGuiLay.Foldout(foldout, guiCon, toggleOnLabelClick, style);
+				var val = EditorGUILayout.Foldout(foldout, guiCon, toggleOnLabelClick, style);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -365,14 +371,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static eInt IntFieldMaster(int value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.IntField(value, style, options);
+				var val = EditorGUILayout.IntField(value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static eInt IntFieldMaster(GUICon guiCon, int value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.IntField(guiCon, value, style, options);
+				var val = EditorGUILayout.IntField(guiCon, value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -410,14 +416,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static eInt DelayedIntFieldMaster(int value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.DelayedIntField(value, style, options);
+				var val = EditorGUILayout.DelayedIntField(value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static eInt DelayedIntFieldMaster(GUICon guiCon, int value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.DelayedIntField(guiCon, value, style, options);
+				var val = EditorGUILayout.DelayedIntField(guiCon, value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -455,14 +461,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static eFloat FloatFieldMaster(float value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.FloatField(value, style, options);
+				var val = EditorGUILayout.FloatField(value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static eFloat FloatFieldMaster(GUICon guiCon, float value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.FloatField(guiCon, value, style, options);
+				var val = EditorGUILayout.FloatField(guiCon, value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -500,14 +506,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static eFloat DelayedFloatFieldMaster(float value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.DelayedFloatField(value, style, options);
+				var val = EditorGUILayout.DelayedFloatField(value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static eFloat DelayedFloatFieldMaster(GUICon guiCon, float value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.DelayedFloatField(guiCon, value, style, options);
+				var val = EditorGUILayout.DelayedFloatField(guiCon, value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -545,14 +551,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static eDouble DoubleFieldMaster(double value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.DoubleField(value, style, options);
+				var val = EditorGUILayout.DoubleField(value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static eDouble DoubleFieldMaster(GUICon guiCon, double value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.DoubleField(guiCon, value, style, options);
+				var val = EditorGUILayout.DoubleField(guiCon, value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -590,14 +596,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static eDouble DelayedDoubleFieldMaster(double value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.DelayedDoubleField(value, style, options);
+				var val = EditorGUILayout.DelayedDoubleField(value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static eDouble DelayedDoubleFieldMaster(GUICon guiCon, double value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.DelayedDoubleField(guiCon, value, style, options);
+				var val = EditorGUILayout.DelayedDoubleField(guiCon, value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -635,14 +641,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static eLong LongFieldMaster(long value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.LongField(value, style, options);
+				var val = EditorGUILayout.LongField(value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static eLong LongFieldMaster(GUICon guiCon, long value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.LongField(guiCon, value, style, options);
+				var val = EditorGUILayout.LongField(guiCon, value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -680,14 +686,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static eString TextFieldMaster(string value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.TextField(value, style, options);
+				var val = EditorGUILayout.TextField(value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static eString TextFieldMaster(GUICon guiCon, string value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.TextField(guiCon, value, style, options);
+				var val = EditorGUILayout.TextField(guiCon, value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -725,14 +731,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static eString DelayedTextFieldMaster(string value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.DelayedTextField(value, style, options);
+				var val = EditorGUILayout.DelayedTextField(value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static eString DelayedTextFieldMaster(GUICon guiCon, string value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.DelayedTextField(guiCon, value, style, options);
+				var val = EditorGUILayout.DelayedTextField(guiCon, value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -750,7 +756,7 @@ namespace ForestOfChaosLib.Editor
 
 			private static eString TextAreaMaster(string value, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.TextArea(value, style, options);
+				var val = EditorGUILayout.TextArea(value, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -773,14 +779,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static eObject RawObjectFieldMaster(Object value, Type type, bool allowSceneObjects, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.ObjectField(value, type, allowSceneObjects, options);
+				var val = EditorGUILayout.ObjectField(value, type, allowSceneObjects, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static eObject RawObjectFieldMaster(GUICon guiCon, Object value, Type type, bool allowSceneObjects, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.ObjectField(guiCon, value, type, allowSceneObjects, options);
+				var val = EditorGUILayout.ObjectField(guiCon, value, type, allowSceneObjects, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -803,14 +809,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static GUIEvent<T> ObjectFieldMaster<T>(T value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
 			{
-				var val = (T)EGuiLay.ObjectField(value, typeof(T), allowSceneObjects, options);
+				var val = (T)EditorGUILayout.ObjectField(value, typeof(T), allowSceneObjects, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static GUIEvent<T> ObjectFieldMaster<T>(GUICon guiCon, T value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
 			{
-				var val = (T)EGuiLay.ObjectField(guiCon, value, typeof(T), allowSceneObjects, options);
+				var val = (T)EditorGUILayout.ObjectField(guiCon, value, typeof(T), allowSceneObjects, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -854,14 +860,14 @@ namespace ForestOfChaosLib.Editor
 
 			private static eBool PropertyFieldMaster(SerializedProperty property, bool includeChildren, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.PropertyField(property, includeChildren, options);
+				var val = EditorGUILayout.PropertyField(property, includeChildren, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			private static eBool PropertyFieldMaster(GUICon label, SerializedProperty property, bool includeChildren, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.PropertyField(property, label, includeChildren, options);
+				var val = EditorGUILayout.PropertyField(property, label, includeChildren, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -869,35 +875,35 @@ namespace ForestOfChaosLib.Editor
 #region GetControlRect
 			public static Rect GetControlRect(params GUILayOpt[] options)
 			{
-				return EGuiLay.GetControlRect(options);
+				return EditorGUILayout.GetControlRect(options);
 			}
 
 			public static Rect GetControlRect(bool hasLabel, params GUILayOpt[] options)
 			{
-				return EGuiLay.GetControlRect(hasLabel, options);
+				return EditorGUILayout.GetControlRect(hasLabel, options);
 			}
 
 			public static Rect GetControlRect(bool hasLabel, float height, params GUILayOpt[] options)
 			{
-				return EGuiLay.GetControlRect(hasLabel, height, options);
+				return EditorGUILayout.GetControlRect(hasLabel, height, options);
 			}
 
 			public static Rect GetControlRect(bool hasLabel, float height, GUIStyle style, params GUILayOpt[] options)
 			{
-				return EGuiLay.GetControlRect(hasLabel, height, style, options);
+				return EditorGUILayout.GetControlRect(hasLabel, height, style, options);
 			}
 #endregion
 #region SelectableLabel
 			public static GUIEvent SelectableLabel(string text, params GUILayOpt[] options)
 			{
-				EGuiLay.SelectableLabel(text, options);
+				EditorGUILayout.SelectableLabel(text, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
 
 			public static GUIEvent SelectableLabel(string text, GUIStyle style, params GUILayOpt[] options)
 			{
-				EGuiLay.SelectableLabel(text, style, options);
+				EditorGUILayout.SelectableLabel(text, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
@@ -950,7 +956,7 @@ namespace ForestOfChaosLib.Editor
 
 			public static eString PasswordFieldMaster(GUICon label, string password, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.PasswordField(label, password, style, options);
+				var val = EditorGUILayout.PasswordField(label, password, style, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
@@ -958,28 +964,28 @@ namespace ForestOfChaosLib.Editor
 #region Slider
 			public static eFloat Slider(float value, float leftValue, float rightValue, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Slider(value, leftValue, rightValue, options);
+				var val = EditorGUILayout.Slider(value, leftValue, rightValue, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			public static eFloat Slider(string label, float value, float leftValue, float rightValue, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Slider(label, value, leftValue, rightValue, options);
+				var val = EditorGUILayout.Slider(label, value, leftValue, rightValue, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			public static eFloat Slider(GUICon label, float value, float leftValue, float rightValue, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Slider(label, value, leftValue, rightValue, options);
+				var val = EditorGUILayout.Slider(label, value, leftValue, rightValue, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			public static GUIEvent Slider(SerializedProperty property, float leftValue, float rightValue, params GUILayOpt[] options)
 			{
-				EGuiLay.Slider(property, leftValue, rightValue, options);
+				EditorGUILayout.Slider(property, leftValue, rightValue, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
@@ -987,28 +993,28 @@ namespace ForestOfChaosLib.Editor
 #region IntSlider
 			public static eInt Slider(int value, int leftValue, int rightValue, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.IntSlider(value, leftValue, rightValue, options);
+				var val = EditorGUILayout.IntSlider(value, leftValue, rightValue, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			public static eInt Slider(string label, int value, int leftValue, int rightValue, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.IntSlider(value, leftValue, rightValue, options);
+				var val = EditorGUILayout.IntSlider(value, leftValue, rightValue, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			public static eInt Slider(GUICon label, int value, int leftValue, int rightValue, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.IntSlider(value, leftValue, rightValue, options);
+				var val = EditorGUILayout.IntSlider(value, leftValue, rightValue, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 
 			public static GUIEvent IntSlider(SerializedProperty property, int leftValue, int rightValue, params GUILayOpt[] options)
 			{
-				EGuiLay.Slider(property, leftValue, rightValue, options);
+				EditorGUILayout.Slider(property, leftValue, rightValue, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
@@ -1016,56 +1022,56 @@ namespace ForestOfChaosLib.Editor
 #region Popup
 			public static eInt Popup(int selectedIndex, string[] displayedOptions, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Popup(selectedIndex, displayedOptions, options);
+				var val = EditorGUILayout.Popup(selectedIndex, displayedOptions, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static eInt Popup(int selectedIndex, string[] displayedOptions, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Popup(selectedIndex, displayedOptions, style, options);
+				var val = EditorGUILayout.Popup(selectedIndex, displayedOptions, style, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static eInt Popup(int selectedIndex, GUICon[] displayedOptions, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Popup(selectedIndex, displayedOptions, options);
+				var val = EditorGUILayout.Popup(selectedIndex, displayedOptions, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static eInt Popup(int selectedIndex, GUICon[] displayedOptions, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Popup(selectedIndex, displayedOptions, style, options);
+				var val = EditorGUILayout.Popup(selectedIndex, displayedOptions, style, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static eInt Popup(string label, int selectedIndex, string[] displayedOptions, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Popup(label, selectedIndex, displayedOptions, options);
+				var val = EditorGUILayout.Popup(label, selectedIndex, displayedOptions, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static eInt Popup(string label, int selectedIndex, string[] displayedOptions, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Popup(label, selectedIndex, displayedOptions, style, options);
+				var val = EditorGUILayout.Popup(label, selectedIndex, displayedOptions, style, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static eInt Popup(GUICon label, int selectedIndex, GUICon[] displayedOptions, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Popup(label, selectedIndex, displayedOptions, options);
+				var val = EditorGUILayout.Popup(label, selectedIndex, displayedOptions, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static eInt Popup(GUICon label, int selectedIndex, GUICon[] displayedOptions, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.Popup(label, selectedIndex, displayedOptions, style, options);
+				var val = EditorGUILayout.Popup(label, selectedIndex, displayedOptions, style, options);
 
 				return GUIEvent.Create(val);
 			}
@@ -1073,42 +1079,42 @@ namespace ForestOfChaosLib.Editor
 #region EnumPopup
 			public static GUIEvent<Enum> EnumPopup(Enum selected, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.EnumPopup(selected, options);
+				var val = EditorGUILayout.EnumPopup(selected, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static GUIEvent<Enum> EnumPopup(Enum selected, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.EnumPopup(selected, style, options);
+				var val = EditorGUILayout.EnumPopup(selected, style, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static GUIEvent<Enum> EnumPopup(string label, Enum selected, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.EnumPopup(label, selected, options);
+				var val = EditorGUILayout.EnumPopup(label, selected, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static GUIEvent<Enum> EnumPopup(string label, Enum selected, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.EnumPopup(label, selected, style, options);
+				var val = EditorGUILayout.EnumPopup(label, selected, style, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static GUIEvent<Enum> EnumPopup(GUICon label, Enum selected, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.EnumPopup(label, selected, options);
+				var val = EditorGUILayout.EnumPopup(label, selected, options);
 
 				return GUIEvent.Create(val);
 			}
 
 			public static GUIEvent<Enum> EnumPopup(GUICon label, Enum selected, GUIStyle style, params GUILayOpt[] options)
 			{
-				var val = EGuiLay.EnumPopup(label, selected, style, options);
+				var val = EditorGUILayout.EnumPopup(label, selected, style, options);
 
 				return GUIEvent.Create(val);
 			}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ForestOfChaosLib.Editor.Utilities.Disposable;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
@@ -31,14 +32,14 @@ namespace ForestOfChaosLib.Editor
 				get
 				{
 					if(!limitingEnabled.HasValue)
-						limitingEnabled = EditorPrefs.GetInt("FoCsRLP.LimitingEnabled") == 0;
+						limitingEnabled = EditorPrefs.GetBool("FoCsRLP.LimitingEnabled");
 
 					return limitingEnabled.Value;
 				}
 				set
 				{
 					limitingEnabled = value;
-					EditorPrefs.SetInt("FoCsRLP.LimitingEnabled", value? 0 : 1);
+					EditorPrefs.SetBool("FoCsRLP.LimitingEnabled", value);
 					OnLimitingChange.Trigger();
 				}
 			}
@@ -309,11 +310,9 @@ namespace ForestOfChaosLib.Editor
 				{
 					var obj      = DragAndDrop.objectReferences[i];
 					var typeName = obj.GetType().Name;
-
-					var length = property.arraySize;
+					var length   = property.arraySize;
 					property.InsertArrayElementAtIndex(length);
 					var prop = property.GetArrayElementAtIndex(length);
-
 					prop.objectReferenceValue = obj;
 
 					if(prop.objectReferenceValue != null)
@@ -694,7 +693,9 @@ namespace ForestOfChaosLib.Editor
 					FooterLimiterGUI(rect);
 
 				if(List.displayAdd)
-					{FooterAddGUI(addButtonRect);}
+				{
+					FooterAddGUI(addButtonRect);
+				}
 
 				if(List.displayRemove)
 					FooterRemoveGUI(removeButtonRect);
@@ -740,12 +741,22 @@ namespace ForestOfChaosLib.Editor
 				using(Disposables.DisabledScope((List.onCanAddCallback != null) && !List.onCanAddCallback(List)))
 				{
 					var @event = Event.current;
+
+					if(@event.type == EventType.Repaint)
+					{
+						if(!DragAndDrop.objectReferences.IsNullOrEmpty())
+						{
+							using(Disposables.ColorChanger(Color.green))
+							{
+								FoCsGUI.Styles.Unity.Box.Draw(addButtonRect, false, false, false, false);
+							}
+						}
+					}
+
 					if(addButtonRect.Contains(@event.mousePosition))
 					{
 						if((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform))
 						{
-							Debug.Log(property.arrayElementType);
-
 							foreach(var dD in DragAndDrop.objectReferences)
 							{
 								Debug.Log(dD.GetType().Name);
