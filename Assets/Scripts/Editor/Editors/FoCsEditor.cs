@@ -212,7 +212,7 @@ namespace ForestOfChaosLib.Editor
 
 		public void HandleArray(SerializedProperty property)
 		{
-			using(Disposables.Indent(0))
+			using(Disposables.SetIndent(1))
 			{
 				var listData = GetReorderableList(property);
 				var height   = listData.GetTotalHeight();
@@ -379,8 +379,6 @@ namespace ForestOfChaosLib.Editor
 							rect = GUILayoutUtility.GetLastRect();
 							rectRows.Add(layout.Column, rect);
 						}
-
-						//for(int i = 0; i < layout.AmountPerLine; i++) { }
 
 						using(var scope = Disposables.RectHorizontalScope(layout.AmountPerLine, rect))
 						{

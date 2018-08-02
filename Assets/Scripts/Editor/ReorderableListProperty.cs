@@ -757,11 +757,6 @@ namespace ForestOfChaosLib.Editor
 					{
 						if((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform))
 						{
-							foreach(var dD in DragAndDrop.objectReferences)
-							{
-								Debug.Log(dD.GetType().Name);
-							}
-
 							DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
 							if(@event.type == EventType.DragPerform)
