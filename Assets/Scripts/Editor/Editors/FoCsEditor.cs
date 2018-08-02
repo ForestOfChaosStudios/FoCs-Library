@@ -1,10 +1,14 @@
 //#define FoCsEditor_ANIMATED
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using ForestOfChaosLib.Attributes;
 using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
 using ORD = ForestOfChaosLib.Editor.PropertyDrawers.ObjectReferenceDrawer;
 
@@ -38,9 +42,19 @@ namespace ForestOfChaosLib.Editor
 			get { return true; }
 		}
 
+		public virtual bool ShowContextMenuButtons
+		{
+			get { return true; }
+		}
+
 		public override bool UseDefaultMargins()
 		{
 			return false;
+		}
+
+		private void OnEnable()
+		{
+			FindContextMenu();
 		}
 
 		~FoCsEditor()
@@ -81,6 +95,9 @@ namespace ForestOfChaosLib.Editor
 
 			DoExtraDraw();
 
+			if(ShowContextMenuButtons)
+				DrawContextMenuButtons();
+
 			DoBottomPadding();
 		}
 
@@ -92,7 +109,7 @@ namespace ForestOfChaosLib.Editor
 		/// <summary>
 		/// Override this in sub classes to draw extra stuff, to also have the padding after it
 		/// </summary>
-		protected virtual void DoExtraDraw(){}
+		protected virtual void DoExtraDraw() { }
 
 		protected void DrawCopyPasteButtons()
 		{
@@ -189,6 +206,196 @@ namespace ForestOfChaosLib.Editor
 				listData.HandleDrawing(rect);
 			}
 		}
+
+#region ContextMenu Attributes
+		// Based off of https://github.com/SubjectNerd-Unity/ReorderableInspector/blob/master/Editor/ReorderableArrayInspector.cs
+		protected struct ContextMenuData
+		{
+			public string         MenuItem;
+			public MethodInfo     Function;
+			public MethodInfo     Validate;
+			public LayoutOptions? Layout;
+
+			public ContextMenuData(string item)
+			{
+				MenuItem = item;
+				Function = null;
+				Validate = null;
+				Layout   = null;
+			}
+
+			public struct LayoutOptions
+			{
+				public int Row;
+				public int Column;
+				public int AmountPerLine;
+
+				public LayoutOptions(int row, int column, int amountPerLine)
+				{
+					Row = row;
+					Column = column;
+					AmountPerLine = amountPerLine;
+				}
+
+				public LayoutOptions(ContextMenuLayoutAttribute layout)
+				{
+					Row           = layout.Row;
+					Column        = layout.Column;
+					AmountPerLine = layout.AmountPerLine;
+				}
+			}
+		}
+
+		protected Dictionary<string, ContextMenuData> contextData = new Dictionary<string, ContextMenuData>();
+
+		private static IEnumerable<MethodInfo> GetAllMethods(Type t)
+		{
+			if(t == null)
+				return Enumerable.Empty<MethodInfo>();
+
+			var binding = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+			return t.GetMethods(binding).Concat(GetAllMethods(t.BaseType));
+		}
+
+		private static readonly Type ContextMenuType       = typeof(ContextMenu);
+		private static readonly Type ContextMenuLayoutType = typeof(ContextMenuLayoutAttribute);
+
+		private void FindContextMenu()
+		{
+			if(contextData == null)
+				contextData = new Dictionary<string, ContextMenuData>();
+
+			contextData.Clear();
+
+			// Get context menu
+			var targetType = target.GetType();
+			var methods    = GetAllMethods(targetType).ToArray();
+
+			for(var index = 0; index < methods.GetLength(0); ++index)
+			{
+				var methodInfo                  = methods[index];
+				var contextMenuAttributes       = methodInfo.GetCustomAttributes(ContextMenuType,       false);
+				var contextMenuLayoutAttributes = methodInfo.GetCustomAttributes(ContextMenuLayoutType, false);
+
+				for(var i = 0; i < contextMenuAttributes.Length; i++)
+				{
+					var contextMenu = (ContextMenu)contextMenuAttributes[i];
+
+					if(contextMenu == null)
+						continue;
+
+					ContextMenuLayoutAttribute layout = null;
+
+					for(var innerIndex = 0; innerIndex < contextMenuLayoutAttributes.Length; innerIndex++)
+					{
+						var contextMenuLayoutAttribute = (ContextMenuLayoutAttribute)contextMenuLayoutAttributes[innerIndex];
+
+						if(contextMenuLayoutAttribute == null)
+							continue;
+
+						layout = contextMenuLayoutAttribute;
+
+						break;
+					}
+
+					if(contextData.ContainsKey(contextMenu.menuItem))
+					{
+						var data = contextData[contextMenu.menuItem];
+
+						if(contextMenu.validate)
+							data.Validate = methodInfo;
+						else
+							data.Function = methodInfo;
+
+						if(layout != null)
+							data.Layout = new ContextMenuData.LayoutOptions(layout);
+
+						contextData[data.MenuItem] = data;
+					}
+					else
+					{
+						var data = new ContextMenuData(contextMenu.menuItem);
+
+						if(contextMenu.validate)
+							data.Validate = methodInfo;
+						else
+							data.Function = methodInfo;
+
+						if(layout != null)
+							data.Layout = new ContextMenuData.LayoutOptions(layout);
+
+						contextData.Add(data.MenuItem, data);
+					}
+				}
+			}
+		}
+
+		public void DrawContextMenuButtons()
+		{
+			if(contextData.Count == 0)
+				return;
+
+			FoCsGUI.Layout.Space();
+			FoCsGUI.Layout.LabelField("Context Menu:", FoCsGUI.Styles.Unity.BoldLabel);
+			//TODO: Implement ContextMenuLayoutAttribute Logic
+
+			var rectRows = new Dictionary<int, Rect>();
+
+			foreach(var kv in contextData)
+			{
+				var enabledState = GUI.enabled;
+				var isEnabled    = true;
+
+				if(kv.Value.Validate != null)
+					isEnabled = (bool)kv.Value.Validate.Invoke(target, null);
+
+				GUI.enabled = isEnabled;
+				if(kv.Value.Function != null)
+				{
+					if(kv.Value.Layout.HasValue)
+					{
+						var layout = kv.Value.Layout.Value;
+						Rect rect;
+						if(rectRows.ContainsKey(layout.Column))
+						{
+							rect = rectRows[layout.Column];
+						}
+						else
+						{
+							FoCsGUI.Layout.Space();
+							rect = GUILayoutUtility.GetLastRect();
+							rectRows.Add(layout.Column, rect);
+						}
+
+						//for(int i = 0; i < layout.AmountPerLine; i++) { }
+
+						using(var scope = Disposables.RectHorizontalScope(layout.AmountPerLine, rect))
+						{
+							if(layout.Row != 0)
+							{
+								scope.GetNext(layout.Row);
+							}
+
+							if(FoCsGUI.Button(scope.GetNext(), kv.Key))
+								InvokeMethod(kv);
+						}
+					}
+					else
+					{
+						if(FoCsGUI.Layout.Button(kv.Key))
+							InvokeMethod(kv);
+					}
+				}
+				GUI.enabled = enabledState;
+			}
+		}
+
+		private void InvokeMethod(KeyValuePair<string, ContextMenuData> kv)
+		{
+			kv.Value.Function.Invoke(target,null);
+		}
+		#endregion
 
 		public override bool RequiresConstantRepaint()
 		{

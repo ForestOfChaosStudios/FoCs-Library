@@ -20,6 +20,10 @@ namespace ForestOfChaosLib.Editor
 	{
 		public static class Layout
 		{
+			public static GUIEvent Space()
+			{
+				return Label();
+			}
 #region Label
 			public static GUIEvent Label(params GUILayOpt[] options)
 			{
