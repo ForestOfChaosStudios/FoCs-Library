@@ -107,7 +107,7 @@ namespace ForestOfChaosLib.Editor
 
 		protected static void DoBottomPadding()
 		{
-			EditorGUILayout.GetControlRect(false, 1.5f);
+			EditorGUILayout.GetControlRect(false, 1);
 		}
 
 		/// <summary>
