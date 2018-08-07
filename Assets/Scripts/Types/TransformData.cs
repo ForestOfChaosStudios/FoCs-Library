@@ -1,4 +1,5 @@
 ﻿using System;
+using ForestOfChaosLib.Maths;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Types
@@ -13,6 +14,20 @@ namespace ForestOfChaosLib.Types
 		public static TransformData Empty
 		{
 			get { return new TransformData(Vector3.zero, Quaternion.identity, Vector3.one); }
+		}
+
+		public TransformData(Component component)
+		{
+			Rotation = component.transform.rotation;
+			Scale    = component.transform.localScale;
+			Position = component.transform.position;
+		}
+
+		public TransformData(GameObject gameObject)
+		{
+			Rotation = gameObject.transform.rotation;
+			Scale    = gameObject.transform.localScale;
+			Position = gameObject.transform.position;
 		}
 
 		public TransformData(Transform transform)
@@ -124,6 +139,16 @@ namespace ForestOfChaosLib.Types
 			transform.position   = Position;
 		}
 
+		public TransformData Lerp(TransformData other, float time)
+		{
+			return TransformDataBezierLerp.Lerp(this, other, time);
+		}
+
+		public static TransformData Lerp(TransformData a, TransformData b,float time)
+		{
+			return TransformDataBezierLerp.Lerp(a, b, time);
+		}
+
 		public TransformData Copy()
 		{
 			return new TransformData(this);
@@ -155,6 +180,11 @@ namespace ForestOfChaosLib.Types
 		public static void SetFromTD(this Transform transform, TransformData data)
 		{
 			data.ApplyData(transform);
+		}
+
+		public static TransformData GetTD(this Transform transform)
+		{
+			return transform;
 		}
 	}
 }

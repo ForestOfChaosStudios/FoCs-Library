@@ -4,7 +4,7 @@ namespace ForestOfChaosLib.Attributes
 {
 	public class NoFoldoutAttribute: PropertyAttribute
 	{
-		public bool ShowVariableName { get; }
+		public readonly bool ShowVariableName;
 
 		public NoFoldoutAttribute(bool showName = true)
 		{

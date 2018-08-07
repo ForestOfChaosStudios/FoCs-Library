@@ -304,12 +304,12 @@ namespace ForestOfChaosLib.Editor
 					{
 						if((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform))
 						{
-							Debug.Log(property.arrayElementType);
-
-							foreach(var dD in DragAndDrop.objectReferences)
-							{
-								Debug.Log(dD.GetType().Name);
-							}
+							//Debug.Log(property.arrayElementType);
+							//
+							//foreach(var dD in DragAndDrop.objectReferences)
+							//{
+							//	Debug.Log(dD.GetType().Name);
+							//}
 
 							DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
