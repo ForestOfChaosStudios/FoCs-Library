@@ -267,7 +267,7 @@ namespace ForestOfChaosLib.Editor
 		}
 
 		//#region Storage
-		private ORD GetObjectDrawer(SerializedProperty property)
+		protected ORD GetObjectDrawer(SerializedProperty property)
 		{
 			var id = string.Format("{0}-{1}", property.propertyPath, property.name);
 			ORD objDraw;
@@ -487,6 +487,86 @@ namespace ForestOfChaosLib.Editor
 			kv.Value.Function.Invoke(target, null);
 		}
 #endregion
+
+		private class PropertyHandler: IPropertyLayoutDrawingHandler
+		{
+			private FoCsEditor owner;
+
+			public PropertyHandler(FoCsEditor _owner)
+			{
+				owner = _owner;
+			}
+
+			public void HandleProperty(SerializedProperty property)
+			{
+				var list = GetReorderableList(property);
+				list.HandleDrawing();
+			}
+
+			public float PropertyHeight(SerializedProperty property)
+			{
+				var list = GetReorderableList(property);
+
+				return list.GetTotalHeight();
+			}
+		}
+
+		private class ListHandler: IPropertyLayoutDrawingHandler
+		{
+			private FoCsEditor owner;
+
+			public ListHandler(FoCsEditor _owner)
+			{
+				owner = _owner;
+			}
+
+			public void HandleProperty(SerializedProperty property)
+			{
+				var list = GetReorderableList(property);
+				list.HandleDrawing();
+			}
+
+			public float PropertyHeight(SerializedProperty property)
+			{
+				var list = GetReorderableList(property);
+
+				return list.GetTotalHeight();
+			}
+		}
+
+		private class ObjectReferenceHandler: IPropertyLayoutDrawingHandler
+		{
+			private FoCsEditor owner;
+
+			public ObjectReferenceHandler(FoCsEditor _owner)
+			{
+				owner = _owner;
+			}
+
+			public void HandleProperty(SerializedProperty property)
+			{
+				var drawer  = owner.GetObjectDrawer(property);
+				var GuiCont = new GUIContent(property.displayName);
+				var height  = drawer.GetPropertyHeight(property, GuiCont);
+				var rect    = FoCsGUI.Layout.GetControlRect(true, height);
+				drawer.OnGUI(rect, property, GuiCont);
+			}
+
+			public float PropertyHeight(SerializedProperty property)
+			{
+				var drawer  = owner.GetObjectDrawer(property);
+				var GuiCont = new GUIContent(property.displayName);
+				var height  = drawer.GetPropertyHeight(property, GuiCont);
+
+				return height;
+			}
+		}
+
+		public interface IPropertyLayoutDrawingHandler
+		{
+			void HandleProperty(SerializedProperty  property);
+			float PropertyHeight(SerializedProperty property);
+		}
 	}
 
 	public class FoCsEditor<T>: FoCsEditor where T: Object
