@@ -488,9 +488,22 @@ namespace ForestOfChaosLib.Editor
 		}
 #endregion
 
+		public IPropertyLayoutDrawingHandler GetHandler(SerializedProperty property)
+		{
+			if(property.propertyType == SerializedPropertyType.ObjectReference)
+				return _objectReferenceHandler ?? (_objectReferenceHandler = new ObjectReferenceHandler(this));
+
+			if(property.isArray && (property.propertyType != SerializedPropertyType.String))
+				return _listHandler ?? (_listHandler = new ListHandler(this));
+
+			return _propertyHandler ?? (_propertyHandler = new PropertyHandler(this));
+		}
+
+		private PropertyHandler _propertyHandler;
+
 		private class PropertyHandler: IPropertyLayoutDrawingHandler
 		{
-			private FoCsEditor owner;
+			private readonly FoCsEditor owner;
 
 			public PropertyHandler(FoCsEditor _owner)
 			{
@@ -499,21 +512,38 @@ namespace ForestOfChaosLib.Editor
 
 			public void HandleProperty(SerializedProperty property)
 			{
-				var list = GetReorderableList(property);
-				list.HandleDrawing();
+				if(owner.HideDefaultProperty)
+				{
+					var isDefaultScriptProperty = GetDefaultPropertyType(property);
+
+					if(isDefaultScriptProperty == DefaultPropertyType.Hidden)
+						return;
+
+					var cachedGUIEnabled = GUI.enabled;
+
+					if(isDefaultScriptProperty != DefaultPropertyType.NotDefault)
+						GUI.enabled = false;
+
+					FoCsGUI.Layout.PropertyField(property, property.isExpanded);
+
+					if(isDefaultScriptProperty != DefaultPropertyType.NotDefault)
+						GUI.enabled = cachedGUIEnabled;
+				}
+				else
+					FoCsGUI.Layout.PropertyField(property, property.isExpanded);
 			}
 
 			public float PropertyHeight(SerializedProperty property)
 			{
-				var list = GetReorderableList(property);
-
-				return list.GetTotalHeight();
+				return FoCsGUI.GetPropertyHeight(property);
 			}
 		}
 
+		private ListHandler _listHandler;
+
 		private class ListHandler: IPropertyLayoutDrawingHandler
 		{
-			private FoCsEditor owner;
+			private readonly FoCsEditor owner;
 
 			public ListHandler(FoCsEditor _owner)
 			{
@@ -534,9 +564,11 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
+		private ObjectReferenceHandler _objectReferenceHandler;
+
 		private class ObjectReferenceHandler: IPropertyLayoutDrawingHandler
 		{
-			private FoCsEditor owner;
+			private readonly FoCsEditor owner;
 
 			public ObjectReferenceHandler(FoCsEditor _owner)
 			{
