@@ -26,6 +26,7 @@ namespace ForestOfChaosLib.Editor
 			public           bool                     Animate;
 			public           int                      ID;
 			public           ListLimiter              Limiter;
+			public           SerializedPropertyType   SerializedPropertyType;
 
 			public static bool LimitingEnabled
 			{
@@ -109,7 +110,24 @@ namespace ForestOfChaosLib.Editor
 				//TODO Implement limited view of lists, eg only show index 50-100, and buttons to move limits
 				List.drawFooterCallback    += OnListDrawFooterCallback;
 				List.showDefaultBackground =  true;
+
+				SetSerializedPropertyType();
+
 				CheckLimiter();
+			}
+
+			private void SetSerializedPropertyType()
+			{
+				if(property.arraySize == 0)
+				{
+					property.InsertArrayElementAtIndex(0);
+					SerializedPropertyType = property.GetArrayElementAtIndex(0).propertyType;
+					property.DeleteArrayElementAtIndex(0);
+				}
+				else
+				{
+					SerializedPropertyType = property.GetArrayElementAtIndex(0).propertyType;
+				}
 			}
 
 			private void CheckLimiter()
@@ -275,6 +293,9 @@ namespace ForestOfChaosLib.Editor
 				++headerRect.y;
 				List.drawHeaderCallback(headerRect);
 
+				if(SerializedPropertyType != SerializedPropertyType.ObjectReference)
+					return;
+
 				if(property.arrayElementType.Contains("PPtr<"))
 				{
 					var @event = Event.current;
@@ -321,8 +342,8 @@ namespace ForestOfChaosLib.Editor
 					if(prop.type.Contains(typeName))
 					{
 						prop.objectReferenceValue = obj;
-
-						continue;
+						if(prop.objectReferenceValue != null)
+							continue;
 					}
 
 					var transform  = obj as Transform;
@@ -334,12 +355,16 @@ namespace ForestOfChaosLib.Editor
 						{
 							case "Transform":
 								prop.objectReferenceValue = transform;
-
-								continue;
+								if(prop.objectReferenceValue != null)
+									continue;
+								else
+									break;
 							case "GameObject":
 								prop.objectReferenceValue = transform.gameObject;
-
-								continue;
+								if(prop.objectReferenceValue != null)
+									continue;
+								else
+									break;
 						}
 
 						gameObject = transform.gameObject;
@@ -350,12 +375,16 @@ namespace ForestOfChaosLib.Editor
 						{
 							case "Transform":
 								prop.objectReferenceValue = gameObject.transform;
-
-								continue;
+								if(prop.objectReferenceValue != null)
+									continue;
+								else
+									break;
 							case "GameObject":
 								prop.objectReferenceValue = gameObject;
-
-								continue;
+								if(prop.objectReferenceValue != null)
+									continue;
+								else
+									break;
 						}
 					}
 
@@ -364,7 +393,10 @@ namespace ForestOfChaosLib.Editor
 						foreach(var component in gameObject.GetComponents<Component>())
 						{
 							if(!prop.type.Contains(component.GetType().Name))
-								continue;
+							{
+								if(prop.objectReferenceValue != null)
+									continue;
+							}
 
 							prop.objectReferenceValue = component;
 
@@ -373,7 +405,7 @@ namespace ForestOfChaosLib.Editor
 					}
 
 					if(prop.objectReferenceValue == null)
-						property.DeleteArrayElementAtIndex(length);
+						property.DeleteArrayElementAtIndex(property.arraySize - 1);
 				}
 
 				GUI.changed = true;
@@ -742,30 +774,33 @@ namespace ForestOfChaosLib.Editor
 				{
 					var @event = Event.current;
 
-					if(@event.type == EventType.Repaint)
+					if(SerializedPropertyType == SerializedPropertyType.ObjectReference)
 					{
-						if(!DragAndDrop.objectReferences.IsNullOrEmpty())
+						if(@event.type == EventType.Repaint)
 						{
-							using(Disposables.ColorChanger(Color.green))
+							if(!DragAndDrop.objectReferences.IsNullOrEmpty())
 							{
-								FoCsGUI.Styles.Unity.Box.Draw(addButtonRect, false, false, false, false);
+								using(Disposables.ColorChanger(Color.green))
+								{
+									FoCsGUI.Styles.Unity.Box.Draw(addButtonRect, false, false, false, false);
+								}
 							}
 						}
-					}
 
-					if(addButtonRect.Contains(@event.mousePosition))
-					{
-						if((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform))
+						if(addButtonRect.Contains(@event.mousePosition))
 						{
-							DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-
-							if(@event.type == EventType.DragPerform)
+							if((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform))
 							{
-								DoDropAdd();
-								DragAndDrop.AcceptDrag();
-							}
+								DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
-							@event.Use();
+								if(@event.type == EventType.DragPerform)
+								{
+									DoDropAdd();
+									DragAndDrop.AcceptDrag();
+								}
+
+								@event.Use();
+							}
 						}
 					}
 
