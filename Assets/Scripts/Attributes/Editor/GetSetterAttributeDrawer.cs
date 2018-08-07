@@ -1,5 +1,4 @@
-﻿using System;
-using ForestOfChaosLib.Editor;
+﻿using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Editor.PropertyDrawers;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;

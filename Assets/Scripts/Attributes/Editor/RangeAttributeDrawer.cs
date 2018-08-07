@@ -1,6 +1,3 @@
-using System;
-using ForestOfChaosLib.AdvVar;
-using ForestOfChaosLib.AdvVar.Editor;
 using UnityEditor;
 using UnityEngine;
 

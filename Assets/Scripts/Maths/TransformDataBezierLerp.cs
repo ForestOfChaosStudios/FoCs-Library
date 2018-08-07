@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using ForestOfChaosLib.Curves;
 using ForestOfChaosLib.Types;
 
 namespace ForestOfChaosLib.Maths

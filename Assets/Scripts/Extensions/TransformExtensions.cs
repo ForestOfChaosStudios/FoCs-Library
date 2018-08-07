@@ -99,8 +99,8 @@ namespace ForestOfChaosLib.Extensions
 
 		public static void CopyTransform(this Transform t, Transform other)
 		{
-			t.position = other.position;
-			t.rotation = other.rotation;
+			t.position   = other.position;
+			t.rotation   = other.rotation;
 			t.localScale = other.localScale;
 		}
 	}

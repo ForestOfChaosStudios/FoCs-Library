@@ -11,8 +11,8 @@ namespace ForestOfChaosLib.Editor
 	[CustomEditor(typeof(Transform))]
 	internal class TransformEditor: FoCsEditor<Transform>
 	{
-		private static          float                                    scaleAmount       = 1;
-		private static          int                                      tabNum            = 0;
+		private static          float                                    scaleAmount = 1;
+		private static          int                                      tabNum;
 		private static readonly GUIContent                               ResetContent      = new GUIContent("Reset Global",         "Reset Transforms in global space");
 		private static readonly GUIContent                               ResetLocalContent = new GUIContent("Reset Local",          "Reset Transforms in local space");
 		private static readonly GUIContent                               CopyContent       = new GUIContent("Copy Transform Data",  "Copies a new TransformData");
@@ -32,15 +32,25 @@ namespace ForestOfChaosLib.Editor
 			set { EditorPrefs.SetInt("FoCsTE.TabNum", tabNum = value); }
 		}
 
+		private static GUILayoutOption[] SCALE_LABEL_OPTIONS
+		{
+			get { return new[] {GUILayout.Width(60), SCALE_BUTTON_HEIGHT}; }
+		}
+
+		private static GUILayoutOption SCALE_BUTTON_HEIGHT
+		{
+			get { return GUILayout.Height(16); }
+		}
+
 		public TransformEditor()
 		{
 			TabName = new[]
 			{
-					Pair.Create<Func<bool, bool>, Action>((a) => NormalHeaderButton(a, new GUIContent("Nothing",       "Hides Any Extra Options")),                null),
-					Pair.Create<Func<bool, bool>, Action>((a) => NormalHeaderButton(a, new GUIContent("Scale Options", "Scale Preset Options")),                   ScaleButtonsEnabled),
-					Pair.Create<Func<bool, bool>, Action>((a) => NormalHeaderButton(a, new GUIContent("Global Values", "Force Display of Global Transform Data")), DrawGlobalTransformOptions),
-					Pair.Create<Func<bool, bool>, Action>((a) => NormalHeaderButton(a, new GUIContent("T Data",        "Transform Data Copy Paste")),              DrawTDCopyPaste),
-					Pair.Create<Func<bool, bool>, Action>(PingObject,                                                                                              null),
+					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("Nothing",       "Hides Any Extra Options")),                null),
+					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("Scale Options", "Scale Preset Options")),                   ScaleButtonsEnabled),
+					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("Global Values", "Force Display of Global Transform Data")), DrawGlobalTransformOptions),
+					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("T Data",        "Transform Data Copy Paste")),              DrawTDCopyPaste),
+					Pair.Create<Func<bool, bool>, Action>(PingObject,                                                                                            null)
 			};
 		}
 
@@ -123,9 +133,7 @@ namespace ForestOfChaosLib.Editor
 		private bool PingObject(bool val)
 		{
 			if(FoCsGUI.Layout.Toggle("Ping Object", val, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16)))
-			{
 				EditorGUIUtility.PingObject(Target);
-			}
 
 			return false;
 		}
@@ -212,16 +220,6 @@ namespace ForestOfChaosLib.Editor
 
 				DrawCopyPasteButtons();
 			}
-		}
-
-		private static GUILayoutOption[] SCALE_LABEL_OPTIONS
-		{
-			get { return new[] {GUILayout.Width(60), SCALE_BUTTON_HEIGHT}; }
-		}
-
-		private static GUILayoutOption SCALE_BUTTON_HEIGHT
-		{
-			get { return GUILayout.Height(16); }
 		}
 
 		private void ScaleButtonsEnabled()

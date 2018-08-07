@@ -7,9 +7,9 @@ namespace ForestOfChaosLib.Types
 	[Serializable]
 	public struct TransformData
 	{
-		public                  Vector3       Position;
-		public                  Quaternion    Rotation;
-		public                  Vector3       Scale;
+		public Vector3    Position;
+		public Quaternion Rotation;
+		public Vector3    Scale;
 
 		public static TransformData Empty
 		{
@@ -144,7 +144,7 @@ namespace ForestOfChaosLib.Types
 			return TransformDataBezierLerp.Lerp(this, other, time);
 		}
 
-		public static TransformData Lerp(TransformData a, TransformData b,float time)
+		public static TransformData Lerp(TransformData a, TransformData b, float time)
 		{
 			return TransformDataBezierLerp.Lerp(a, b, time);
 		}

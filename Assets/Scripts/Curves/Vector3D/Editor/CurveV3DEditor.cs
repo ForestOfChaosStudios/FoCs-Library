@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ForestOfChaosLib.Curves.Components;
+﻿using ForestOfChaosLib.Curves.Components;
 using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Maths;
@@ -14,7 +13,14 @@ namespace ForestOfChaosLib.Curves.Editor
 		private static Mode      MyMode     = Mode.Move;
 		private static Transform debugTransform;
 		public static  float     DebugTime = 0.5f;
-		private        T         Curve;
+
+		public enum Mode
+		{
+			Hide,
+			Move
+		}
+
+		private T Curve;
 
 		protected void OnEnable()
 		{
@@ -74,7 +80,6 @@ namespace ForestOfChaosLib.Curves.Editor
 					{
 						var a = Target.transform.TransformPoint(Vector3BezierLerp.Lerp(Curve.CurvePositions, i));
 						var b = Target.transform.TransformPoint(Vector3BezierLerp.Lerp(Curve.CurvePositions, (i + resolution).Clamp()));
-
 						Handles.DrawLine(a, b);
 					}
 					else
@@ -84,12 +89,6 @@ namespace ForestOfChaosLib.Curves.Editor
 				if(cc.changed)
 					EditorUtility.SetDirty(target);
 			}
-		}
-
-		public enum Mode
-		{
-			Hide,
-			Move
 		}
 	}
 

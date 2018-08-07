@@ -9,8 +9,8 @@ using eFloat = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<float>;
 using eDouble = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<double>;
 using eLong = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<long>;
 using eString = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<string>;
-using Object = UnityEngine.Object;
 using eObject = ForestOfChaosLib.Editor.FoCsGUI.GUIEvent<UnityEngine.Object>;
+using Object = UnityEngine.Object;
 
 namespace ForestOfChaosLib.Editor
 {
@@ -20,11 +20,11 @@ namespace ForestOfChaosLib.Editor
 		public static class Layout
 		{
 			/// <summary>
-			/// Adds an empty amount of space using Unity calculated spaces.
-			/// Useful for adding non-Layout based drawing in an area
+			///     Adds an empty amount of space using Unity calculated spaces.
+			///     Useful for adding non-Layout based drawing in an area
 			/// </summary>
 			/// <param name="height">Default Height is Unity's Singleline height of 16f</param>
-			/// <returns>A new <see cref="GUIEvent"/>(<see cref="GetControlRect(GUILayOpt[])"/>(GUILayout.Height(height)))</returns>
+			/// <returns>A new <see cref="GUIEvent" />(<see cref="GetControlRect(GUILayOpt[])" />(GUILayout.Height(height)))</returns>
 			public static GUIEvent Space(float height = 16)
 			{
 				return GUIEvent.Create(GetControlRect(GUILayout.Height(height)));

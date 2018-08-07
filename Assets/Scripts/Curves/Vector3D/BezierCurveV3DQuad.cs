@@ -13,12 +13,6 @@ namespace ForestOfChaosLib.Curves
 		[SerializeField] private List<Vector3> Positions      = new List<Vector3>(TOTAL_COUNT);
 		[SerializeField] private bool          useGlobalSpace = true;
 
-		public bool UseGlobalSpace
-		{
-			get { return useGlobalSpace; }
-			set { useGlobalSpace = value; }
-		}
-
 		public Vector3 StartPos
 		{
 			get { return Positions[0]; }
@@ -41,6 +35,12 @@ namespace ForestOfChaosLib.Curves
 		{
 			if(Positions == null)
 				Positions = new List<Vector3>(TOTAL_COUNT);
+		}
+
+		public bool UseGlobalSpace
+		{
+			get { return useGlobalSpace; }
+			set { useGlobalSpace = value; }
 		}
 
 		public List<Vector3> CurvePositions

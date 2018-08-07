@@ -14,7 +14,18 @@ namespace ForestOfChaosLib.Curves.Editor
 		private static Mode      MyMode     = Mode.Move;
 		private static Transform debugTransform;
 		public static  float     DebugTime = 0.5f;
-		private        T         Curve;
+
+		public enum Mode
+		{
+			Hide,
+			Move,
+			Rotate,
+			Scale,
+			MoveRotate,
+			RotateShowMoveArrows
+		}
+
+		private T Curve;
 
 		protected void OnEnable()
 		{
@@ -82,9 +93,12 @@ namespace ForestOfChaosLib.Curves.Editor
 
 								break;
 						}
+
 						Handles.Label(pos[i].Position, new GUIContent(string.Format("Index: {0}", i)));
+
 						if(Target.UseGlobalSpace)
 							tdPos = Target.transform.InverseTransformPoint(tdPos);
+
 						pos[i].UpdateData(tdPos, tdRot, tdScl);
 
 						if(undoCheck.changed)
@@ -109,16 +123,6 @@ namespace ForestOfChaosLib.Curves.Editor
 				if(cc.changed)
 					EditorUtility.SetDirty(target);
 			}
-		}
-
-		public enum Mode
-		{
-			Hide,
-			Move,
-			Rotate,
-			Scale,
-			MoveRotate,
-			RotateShowMoveArrows
 		}
 	}
 

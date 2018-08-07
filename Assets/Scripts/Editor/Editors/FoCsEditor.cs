@@ -29,7 +29,8 @@ namespace ForestOfChaosLib.Editor
 			Hidden
 		}
 
-		internal  Dictionary<string, ORD> objectDrawers = new Dictionary<string, ORD>(1);
+		internal  Dictionary<string, ORD> objectDrawers          = new Dictionary<string, ORD>(1);
+		protected bool                    showContextMenuButtons = true;
 		protected bool                    GUIChanged { get; private set; }
 
 		public virtual bool HideDefaultProperty
@@ -41,8 +42,6 @@ namespace ForestOfChaosLib.Editor
 		{
 			get { return true; }
 		}
-
-		protected bool showContextMenuButtons = true;
 
 		public virtual bool ShowContextMenuButtons
 		{
@@ -73,7 +72,6 @@ namespace ForestOfChaosLib.Editor
 		{
 			serializedObject.Update();
 			GUIChanged = false;
-
 			DoTopPadding();
 
 			if(ShowCopyPasteButtons)
@@ -118,7 +116,7 @@ namespace ForestOfChaosLib.Editor
 		}
 
 		/// <summary>
-		/// Override this in sub classes to draw extra stuff, to also have the padding after it
+		///     Override this in sub classes to draw extra stuff, to also have the padding after it
 		/// </summary>
 		protected virtual void DoExtraDraw() { }
 
@@ -226,6 +224,85 @@ namespace ForestOfChaosLib.Editor
 				var rect     = FoCsGUI.Layout.GetControlRect(true, height); //.ChangeX(16);
 				listData.HandleDrawing(rect);
 			}
+		}
+
+		public override bool RequiresConstantRepaint()
+		{
+#if FoCsEditor_ANIMATED
+            foreach(var reorderableListProperty in reorderableLists)
+            {
+                if(reorderableListProperty.Value.Animate && reorderableListProperty.Value.IsExpanded.isAnimating)
+                    return true;
+            }
+#endif
+			return false;
+		}
+
+		public int FileID()
+		{
+			//From https://forum.unity.com/threads/how-to-get-the-local-identifier-in-file-for-scene-objects.265686/
+			var inspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
+			int localId;
+
+			{
+				var seriObject             = new SerializedObject(target);
+				var inspectorModeInfoValue = inspectorModeInfo.GetValue(seriObject, null);
+				inspectorModeInfo.SetValue(seriObject, InspectorMode.Debug, null);
+				var localIdProp = seriObject.FindProperty("m_LocalIdentfierInFile"); //note the misspelling
+				inspectorModeInfo.SetValue(seriObject, inspectorModeInfoValue, null);
+				localId = localIdProp.intValue;
+			}
+
+			return localId;
+		}
+
+		public string AssetPath()
+		{
+			return AssetPath(target);
+		}
+
+		public static string AssetPath(Object target)
+		{
+			return AssetDatabase.GetAssetPath(target);
+		}
+
+		//#region Storage
+		private ORD GetObjectDrawer(SerializedProperty property)
+		{
+			var id = string.Format("{0}-{1}", property.propertyPath, property.name);
+			ORD objDraw;
+
+			if(objectDrawers.TryGetValue(id, out objDraw))
+				return objDraw;
+
+			objDraw = new ORD();
+			objectDrawers.Add(id, objDraw);
+
+			return objDraw;
+		}
+
+		public static RLP GetReorderableList(SerializedProperty property)
+		{
+			var id = string.Format("{0}:{1}-{2}", property.serializedObject.targetObject.GetInstanceID(), property.propertyPath, property.name);
+			RLP ret;
+
+			if(RLPList.TryGetValue(id, out ret))
+			{
+				if(ret.Property.serializedObject != null)
+					ret.Property = property;
+				else
+					ret = RLPList[id] = new RLP(property, true);
+
+				return ret;
+			}
+#if FoCsEditor_ANIMATED
+				ret = new RLP(property, true, true, true, true, true);
+#else
+			ret = new RLP(property, true);
+#endif
+			RLPList.Add(id, ret);
+
+			return ret;
 		}
 
 #region ContextMenu Attributes
@@ -377,9 +454,7 @@ namespace ForestOfChaosLib.Editor
 						Rect rect;
 
 						if(rectRows.ContainsKey(layout.Column))
-						{
 							rect = rectRows[layout.Column];
-						}
 						else
 						{
 							FoCsGUI.Layout.Space();
@@ -390,9 +465,7 @@ namespace ForestOfChaosLib.Editor
 						using(var scope = Disposables.RectHorizontalScope(layout.AmountPerLine, rect))
 						{
 							if(layout.Row != 0)
-							{
 								scope.GetNext(layout.Row);
-							}
 
 							if(FoCsGUI.Button(scope.GetNext(), kv.Key))
 								InvokeMethod(kv);
@@ -414,84 +487,6 @@ namespace ForestOfChaosLib.Editor
 			kv.Value.Function.Invoke(target, null);
 		}
 #endregion
-
-		public override bool RequiresConstantRepaint()
-		{
-#if FoCsEditor_ANIMATED
-            foreach(var reorderableListProperty in reorderableLists)
-            {
-                if(reorderableListProperty.Value.Animate && reorderableListProperty.Value.IsExpanded.isAnimating)
-                    return true;
-            }
-#endif
-			return false;
-		}
-
-		public int FileID()
-		{
-			//From https://forum.unity.com/threads/how-to-get-the-local-identifier-in-file-for-scene-objects.265686/
-			var inspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
-			int localId;
-
-			{
-				var seriObject             = new SerializedObject(target);
-				var inspectorModeInfoValue = inspectorModeInfo.GetValue(seriObject, null);
-				inspectorModeInfo.SetValue(seriObject, InspectorMode.Debug, null);
-				var localIdProp = seriObject.FindProperty("m_LocalIdentfierInFile"); //note the misspelling
-				inspectorModeInfo.SetValue(seriObject, inspectorModeInfoValue, null);
-				localId = localIdProp.intValue;
-			}
-
-			return localId;
-		}
-
-		public string AssetPath()
-		{
-			return AssetPath(target);
-		}
-
-		public static string AssetPath(Object target)
-		{
-			return AssetDatabase.GetAssetPath(target);
-		}
-
-		//#region Storage
-		private ORD GetObjectDrawer(SerializedProperty property)
-		{
-			var id = string.Format("{0}-{1}", property.propertyPath, property.name);
-			ORD objDraw;
-
-			if(objectDrawers.TryGetValue(id, out objDraw))
-				return objDraw;
-
-			objDraw = new ORD();
-			objectDrawers.Add(id, objDraw);
-
-			return objDraw;
-		}
-
-		public static RLP GetReorderableList(SerializedProperty property)
-		{
-			var id = string.Format("{0}:{1}-{2}", property.serializedObject.targetObject.GetInstanceID(), property.propertyPath, property.name);
-			RLP ret;
-
-			if(RLPList.TryGetValue(id, out ret))
-			{
-				if(ret.Property.serializedObject != null)
-					ret.Property = property;
-				else
-					ret = RLPList[id] = new RLP(property, true);
-				return ret;
-			}
-#if FoCsEditor_ANIMATED
-				ret = new RLP(property, true, true, true, true, true);
-#else
-			ret = new RLP(property, true);
-#endif
-			RLPList.Add(id, ret);
-
-			return ret;
-		}
 	}
 
 	public class FoCsEditor<T>: FoCsEditor where T: Object

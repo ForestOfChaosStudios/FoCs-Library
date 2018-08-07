@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ForestOfChaosLib.Editor.Utilities.Disposable;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
@@ -22,10 +21,10 @@ namespace ForestOfChaosLib.Editor
 			private static   Action                   OnLimitingChange;
 			private static   bool?                    limitingEnabled;
 			private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
-			private          SerializedProperty       property;
 			public           bool                     Animate;
 			public           int                      ID;
 			public           ListLimiter              Limiter;
+			private          SerializedProperty       property;
 			public           SerializedPropertyType   SerializedPropertyType;
 
 			public static bool LimitingEnabled
@@ -110,9 +109,7 @@ namespace ForestOfChaosLib.Editor
 				//TODO Implement limited view of lists, eg only show index 50-100, and buttons to move limits
 				List.drawFooterCallback    += OnListDrawFooterCallback;
 				List.showDefaultBackground =  true;
-
 				SetSerializedPropertyType();
-
 				CheckLimiter();
 			}
 
@@ -125,9 +122,7 @@ namespace ForestOfChaosLib.Editor
 					property.DeleteArrayElementAtIndex(0);
 				}
 				else
-				{
 					SerializedPropertyType = property.GetArrayElementAtIndex(0).propertyType;
-				}
 			}
 
 			private void CheckLimiter()
@@ -310,7 +305,6 @@ namespace ForestOfChaosLib.Editor
 							//{
 							//	Debug.Log(dD.GetType().Name);
 							//}
-
 							DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
 							if(@event.type == EventType.DragPerform)
@@ -342,6 +336,7 @@ namespace ForestOfChaosLib.Editor
 					if(prop.type.Contains(typeName))
 					{
 						prop.objectReferenceValue = obj;
+
 						if(prop.objectReferenceValue != null)
 							continue;
 					}
@@ -355,12 +350,14 @@ namespace ForestOfChaosLib.Editor
 						{
 							case "Transform":
 								prop.objectReferenceValue = transform;
+
 								if(prop.objectReferenceValue != null)
 									continue;
 								else
 									break;
 							case "GameObject":
 								prop.objectReferenceValue = transform.gameObject;
+
 								if(prop.objectReferenceValue != null)
 									continue;
 								else
@@ -375,12 +372,14 @@ namespace ForestOfChaosLib.Editor
 						{
 							case "Transform":
 								prop.objectReferenceValue = gameObject.transform;
+
 								if(prop.objectReferenceValue != null)
 									continue;
 								else
 									break;
 							case "GameObject":
 								prop.objectReferenceValue = gameObject;
+
 								if(prop.objectReferenceValue != null)
 									continue;
 								else
@@ -725,9 +724,7 @@ namespace ForestOfChaosLib.Editor
 					FooterLimiterGUI(rect);
 
 				if(List.displayAdd)
-				{
 					FooterAddGUI(addButtonRect);
-				}
 
 				if(List.displayRemove)
 					FooterRemoveGUI(removeButtonRect);
@@ -781,9 +778,7 @@ namespace ForestOfChaosLib.Editor
 							if(!DragAndDrop.objectReferences.IsNullOrEmpty())
 							{
 								using(Disposables.ColorChanger(Color.green))
-								{
 									FoCsGUI.Styles.Unity.Box.Draw(addButtonRect, false, false, false, false);
-								}
 							}
 						}
 

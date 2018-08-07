@@ -14,12 +14,6 @@ namespace ForestOfChaosLib.Curves
 		[SerializeField] private List<TransformData> Positions   = new List<TransformData>(TOTAL_COUNT);
 		[SerializeField] private bool                useGlobalSpace;
 
-		public bool UseGlobalSpace
-		{
-			get { return useGlobalSpace; }
-			set { useGlobalSpace = value; }
-		}
-
 		public TransformData StartPos
 		{
 			get { return Positions[0]; }
@@ -36,6 +30,12 @@ namespace ForestOfChaosLib.Curves
 		{
 			if(Positions == null)
 				Positions = new List<TransformData>(TOTAL_COUNT);
+		}
+
+		public bool UseGlobalSpace
+		{
+			get { return useGlobalSpace; }
+			set { useGlobalSpace = value; }
 		}
 
 		public List<TransformData> CurvePositions

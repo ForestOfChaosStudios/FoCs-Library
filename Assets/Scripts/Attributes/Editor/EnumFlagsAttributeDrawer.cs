@@ -28,7 +28,7 @@ namespace ForestOfChaosLib.Attributes
 			using(var cc = FoCsEditor.Disposables.ChangeCheck())
 			{
 				//if(property.enumNames.Length <= 4)
-					buttonsIntValue = DoLessThen4Draw(position, property, buttonsIntValue, labelWidth, enumLength, buttonPressed);
+				buttonsIntValue = DoLessThen4Draw(position, property, buttonsIntValue, labelWidth, enumLength, buttonPressed);
 				//else
 				//	buttonsIntValue = DoMoreThen4Draw(position, property, buttonsIntValue, labelWidth, enumLength, buttonPressed);
 

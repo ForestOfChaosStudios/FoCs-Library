@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace ForestOfChaosLib.Curves.Components
 {
 	public class BezierCurveV3DBehaviour: ICurveV3DComponent<BezierCurveV3D>
