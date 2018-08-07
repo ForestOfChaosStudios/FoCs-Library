@@ -96,12 +96,45 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		protected static Rect DrawSubProp(SerializedProperty prop, Rect drawPos)
 		{
-			var height = FoCsGUI.GetPropertyHeight(prop, FoCsGUI.AttributeCheck.DoCheck);
-			drawPos.height = height;
-			FoCsGUI.PropertyField(drawPos, prop, prop.isExpanded, FoCsGUI.AttributeCheck.DoCheck);
-			drawPos.y += height + Padding;
+			if(prop.isArray && (prop.propertyType != SerializedPropertyType.String))
+			{
+				var list   = FoCsEditor.GetReorderableList(prop);
+				var height = list.GetTotalHeight();
+				drawPos.height = height;
+
+				using(FoCsEditor.Disposables.SetIndent(0))
+				{
+					list.HandleDrawing(drawPos.Edit(RectEdit.ChangeX(16)));
+				}
+
+				drawPos.y += height + Padding;
+			}
+			else
+			{
+				var height = FoCsGUI.GetPropertyHeight(prop, FoCsGUI.AttributeCheck.DoCheck);
+				drawPos.height = height;
+				FoCsGUI.PropertyField(drawPos, prop, prop.isExpanded, FoCsGUI.AttributeCheck.DoCheck);
+				drawPos.y += height + Padding;
+			}
 
 			return drawPos;
+		}
+
+		protected static float SubPropHeight(SerializedProperty prop, bool padding = true)
+		{
+			if(prop.isArray && (prop.propertyType != SerializedPropertyType.String))
+			{
+				var list   = FoCsEditor.GetReorderableList(prop);
+				var height = list.GetTotalHeight();
+
+				return height + (padding? Padding : 0);
+			}
+			else
+			{
+				var height = FoCsGUI.GetPropertyHeight(prop, FoCsGUI.AttributeCheck.DoCheck);
+
+				return height + (padding? Padding : 0);
+			}
 		}
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -116,15 +149,17 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);
-			iterator.Next(true);
-			var height = FoCsGUI.GetPropertyHeight(property) - SingleLine;
+			var height = SingleLine + Padding;
 
-			do
+			using(FoCsEditor.Disposables.Indent())
 			{
-				if(!FoCsEditor.IsPropertyHidden(iterator))
-					height += FoCsGUI.GetPropertyHeight(iterator, iterator.isExpanded, FoCsGUI.AttributeCheck.DoCheck) + Padding;
+				do
+				{
+					if(!FoCsEditor.IsPropertyHidden(iterator))
+						height += SubPropHeight(iterator);
+				}
+				while(iterator.NextVisible(false));
 			}
-			while(iterator.NextVisible(false));
 
 			return height;
 		}
