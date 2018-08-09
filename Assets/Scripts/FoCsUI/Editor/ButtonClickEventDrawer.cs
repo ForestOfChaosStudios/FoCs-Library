@@ -34,6 +34,10 @@ namespace ForestOfChaosLib.FoCsUI.Editor
 		}
 	}
 
+	[CustomEditor(typeof(FoCsButtonClickEventTmp), true, isFallback = true)]
+	[CanEditMultipleObjects]
+	public class ButtonClickEvent_TMPDrawer: ButtonClickEventBaseDrawer { }
+
 	[CustomEditor(typeof(FoCsButtonClickEvent), true, isFallback = true)]
 	[CanEditMultipleObjects]
 	public class ButtonClickEventDrawer: ButtonClickEventBaseDrawer { }
