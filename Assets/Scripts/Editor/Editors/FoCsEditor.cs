@@ -1,4 +1,4 @@
-//#define FoCsEditor_ANIMATED
+#define FoCsEditor_ANIMATED
 
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using System.Reflection;
 using ForestOfChaosLib.Attributes;
 using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
+using UnityEditor.AnimatedValues;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
@@ -30,6 +31,7 @@ namespace ForestOfChaosLib.Editor
 		}
 
 		internal  Dictionary<string, ORD> objectDrawers          = new Dictionary<string, ORD>(1);
+		//internal  Dictionary<string, ObjectReference> ObjectDrawer          = new Dictionary<string, ObjectReference>(1);
 		protected bool                    showContextMenuButtons = true;
 		protected bool                    GUIChanged { get; private set; }
 
@@ -49,11 +51,6 @@ namespace ForestOfChaosLib.Editor
 			private set { EditorPrefs.SetBool("FoCsEditor.showContextMenuButtons", showContextMenuButtons = value); }
 		}
 
-		public override bool UseDefaultMargins()
-		{
-			return false;
-		}
-
 		private void OnEnable()
 		{
 			showContextMenuButtons = EditorPrefs.GetBool("FoCsEditor.showContextMenuButtons");
@@ -63,9 +60,21 @@ namespace ForestOfChaosLib.Editor
 		~FoCsEditor()
 		{
 			if(objectDrawers != null)
+			{
 				objectDrawers.Clear();
+				objectDrawers = null;
+			}
 
-			objectDrawers = null;
+			//if(ObjectDrawer != null)
+			//{
+			//	ObjectDrawer.Clear();
+			//	ObjectDrawer = null;
+			//}
+		}
+
+		public override bool UseDefaultMargins()
+		{
+			return false;
 		}
 
 		public override void OnInspectorGUI()
@@ -105,14 +114,31 @@ namespace ForestOfChaosLib.Editor
 			DoBottomPadding();
 		}
 
+		public override bool RequiresConstantRepaint()
+		{
+#if FoCsEditor_ANIMATED
+			foreach(var reorderableListProperty in RLPList)
+			{
+				if(reorderableListProperty.Value.Animate && reorderableListProperty.Value.IsExpanded.isAnimating)
+					return true;
+			}
+			//foreach(var objectDrawer in ObjectDrawer)
+			//{
+			//	if(objectDrawer.Value.IsExpanded.isAnimating)
+			//		return true;
+			//}
+#endif
+			return false;
+		}
+
 		protected static void DoTopPadding()
 		{
-			EditorGUILayout.GetControlRect(false, 0.3f);
+			FoCsGUI.Layout.GetControlRect(false, 0.3f);
 		}
 
 		protected static void DoBottomPadding()
 		{
-			EditorGUILayout.GetControlRect(false, 1);
+			FoCsGUI.Layout.GetControlRect(false, 1);
 		}
 
 		/// <summary>
@@ -182,11 +208,51 @@ namespace ForestOfChaosLib.Editor
 
 		private void HandleObjectReference(SerializedProperty property)
 		{
-			var drawer  = GetObjectDrawer(property);
+			//var drawer = GetObjectDrawer(property);
+			////if((!drawer.Foldout && !drawer.IsExpanded.isAnimating) || (!drawer.Foldout && drawer.IsExpanded.isAnimating && drawer.IsExpanded.faded < 0.1f))
+			//
+			//Debug.Log(drawer.IsExpanded.faded);
+			//if(!drawer.Foldout)
+			//	ObjectReference.Draw(drawer, ObjectReference.HeaderMode.OnlyHeader);
+			//else
+			//{
+			//	drawer.IsExpanded.value = drawer.Foldout;
+			//	ObjectReference.Draw(drawer, ObjectReference.HeaderMode.OnlyHeader);
+			//	FoCsGUI.Layout.GetControlRect(false, -4f);
+			//	using(var fade = Disposables.FadeGroupScope(drawer.IsExpanded.faded))
+			//	{
+			//		if(fade.visible)
+			//		{
+			//			ObjectReference.Draw(drawer, ObjectReference.HeaderMode.NoHeader);
+			//		}
+			//	}
+			//}
+
+			var drawer  = GetObjectDrawers(property);
 			var GuiCont = new GUIContent(property.displayName);
 			var height  = drawer.GetPropertyHeight(property, GuiCont);
 			var rect    = FoCsGUI.Layout.GetControlRect(true, height);
-			drawer.OnGUI(rect, property, GuiCont);
+			drawer.IsExpanded.value = property.isExpanded;
+
+			if((!drawer.IsExpanded.value && !drawer.IsExpanded.isAnimating) || (!drawer.IsExpanded.value && drawer.IsExpanded.isAnimating && drawer.IsExpanded.faded < 0.1f))
+				drawer.OnGUI(rect, property, GuiCont);
+			else
+			{
+				using(var fade = Disposables.FadeGroupScope(drawer.IsExpanded.faded))
+				{
+					if(fade.visible)
+						drawer.OnGUI(rect, property, GuiCont);
+				}
+			}
+		}
+
+		public void HandleArray(SerializedProperty property)
+		{
+			using(Disposables.SetIndent(1))
+			{
+				var listData = GetReorderableList(property);
+				listData.HandleDrawing();
+			}
 		}
 
 		public static DefaultPropertyType GetDefaultPropertyType(SerializedProperty property)
@@ -213,29 +279,6 @@ namespace ForestOfChaosLib.Editor
 		protected bool PropertyIsArrayAndNotString(SerializedProperty property)
 		{
 			return property.isArray && (property.propertyType != SerializedPropertyType.String);
-		}
-
-		public void HandleArray(SerializedProperty property)
-		{
-			using(Disposables.SetIndent(1))
-			{
-				var listData = GetReorderableList(property);
-				var height   = listData.GetTotalHeight();
-				var rect     = FoCsGUI.Layout.GetControlRect(true, height); //.ChangeX(16);
-				listData.HandleDrawing(rect);
-			}
-		}
-
-		public override bool RequiresConstantRepaint()
-		{
-#if FoCsEditor_ANIMATED
-            foreach(var reorderableListProperty in reorderableLists)
-            {
-                if(reorderableListProperty.Value.Animate && reorderableListProperty.Value.IsExpanded.isAnimating)
-                    return true;
-            }
-#endif
-			return false;
 		}
 
 		public int FileID()
@@ -267,7 +310,21 @@ namespace ForestOfChaosLib.Editor
 		}
 
 		//#region Storage
-		protected ORD GetObjectDrawer(SerializedProperty property)
+		//protected ObjectReference GetObjectDrawer(SerializedProperty property)
+		//{
+		//	var id = string.Format("{0}-{1}", property.propertyPath, property.name);
+		//	ObjectReference objRef;
+		//
+		//	if(ObjectDrawer.TryGetValue(id, out objRef))
+		//		return objRef;
+		//
+		//	objRef = new ObjectReference {Property = property, IsExpanded = new AnimBool(property.objectReferenceValue) {speed = 0.7f}, Foldout = property.objectReferenceValue};
+		//	ObjectDrawer.Add(id, objRef);
+		//
+		//	return objRef;
+		//}
+
+		protected ORD GetObjectDrawers(SerializedProperty property)
 		{
 			var id = string.Format("{0}-{1}", property.propertyPath, property.name);
 			ORD objDraw;
@@ -291,8 +348,13 @@ namespace ForestOfChaosLib.Editor
 				if(ret.Property.serializedObject != null)
 					ret.Property = property;
 				else
+				{
+#if FoCsEditor_ANIMATED
+					ret = new RLP(property, true, true, true, true, true);
+#else
 					ret = RLPList[id] = new RLP(property, true);
-
+#endif
+				}
 				return ret;
 			}
 #if FoCsEditor_ANIMATED
@@ -577,7 +639,7 @@ namespace ForestOfChaosLib.Editor
 
 			public void HandleProperty(SerializedProperty property)
 			{
-				var drawer  = owner.GetObjectDrawer(property);
+				var drawer  = owner.GetObjectDrawers(property);
 				var GuiCont = new GUIContent(property.displayName);
 				var height  = drawer.GetPropertyHeight(property, GuiCont);
 				var rect    = FoCsGUI.Layout.GetControlRect(true, height);
@@ -586,7 +648,7 @@ namespace ForestOfChaosLib.Editor
 
 			public float PropertyHeight(SerializedProperty property)
 			{
-				var drawer  = owner.GetObjectDrawer(property);
+				var drawer  = owner.GetObjectDrawers(property);
 				var GuiCont = new GUIContent(property.displayName);
 				var height  = drawer.GetPropertyHeight(property, GuiCont);
 

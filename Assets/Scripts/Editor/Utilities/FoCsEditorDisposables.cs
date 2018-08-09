@@ -3,6 +3,7 @@ using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Editor.Utilities.Disposable;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
+using UnityEditor.AnimatedValues;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
