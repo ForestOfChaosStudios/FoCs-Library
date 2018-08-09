@@ -37,6 +37,11 @@ namespace ForestOfChaosLib.Editor
 			get { return true; }
 		}
 
+		public virtual bool AllowsModeChanging
+		{
+			get { return true; }
+		}
+
 		public virtual bool ShowContextMenuButtons
 		{
 			get { return showContextMenuButtons; }
@@ -195,10 +200,15 @@ namespace ForestOfChaosLib.Editor
 				if(!IsDefaultScriptProperty(property))
 					continue;
 
-				PropertyHandlingDictionary[property].HandleProperty(property);
+				DrawProperty(property);
 
 				break;
 			}
+		}
+
+		protected void DrawProperty(SerializedProperty property)
+		{
+			PropertyHandlingDictionary[property].HandleProperty(property);
 		}
 
 		private void VerifyIPropertyLayoutHandlerArray()
@@ -257,7 +267,8 @@ namespace ForestOfChaosLib.Editor
 			using(Disposables.HorizontalScope(FoCsGUI.Styles.Unity.Toolbar))
 			{
 				EditorHelpers.CopyPastObjectButtons(serializedObject);
-				DoSortButtons();
+				if(AllowsModeChanging)
+					DoSortButtons();
 				DoContextMenuHeader();
 			}
 		}

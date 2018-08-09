@@ -16,17 +16,15 @@ public class StringReferenceEditor: FoCsEditor
 
 			using(var changeCheckScope = Disposables.ChangeCheck())
 			{
-				var cachedGuiColor = GUI.color;
 				serializedObject.Update();
 
 				foreach(var serializedProperty in serializedObject.Properties())
 				{
-					GUI.color = cachedGuiColor;
 
 					if(serializedProperty.name == "value")
 						DoTextBox(serializedProperty);
 					else
-						HandleProperty(serializedProperty);
+						DrawProperty(serializedProperty);
 				}
 
 				if(changeCheckScope.changed)

@@ -1,3 +1,5 @@
+using ForestOfChaosLib.AdvVar;
+using ForestOfChaosLib.AdvVar.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -115,10 +117,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			if(property.stringValue.Length > range.max)
 				property.stringValue = property.stringValue.Substring(0, (int)range.max);
 		}
-#if DRAW_ADVVAR
-		private static bool DoGeneric(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout)
-		{
-			var obj = property.GetTargetObjectOfProperty();
 
 		private static bool DoGeneric(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout)
 		{
