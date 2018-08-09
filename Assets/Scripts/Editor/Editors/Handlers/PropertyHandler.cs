@@ -46,5 +46,11 @@ namespace ForestOfChaosLib.Editor
 		{
 			return FoCsGUI.GetPropertyHeight(property);
 		}
+
+		/// <inheritdoc />
+		public bool IsValidProperty(SerializedProperty property)
+		{
+			return true;
+		}
 	}
 }

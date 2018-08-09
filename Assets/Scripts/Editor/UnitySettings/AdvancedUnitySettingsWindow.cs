@@ -4,7 +4,7 @@ using ForestOfChaosLib.Editor.Windows;
 using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
-using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
+using URLP = ForestOfChaosLib.Editor.FoCsEditor.UnityReorderableListProperty;
 
 namespace ForestOfChaosLib.Editor.UnitySettings
 {
@@ -51,13 +51,13 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 		private class Tab: Tab<AdvancedUnitySettingsWindow>
 		{
-			protected const    float                   EXTRA_LABEL_WIDTH = 128;
-			protected const    float                   LEFT_BORDER       = 32f;
-			protected const    float                   RIGHT_BORDER      = 0;
-			protected readonly SerializedObject        Asset;
-			private readonly   Dictionary<string, RLP> reorderableLists = new Dictionary<string, RLP>(1);
-			protected          Vector2                 vector2          = Vector2.zero;
-			public override    string                  TabName { get; }
+			protected const    float                    EXTRA_LABEL_WIDTH = 128;
+			protected const    float                    LEFT_BORDER       = 32f;
+			protected const    float                    RIGHT_BORDER      = 0;
+			protected readonly SerializedObject         Asset;
+			private readonly   Dictionary<string, URLP> reorderableLists = new Dictionary<string, URLP>(1);
+			protected          Vector2                  vector2          = Vector2.zero;
+			public override    string                   TabName { get; }
 
 			public Tab(string tabName, SerializedObject asset)
 			{
@@ -144,10 +144,10 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 					DrawSingleProperty(itr);
 			}
 
-			private RLP GetReorderableList(SerializedProperty property)
+			private URLP GetReorderableList(SerializedProperty property)
 			{
-				var id = property.propertyPath + "-" + property.name;
-				RLP ret;
+				var                                     id = property.propertyPath + "-" + property.name;
+				URLP ret;
 
 				if(reorderableLists.TryGetValue(id, out ret))
 				{
@@ -156,7 +156,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 					return ret;
 				}
 
-				ret = new RLP(property);
+				ret = new URLP(property);
 				reorderableLists.Add(id, ret);
 
 				return ret;

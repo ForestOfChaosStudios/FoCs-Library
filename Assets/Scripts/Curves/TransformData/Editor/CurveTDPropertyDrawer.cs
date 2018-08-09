@@ -4,13 +4,13 @@ using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
-using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
+using URLP = ForestOfChaosLib.Editor.FoCsEditor.UnityReorderableListProperty;
 
 namespace ForestOfChaosLib.Curves.Editor
 {
 	public class CurveTDPropertyDrawer: FoCsPropertyDrawer
 	{
-		private RLP list;
+		private URLP list;
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
@@ -49,7 +49,7 @@ namespace ForestOfChaosLib.Curves.Editor
 
 			if(list == null)
 			{
-				list                       = new RLP(property.FindPropertyRelative("Positions"));
+				list                       = new URLP(property.FindPropertyRelative("Positions"));
 				list.List.onCanAddCallback = reorderableList => !targ.IsFixedLength;
 			}
 		}

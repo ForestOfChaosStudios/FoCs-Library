@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
 {
-	internal  class ObjectReferenceHandler: IPropertyLayoutHandler
+	internal class ObjectReferenceHandler: IPropertyLayoutHandler
 	{
 		private readonly FoCsEditor owner;
 
@@ -28,6 +28,11 @@ namespace ForestOfChaosLib.Editor
 			var height  = drawer.GetPropertyHeight(property, GuiCont);
 
 			return height;
+		}
+
+		public bool IsValidProperty(SerializedProperty property)
+		{
+			return (property.propertyType == SerializedPropertyType.ObjectReference) && !FoCsEditor.IsDefaultScriptProperty(property);
 		}
 	}
 }
