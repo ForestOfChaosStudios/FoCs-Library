@@ -47,7 +47,7 @@ namespace ForestOfChaosLib.Curves.Editor
 			}
 		}
 
-		public override void OnSceneGUI()
+		public void OnSceneGUI()
 		{
 			using(var cc = Disposables.ChangeCheck())
 			{

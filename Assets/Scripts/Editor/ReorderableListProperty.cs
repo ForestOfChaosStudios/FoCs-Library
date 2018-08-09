@@ -102,7 +102,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				OnLimitingChange           += ChangeLimiting;
 				List                       =  new ReorderableList(Property.serializedObject, Property, dragable, displayHeader, displayAdd, displayRemove);
-				List.drawHeaderCallback  += OnListDrawHeaderCallback;
+				List.drawHeaderCallback    += OnListDrawHeaderCallback;
 				List.onCanRemoveCallback   += OnListOnCanRemoveCallback;
 				List.drawElementCallback   += DrawElement;
 				List.elementHeightCallback += OnListElementHeightCallback;
@@ -125,7 +125,6 @@ namespace ForestOfChaosLib.Editor
 				headerRect.xMax   -= 6f;
 				headerRect.height -= 2f;
 				++headerRect.y;
-
 				List.drawHeaderCallback(headerRect);
 
 				if(SerializedPropertyType != SerializedPropertyType.ObjectReference)
@@ -642,8 +641,10 @@ namespace ForestOfChaosLib.Editor
 				using(Disposables.IndentSet(0))
 				{
 					var style = property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none;
-					var togglePos = rect.Edit(RectEdit.SetWidth(EditorGUIUtility.labelWidth - 16));
-					property.isExpanded = FoCsGUI.ToggleLeft(togglePos, property.isExpanded, string.Format("{0} [{1}]", property.displayName, property.arraySize), style);
+					FoCsGUI.Label(rect, string.Format("{0} [{1}]", property.displayName, property.arraySize), style);
+
+					if(FoCsGUI.Foldout(rect.Edit(RectEdit.SubtractWidth(64)), property.isExpanded).Pressed)
+						property.isExpanded = !property.isExpanded;
 				}
 
 				using(Disposables.DisabledScope(!property.isExpanded))
@@ -693,36 +694,39 @@ namespace ForestOfChaosLib.Editor
 
 			private void FooterLimiterGUI(Rect rect)
 			{
-				var minAmount  = 1;
-				var maxAmount  = 5;
-				var upArrow    = new GUIContent("", string.Format("Increase Displayed Index {0}", minAmount));
-				var up2Arrow   = new GUIContent("", string.Format("Increase Displayed Index {0}", maxAmount));
-				var downArrow  = new GUIContent("", string.Format("Decrease Displayed Index {0}", minAmount));
-				var down2Arrow = new GUIContent("", string.Format("Decrease Displayed Index {0}", maxAmount));
-				var horScope   = Disposables.RectHorizontalScope(11, rect.Edit(RectEdit.ChangeX(5), RectEdit.AddWidth(-16)));
-
-				using(Disposables.DisabledScope(!Limiter.CanDecrease()))
+				using(Disposables.IndentZeroed())
 				{
-					if(FoCsGUI.Button(horScope.GetNext(), upArrow, FoCsGUI.Styles.UpArrow))
-						Limiter.ChangeRange(-minAmount);
+					var minAmount  = 1;
+					var maxAmount  = 5;
+					var upArrow    = new GUIContent("", string.Format("Increase Displayed Index {0}", minAmount));
+					var up2Arrow   = new GUIContent("", string.Format("Increase Displayed Index {0}", maxAmount));
+					var downArrow  = new GUIContent("", string.Format("Decrease Displayed Index {0}", minAmount));
+					var down2Arrow = new GUIContent("", string.Format("Decrease Displayed Index {0}", maxAmount));
+					var horScope   = Disposables.RectHorizontalScope(11, rect.Edit(RectEdit.ChangeX(5), RectEdit.AddWidth(-16)));
 
-					if(FoCsGUI.Button(horScope.GetNext(), up2Arrow, FoCsGUI.Styles.Up2Arrow))
-						Limiter.ChangeRange(-maxAmount);
-				}
+					using(Disposables.DisabledScope(!Limiter.CanDecrease()))
+					{
+						if(FoCsGUI.Button(horScope.GetNext(), upArrow, FoCsGUI.Styles.UpArrow))
+							Limiter.ChangeRange(-minAmount);
 
-				var minString  = (Limiter.Min + 1).ToString();
-				var maxString  = Limiter.Max.ToString();
-				var shortLabel = string.Format("{0}: {1}-{2}",                      minString.Length + maxString.Length < 5? "Index" : "I", minString, maxString);
-				var toolTip    = string.Format("Viewable Indices: Min:{0} Max:{1}", minString,                                              maxString);
-				FoCsGUI.Label(horScope.GetNext(5, RectEdit.ChangeY(-3)), new GUIContent(shortLabel, toolTip));
+						if(FoCsGUI.Button(horScope.GetNext(), up2Arrow, FoCsGUI.Styles.Up2Arrow))
+							Limiter.ChangeRange(-maxAmount);
+					}
 
-				using(Disposables.DisabledScope(!Limiter.CanIncrease()))
-				{
-					if(FoCsGUI.Button(horScope.GetNext(), downArrow, FoCsGUI.Styles.DownArrow))
-						Limiter.ChangeRange(minAmount);
+					var minString  = (Limiter.Min + 1).ToString();
+					var maxString  = Limiter.Max.ToString();
+					var shortLabel = string.Format("{0}: {1}-{2}",                      minString.Length + maxString.Length < 5? "Index" : "I", minString, maxString);
+					var toolTip    = string.Format("Viewable Indices: Min:{0} Max:{1}", minString,                                              maxString);
+					FoCsGUI.Label(horScope.GetNext(5, RectEdit.ChangeY(-3)), new GUIContent(shortLabel, toolTip));
 
-					if(FoCsGUI.Button(horScope.GetNext(), down2Arrow, FoCsGUI.Styles.Down2Arrow))
-						Limiter.ChangeRange(maxAmount);
+					using(Disposables.DisabledScope(!Limiter.CanIncrease()))
+					{
+						if(FoCsGUI.Button(horScope.GetNext(), downArrow, FoCsGUI.Styles.DownArrow))
+							Limiter.ChangeRange(minAmount);
+
+						if(FoCsGUI.Button(horScope.GetNext(), down2Arrow, FoCsGUI.Styles.Down2Arrow))
+							Limiter.ChangeRange(maxAmount);
+					}
 				}
 			}
 
