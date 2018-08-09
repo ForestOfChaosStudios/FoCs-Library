@@ -4,7 +4,7 @@ using ForestOfChaosLib.Editor.Windows;
 using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
-using RLP = ForestOfChaosLib.Editor.FoCsEditor.ReorderableListProperty;
+using URLP = ForestOfChaosLib.Editor.FoCsEditor.UnityReorderableListProperty;
 
 namespace ForestOfChaosLib.Editor.UnitySettings
 {
@@ -13,6 +13,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 	{
 		private const string                             Title = "Advanced Unity Settings Window";
 		private       Tab<AdvancedUnitySettingsWindow>[] tabs;
+
 		public override Tab<AdvancedUnitySettingsWindow>[] Tabs
 		{
 			get
@@ -42,23 +43,21 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 			tabs = new Tab<AdvancedUnitySettingsWindow>[arry.Length];
 
 			for(var i = 0; i < arry.Length; i++)
-			{
-				//if(arry[i].FileName == UnitySettingsReader.EditorSettings.FileName)
-				//	tabs[i] = new SearchableTab(arry[i], arry[i]);
-				//else
-					tabs[i] = new SearchableTab(arry[i], arry[i]);
-			}
+					//if(arry[i].FileName == UnitySettingsReader.EditorSettings.FileName)
+					//	tabs[i] = new SearchableTab(arry[i], arry[i]);
+					//else
+				tabs[i] = new SearchableTab(arry[i], arry[i]);
 		}
 
 		private class Tab: Tab<AdvancedUnitySettingsWindow>
 		{
-			protected const    float                   EXTRA_LABEL_WIDTH = 128;
-			protected const    float                   LEFT_BORDER       = 32f;
-			protected const    float                   RIGHT_BORDER      = 0;
-			protected readonly SerializedObject        Asset;
-			private readonly   Dictionary<string, RLP> reorderableLists = new Dictionary<string, RLP>(1);
-			protected          Vector2                 vector2          = Vector2.zero;
-			public override    string                  TabName { get; }
+			protected const    float                    EXTRA_LABEL_WIDTH = 128;
+			protected const    float                    LEFT_BORDER       = 32f;
+			protected const    float                    RIGHT_BORDER      = 0;
+			protected readonly SerializedObject         Asset;
+			private readonly   Dictionary<string, URLP> reorderableLists = new Dictionary<string, URLP>(1);
+			protected          Vector2                  vector2          = Vector2.zero;
+			public override    string                   TabName { get; }
 
 			public Tab(string tabName, SerializedObject asset)
 			{
@@ -145,10 +144,10 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 					DrawSingleProperty(itr);
 			}
 
-			private RLP GetReorderableList(SerializedProperty property)
+			private URLP GetReorderableList(SerializedProperty property)
 			{
-				var id = property.propertyPath + "-" + property.name;
-				RLP ret;
+				var                                     id = property.propertyPath + "-" + property.name;
+				URLP ret;
 
 				if(reorderableLists.TryGetValue(id, out ret))
 				{
@@ -157,56 +156,58 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 					return ret;
 				}
 
-				ret = new RLP(property);
+				ret = new URLP(property);
 				reorderableLists.Add(id, ret);
 
 				return ret;
 			}
 		}
 
-		private class SearchableTab:Tab
+		private class SearchableTab: Tab
 		{
+			private static readonly GUIContent SearchGuiContent = new GUIContent("Search: ", "This will only show properties that match, Ignores case.");
+			private                 string     Search;
 			public SearchableTab(string tabName, SerializedObject asset): base(tabName, asset) { }
-			private string Search;
-			private static readonly GUIContent SearchGuiContent= new GUIContent("Search: ", "This will only show properties that match, Ignores case.");
+
 			public override void DrawTab(FoCsWindow<AdvancedUnitySettingsWindow> owner)
 			{
-				using (FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
+				using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
 					EditorGUILayout.LabelField(TabName);
 
 				Search = FoCsGUI.Layout.TextField(SearchGuiContent, Search);
 
-                using (FoCsEditor.Disposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
+				using(FoCsEditor.Disposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
 				{
 					Asset.Update();
 
-					using (FoCsEditor.Disposables.HorizontalScope())
+					using(FoCsEditor.Disposables.HorizontalScope())
 					{
 						DrawSpace(LEFT_BORDER);
 
-						using (var scrollViewScope = FoCsEditor.Disposables.ScrollViewScope(vector2, true))
+						using(var scrollViewScope = FoCsEditor.Disposables.ScrollViewScope(vector2, true))
 						{
 							vector2 = scrollViewScope.scrollPosition;
 
-							using (var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
+							using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
 							{
 								var unityDefProp = true;
 
-								foreach (var property in Asset.Properties())
+								foreach(var property in Asset.Properties())
 								{
-									if (unityDefProp)
+									if(unityDefProp)
 									{
 										unityDefProp = false;
 
 										continue;
 									}
+
 									if(Search.IsNullOrEmpty())
 										DrawProperty(property);
 									else if(property.name.ToLower().Contains(Search.ToLower()))
-                                        DrawProperty(property);
+										DrawProperty(property);
 								}
 
-								if (changeCheckScope.changed)
+								if(changeCheckScope.changed)
 									EditorUtility.SetDirty(Asset.targetObject);
 							}
 						}

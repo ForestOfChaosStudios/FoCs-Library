@@ -21,11 +21,13 @@ namespace ForestOfChaosLib.Editor.Utilities.Disposable
 		private readonly float     StoredFieldSize;
 		private readonly float     StoredLabelSize;
 		private readonly WidthType widthType;
+
 		private static float EditorLabelWidth
 		{
 			get { return EditorGUIUtility.labelWidth; }
 			set { EditorGUIUtility.labelWidth = value; }
 		}
+
 		private static float EditorFieldWidth
 		{
 			get { return EditorGUIUtility.fieldWidth; }

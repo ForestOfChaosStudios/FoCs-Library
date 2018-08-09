@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
+using ForestOfChaosLib.Types;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,36 +11,57 @@ namespace ForestOfChaosLib.Editor
 	[CustomEditor(typeof(Transform))]
 	internal class TransformEditor: FoCsEditor<Transform>
 	{
-		private static          bool                               scaleToggle;
-		private static          float                              scaleAmount       = 1;
-		private static readonly GUIContent                         ResetContent      = new GUIContent("Reset",       "Reset Transforms in global space");
-		private static readonly GUIContent                         ResetLocalContent = new GUIContent("Reset Local", "Reset Transforms in local space");
-		private static          int                                _tabNum;
-		private readonly        KeyValuePair<GUIContent, Action>[] TabName;
-		public override         bool                               ShowCopyPasteButtons => true;
+		private static          float                                    scaleAmount = 1;
+		private static          int                                      tabNum;
+		private static readonly GUIContent                               ResetContent      = new GUIContent("Reset Global",         "Reset Transforms in global space");
+		private static readonly GUIContent                               ResetLocalContent = new GUIContent("Reset Local",          "Reset Transforms in local space");
+		private static readonly GUIContent                               CopyContent       = new GUIContent("Copy Transform Data",  "Copies a new TransformData");
+		private static readonly GUIContent                               PasteContent      = new GUIContent("Paste Transform Data", "Pastes the TransformData");
+		private static readonly GUIContent                               SetContent        = new GUIContent("Set:  ");
+		private static readonly GUIContent                               TimesContent      = new GUIContent("Times:");
+		private readonly        KeyValuePair<Func<bool, bool>, Action>[] TabName;
+
+		public override bool ShowCopyPasteButtons
+		{
+			get { return true; }
+		}
 
 		private static int TabNum
 		{
-			get { return _tabNum; }
-			set { EditorPrefs.SetInt("FoCsTE.TabNum", _tabNum = value); }
+			get { return tabNum; }
+			set { EditorPrefs.SetInt("FoCsTE.TabNum", tabNum = value); }
+		}
+
+		private static GUILayoutOption[] SCALE_LABEL_OPTIONS
+		{
+			get { return new[] {GUILayout.Width(60), SCALE_BUTTON_HEIGHT}; }
+		}
+
+		private static GUILayoutOption SCALE_BUTTON_HEIGHT
+		{
+			get { return GUILayout.Height(16); }
 		}
 
 		public TransformEditor()
 		{
 			TabName = new[]
 			{
-					Pair.Create<GUIContent, Action>(new GUIContent("Nothing",       "Hides Any Extra Options"),                null),
-					Pair.Create<GUIContent, Action>(new GUIContent("Scale Options", "Scale Preset Options"),                   ScaleButtonsEnabled),
-					Pair.Create<GUIContent, Action>(new GUIContent("Global Values", "Force Display of Global Transform Data"), DrawGlobalTransformOptions),
-					Pair.Create<GUIContent, Action>(new GUIContent("Local Values",  "Force Display of Local Transform Data"),  DrawLocalTransformOptions)
+					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("Nothing",       "Hides Any Extra Options")),                null),
+					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("Scale Options", "Scale Preset Options")),                   ScaleButtonsEnabled),
+					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("Global Values", "Force Display of Global Transform Data")), DrawGlobalTransformOptions),
+					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("T Data",        "Transform Data Copy Paste")),              DrawTDCopyPaste),
+					Pair.Create<Func<bool, bool>, Action>(PingObject,                                                                                            null)
 			};
 		}
 
-		public override bool UseDefaultMargins() => false;
+		public override bool UseDefaultMargins()
+		{
+			return false;
+		}
 
 		protected void OnEnable()
 		{
-			_tabNum = EditorPrefs.GetInt("FoCsTE.TabNum");
+			tabNum = EditorPrefs.GetInt("FoCsTE.TabNum");
 		}
 
 		public override void OnInspectorGUI()
@@ -54,7 +77,7 @@ namespace ForestOfChaosLib.Editor
 				{
 					for(var i = 0; i < TabName.Length; i++)
 					{
-						if(FoCsGUI.Layout.Toggle(TabName[i].Key, TabNum == i, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16)))
+						if(TabName[i].Key.Invoke(i == TabNum))
 							TabNum = i;
 					}
 				}
@@ -62,6 +85,13 @@ namespace ForestOfChaosLib.Editor
 				TabName[TabNum].Value.Trigger();
 				serializedObject.ApplyModifiedProperties();
 			}
+
+			DoBottomPadding();
+		}
+
+		private static bool NormalHeaderButton(bool active, GUIContent con)
+		{
+			return FoCsGUI.Layout.Toggle(con, active, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
 		}
 
 		private void DrawTransformOptions()
@@ -100,6 +130,42 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
+		private bool PingObject(bool val)
+		{
+			if(FoCsGUI.Layout.Toggle("Ping Object", val, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16)))
+				EditorGUIUtility.PingObject(Target);
+
+			return false;
+		}
+
+		private void DrawTDCopyPaste()
+		{
+			var cachedGuiColor = GUI.color;
+
+			using(Disposables.HorizontalScope(EditorStyles.toolbar))
+			{
+				var                  copyBuff = CopyPasteUtility.CopyBuffer;
+				var                  td       = new TransformData();
+				var                  isType   = CopyPasteUtility.IsTypeInBuffer(td, copyBuff);
+				var                  copyBtn  = FoCsGUI.Layout.Button(CopyContent, EditorStyles.toolbarButton);
+				FoCsGUI.GUIEventBool pasteBtn;
+				PasteContent.tooltip = "Pastes: " + copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length);
+
+				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
+					pasteBtn = FoCsGUI.Layout.Button(PasteContent, EditorStyles.toolbarButton);
+
+				if(copyBtn)
+					CopyPasteUtility.Copy(new TransformData(Target));
+				else if(pasteBtn)
+				{
+					Undo.RecordObject(target, "TransformData Paste");
+					Target.SetFromTD(CopyPasteUtility.Paste<TransformData>(copyBuff, true));
+				}
+			}
+
+			GUI.color = cachedGuiColor;
+		}
+
 		private void DrawLocalTransformOptions()
 		{
 			bool guiChanged;
@@ -132,9 +198,19 @@ namespace ForestOfChaosLib.Editor
 		{
 			using(Disposables.HorizontalScope(EditorStyles.toolbar))
 			{
-				var transform     = Target;
-				var resetBtn      = FoCsGUI.Layout.Button(ResetContent,      EditorStyles.toolbarButton);
-				var resetLocalBtn = FoCsGUI.Layout.Button(ResetLocalContent, EditorStyles.toolbarButton);
+				var transform = Target;
+				var resetBtn  = FoCsGUI.Layout.Button(ResetContent, EditorStyles.toolbarButton);
+
+				if(transform.parent)
+				{
+					var resetLocalBtn = FoCsGUI.Layout.Button(ResetLocalContent, EditorStyles.toolbarButton);
+
+					if(resetLocalBtn)
+					{
+						Undo.RecordObject(transform, "ResetLocalPosRotScale");
+						transform.ResetLocalPosRotScale();
+					}
+				}
 
 				if(resetBtn)
 				{
@@ -142,26 +218,17 @@ namespace ForestOfChaosLib.Editor
 					transform.ResetPosRotScale();
 				}
 
-				if(resetLocalBtn)
-				{
-					Undo.RecordObject(transform, "ResetLocalPosRotScale");
-					transform.ResetLocalPosRotScale();
-				}
-
 				DrawCopyPasteButtons();
 			}
 		}
-
-		private static readonly GUIContent SetContent   = new GUIContent("Set:  ");
-		private static readonly GUIContent TimesContent = new GUIContent("Times:");
 
 		private void ScaleButtonsEnabled()
 		{
 			ScaleArea();
 
-			using(Disposables.HorizontalScope(EditorStyles.toolbar))
+			using(Disposables.HorizontalScope())
 			{
-				GUILayout.Label(SetContent, EditorStyles.toolbarButton, GUILayout.Width(60));
+				FoCsGUI.Layout.Label(SetContent, SCALE_LABEL_OPTIONS);
 				SetScaleBtn(0.5f);
 				SetScaleBtn(1);
 				SetScaleBtn(2);
@@ -172,10 +239,9 @@ namespace ForestOfChaosLib.Editor
 				SetScaleBtn(100);
 			}
 
-			using(Disposables.HorizontalScope(EditorStyles.toolbar))
+			using(Disposables.HorizontalScope())
 			{
-				GUILayout.Label(TimesContent, EditorStyles.toolbarButton, GUILayout.Width(60));
-
+				FoCsGUI.Layout.LabelField(TimesContent, SCALE_LABEL_OPTIONS);
 				TimesScaleBtn(0.5f);
 				TimesScaleBtn(1);
 				TimesScaleBtn(2);
@@ -187,11 +253,11 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private void SetScaleBtn(float multi = 1)
+		private void SetScaleBtn(float multi)
 		{
-			var resetContent = new GUIContent($"{multi}x", $"Sets the Scale to ({multi}, {multi}, {multi})");
+			var resetContent = new GUIContent(string.Format("{0}x", multi), string.Format("Sets the Scale to ({0}, {1}, {2})", multi, multi, multi));
 
-			if(GUILayout.Button(resetContent, EditorStyles.toolbarButton))
+			if(FoCsGUI.Layout.Button(resetContent, SCALE_BUTTON_HEIGHT))
 			{
 				var transform = Target;
 				Undo.RecordObject(transform, "Scale reset");
@@ -200,11 +266,11 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private void TimesScaleBtn(float multi = 1)
+		private void TimesScaleBtn(float multi)
 		{
-			var resetContent = new GUIContent($"{multi}x", $"Multiplies the Scale to ({Target.localScale.x * multi}, {Target.localScale.y * multi}, {Target.localScale.z * multi})");
+			var resetContent = new GUIContent(string.Format("{0}x", multi), string.Format("Multiplies the Scale to ({0}, {1}, {2})", Target.localScale.x * multi, Target.localScale.y * multi, Target.localScale.z * multi));
 
-			if(GUILayout.Button(resetContent, EditorStyles.toolbarButton))
+			if(FoCsGUI.Layout.Button(resetContent, SCALE_BUTTON_HEIGHT))
 			{
 				var transform = Target;
 				Undo.RecordObject(transform, "Scale reset");
@@ -217,21 +283,21 @@ namespace ForestOfChaosLib.Editor
 		{
 			var transform = Target;
 
-			using(Disposables.HorizontalScope(EditorStyles.toolbar))
+			using(Disposables.HorizontalScope())
 			{
 				var content = new GUIContent("Scale amount", "Set amount to uniformly scale the object");
-				scaleAmount = EditorGUILayout.FloatField(content, scaleAmount, EditorStyles.toolbarTextField);
-				var scaleContent = new GUIContent("Set Scale", $"Sets the scale ({scaleAmount},{scaleAmount},{scaleAmount})");
+				scaleAmount = FoCsGUI.Layout.FloatField(content, scaleAmount, SCALE_BUTTON_HEIGHT);
+				var scaleContent = new GUIContent("Set Scale", string.Format("Sets the scale ({0},{1},{2})", scaleAmount, scaleAmount, scaleAmount));
 
-				if(GUILayout.Button(scaleContent, EditorStyles.toolbarButton))
+				if(GUILayout.Button(scaleContent, SCALE_BUTTON_HEIGHT))
 				{
 					Undo.RecordObject(transform, "Scale set");
 					transform.localScale = Vector3.one * scaleAmount;
 				}
 
-				var scaleTimesContent = new GUIContent("Times Scale", $"Sets the scale ({transform.position.x * scaleAmount},{transform.position.y * scaleAmount},{transform.position.z * scaleAmount})");
+				var scaleTimesContent = new GUIContent("Times Scale", string.Format("Sets the scale ({0},{1},{2})", transform.position.x * scaleAmount, transform.position.y * scaleAmount, transform.position.z * scaleAmount));
 
-				if(GUILayout.Button(scaleTimesContent, EditorStyles.toolbarButton))
+				if(GUILayout.Button(scaleTimesContent, SCALE_BUTTON_HEIGHT))
 				{
 					Undo.RecordObject(transform, "Scale set");
 					transform.localScale *= scaleAmount;

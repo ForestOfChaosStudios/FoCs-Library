@@ -1,5 +1,3 @@
-using ForestOfChaosLib.AdvVar;
-using ForestOfChaosLib.AdvVar.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -107,16 +105,20 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 		private static void DoString(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range)
 		{
 			var stringLabel = new GUIContent(label);
-			stringLabel.text += $"  (Total Length:{(int)range.max})";
+			stringLabel.text += string.Format("  (Total Length:{0})", (int)range.max);
 
 			if(string.IsNullOrEmpty(stringLabel.tooltip))
-				stringLabel.tooltip = $"This string has a Total Length:{(int)range.max})";
+				stringLabel.tooltip = string.Format("This string has a Total Length:{0})", (int)range.max);
 
 			EditorGUI.DelayedTextField(position, property, stringLabel);
 
 			if(property.stringValue.Length > range.max)
 				property.stringValue = property.stringValue.Substring(0, (int)range.max);
 		}
+#if DRAW_ADVVAR
+		private static bool DoGeneric(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout)
+		{
+			var obj = property.GetTargetObjectOfProperty();
 
 		private static bool DoGeneric(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout)
 		{

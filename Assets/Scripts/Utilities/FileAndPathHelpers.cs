@@ -20,6 +20,9 @@ namespace ForestOfChaosLib.Utilities
 			return File.ReadAllText(filePath);
 		}
 
-		public static string GetStreamingAssetsPath(string name) => Application.streamingAssetsPath + "/" + name;
+		public static string GetStreamingAssetsPath(string name)
+		{
+			return Application.streamingAssetsPath + "/" + name;
+		}
 	}
 }

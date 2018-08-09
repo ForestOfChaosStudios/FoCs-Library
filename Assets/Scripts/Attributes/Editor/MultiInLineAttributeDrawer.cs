@@ -21,12 +21,15 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 						for(var i = 0; i < GetAttribute.index; i++)
 							scope.GetNext();
 
-						EditorGUI.PropertyField(scope.GetNext(RectEdit.SubtractY(SingleLinePlusPadding * GetAttribute.index), RectEdit.SetHeight(SingleLine)), property, label);
+						FoCsGUI.PropertyField(scope.GetNext(RectEdit.SubtractY(SingleLinePlusPadding * GetAttribute.index), RectEdit.SetHeight(SingleLine)), property, label);
 					}
 				}
 			}
 		}
 
-		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label) => GetAttribute.index == 0? EditorGUIUtility.singleLineHeight : 0;
+		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label)
+		{
+			return GetAttribute.index == 0? SingleLinePlusPadding : 0;
+		}
 	}
 }

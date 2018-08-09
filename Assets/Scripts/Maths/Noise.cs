@@ -3,11 +3,9 @@ using RAND = UnityEngine.Random;
 
 namespace ForestOfChaosLib.Maths
 {
-
 #region Noise
 	public static class Noise
 	{
-
 #region ReturnNoiseInt
 		/// <summary>
 		///     Randomize value by amount.
@@ -22,7 +20,6 @@ namespace ForestOfChaosLib.Maths
 			return f;
 		}
 #endregion
-
 #region ReturnNoiseFloat
 		/// <summary>
 		///     Randomize value by amount.
@@ -37,8 +34,6 @@ namespace ForestOfChaosLib.Maths
 			return f;
 		}
 #endregion
-
 	}
 #endregion
-
 }
