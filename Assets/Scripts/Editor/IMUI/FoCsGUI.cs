@@ -258,7 +258,7 @@ namespace ForestOfChaosLib.Editor
 
 		public static GUIEvent FoldoutMaster(Rect rect, bool foldout, GUICon guiCon, GUIStyle style)
 		{
-			var data = new GUIEvent {Rect = rect};
+			var data = new GUIEvent {Event = new Event(Event.current), Rect = rect};
 			EditorGUI.Foldout(rect, foldout, guiCon, style);
 
 			return data;

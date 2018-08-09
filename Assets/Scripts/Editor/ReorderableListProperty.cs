@@ -641,10 +641,9 @@ namespace ForestOfChaosLib.Editor
 
 				using(Disposables.IndentSet(0))
 				{
-					property.isExpanded = FoCsGUI.ToggleLeft(rect.Edit(RectEdit.SetWidth(x - 10)),
-					                                     property.isExpanded,
-					                                     string.Format("{0}\t[{1}]", property.displayName, property.arraySize),
-					                                     property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none);
+					var style = property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none;
+					var togglePos = rect.Edit(RectEdit.SetWidth(EditorGUIUtility.labelWidth - 16));
+					property.isExpanded = FoCsGUI.ToggleLeft(togglePos, property.isExpanded, string.Format("{0} [{1}]", property.displayName, property.arraySize), style);
 				}
 
 				using(Disposables.DisabledScope(!property.isExpanded))
