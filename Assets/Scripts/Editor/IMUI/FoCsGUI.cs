@@ -166,6 +166,55 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+#region Toggle
+		public static eBool ToggleLeft(Rect rect, bool toggle)
+		{
+			return ToggleLeftMaster(rect, toggle, GUICon.none, ToggleStyle);
+		}
+
+		public static eBool ToggleLeft(Rect rect, bool toggle, GUIStyle style)
+		{
+			return ToggleLeftMaster(rect, toggle, GUICon.none, style);
+		}
+
+		public static eBool ToggleLeft(Rect rect, bool toggle, string label)
+		{
+			return ToggleLeftMaster(rect, toggle, new GUICon(label), ToggleStyle);
+		}
+
+		public static eBool ToggleLeft(Rect rect, bool toggle, string label, GUIStyle style)
+		{
+			return ToggleLeftMaster(rect, toggle, new GUICon(label), style);
+		}
+
+		public static eBool ToggleLeft(Rect rect, bool toggle, GUICon guiCon)
+		{
+			return ToggleLeftMaster(rect, toggle, guiCon, ToggleStyle);
+		}
+
+		public static eBool ToggleLeft(Rect rect, bool toggle, GUICon guiCon, GUIStyle style)
+		{
+			return ToggleLeftMaster(rect, toggle, guiCon, style);
+		}
+
+		public static eBool ToggleLeft(Rect rect, bool toggle, Texture texture)
+		{
+			return ToggleLeftMaster(rect, toggle, new GUICon(texture), ToggleStyle);
+		}
+
+		public static eBool ToggleLeft(Rect rect, bool toggle, Texture texture, GUIStyle style)
+		{
+			return ToggleLeftMaster(rect, toggle, new GUICon(texture), style);
+		}
+
+		public static eBool ToggleLeftMaster(Rect rect, bool toggle, GUICon guiCon, GUIStyle style)
+		{
+			var data = new eBool {Event = new Event(Event.current), Rect = rect};
+			data.Value = EditorGUI.ToggleLeft(rect, guiCon, toggle, style);
+
+			return data;
+		}
+#endregion
 #region Foldout
 		public static GUIEvent Foldout(Rect rect, bool foldout)
 		{

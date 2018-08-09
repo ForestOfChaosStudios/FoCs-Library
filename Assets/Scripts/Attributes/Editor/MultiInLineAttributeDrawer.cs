@@ -21,7 +21,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 						for(var i = 0; i < GetAttribute.index; i++)
 							scope.GetNext();
 
-						EditorGUI.PropertyField(scope.GetNext(RectEdit.SubtractY(SingleLinePlusPadding * GetAttribute.index), RectEdit.SetHeight(SingleLine)), property, label);
+						FoCsGUI.PropertyField(scope.GetNext(RectEdit.SubtractY(SingleLinePlusPadding * GetAttribute.index), RectEdit.SetHeight(SingleLine)), property, label);
 					}
 				}
 			}
@@ -29,7 +29,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label)
 		{
-			return GetAttribute.index == 0? EditorGUIUtility.singleLineHeight : 0;
+			return GetAttribute.index == 0? SingleLinePlusPadding : 0;
 		}
 	}
 }

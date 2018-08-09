@@ -1,4 +1,4 @@
-//#define FoCsEditor_ANIMATED
+#define FoCsEditor_ANIMATED
 
 using System;
 using System.Collections.Generic;
@@ -49,11 +49,6 @@ namespace ForestOfChaosLib.Editor
 			private set { EditorPrefs.SetBool("FoCsEditor.showContextMenuButtons", showContextMenuButtons = value); }
 		}
 
-		public override bool UseDefaultMargins()
-		{
-			return false;
-		}
-
 		private void OnEnable()
 		{
 			showContextMenuButtons = EditorPrefs.GetBool("FoCsEditor.showContextMenuButtons");
@@ -66,6 +61,11 @@ namespace ForestOfChaosLib.Editor
 				objectDrawers.Clear();
 
 			objectDrawers = null;
+		}
+
+		public override bool UseDefaultMargins()
+		{
+			return false;
 		}
 
 		public override void OnInspectorGUI()
@@ -105,14 +105,26 @@ namespace ForestOfChaosLib.Editor
 			DoBottomPadding();
 		}
 
+		public override bool RequiresConstantRepaint()
+		{
+#if FoCsEditor_ANIMATED
+			foreach(var reorderableListProperty in RLPList)
+			{
+				if(reorderableListProperty.Value.Animate && reorderableListProperty.Value.IsExpanded.isAnimating)
+					return true;
+			}
+#endif
+			return false;
+		}
+
 		protected static void DoTopPadding()
 		{
-			EditorGUILayout.GetControlRect(false, 0.3f);
+			FoCsGUI.Layout.GetControlRect(false, 0.3f);
 		}
 
 		protected static void DoBottomPadding()
 		{
-			EditorGUILayout.GetControlRect(false, 1);
+			FoCsGUI.Layout.GetControlRect(false, 1);
 		}
 
 		/// <summary>
@@ -220,22 +232,10 @@ namespace ForestOfChaosLib.Editor
 			using(Disposables.SetIndent(1))
 			{
 				var listData = GetReorderableList(property);
-				var height   = listData.GetTotalHeight();
-				var rect     = FoCsGUI.Layout.GetControlRect(true, height); //.ChangeX(16);
-				listData.HandleDrawing(rect);
+				//var height   = listData.GetTotalHeight();
+				//var rect     = FoCsGUI.Layout.GetControlRect(true, height); //.ChangeX(16);
+				listData.HandleDrawing();
 			}
-		}
-
-		public override bool RequiresConstantRepaint()
-		{
-#if FoCsEditor_ANIMATED
-            foreach(var reorderableListProperty in reorderableLists)
-            {
-                if(reorderableListProperty.Value.Animate && reorderableListProperty.Value.IsExpanded.isAnimating)
-                    return true;
-            }
-#endif
-			return false;
 		}
 
 		public int FileID()
@@ -291,7 +291,13 @@ namespace ForestOfChaosLib.Editor
 				if(ret.Property.serializedObject != null)
 					ret.Property = property;
 				else
+				{
+#if FoCsEditor_ANIMATED
+					ret = new RLP(property, true, true, true, true, true);
+#else
 					ret = RLPList[id] = new RLP(property, true);
+#endif
+				}
 
 				return ret;
 			}
