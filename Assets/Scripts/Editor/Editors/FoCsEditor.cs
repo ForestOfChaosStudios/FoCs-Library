@@ -249,7 +249,7 @@ namespace ForestOfChaosLib.Editor
 
 		protected static void DoBottomPadding()
 		{
-			FoCsGUI.Layout.GetControlRect(false, 1);
+			//FoCsGUI.Layout.GetControlRect(false, 0.2f);
 		}
 
 		/// <summary>

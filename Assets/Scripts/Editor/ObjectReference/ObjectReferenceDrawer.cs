@@ -108,7 +108,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		protected static void DrawSurroundingBox(Rect position)
 		{
 			if(Event.current.type == EventType.Repaint)
-				GUI.skin.box.Draw(position.Edit(RectEdit.ChangeY(-1), RectEdit.AddWidth(2)), false, false, false, false);
+				GUI.skin.box.Draw(position.Edit(RectEdit.ChangeY(SingleLine - 1), RectEdit.SubtractWidth(SingleLine + 7), RectEdit.AddX(SingleLine + 9)), false, false, false, false);
 		}
 
 		protected static Rect DrawSubProp(SerializedProperty prop, Rect drawPos)
