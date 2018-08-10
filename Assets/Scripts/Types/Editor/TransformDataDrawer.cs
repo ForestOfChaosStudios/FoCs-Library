@@ -84,7 +84,7 @@ namespace ForestOfChaosLib.Curves.Editor
 			var transform = obj as Transform;
 			var component = obj as Component;
 
-			if(@event.type == EventType.repaint)
+			if(@event.type == EventType.Repaint)
 			{
 				if(go || transform || component)
 				{
