@@ -1,3 +1,4 @@
+#if TMP
 using TMPro;
 using UnityEngine;
 
@@ -24,3 +25,4 @@ namespace ForestOfChaosLib.FoCsUI.Image
 		}
 	}
 }
+#endif

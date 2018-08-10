@@ -44,7 +44,7 @@ namespace ForestOfChaosLib.Attributes
 			var info   = type.GetProperty(GetAttribute.name);
 
 			if(info == null)
-				Debug.LogError($"Invalid property name \"{GetAttribute.name}\"");
+				Debug.LogError(string.Format("Invalid property name \"{0}\"", GetAttribute.name));
 			else
 				info.SetValue(parent, fieldInfo.GetValue(parent), null);
 

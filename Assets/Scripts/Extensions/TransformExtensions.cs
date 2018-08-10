@@ -31,7 +31,7 @@ namespace ForestOfChaosLib.Extensions
 				Object.DestroyImmediate(tF.GetChild(i).gameObject);
 		}
 
-		public static void DeActivateChildren(this Transform tF, bool active)
+		public static void SetActiveChildren(this Transform tF, bool active)
 		{
 			for(var i = tF.childCount - 1; i >= 0; i--)
 				tF.GetChild(i).gameObject.SetActive(active);
@@ -95,6 +95,13 @@ namespace ForestOfChaosLib.Extensions
 				list.Add(tF.InverseTransformVector(vector3));
 
 			return list;
+		}
+
+		public static void CopyTransform(this Transform t, Transform other)
+		{
+			t.position   = other.position;
+			t.rotation   = other.rotation;
+			t.localScale = other.localScale;
 		}
 	}
 }

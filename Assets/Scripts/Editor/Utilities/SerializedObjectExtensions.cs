@@ -8,7 +8,10 @@ namespace ForestOfChaosLib.Editor.Utilities
 		public static IEnumerable<SerializedProperty> Properties(this SerializedObject serializedObject, bool enterChildren = false)
 		{
 			var iterator = serializedObject.GetIterator();
-			iterator.Next(true);
+			var next     = iterator.Next(true);
+
+			if(!next)
+				yield break;
 
 			do
 				yield return iterator.Copy();
@@ -18,7 +21,11 @@ namespace ForestOfChaosLib.Editor.Utilities
 		public static int VisibleProperties(this SerializedObject serializedObject, bool enterChildren = false)
 		{
 			var iterator = serializedObject.GetIterator();
-			iterator.Next(true);
+			var next     = iterator.Next(true);
+
+			if(!next)
+				return 0;
+
 			var num = 0;
 
 			do

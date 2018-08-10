@@ -14,11 +14,11 @@ namespace ForestOfChaosLib.Animation
 			Trigger
 		}
 
+		public bool     BoolData;
+		public float    FloatData;
+		public int      IntData;
 		public string   Key;
 		public AnimType KeyType;
-		public int      IntData;
-		public float    FloatData;
-		public bool     BoolData;
 		public bool     TriggerData;
 
 		private AnimatorKey(string key, AnimType keyType, int intData, float floatData, bool boolData, bool triggerData)

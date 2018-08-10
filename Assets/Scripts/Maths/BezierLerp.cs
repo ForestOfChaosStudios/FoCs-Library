@@ -33,10 +33,10 @@ namespace ForestOfChaosLib.Maths
 			return posOne + ((posTwo - posOne) * time);
 		}
 
-		public static Vector3 Lerp(BezierCurveQuadV3D curve, float time) => Lerp(curve.CurvePositions.ToArray(), time);
-		public static Vector3 Lerp(BezierCurveCubeV3D curve, float time) => Lerp(curve.CurvePositions.ToArray(), time);
-		public static Vector3 Lerp(BezierCurveV3D     curve, float time) => Lerp(curve.Positions.ToArray(),      time);
-		public static Vector3 Lerp(ICurve             curve, float time) => Lerp(curve.CurvePositions.ToArray(), time);
+		public static Vector3 Lerp(BezierCurveV3DQuad curve, float time) => Lerp(curve.CurvePositions.ToArray(), time);
+		public static Vector3 Lerp(BezierCurveV3DCube curve, float time) => Lerp(curve.CurvePositions.ToArray(), time);
+		public static Vector3 Lerp(BezierCurveV3D     curve, float time) => Lerp(curve.CurvePositions.ToArray(),      time);
+		public static Vector3 Lerp(ICurveV3D             curve, float time) => Lerp(curve.CurvePositions.ToArray(), time);
 		public static Vector3 Lerp(List<Vector3>      curve, float time) => Lerp(curve.ToArray(),                time);
 
 		public static Vector3 Lerp(Vector3[] curve, float time)

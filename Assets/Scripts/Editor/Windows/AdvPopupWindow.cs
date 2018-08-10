@@ -61,13 +61,13 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 	public class AdvPopupWindowArguments
 	{
+		public Func<float>                     MaxHeight;
+		public Func<float>                     MaxWidth;
+		public Func<float>                     MinHeight;
+		public Func<float>                     MinWidth;
+		public Action<AdvPopupWindowArguments> OnClose;
+		public Action<AdvPopupWindowArguments> OnGUI;
 		public AdvPopupWindow                  Window;
 		public string                          WindowTitle;
-		public Action<AdvPopupWindowArguments> OnGUI;
-		public Action<AdvPopupWindowArguments> OnClose;
-		public Func<float>                     MinWidth;
-		public Func<float>                     MinHeight;
-		public Func<float>                     MaxWidth;
-		public Func<float>                     MaxHeight;
 	}
 }

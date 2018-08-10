@@ -1,4 +1,5 @@
-﻿using ForestOfChaosLib.Extensions;
+﻿#if TMP
+using ForestOfChaosLib.Extensions;
 using TMPro;
 
 namespace ForestOfChaosLib.FoCsUI.Slider
@@ -35,3 +36,4 @@ namespace ForestOfChaosLib.FoCsUI.Slider
 		}
 	}
 }
+#endif

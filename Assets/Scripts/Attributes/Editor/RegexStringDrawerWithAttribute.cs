@@ -51,6 +51,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			EditorGUI.HelpBox(position, GetAttribute.helpMessage, MessageType.Error);
 		}
 
-		private bool IsValid(SerializedProperty property) => Regex.IsMatch(property.stringValue, GetAttribute.pattern);
+		private bool IsValid(SerializedProperty property)
+		{
+			return Regex.IsMatch(property.stringValue, GetAttribute.pattern);
+		}
 	}
 }

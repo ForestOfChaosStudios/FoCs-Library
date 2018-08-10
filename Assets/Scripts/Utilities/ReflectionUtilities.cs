@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
 namespace ForestOfChaosLib.Utilities
 {
@@ -48,7 +46,10 @@ namespace ForestOfChaosLib.Utilities
 			return list;
 		}
 
-		public static List<Type> GetInheritedClasses<TInherit>() => GetInheritedClasses(typeof(TInherit));
+		public static List<Type> GetInheritedClasses<TInherit>()
+		{
+			return GetInheritedClasses(typeof(TInherit));
+		}
 
 		public static List<Type> GetInheritedClasses(Type TInherit)
 		{

@@ -1,0 +1,27 @@
+﻿using ForestOfChaosLib.Editor.Utilities;
+using UnityEngine;
+
+namespace ForestOfChaosLib.Editor
+{
+	[FoCsControlPanel.ControlPanelTabAttribute]
+	public static class CopyPasteUtilityTab
+	{
+		public static void DrawGUI(FoCsControlPanel owner)
+		{
+			using(FoCsEditor.Disposables.HorizontalScope())
+			{
+				FoCsGUI.Layout.Label("Type of Object", GUILayout.Width(Screen.width * 0.4f));
+				FoCsGUI.Layout.Label("Method of copy");
+			}
+
+			foreach(var copyMode in CopyPasteUtility.TypeCopyData)
+			{
+				using(FoCsEditor.Disposables.HorizontalScope())
+				{
+					FoCsGUI.Layout.Label(copyMode.Key.ToString(), GUILayout.Width(Screen.width * 0.4f));
+					FoCsGUI.Layout.Label(copyMode.Value.ToString());
+				}
+			}
+		}
+	}
+}

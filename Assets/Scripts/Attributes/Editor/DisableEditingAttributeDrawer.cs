@@ -26,6 +26,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			}
 		}
 
-		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label) => FoCsGUI.GetPropertyHeight(prop, label, true);
+		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label)
+		{
+			return FoCsGUI.GetPropertyHeight(prop, label, true);
+		}
 	}
 }
