@@ -843,6 +843,16 @@ namespace ForestOfChaosLib.Editor
 			}
 #endregion
 #region PropertyField
+			public static eBool PropertyField(SerializedProperty property)
+			{
+				return PropertyFieldMaster(property, property.isExpanded);
+			}
+
+			public static eBool PropertyField(SerializedProperty property, params GUILayOpt[] options)
+			{
+				return PropertyFieldMaster(property, property.isExpanded, options);
+			}
+
 			public static eBool PropertyField(SerializedProperty property, bool includeChildren, params GUILayOpt[] options)
 			{
 				return PropertyFieldMaster(property, includeChildren, options);
