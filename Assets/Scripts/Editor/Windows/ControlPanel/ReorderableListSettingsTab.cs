@@ -45,20 +45,23 @@ namespace ForestOfChaosLib.Editor
 		{
 			using(FoCsEditor.Disposables.VerticalScope())
 			{
-				foreach(var reorderableListProperty in FoCsEditor.RLPList)
+				foreach(var reorderableListStorage in FoCsEditor.UnityReorderableListStorage.storages)
 				{
-					using(FoCsEditor.Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box))
+					foreach(var reorderableListProperty in reorderableListStorage.URLPList)
 					{
-						using(FoCsEditor.Disposables.HorizontalScope())
+						using(FoCsEditor.Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box))
 						{
-							FoCsGUI.Layout.Label("Key");
-							FoCsGUI.Layout.Label(reorderableListProperty.Key);
-						}
+							using(FoCsEditor.Disposables.HorizontalScope())
+							{
+								FoCsGUI.Layout.Label("Key");
+								FoCsGUI.Layout.Label(reorderableListProperty.Key);
+							}
 
-						using(FoCsEditor.Disposables.HorizontalScope())
-						{
-							FoCsGUI.Layout.Label("Limiter");
-							FoCsGUI.Layout.Label(reorderableListProperty.Value.Limiter != null? reorderableListProperty.Value.Limiter.ToString() : "NULL");
+							using(FoCsEditor.Disposables.HorizontalScope())
+							{
+								FoCsGUI.Layout.Label("Limiter");
+								FoCsGUI.Layout.Label(reorderableListProperty.Value.Limiter != null? reorderableListProperty.Value.Limiter.ToString() : "NULL");
+							}
 						}
 					}
 				}

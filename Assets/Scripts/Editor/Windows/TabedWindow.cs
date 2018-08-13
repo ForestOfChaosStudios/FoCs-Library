@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Windows
 {
-	public abstract class TabedWindow<T>: FoCsWindow<T> where T: EditorWindow
+	public abstract class TabedWindow<T>: FoCsWindow<T> where T: FoCsWindow
 	{
 		public enum TitleBarPos
 		{

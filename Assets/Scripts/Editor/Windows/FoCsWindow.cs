@@ -12,7 +12,7 @@ namespace ForestOfChaosLib.Editor.Windows
 	///     }
 	/// </summary>
 	/// <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
-	public abstract class FoCsWindow<T>: EditorWindow where T: EditorWindow
+	public abstract class FoCsWindow<T>: FoCsWindow where T: FoCsWindow, IRepaintable
 	{
 		private static T window;
 
@@ -71,5 +71,9 @@ namespace ForestOfChaosLib.Editor.Windows
 		{
 			GUILayout.Space(size);
 		}
+	}
+	public abstract class FoCsWindow: EditorWindow, IRepaintable
+	{
+
 	}
 }

@@ -1,38 +1,48 @@
 ﻿using UnityEditor;
-using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
 {
-	internal class ObjectReferenceHandler: IPropertyLayoutHandler
+	public class ObjectReferenceHandler: IPropertyLayoutHandler
 	{
-		private readonly FoCsEditor owner;
+		private FoCsEditor.UnityReorderableListStorage storage;
+		public readonly FoCsEditor owner;
 
 		public ObjectReferenceHandler(FoCsEditor _owner)
 		{
 			owner = _owner;
 		}
 
+		public FoCsEditor.UnityReorderableListStorage URLStorage
+		{
+			get { return storage ?? (storage = new FoCsEditor.UnityReorderableListStorage(owner)); }
+			set { storage = value; }
+		}
+
 		public void HandleProperty(SerializedProperty property)
 		{
-			var drawer  = owner.GetObjectDrawers(property);
-			var GuiCont = new GUIContent(property.displayName);
-			var height  = drawer.GetPropertyHeight(property, GuiCont);
-			var rect    = FoCsGUI.Layout.GetControlRect(true, height);
-			drawer.OnGUI(rect, property, GuiCont);
+			var drawer = owner.GetObjectDrawer(property, owner);
+
+			using(var cc = FoCsEditor.Disposables.ChangeCheck())
+			{
+				drawer.IsReferenceOpen.target = drawer.ReferenceOpen;
+
+				drawer.DrawHeader();
+
+				using(var fade = FoCsEditor.Disposables.FadeGroupScope(drawer.IsReferenceOpen.faded))
+				{
+					if(fade.visible)
+						drawer.DrawReference(URLStorage);
+				}
+				if(cc.changed)
+					URLStorage.owner.Repaint();
+			}
 		}
 
 		public float PropertyHeight(SerializedProperty property)
 		{
-			var drawer  = owner.GetObjectDrawers(property);
-			var GuiCont = new GUIContent(property.displayName);
-			var height  = drawer.GetPropertyHeight(property, GuiCont);
-
-			return height;
+			return FoCsGUI.SingleLine;
 		}
 
-		public bool IsValidProperty(SerializedProperty property)
-		{
-			return (property.propertyType == SerializedPropertyType.ObjectReference) && !FoCsEditor.IsDefaultScriptProperty(property);
-		}
+		public bool IsValidProperty(SerializedProperty property) => (property.propertyType == SerializedPropertyType.ObjectReference) && !FoCsEditor.IsDefaultScriptProperty(property);
 	}
 }

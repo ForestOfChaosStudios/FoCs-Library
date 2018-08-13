@@ -21,7 +21,6 @@ namespace ForestOfChaosLib.Editor
 			private static   Action                   OnLimitingChange;
 			private static   bool?                    limitingEnabled;
 			private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
-			public           bool                     Animate;
 			public           int                      ID;
 			public           ListLimiter              Limiter;
 			private          SerializedProperty       property;
@@ -71,17 +70,13 @@ namespace ForestOfChaosLib.Editor
 			public UnityReorderableListProperty(SerializedProperty property): this()
 			{
 				this.property = property;
-				Animate       = false;
 				InitList();
 			}
 
-			public UnityReorderableListProperty(SerializedProperty property, bool dragable, bool displayHeader = false, bool displayAdd = true, bool displayRemove = true, bool animate = false): this()
+			public UnityReorderableListProperty(SerializedProperty property, bool dragable, bool displayHeader = false, bool displayAdd = true, bool displayRemove = true): this()
 			{
 				this.property = property;
-				Animate       = animate;
-
-				if(Animate)
-					IsExpanded = new AnimBool(property.isExpanded) {speed = 0.7f};
+				IsExpanded = new AnimBool(property.isExpanded) {speed = 0.7f};
 
 				InitList(dragable, displayHeader, displayAdd, displayRemove);
 			}
@@ -118,14 +113,16 @@ namespace ForestOfChaosLib.Editor
 				DrawHeader(GUILayoutUtility.GetRect(0.0f, List.headerHeight, GUILayout.ExpandWidth(true)));
 			}
 
-			private void DrawHeader(Rect headerRect)
+			public void DrawHeader(Rect headerRect)
 			{
 				Defaults.DrawHeaderBackground(headerRect);
 				headerRect.xMin   += 6f;
 				headerRect.xMax   -= 6f;
 				headerRect.height -= 2f;
 				++headerRect.y;
-				List.drawHeaderCallback(headerRect);
+
+				if(List.drawHeaderCallback != null)
+					List.drawHeaderCallback(headerRect);
 
 				if(SerializedPropertyType != SerializedPropertyType.ObjectReference)
 					return;
@@ -159,24 +156,27 @@ namespace ForestOfChaosLib.Editor
 					CheckLimiter();
 					IsExpanded.target = Property.isExpanded;
 
-					if(OnlyShowHeader())
+					DrawHeader();
+
+					using(var fade = Disposables.FadeGroupScope(IsExpanded.faded))
 					{
-						DrawHeader();
-					}
-					else
-					{
-						using(var fade = Disposables.FadeGroupScope(IsExpanded.faded))
-						{
-							if(fade.visible)
-								List.DoLayoutList();
-						}
+						var tempHeaderHeight   = List.headerHeight;
+						var tempHeaderCallback = List.drawHeaderCallback;
+						List.drawHeaderCallback = null;
+						List.headerHeight       = 0;
+
+						if(fade.visible)
+							List.DoLayoutList();
+
+						List.headerHeight       = tempHeaderHeight;
+						List.drawHeaderCallback = tempHeaderCallback;
 					}
 				}
 			}
 
 			private bool OnlyShowHeader()
 			{
-				return (!IsExpanded.value && !IsExpanded.isAnimating) || (!IsExpanded.value && IsExpanded.isAnimating && IsExpanded.faded < 0.1f);
+				return (!IsExpanded.value && !IsExpanded.isAnimating) || (!IsExpanded.value && IsExpanded.isAnimating);
 			}
 
 			public void HandleDrawing(Rect rect)

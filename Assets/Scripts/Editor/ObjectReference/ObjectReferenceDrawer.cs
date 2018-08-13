@@ -10,77 +10,113 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 {
 	public class ObjectReferenceDrawer: FoCsPropertyDrawer
 	{
-		protected static readonly GUIContent       foldoutGUIContent = new GUIContent("", "Open up the References Data");
-		protected                 bool             foldout;
-		protected                 SerializedObject serializedObject;
-		public AnimBool IsExpanded;
-		protected virtual bool AllowFoldout
+		private static            FoCsEditor.UnityReorderableListStorage URLPStorage       = new FoCsEditor.UnityReorderableListStorage();
+		protected static readonly GUIContent                             foldoutGUIContent = new GUIContent("", "Open up the References Data");
+		public                    SerializedObject                       SerializedObject { get; protected set; }
+		public                    AnimBool                               IsExpanded;
+		private                   bool                                   foldout;
+
+		public bool Foldout
 		{
-			get { return true; }
+			get { return foldout; }
+			set
+			{
+				foldout = value;
+
+				if(IsExpanded != null)
+					IsExpanded.value = foldout;
+			}
 		}
+
+		public ObjectReferenceDrawer(): this(false) { }
+
+		public ObjectReferenceDrawer(bool _foldout)
+		{
+			Foldout = _foldout;
+		}
+
+		protected virtual bool AllowFoldout => true;
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			CheckAnimBool(property);
-
-			var elementHeight = FoCsGUI.GetPropertyHeight(property,FoCsGUI.AttributeCheck.DoCheck);
-
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position,label,property))
-			{
-				label = propScope.content;
-
-				using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
-				{
-					FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(elementHeight)),property,label);
-
-					if(changeCheckScope.changed && (property.objectReferenceValue != null))
-					{
-						property.serializedObject.ApplyModifiedProperties();
-						serializedObject = new SerializedObject(property.objectReferenceValue);
-					}
-				}
-			}
+			DoMainRefGUI(position, property, ref label);
+			var elementHeight = FoCsGUI.GetPropertyHeight(property, FoCsGUI.AttributeCheck.DoCheck);
 
 			if((property.objectReferenceValue == null) || !AllowFoldout)
 			{
-				serializedObject = null;
+				SerializedObject = null;
 
 				return;
 			}
 
-			if(serializedObject == null)
-				serializedObject = new SerializedObject(property.objectReferenceValue);
+			if(SerializedObject == null)
+				SerializedObject = new SerializedObject(property.objectReferenceValue);
 			else
-				serializedObject.Update();
+				SerializedObject.Update();
 
-			foldout = DrawReference(position.Edit(RectEdit.ChangeY(elementHeight - SingleLine)), serializedObject, foldout);
+			Foldout = DoFoldoutGUI(position, Foldout);
+			DrawReference(position.Edit(RectEdit.ChangeY(elementHeight - SingleLine)), SerializedObject, Foldout);
 		}
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
 			CheckAnimBool(property);
-			return PropertyHeight(property, serializedObject, foldout);
+
+			return PropertyHeight(property, SerializedObject, Foldout);
+		}
+
+		public void DoMainRefGUI(Rect position, SerializedProperty property, ref GUIContent label)
+		{
+			CheckAnimBool(property);
+			var elementHeight = FoCsGUI.GetPropertyHeight(property, FoCsGUI.AttributeCheck.DoCheck);
+
+			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			{
+				label = propScope.content;
+
+				using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
+				{
+					FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(elementHeight)), property, label);
+
+					if(changeCheckScope.changed && (property.objectReferenceValue != null))
+					{
+						property.serializedObject.ApplyModifiedProperties();
+						SerializedObject = new SerializedObject(property.objectReferenceValue);
+					}
+				}
+			}
+		}
+
+		public bool DoFoldoutGUI(Rect position, bool internalFoldout)
+		{
+			internalFoldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(1)), internalFoldout, foldoutGUIContent);
+
+			return internalFoldout;
 		}
 
 		private void CheckAnimBool(SerializedProperty property)
 		{
 			if(IsExpanded == null)
-				IsExpanded = new AnimBool(property.isExpanded);
+			{
+				IsExpanded       = new AnimBool(property.isExpanded);
+				IsExpanded.speed = 1;
+			}
 
 			IsExpanded.value = property.isExpanded;
 		}
 
-		public static bool DrawReference(Rect position, SerializedObject serializedObject, bool foldout)
+		public static void DrawReference(Rect position, SerializedObject serializedObject, bool foldout)
 		{
 			if(serializedObject.VisibleProperties() == 0)
-				return false;
+				return;
 
+			serializedObject.Update();
 			var iterator = serializedObject.GetIterator();
 			iterator.Next(true);
-			foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(1)), foldout, foldoutGUIContent);
 
 			if(!foldout)
-				return false;
+				return;
 
 			DrawSurroundingBox(position);
 
@@ -101,8 +137,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 						serializedObject.ApplyModifiedProperties();
 				}
 			}
-
-			return true;
 		}
 
 		protected static void DrawSurroundingBox(Rect position)
@@ -115,13 +149,16 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		{
 			if(prop.isArray && (prop.propertyType != SerializedPropertyType.String))
 			{
-				var list   = FoCsEditor.GetReorderableList(prop);
+				var list   = URLPStorage.GetList(prop);
 				var height = list.GetTotalHeight();
 				drawPos.height = height;
 
 				using(FoCsEditor.Disposables.SetIndent(0))
 				{
-					list.HandleDrawing(drawPos.Edit(RectEdit.ChangeX(16)));
+					if(prop.isExpanded)
+						list.HandleDrawing(drawPos.Edit(RectEdit.ChangeX(16)));
+					else
+						list.DrawHeader(drawPos.Edit(RectEdit.ChangeX(16)));
 				}
 
 				drawPos.y += height + Padding;
@@ -141,7 +178,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		{
 			if(prop.isArray && (prop.propertyType != SerializedPropertyType.String))
 			{
-				var list   = FoCsEditor.GetReorderableList(prop);
+				var list   = URLPStorage.GetList(prop);
 				var height = list.GetTotalHeight();
 
 				return height + (padding? Padding : 0);

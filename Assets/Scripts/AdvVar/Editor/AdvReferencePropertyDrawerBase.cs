@@ -22,7 +22,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			foldout = DoDraw(position, property, foldout, ref label);
+			Foldout = DoDraw(position, property, Foldout, ref label);
 		}
 
 		public static bool DoDraw(Rect position, SerializedProperty property, bool foldout, ref GUIContent label)
@@ -124,9 +124,9 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			var @ref = property.GetReference();
 
 			if(@ref.objectReferenceValue)
-				serializedObject = new SerializedObject(@ref.objectReferenceValue);
+				SerializedObject = new SerializedObject(@ref.objectReferenceValue);
 
-			return PropertyHeight(property, serializedObject, foldout);
+			return PropertyHeight(property, SerializedObject, Foldout);
 		}
 	}
 

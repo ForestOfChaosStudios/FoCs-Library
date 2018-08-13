@@ -9,115 +9,84 @@ namespace ForestOfChaosLib.Editor
 {
 	public class ObjectReference
 	{
-		public AnimBool IsExpanded;
-		private bool foldout;
-		public bool Foldout
+		private FoCsEditor.UnityReorderableListStorage listHandler;
+
+		private FoCsEditor.UnityReorderableListStorage ListHandler
 		{
-			get { return foldout; }
-			set { foldout = IsExpanded.value = value; }
+			get { return listHandler ?? (listHandler = new FoCsEditor.UnityReorderableListStorage(owner)); }
 		}
+		public  AnimBool IsReferenceOpen;
+		private bool     referenceOpen;
+		public FoCsEditor owner;
+		public bool ReferenceOpen
+		{
+			get { return referenceOpen; }
+			set
+			{
+				referenceOpen     = value;
+				IsReferenceOpen.target = value;
+			}
+		}
+
 		public SerializedProperty Property;
-		public SerializedObject SerializedObject;
+		public SerializedObject   SerializedObject;
 
-		public static void Draw(ObjectReference objRef, HeaderMode onlyHeader = HeaderMode.Normal)
+		public ObjectReference(SerializedProperty _property,FoCsEditor _owner)
 		{
-			if(((onlyHeader == HeaderMode.Normal) || (onlyHeader == HeaderMode.OnlyHeader) || (objRef.Property.objectReferenceValue == null) || (!objRef.Foldout && objRef.Property.objectReferenceValue)) && (onlyHeader != HeaderMode.NoHeader))
+			Property   = _property;
+			owner = _owner;
+			IsReferenceOpen = new AnimBool(false) {speed = 0.7f};
+
+		}
+
+		public void DrawHeader()
+		{
+			using(var cc = FoCsEditor.Disposables.ChangeCheck())
 			{
-				using(var cc = FoCsEditor.Disposables.ChangeCheck())
+				FoCsGUI.Layout.PropertyField(Property, false);
+
+				if(cc.changed)
 				{
-					FoCsGUI.Layout.PropertyField(objRef.Property, false);
-
-					if(cc.changed)
+					if(Property.objectReferenceValue == null)
 					{
-						objRef.SerializedObject = null;
+						SerializedObject = null;
+						ReferenceOpen = false;
+						IsReferenceOpen.value = false;
 					}
+					else
+						SerializedObject = new SerializedObject(Property.objectReferenceValue);
 				}
+			}
 
-				if(objRef.Property.objectReferenceValue)
-				{
-					if(FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), objRef.Foldout).Pressed)
-					{
-						objRef.Foldout = !objRef.Foldout;
-					}
-				}
-
+			if(!Property.objectReferenceValue)
 				return;
-			}
-			if(objRef.SerializedObject == null)
-				objRef.SerializedObject = new SerializedObject(objRef.Property.objectReferenceValue);
 
-			if(onlyHeader != HeaderMode.NoHeader)
-			{
-				FoCsGUI.Layout.PropertyField(objRef.Property, false);
+			if(SerializedObject == null)
+				SerializedObject = new SerializedObject(Property.objectReferenceValue);
 
-				if(FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), objRef.Foldout).Pressed)
-					objRef.Foldout = !objRef.Foldout;
-			}
+			if(FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), ReferenceOpen).Pressed)
+				ReferenceOpen = !ReferenceOpen;
+		}
+
+
+		public void DrawReference(FoCsEditor.UnityReorderableListStorage URLStorage)
+		{
+			if(!ReferenceOpen)
+				return;
 
 			using(FoCsEditor.Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box))
 			{
-				if(objRef.Foldout)
-				{
-					using(FoCsEditor.Disposables.Indent())
-					{
-						foreach(var prop in objRef.SerializedObject.Properties())
-						{
-							FoCsGUI.Layout.PropertyField(prop, prop.isExpanded);
-						}
-					}
-				}
-			}
-		}
-
-		public enum HeaderMode
-		{
-			Normal,
-			OnlyHeader,
-			NoHeader
-		}
-
-		/*
-		public static void Draw(SerializedProperty property)
-		{
-			if(!property.isExpanded || property.objectReferenceValue == null)
-			{
-				FoCsGUI.Layout.PropertyField(property, false);
-
-				if(property.objectReferenceValue)
-				{
-					if(FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), property.isExpanded).Pressed)
-					{
-						property.isExpanded = true;
-					}
-				}
-
-				return;
-			}
-
-
-			var serializedObject = new SerializedObject(property.objectReferenceValue);
-
-			using(FoCsEditor.Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box))
-			{
-				FoCsGUI.Layout.PropertyField(property, false);
-
-				if(property.objectReferenceValue)
-				{
-					if(FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), property.isExpanded).Pressed)
-					{
-						property.isExpanded = false;
-					}
-				}
-
 				using(FoCsEditor.Disposables.Indent())
 				{
-					foreach(var prop in serializedObject.Properties())
+					foreach(var property in SerializedObject.Properties())
 					{
-						FoCsGUI.Layout.PropertyField(prop, prop.isExpanded);
+						if(FoCsEditor.PropertyIsArrayAndNotString(property))
+							ListHandler.GetList(property).HandleDrawing();
+						else
+							FoCsGUI.Layout.PropertyField(property, property.isExpanded);
 					}
 				}
 			}
 		}
-		*/
 	}
 }

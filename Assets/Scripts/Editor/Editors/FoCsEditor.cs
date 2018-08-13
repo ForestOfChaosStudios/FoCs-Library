@@ -4,9 +4,11 @@ using System.Linq;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
 using UnityEditor;
+using UnityEditor.AnimatedValues;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using ORD = ForestOfChaosLib.Editor.PropertyDrawers.ObjectReferenceDrawer;
+using OR = ForestOfChaosLib.Editor.ObjectReference;
 using URLP = ForestOfChaosLib.Editor.FoCsEditor.UnityReorderableListProperty;
 
 //Based off of the CustomBaseEditor available at
@@ -15,17 +17,16 @@ namespace ForestOfChaosLib.Editor
 {
 	[CustomEditor(typeof(object), true, isFallback = true)]
 	[CanEditMultipleObjects]
-	public partial class FoCsEditor: UnityEditor.Editor
+	public partial class FoCsEditor: UnityEditor.Editor, IRepaintable
 	{
-		internal static Dictionary<string, URLP>                                       RLPList                = new Dictionary<string, URLP>(10);
-		internal        Dictionary<string, ORD>                                        objectDrawers          = new Dictionary<string, ORD>(1);
-		protected       bool                                                           showContextMenuButtons = true;
-		protected       SortMode                                                       sortingMode            = SortMode.Standard;
-		protected       bool                                                           GUIChanged { get; private set; }
-		private         Dictionary<SortableSerializedProperty, IPropertyLayoutHandler> PropertyHandlingDictionary;
-		private         string                                                         search;
-		public          IPropertyLayoutHandler[]                                       Handlers = null;
-		private         PropertyHandler                                                fallbackHandler;
+		internal  UnityReorderableListStorage                                    URLPStorage;
+		internal  Dictionary<string, ORD>                                        objectDrawers          = new Dictionary<string, ORD>(1);
+		internal  Dictionary<string, OR>                                         objectDrawer           = new Dictionary<string, OR>(1);
+		protected bool                                                           showContextMenuButtons = true;
+		protected SortMode                                                       sortingMode            = SortMode.Standard;
+		protected bool                                                           GUIChanged { get; private set; }
+		private   string                                                         search;
+		private readonly HandlerController Handler = new HandlerController();
 
 		public virtual bool HideDefaultProperty
 		{
@@ -65,6 +66,10 @@ namespace ForestOfChaosLib.Editor
 			search                 = EditorPrefs.GetString("FoCsEditor.search");
 			sortingMode            = (SortMode)EditorPrefs.GetInt("FoCsEditor.sortingMode");
 			showContextMenuButtons = EditorPrefs.GetBool("FoCsEditor.showContextMenuButtons");
+
+			if(URLPStorage == null)
+				URLPStorage = new UnityReorderableListStorage(this);
+
 			InitContextMenu();
 		}
 
@@ -85,8 +90,8 @@ namespace ForestOfChaosLib.Editor
 		public override void OnInspectorGUI()
 		{
 			serializedObject.Update();
-			VerifyIPropertyLayoutHandlerArray();
-			VerifyHandlingDictionary();
+			Handler.VerifyIPropertyLayoutHandlerArray(this);
+			Handler.VerifyHandlingDictionary(serializedObject);
 			GUIChanged = false;
 			DoTopPadding();
 
@@ -142,20 +147,20 @@ namespace ForestOfChaosLib.Editor
 		{
 			foreach(var property in serializedObject.Properties())
 			{
-				if(checkForDefault)
-				{
-					if(!IsDefaultScriptProperty(property))
-						PropertyHandlingDictionary[property].HandleProperty(property);
-				}
-				else
-					PropertyHandlingDictionary[property].HandleProperty(property);
+				//if(checkForDefault)
+				//{
+				//	if(!IsDefaultScriptProperty(property))
+				//		Handler[property].HandleProperty(property);
+				//}
+				//else
+					Handler[property].HandleProperty(property);
 			}
 		}
 
 		private void AlphaSortMode(bool reverse = false)
 		{
 			DrawOnlyDefault();
-			var list = PropertyHandlingDictionary.Keys.ToList();
+			var list = Handler.Keys.ToList();
 			list.Sort((a, b) => string.Compare(a.UID, b.UID, StringComparison.Ordinal));
 
 			if(reverse)
@@ -164,7 +169,7 @@ namespace ForestOfChaosLib.Editor
 			foreach(var propName in list)
 			{
 				if(!propName.IsDefaultProperty)
-					PropertyHandlingDictionary[propName].HandleProperty(propName.Property);
+					Handler[propName].HandleProperty(propName.Property);
 			}
 		}
 
@@ -183,7 +188,7 @@ namespace ForestOfChaosLib.Editor
 				foreach(var property in serializedObject.Properties())
 				{
 					if(property.name.ToLower().Contains(Search.ToLower()) && !IsDefaultScriptProperty(property))
-						PropertyHandlingDictionary[property].HandleProperty(property);
+						Handler[property].HandleProperty(property);
 				}
 			}
 		}
@@ -208,34 +213,19 @@ namespace ForestOfChaosLib.Editor
 
 		protected void DrawProperty(SerializedProperty property)
 		{
-			PropertyHandlingDictionary[property].HandleProperty(property);
-		}
-
-		private void VerifyIPropertyLayoutHandlerArray()
-		{
-			if(Handlers == null)
-				Handlers = new IPropertyLayoutHandler[] {new ObjectReferenceHandler(this), new ListHandler()};
-
-			if(fallbackHandler == null)
-				fallbackHandler = new PropertyHandler(this);
-		}
-
-		private void VerifyHandlingDictionary()
-		{
-			if(PropertyHandlingDictionary != null)
-				return;
-
-			PropertyHandlingDictionary = new Dictionary<SortableSerializedProperty, IPropertyLayoutHandler>(serializedObject.VisibleProperties());
-
-			foreach(var property in serializedObject.Properties())
-				PropertyHandlingDictionary.Add(property, GetHandler(property));
+			Handler[property].HandleProperty(property);
 		}
 
 		public override bool RequiresConstantRepaint()
 		{
-			foreach(var reorderableListProperty in RLPList)
+			foreach(var property in serializedObject.Properties())
 			{
-				if(reorderableListProperty.Value.Animate && reorderableListProperty.Value.IsExpanded.isAnimating)
+				if(!property.isArray)
+					continue;
+
+				var reorderableListProperty = URLPStorage.GetList(property);
+
+				if(reorderableListProperty.IsExpanded.isAnimating)
 					return true;
 			}
 
@@ -267,8 +257,10 @@ namespace ForestOfChaosLib.Editor
 			using(Disposables.HorizontalScope(FoCsGUI.Styles.Unity.Toolbar))
 			{
 				EditorHelpers.CopyPastObjectButtons(serializedObject);
+
 				if(AllowsModeChanging)
 					DoSortButtons();
+
 				DoContextMenuHeader();
 			}
 		}
@@ -325,55 +317,49 @@ namespace ForestOfChaosLib.Editor
 			if(objectDrawers.TryGetValue(id, out objDraw))
 				return objDraw;
 
-			objDraw = new ORD();
+			objDraw            = new ORD();
+			objDraw.IsExpanded = new AnimBool(false) {speed = 1f};
 			objectDrawers.Add(id, objDraw);
 
 			return objDraw;
 		}
 
-		public static URLP GetReorderableList(SerializedProperty property)
+		internal OR GetObjectDrawer(SerializedProperty property)
 		{
-			var  id = string.Format("{0}:{1}-{2}", property.serializedObject.targetObject.GetInstanceID(), property.propertyPath, property.name);
-			URLP ret;
+			var id = GetUniqueStringID(property);
+			OR  objDraw;
 
-			if(RLPList.TryGetValue(id, out ret))
+			if(objectDrawer.TryGetValue(id, out objDraw))
 			{
-				if(ret.Property.serializedObject != null)
-					ret.Property = property;
-				else
-					ret = new URLP(property, true, true, true, true, true);
+				objDraw.Property = property;
 
-				return ret;
+				return objDraw;
 			}
 
-			ret = new URLP(property, true, true, true, true, true);
-			RLPList.Add(id, ret);
+			objDraw = new OR(property, this);
+			objectDrawer.Add(id, objDraw);
 
-			return ret;
+			return objDraw;
 		}
 
-		public IPropertyLayoutHandler GetHandler(SerializedProperty property)
+		internal OR GetObjectDrawer(SerializedProperty property, FoCsEditor owner)
 		{
-			foreach(var handler in Handlers)
+			var id = GetUniqueStringID(property);
+			OR  objDraw;
+
+			if(objectDrawer.TryGetValue(id, out objDraw))
 			{
-				if(handler.IsValidProperty(property))
-					return handler;
+				objDraw.Property = property;
+
+				return objDraw;
 			}
 
-			return fallbackHandler;
+			objDraw = new OR(property, this);
+			objDraw.IsReferenceOpen.valueChanged.AddListener(owner.Repaint);
+			objectDrawer.Add(id, objDraw);
 
-			//if((property.propertyType == SerializedPropertyType.ObjectReference) && !IsDefaultScriptProperty(property))
-			//	return _objectReferenceHandler ?? (_objectReferenceHandler = new ObjectReferenceHandler(this));
-			//
-			//if(property.isArray && (property.propertyType != SerializedPropertyType.String))
-			//	return _listHandler ?? (_listHandler = new ListHandler());
-			//
-			//return _propertyHandler ?? (_propertyHandler = new PropertyHandler(this));
+			return objDraw;
 		}
-
-		//private PropertyHandler        _propertyHandler;
-		//private ListHandler            _listHandler;
-		//private ObjectReferenceHandler _objectReferenceHandler;
 
 		public enum SortMode
 		{

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Windows
 {
-	public abstract class EnumCreatorWindow<T>: FoCsWindow<T> where T: EditorWindow
+	public abstract class EnumCreatorWindow<T>: FoCsWindow<T> where T: FoCsWindow
 	{
 		private static     ReorderableList ReorderableList;
 		private static     bool            RLIsExpanded = true;
