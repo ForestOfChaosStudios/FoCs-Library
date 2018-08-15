@@ -110,13 +110,28 @@ namespace ForestOfChaosLib.Editor
 
 			public float GetTotalHeight()
 			{
-				var retVal = 0f;
-
-				if(Options.DisplayHeader)
-					retVal += DrawingCallbacks.HeaderHeight(this);
+				var retVal = TotalHeaderCalc();
 
 				if(!Listable.IsExpanded)
 					return retVal;
+
+				retVal += TotalElementCalc();
+				retVal += TotalFooterCalc();
+
+				return retVal;
+			}
+
+			protected float TotalHeaderCalc()
+			{
+				if(Options.DisplayHeader)
+					return DrawingCallbacks.HeaderHeight(this);
+
+				return 0;
+			}
+
+			protected float TotalElementCalc()
+			{
+				var retVal = 0f;
 
 				if(Listable.Length == 0)
 					retVal += DrawingCallbacks.EmptyHeight();
@@ -126,10 +141,15 @@ namespace ForestOfChaosLib.Editor
 						retVal += Listable.GetHeightAtIndex(i, this);
 				}
 
-				if(Options.DisplayFooter)
-					retVal += DrawingCallbacks.FooterHeight(this);
-
 				return retVal;
+			}
+
+			protected float TotalFooterCalc()
+			{
+				if(Options.DisplayFooter)
+					return DrawingCallbacks.FooterHeight(this);
+
+				return 0;
 			}
 
 			public class ListStyles
@@ -225,10 +245,10 @@ namespace ForestOfChaosLib.Editor
 				public static RectSizes Get(Rect header, AdvancedListLayout list)
 				{
 					var retVal = new RectSizes();
-					retVal.WholeRect = EditorGUILayout.GetControlRect(true, list.GetTotalHeight() - header.height);
+					retVal.WholeRect = EditorGUILayout.GetControlRect(true, list.TotalElementCalc() + list.TotalFooterCalc());
 					retVal.Header    = header;
 					retVal.Elements  = new Rect[Mathf.Max(list.Listable.Length, 1)];
-					var tempRect = retVal.WholeRect.Edit(RectEdit.SetY(header.yMax));
+					var tempRect = retVal.WholeRect;//.Edit(RectEdit.SetY(header.yMax));
 
 					if(list.Listable.Length == 0)
 					{
@@ -250,7 +270,7 @@ namespace ForestOfChaosLib.Editor
 
 					return retVal;
 				}
-
+				/*
 				public static RectSizes Get(AdvancedListLayout list)
 				{
 					var retVal       = new RectSizes();
@@ -280,6 +300,7 @@ namespace ForestOfChaosLib.Editor
 
 					return retVal;
 				}
+				*/
 			}
 
 			public class SerializedPropertyInternals: IAdvancedListLayoutable
@@ -299,7 +320,7 @@ namespace ForestOfChaosLib.Editor
 				}
 
 				public string DisplayName => property.displayName;
-				public void DoDrawAtIndex(Rect pos, int index, AdvancedListLayout list) => FoCsGUI.PropertyField(pos, property.GetArrayElementAtIndex(index));
+				public void DoDrawAtIndex(Rect    pos,   int                index, AdvancedListLayout list) => FoCsGUI.PropertyField(pos, property.GetArrayElementAtIndex(index));
 				public float GetHeightAtIndex(int index, AdvancedListLayout list) => FoCsGUI.GetPropertyHeight(property.GetArrayElementAtIndex(index));
 
 				public SerializedPropertyInternals(SerializedProperty property)
