@@ -19,14 +19,15 @@ namespace ForestOfChaosLib.Editor
 	[CanEditMultipleObjects]
 	public partial class FoCsEditor: UnityEditor.Editor, IRepaintable
 	{
-		internal  UnityReorderableListStorage                                    URLPStorage;
-		internal  Dictionary<string, ORD>                                        objectDrawers          = new Dictionary<string, ORD>(1);
-		internal  Dictionary<string, OR>                                         objectDrawer           = new Dictionary<string, OR>(1);
-		protected bool                                                           showContextMenuButtons = true;
-		protected SortMode                                                       sortingMode            = SortMode.Standard;
-		protected bool                                                           GUIChanged { get; private set; }
-		private   string                                                         search;
-		private readonly HandlerController Handler = new HandlerController();
+		internal         UnityReorderableListStorage URLPStorage;
+		internal         AdvancedListLayoutStorage   ALLStorage;
+		internal         Dictionary<string, ORD>     objectDrawers          = new Dictionary<string, ORD>(1);
+		internal         Dictionary<string, OR>      objectDrawer           = new Dictionary<string, OR>(1);
+		protected        bool                        showContextMenuButtons = true;
+		protected        SortMode                    sortingMode            = SortMode.Standard;
+		protected        bool                        GUIChanged { get; private set; }
+		private          string                      search;
+		private readonly HandlerController           Handler = new HandlerController();
 
 		public virtual bool HideDefaultProperty
 		{
@@ -69,6 +70,9 @@ namespace ForestOfChaosLib.Editor
 
 			if(URLPStorage == null)
 				URLPStorage = new UnityReorderableListStorage(this);
+
+			if(ALLStorage == null)
+				ALLStorage = new AdvancedListLayoutStorage(this);
 
 			InitContextMenu();
 		}
@@ -153,7 +157,7 @@ namespace ForestOfChaosLib.Editor
 				//		Handler[property].HandleProperty(property);
 				//}
 				//else
-					Handler[property].HandleProperty(property);
+				Handler[property].HandleProperty(property);
 			}
 		}
 
