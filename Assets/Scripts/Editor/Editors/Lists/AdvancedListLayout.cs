@@ -32,10 +32,14 @@ namespace ForestOfChaosLib.Editor
 				IsExpandingAnimBool = new AnimBool(Listable.IsExpanded) {speed = ANIMBOOL_ANIMATION_SPEED};
 			}
 
+			private DragData CurrentDrag;
+
 			public void Draw()
 			{
 				InternalDraw(this);
 			}
+
+			private RectSizes CurrentSizes;
 
 			private static void InternalDraw(AdvancedListLayout list)
 			{
@@ -53,15 +57,15 @@ namespace ForestOfChaosLib.Editor
 					{
 						using(var fade = Disposables.FadeGroupScope(list.IsExpandingAnimBool.faded))
 						{
-							var sizes = RectSizes.Get(headerRect, list);
+							list.CurrentSizes = RectSizes.Get(headerRect, list);
 
 							if(fade.visible)
 							{
 								using(Disposables.VerticalScope())
-									list.DrawElements(sizes);
+									list.DrawElements(list.CurrentSizes);
 
 								if(list.Options.DisplayFooter)
-									list.DrawingCallbacks.DrawFooter(sizes.Footer, list);
+									list.DrawingCallbacks.DrawFooter(list.CurrentSizes.Footer, list);
 							}
 						}
 					}
@@ -90,16 +94,35 @@ namespace ForestOfChaosLib.Editor
 				}
 			}
 
-			private void DrawFullElement(Rect pos, int i)
+			private void DrawFullElement(Rect pos, int index)
 			{
 				if(Options.Reorderable)
 				{
+					if(CurrentDrag.index == index)
+					{
+						Debug.Log("Before: " + pos);
+						pos = pos.Edit(RectEdit.AddX(8), RectEdit.AddY(CurrentDrag.MouseDelta.y));
+						Debug.Log("After: " + pos);
+						IsExpandingAnimBool.valueChanged.Invoke();
+					}
+
 					ListStyles.ElementBackground.DrawChecked(pos);
 					DoDrawHandle(pos.Edit(RectEdit.SetWidth(DRAG_HANDLE_WIDTH), RectEdit.SetX(16 * EditorGUI.indentLevel)));
-					Listable.DoDrawAtIndex(pos.Edit(RectEdit.ChangeX(DRAG_HANDLE_WIDTH)), i, this);
+
+					if(Event.current.type == EventType.MouseDown && CurrentDrag.index != index)
+						if(pos.Contains(DragData.CurrentPosition))
+							CurrentDrag = DragData.Now(index);
+
+					if(Event.current.type == EventType.MouseUp && CurrentDrag.index == index)
+						CurrentDrag.index = -1;
+
+					Listable.DoDrawAtIndex(pos.Edit(RectEdit.ChangeX(DRAG_HANDLE_WIDTH)), index, this);
 				}
 				else
-					Listable.DoDrawAtIndex(pos, i, this);
+				{
+					ListStyles.ElementBackground.DrawChecked(pos);
+					Listable.DoDrawAtIndex(pos, index, this);
+				}
 			}
 
 			private static void DoDrawHandle(Rect pos)
@@ -248,7 +271,7 @@ namespace ForestOfChaosLib.Editor
 					retVal.WholeRect = EditorGUILayout.GetControlRect(true, list.TotalElementCalc() + list.TotalFooterCalc());
 					retVal.Header    = header;
 					retVal.Elements  = new Rect[Mathf.Max(list.Listable.Length, 1)];
-					var tempRect = retVal.WholeRect;//.Edit(RectEdit.SetY(header.yMax));
+					var tempRect = retVal.WholeRect.Edit(RectEdit.SubtractY(2));
 
 					if(list.Listable.Length == 0)
 					{
@@ -270,37 +293,6 @@ namespace ForestOfChaosLib.Editor
 
 					return retVal;
 				}
-				/*
-				public static RectSizes Get(AdvancedListLayout list)
-				{
-					var retVal       = new RectSizes();
-					var headerHeight = list.DrawingCallbacks.HeaderHeight(list);
-					retVal.WholeRect = EditorGUILayout.GetControlRect(true, list.GetTotalHeight() - headerHeight);
-					retVal.Header    = retVal.WholeRect.Edit(RectEdit.SetHeight(headerHeight));
-					retVal.Elements  = new Rect[Mathf.Max(list.Listable.Length, 1)];
-					var tempRect = retVal.WholeRect.Edit(RectEdit.AddY(headerHeight), RectEdit.SubtractHeight(headerHeight));
-
-					if(list.Listable.Length == 0)
-					{
-						var eleHeight = list.DrawingCallbacks.EmptyHeight();
-						retVal.Elements[0] = tempRect.Edit(RectEdit.SetHeight(eleHeight));
-						tempRect           = tempRect.Edit(RectEdit.AddY(eleHeight), RectEdit.SubtractHeight(eleHeight));
-					}
-					else
-					{
-						for(var i = 0; i < list.Listable.Length; i++)
-						{
-							var eleHeight = list.Listable.GetHeightAtIndex(i, list);
-							retVal.Elements[i] = tempRect.Edit(RectEdit.SetHeight(eleHeight));
-							tempRect           = tempRect.Edit(RectEdit.AddY(eleHeight), RectEdit.SubtractHeight(eleHeight));
-						}
-					}
-
-					retVal.Footer = tempRect.Edit(RectEdit.SetHeight(list.DrawingCallbacks.FooterHeight(list)));
-
-					return retVal;
-				}
-				*/
 			}
 
 			public class SerializedPropertyInternals: IAdvancedListLayoutable
@@ -336,6 +328,21 @@ namespace ForestOfChaosLib.Editor
 				string DisplayName { get; }
 				void DoDrawAtIndex(Rect    pos,   int                index, AdvancedListLayout list);
 				float GetHeightAtIndex(int index, AdvancedListLayout list);
+			}
+
+			private struct DragData
+			{
+				public        int     index;
+				public        Vector2 StartPosition;
+				public static Vector2 CurrentPosition => Event.current.mousePosition;
+				public        Vector2 MouseDelta      => CurrentPosition - StartPosition;
+
+				public static DragData Now(int index)
+				{
+					Debug.Log("Now");
+
+					return new DragData {index = index, StartPosition = CurrentPosition};
+				}
 			}
 		}
 	}

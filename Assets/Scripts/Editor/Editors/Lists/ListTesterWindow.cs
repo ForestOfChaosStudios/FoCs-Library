@@ -7,6 +7,7 @@ public class ListTesterWindow: FoCsWindow<ListTesterWindow>
 	private ListTest                      List;
 	private SerializedObject              SerializedList;
 	private FoCsEditor.AdvancedListLayout ListDrawer;
+	private FoCsEditor.AdvancedListLayout ListDrawer1;
 
 	[MenuItem("Tools/ListTester Window")]
 	private static void Init()
@@ -16,23 +17,30 @@ public class ListTesterWindow: FoCsWindow<ListTesterWindow>
 
 	private void OnEnable()
 	{
-		List            = CreateInstance<ListTest>();
-		SerializedList  = new SerializedObject(List);
-		ListDrawer      = new FoCsEditor.AdvancedListLayout(SerializedList.FindProperty("Array"));
+		List           = CreateInstance<ListTest>();
+		SerializedList = new SerializedObject(List);
+		ListDrawer     = new FoCsEditor.AdvancedListLayout(SerializedList.FindProperty("Array"));
+		ListDrawer1    = new FoCsEditor.AdvancedListLayout(SerializedList.FindProperty("Array"), new FoCsEditor.AdvancedListLayout.ListOptions(true, false, true));
 	}
 
 	private void Update()
 	{
-		if(ListDrawer.IsAnimating)
+		//if(ListDrawer.IsAnimating)
 			Repaint();
+	}
+
+	private void OnInspectorUpdate()
+	{
+		Repaint();
 	}
 
 	protected override void OnGUI()
 	{
-		Draw(ListDrawer,  SerializedList,  "Array");
+		Draw(ListDrawer, SerializedList);
+		Draw(ListDrawer1, SerializedList);
 	}
 
-	private static void Draw(FoCsEditor.AdvancedListLayout list, SerializedObject serializedObject, string propertyName)
+	private static void Draw(FoCsEditor.AdvancedListLayout list, SerializedObject serializedObject)
 	{
 		serializedObject.Update();
 
