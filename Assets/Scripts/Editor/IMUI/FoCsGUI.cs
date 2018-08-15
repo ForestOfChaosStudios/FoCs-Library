@@ -710,7 +710,12 @@ namespace ForestOfChaosLib.Editor
 			DoCheck
 		}
 
-		public static eProp PropertyField(Rect pos, SerProp prop, bool autoLabelField = false)
+		public static eProp PropertyField(Rect pos, SerProp prop)
+		{
+			return PropFieldMaster(pos, prop, new GUICon(prop.displayName), prop.isExpanded, AttributeCheck.DontCheck, false);
+		}
+
+		public static eProp PropertyField(Rect pos, SerProp prop, bool autoLabelField)
 		{
 			return PropFieldMaster(pos, prop, new GUICon(prop.displayName), true, AttributeCheck.DontCheck, autoLabelField);
 		}
