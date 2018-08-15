@@ -216,50 +216,50 @@ namespace ForestOfChaosLib.Editor
 		}
 #endregion
 #region Foldout
-		public static GUIEvent Foldout(Rect rect, bool foldout)
+		public static eBool Foldout(Rect rect, bool foldout)
 		{
 			return FoldoutMaster(rect, foldout, GUICon.none, FoldoutStyle);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, GUIStyle style)
+		public static eBool Foldout(Rect rect, bool foldout, GUIStyle style)
 		{
 			return FoldoutMaster(rect, foldout, GUICon.none, style);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, string label)
+		public static eBool Foldout(Rect rect, bool foldout, string label)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(label), FoldoutStyle);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, string label, GUIStyle style)
+		public static eBool Foldout(Rect rect, bool foldout, string label, GUIStyle style)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(label), style);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, GUICon guiCon)
+		public static eBool Foldout(Rect rect, bool foldout, GUICon guiCon)
 		{
 			return FoldoutMaster(rect, foldout, guiCon, FoldoutStyle);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, GUICon guiCon, GUIStyle style)
+		public static eBool Foldout(Rect rect, bool foldout, GUICon guiCon, GUIStyle style)
 		{
 			return FoldoutMaster(rect, foldout, guiCon, style);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture)
+		public static eBool Foldout(Rect rect, bool foldout, Texture texture)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(texture), FoldoutStyle);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture, GUIStyle style)
+		public static eBool Foldout(Rect rect, bool foldout, Texture texture, GUIStyle style)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(texture), style);
 		}
 
-		public static GUIEvent FoldoutMaster(Rect rect, bool foldout, GUICon guiCon, GUIStyle style)
+		public static eBool FoldoutMaster(Rect rect, bool foldout, GUICon guiCon, GUIStyle style)
 		{
-			var data = new GUIEvent {Event = new Event(Event.current), Rect = rect};
-			EditorGUI.Foldout(rect, foldout, guiCon, style);
+			var val = EditorGUI.Foldout(rect, foldout, guiCon, style);
+			var data = GUIEvent.Create(val);
 
 			return data;
 		}

@@ -37,9 +37,8 @@ public class ListTesterWindow: FoCsWindow<ListTesterWindow>
 		serializedObject.Update();
 
 		if(FoCsGUI.Layout.Button("Open"))
-			list.Property.isExpanded = true;
+			list.Listable.IsExpanded = true;
 
-		list.Property = serializedObject.FindProperty(propertyName);
 		list.Draw();
 		serializedObject.ApplyModifiedProperties();
 	}

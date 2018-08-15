@@ -9,7 +9,7 @@ namespace ForestOfChaosLib.Editor
 		public class AdvancedListLayoutStorage
 		{
 			internal static List<AdvancedListLayoutStorage> storages = new List<AdvancedListLayoutStorage>();
-			public FoCsEditor owner;
+			public          FoCsEditor                      owner;
 
 			public AdvancedListLayoutStorage()
 			{
@@ -31,13 +31,13 @@ namespace ForestOfChaosLib.Editor
 
 			public AdvancedListLayout GetList(SerializedProperty property)
 			{
-				var                          id = GetId(property);
+				var                id = GetId(property);
 				AdvancedListLayout list;
 
 				if(ALLList.TryGetValue(id, out list))
 				{
-					if(list.Property.serializedObject != null)
-						list.Property = property;
+					if(list.Listable == null)
+						list.Listable = new AdvancedListLayout.SerializedPropertyInternals(property);
 					else
 						list = new AdvancedListLayout(property);
 
