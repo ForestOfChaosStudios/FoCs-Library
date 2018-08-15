@@ -3,7 +3,6 @@ using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Editor.Utilities.Disposable;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
-using UnityEditor.AnimatedValues;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
@@ -37,6 +36,17 @@ namespace ForestOfChaosLib.Editor
 			public static EditorIndent Indent()
 			{
 				return new EditorIndent();
+			}
+			public static EditorIndent IndentOnlyIfLessThenIndent(int indentLevel)
+			{
+				var level = EditorGUI.indentLevel;
+
+				if(level < indentLevel)
+				{
+					level = indentLevel;
+				}
+
+				return new EditorIndent(level, true);
 			}
 
 			public static EditorIndent Indent(int indentLevel)
