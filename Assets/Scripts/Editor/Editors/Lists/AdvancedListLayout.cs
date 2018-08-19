@@ -1,4 +1,5 @@
-﻿using ForestOfChaosLib.Extensions;
+﻿using System.Linq;
+using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
@@ -26,6 +27,7 @@ namespace ForestOfChaosLib.Editor
 
 			public AdvancedListLayout(SerializedProperty property, ListOptions options, ListDrawingCallbacks drawingCallbacks)
 			{
+				CurrentDrag         = DragData.Empty();
 				Options             = options;
 				Listable            = new SerializedPropertyInternals(property);
 				DrawingCallbacks    = drawingCallbacks;
@@ -83,31 +85,63 @@ namespace ForestOfChaosLib.Editor
 				return $"{Listable.DisplayName}\t\t[{Listable.Length}]";
 			}
 
-			private void DrawElements(RectSizes sizes)
+			private void DrawElements(RectSizes nonDragSizes)
 			{
+				var dragedSizes = GetDragedSizes(nonDragSizes);
+
 				if(Listable.Length == 0)
-					DrawingCallbacks.DrawEmptyElement(sizes.Elements[0]);
+					DrawingCallbacks.DrawEmptyElement(dragedSizes.Elements[0]);
 				else
 				{
-					for(var i = 0; i < sizes.Elements.Length; i++)
-						DrawFullElement(sizes.Elements[i], i);
+					for(var i = 0; i < dragedSizes.Elements.Length; i++)
+					{
+						if(i != CurrentDrag.index)
+							DrawFullElement(dragedSizes.Elements[i], i);
+					}
+
+					if(CurrentDrag.index != -1)
+						DrawFullElement(dragedSizes.Elements[CurrentDrag.index], CurrentDrag.index);
 				}
+			}
+
+			private RectSizes GetDragedSizes(RectSizes nonDragSizes)
+			{
+				var dragedSizes = new RectSizes(nonDragSizes);
+
+				if(dragedSizes.Elements.InRange(CurrentDrag.index))
+				{
+					var pos = dragedSizes.Elements[CurrentDrag.index];
+
+					dragedSizes.Elements[CurrentDrag.index] = pos.Edit(RectEdit.SetX((pos.x + CurrentDrag.MouseDelta.x).Clamp(pos.x, pos.x + (EditorGUIUtility.labelWidth + 16))),
+					                                                    RectEdit.SetY((pos.y + CurrentDrag.MouseDelta.y).Clamp(nonDragSizes.FirstElement.y, nonDragSizes.LastElement.y)));
+				}
+				else
+					return dragedSizes;
+
+				for(var i = 0; i < dragedSizes.Elements.Length; i++)
+				{
+					if(i == CurrentDrag.index)
+						continue;
+
+					var pos = nonDragSizes.Elements[i];
+
+					if(pos.x > dragedSizes.Elements[CurrentDrag.index].x)
+					{
+						pos.x += pos.height;
+					}
+
+					dragedSizes.Elements[i] = pos;
+				}
+
+				return dragedSizes;
 			}
 
 			private void DrawFullElement(Rect pos, int index)
 			{
 				if(Options.Reorderable)
 				{
-					if(CurrentDrag.index == index)
-					{
-						Debug.Log("Before: " + pos);
-						pos = pos.Edit(RectEdit.AddX(8), RectEdit.AddY(CurrentDrag.MouseDelta.y));
-						Debug.Log("After: " + pos);
-						IsExpandingAnimBool.valueChanged.Invoke();
-					}
-
 					ListStyles.ElementBackground.DrawChecked(pos);
-					DoDrawHandle(pos.Edit(RectEdit.SetWidth(DRAG_HANDLE_WIDTH), RectEdit.SetX(16 * EditorGUI.indentLevel)));
+					DoDrawHandle(pos.Edit(RectEdit.SetWidth(DRAG_HANDLE_WIDTH), RectEdit.SetX(pos.x + (16 * EditorGUI.indentLevel))));
 
 					if(Event.current.type == EventType.MouseDown && CurrentDrag.index != index)
 						if(pos.Contains(DragData.CurrentPosition))
@@ -252,10 +286,10 @@ namespace ForestOfChaosLib.Editor
 					FoCsGUI.Label(pos, "Footer");
 				}
 
-				private static float InternalHeaderHeight(AdvancedListLayout list) => FoCsGUI.SingleLine;
-				private static float InternalFooterHeight(AdvancedListLayout list) => FoCsGUI.SingleLine;
-				private static float InternalEmptyHeight() => FoCsGUI.SingleLine;
-				private static void InternalDrawEmptyElement(Rect pos) => FoCsGUI.Label(pos, "List/Array is empty.");
+				private static float InternalHeaderHeight(AdvancedListLayout list) => 20;
+				private static float InternalFooterHeight(AdvancedListLayout list) => 20;
+				private static float InternalEmptyHeight()                         => FoCsGUI.SingleLine * 2;
+				private static void  InternalDrawEmptyElement(Rect pos)            => FoCsGUI.Label(pos, "List/Array is empty.");
 			}
 
 			private struct RectSizes
@@ -264,6 +298,22 @@ namespace ForestOfChaosLib.Editor
 				public Rect   Header;
 				public Rect[] Elements;
 				public Rect   Footer;
+				public Rect FirstElement
+				{
+					get { return Elements.First(); }
+				}
+				public Rect LastElement
+				{
+					get { return Elements.Last(); }
+				}
+
+				public RectSizes(RectSizes other)
+				{
+					WholeRect = other.WholeRect;
+					Header    = other.Header;
+					Elements  = other.Elements;
+					Footer    = other.Footer;
+				}
 
 				public static RectSizes Get(Rect header, AdvancedListLayout list)
 				{
@@ -298,22 +348,19 @@ namespace ForestOfChaosLib.Editor
 			public class SerializedPropertyInternals: IAdvancedListLayoutable
 			{
 				private SerializedProperty property;
-
 				public int Length
 				{
 					get { return property.arraySize; }
 					set { property.arraySize = value; }
 				}
-
 				public bool IsExpanded
 				{
 					get { return property.isExpanded; }
 					set { property.isExpanded = value; }
 				}
-
-				public string DisplayName => property.displayName;
-				public void DoDrawAtIndex(Rect    pos,   int                index, AdvancedListLayout list) => FoCsGUI.PropertyField(pos, property.GetArrayElementAtIndex(index));
-				public float GetHeightAtIndex(int index, AdvancedListLayout list) => FoCsGUI.GetPropertyHeight(property.GetArrayElementAtIndex(index));
+				public string DisplayName                                                                    => property.displayName;
+				public void   DoDrawAtIndex(Rect   pos,   int                index, AdvancedListLayout list) => FoCsGUI.PropertyField(pos, property.GetArrayElementAtIndex(index));
+				public float  GetHeightAtIndex(int index, AdvancedListLayout list) => Mathf.Max(FoCsGUI.GetPropertyHeight(property.GetArrayElementAtIndex(index)), FoCsGUI.SingleLine);
 
 				public SerializedPropertyInternals(SerializedProperty property)
 				{
@@ -326,8 +373,8 @@ namespace ForestOfChaosLib.Editor
 				int    Length      { get; set; }
 				bool   IsExpanded  { get; set; }
 				string DisplayName { get; }
-				void DoDrawAtIndex(Rect    pos,   int                index, AdvancedListLayout list);
-				float GetHeightAtIndex(int index, AdvancedListLayout list);
+				void   DoDrawAtIndex(Rect   pos,   int                index, AdvancedListLayout list);
+				float  GetHeightAtIndex(int index, AdvancedListLayout list);
 			}
 
 			private struct DragData
@@ -339,9 +386,12 @@ namespace ForestOfChaosLib.Editor
 
 				public static DragData Now(int index)
 				{
-					Debug.Log("Now");
-
 					return new DragData {index = index, StartPosition = CurrentPosition};
+				}
+
+				public static DragData Empty()
+				{
+					return new DragData {index = -1};
 				}
 			}
 		}
