@@ -9,7 +9,6 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using ORD = ForestOfChaosLib.Editor.PropertyDrawers.ObjectReferenceDrawer;
 using OR = ForestOfChaosLib.Editor.ObjectReference;
-using URLP = ForestOfChaosLib.Editor.FoCsEditor.UnityReorderableListProperty;
 
 //Based off of the CustomBaseEditor available at
 //https://gist.github.com/t0chas/34afd1e4c9bc28649311
@@ -19,14 +18,14 @@ namespace ForestOfChaosLib.Editor
 	[CanEditMultipleObjects]
 	public partial class FoCsEditor: UnityEditor.Editor, IRepaintable
 	{
-		internal  UnityReorderableListStorage                                    URLPStorage;
-		internal  Dictionary<string, ORD>                                        objectDrawers          = new Dictionary<string, ORD>(1);
-		internal  Dictionary<string, OR>                                         objectDrawer           = new Dictionary<string, OR>(1);
-		protected bool                                                           showContextMenuButtons = true;
-		protected SortMode                                                       sortingMode            = SortMode.Standard;
-		protected bool                                                           GUIChanged { get; private set; }
-		private   string                                                         search;
-		private readonly HandlerController Handler = new HandlerController();
+		internal         UnityReorderableListStorage URLPStorage;
+		internal         AdvancedListLayoutStorage   ALLStorage;
+		internal         Dictionary<string, OR>      objectDrawer           = new Dictionary<string, OR>(1);
+		protected        bool                        showContextMenuButtons = true;
+		protected        SortMode                    sortingMode            = SortMode.Standard;
+		protected        bool                        GUIChanged { get; private set; }
+		private          string                      search;
+		private readonly HandlerController           Handler = new HandlerController();
 
 		public virtual bool HideDefaultProperty
 		{
@@ -70,16 +69,10 @@ namespace ForestOfChaosLib.Editor
 			if(URLPStorage == null)
 				URLPStorage = new UnityReorderableListStorage(this);
 
+			if(ALLStorage == null)
+				ALLStorage = new AdvancedListLayoutStorage(this);
+
 			InitContextMenu();
-		}
-
-		~FoCsEditor()
-		{
-			if(objectDrawers == null)
-				return;
-
-			objectDrawers.Clear();
-			objectDrawers = null;
 		}
 
 		public override bool UseDefaultMargins()
@@ -143,17 +136,11 @@ namespace ForestOfChaosLib.Editor
 			DoBottomPadding();
 		}
 
-		private void NormalSortMode(bool checkForDefault = false)
+		private void NormalSortMode()
 		{
 			foreach(var property in serializedObject.Properties())
 			{
-				//if(checkForDefault)
-				//{
-				//	if(!IsDefaultScriptProperty(property))
-				//		Handler[property].HandleProperty(property);
-				//}
-				//else
-					Handler[property].HandleProperty(property);
+				Handler[property].HandleProperty(property);
 			}
 		}
 
@@ -287,59 +274,6 @@ namespace ForestOfChaosLib.Editor
 		{
 			if(contextData.Count > 0)
 				ShowContextMenuButtons = FoCsGUI.Layout.Toggle(ShowContextMenuButtons? "Hide Context Buttons" : "Show Context Buttons", ShowContextMenuButtons, FoCsGUI.Styles.Unity.ToolbarButton);
-		}
-
-		private void HandleObjectReference(SerializedProperty property)
-		{
-			var drawer  = GetObjectDrawers(property);
-			var GuiCont = new GUIContent(property.displayName);
-			var height  = drawer.GetPropertyHeight(property, GuiCont);
-			var rect    = FoCsGUI.Layout.GetControlRect(true, height);
-			drawer.IsExpanded.value = property.isExpanded;
-
-			if((!drawer.IsExpanded.value && !drawer.IsExpanded.isAnimating) || (!drawer.IsExpanded.value && drawer.IsExpanded.isAnimating && (drawer.IsExpanded.faded < 0.1f)))
-				drawer.OnGUI(rect, property, GuiCont);
-			else
-			{
-				using(var fade = Disposables.FadeGroupScope(drawer.IsExpanded.faded))
-				{
-					if(fade.visible)
-						drawer.OnGUI(rect, property, GuiCont);
-				}
-			}
-		}
-
-		internal ORD GetObjectDrawers(SerializedProperty property)
-		{
-			var id = GetUniqueStringID(property);
-			ORD objDraw;
-
-			if(objectDrawers.TryGetValue(id, out objDraw))
-				return objDraw;
-
-			objDraw            = new ORD();
-			objDraw.IsExpanded = new AnimBool(false) {speed = 1f};
-			objectDrawers.Add(id, objDraw);
-
-			return objDraw;
-		}
-
-		internal OR GetObjectDrawer(SerializedProperty property)
-		{
-			var id = GetUniqueStringID(property);
-			OR  objDraw;
-
-			if(objectDrawer.TryGetValue(id, out objDraw))
-			{
-				objDraw.Property = property;
-
-				return objDraw;
-			}
-
-			objDraw = new OR(property, this);
-			objectDrawer.Add(id, objDraw);
-
-			return objDraw;
 		}
 
 		internal OR GetObjectDrawer(SerializedProperty property, FoCsEditor owner)

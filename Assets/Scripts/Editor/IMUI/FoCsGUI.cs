@@ -19,6 +19,7 @@ namespace ForestOfChaosLib.Editor
 {
 	public static partial class FoCsGUI
 	{
+
 #region Label
 		public static GUIEvent Label(Rect rect)
 		{
@@ -68,6 +69,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region Button
 		public static eBool Button(Rect rect)
 		{
@@ -117,6 +119,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region Toggle
 		public static eBool Toggle(Rect rect, bool toggle)
 		{
@@ -166,6 +169,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region Toggle
 		public static eBool ToggleLeft(Rect rect, bool toggle)
 		{
@@ -215,55 +219,57 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region Foldout
-		public static GUIEvent Foldout(Rect rect, bool foldout)
+		public static eBool Foldout(Rect rect, bool foldout)
 		{
 			return FoldoutMaster(rect, foldout, GUICon.none, FoldoutStyle);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, GUIStyle style)
+		public static eBool Foldout(Rect rect, bool foldout, GUIStyle style)
 		{
 			return FoldoutMaster(rect, foldout, GUICon.none, style);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, string label)
+		public static eBool Foldout(Rect rect, bool foldout, string label)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(label), FoldoutStyle);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, string label, GUIStyle style)
+		public static eBool Foldout(Rect rect, bool foldout, string label, GUIStyle style)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(label), style);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, GUICon guiCon)
+		public static eBool Foldout(Rect rect, bool foldout, GUICon guiCon)
 		{
 			return FoldoutMaster(rect, foldout, guiCon, FoldoutStyle);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, GUICon guiCon, GUIStyle style)
+		public static eBool Foldout(Rect rect, bool foldout, GUICon guiCon, GUIStyle style)
 		{
 			return FoldoutMaster(rect, foldout, guiCon, style);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture)
+		public static eBool Foldout(Rect rect, bool foldout, Texture texture)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(texture), FoldoutStyle);
 		}
 
-		public static GUIEvent Foldout(Rect rect, bool foldout, Texture texture, GUIStyle style)
+		public static eBool Foldout(Rect rect, bool foldout, Texture texture, GUIStyle style)
 		{
 			return FoldoutMaster(rect, foldout, new GUICon(texture), style);
 		}
 
-		public static GUIEvent FoldoutMaster(Rect rect, bool foldout, GUICon guiCon, GUIStyle style)
+		public static eBool FoldoutMaster(Rect rect, bool foldout, GUICon guiCon, GUIStyle style)
 		{
-			var data = new GUIEvent {Event = new Event(Event.current), Rect = rect};
-			EditorGUI.Foldout(rect, foldout, guiCon, style);
+			var val  = EditorGUI.Foldout(rect, foldout, guiCon, style);
+			var data = GUIEvent.Create(val);
 
 			return data;
 		}
 #endregion
+
 #region IntField
 		public static eInt IntField(Rect rect, int value)
 		{
@@ -298,6 +304,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region DelayedIntField
 		public static eInt DelayedIntField(Rect rect, int value)
 		{
@@ -332,6 +339,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region FloatField
 		public static eFloat FloatField(Rect rect, float value)
 		{
@@ -371,6 +379,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region DelayedFloatField
 		public static eFloat DelayedFloatField(Rect rect, float value)
 		{
@@ -410,6 +419,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region DoubleField
 		public static eDouble DoubleField(Rect rect, double value)
 		{
@@ -449,6 +459,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region DelayedDoubleField
 		public static eDouble DelayedDoubleField(Rect rect, double value)
 		{
@@ -488,6 +499,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region TextField
 		public static eString TextField(Rect rect, string value)
 		{
@@ -527,6 +539,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region DelayedTextField
 		public static eString DelayedTextField(Rect rect, string value)
 		{
@@ -566,6 +579,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region TextArea
 		public static eString TextArea(Rect rect, string value)
 		{
@@ -585,6 +599,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region RawObjectField
 		public static eObject RawObjectField(Rect rect, Object value, Type type, bool allowSceneObjects)
 		{
@@ -609,6 +624,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region ObjectFieldGeneric
 		public static GUIEvent<T> ObjectField<T>(Rect rect, T value, Type type, bool allowSceneObjects) where T: Object
 		{
@@ -633,6 +649,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region HelpBox
 		public static GUIEvent ErrorBox(Rect rect, string text)
 		{
@@ -662,6 +679,7 @@ namespace ForestOfChaosLib.Editor
 			return data;
 		}
 #endregion
+
 #region PropertyField
 		private static eProp PropFieldMaster(Rect pos, SerProp prop, GUICon cont, bool includeChildren, AttributeCheck ignoreCheck, bool autoLabelField = false)
 		{
@@ -710,7 +728,12 @@ namespace ForestOfChaosLib.Editor
 			DoCheck
 		}
 
-		public static eProp PropertyField(Rect pos, SerProp prop, bool autoLabelField = false)
+		public static eProp PropertyField(Rect pos, SerProp prop)
+		{
+			return PropFieldMaster(pos, prop, new GUICon(prop.displayName), prop.isExpanded, AttributeCheck.DontCheck, false);
+		}
+
+		public static eProp PropertyField(Rect pos, SerProp prop, bool autoLabelField)
 		{
 			return PropFieldMaster(pos, prop, new GUICon(prop.displayName), true, AttributeCheck.DontCheck, autoLabelField);
 		}
@@ -812,7 +835,96 @@ namespace ForestOfChaosLib.Editor
 			return GetPropertyHeightMaster(prop, cont, true, ignoreCheck);
 		}
 #endregion
-#region Other
+
+#region Popup
+		public static eInt Popup(Rect pos, int selected, GUICon[] Options)
+		{
+			var val = EditorGUI.Popup(pos, selected, Options);
+
+			return GUIEvent.Create(pos, val);
+		}
+
+		public static eInt Popup(Rect pos, int selected, GUICon[] Options, GUIStyle style)
+		{
+			var val = EditorGUI.Popup(pos, selected, Options, style);
+
+			return GUIEvent.Create(pos, val);
+		}
+
+		public static eInt Popup(Rect pos, string label, int selected, GUICon[] Options)
+		{
+			var val = EditorGUI.Popup(pos, selected, Options, label);
+
+			return GUIEvent.Create(pos, val);
+		}
+
+		public static eInt Popup(Rect pos, string label, int selected, string[] Options, GUIStyle style)
+		{
+			var val = EditorGUI.Popup(pos, label, selected, Options, style);
+
+			return GUIEvent.Create(pos, val);
+		}
+
+		public static eInt Popup(Rect pos, GUICon label, int selected, GUICon[] Options)
+		{
+			var val = EditorGUI.Popup(pos, label, selected, Options);
+
+			return GUIEvent.Create(pos, val);
+		}
+
+		public static eInt Popup(Rect pos, GUICon label, int selected, GUICon[] Options, GUIStyle style)
+		{
+			var val = EditorGUI.Popup(pos, label, selected, Options, style);
+
+			return GUIEvent.Create(pos, val);
+		}
+#endregion
+
+#region EnumPopup
+		public static GUIEvent<Enum> EnumPopup(Rect pos, Enum selected)
+		{
+			var val = EditorGUI.EnumPopup(pos, selected);
+
+			return GUIEvent.Create(pos, val);
+		}
+
+		public static GUIEvent<Enum> EnumPopup(Rect pos, Enum selected, GUIStyle style)
+		{
+			var val = EditorGUI.EnumPopup(pos, selected, style);
+
+			return GUIEvent.Create(pos, val);
+		}
+
+		public static GUIEvent<Enum> EnumPopup(Rect pos, string label, Enum selected)
+		{
+			var val = EditorGUI.EnumPopup(pos, label, selected);
+
+			return GUIEvent.Create(pos, val);
+		}
+
+		public static GUIEvent<Enum> EnumPopup(Rect pos, string label, Enum selected, GUIStyle style)
+		{
+			var val = EditorGUI.EnumPopup(pos, label, selected, style);
+
+			return GUIEvent.Create(pos, val);
+		}
+
+		public static GUIEvent<Enum> EnumPopup(Rect pos, GUICon label, Enum selected)
+		{
+			var val = EditorGUI.EnumPopup(pos, label, selected);
+
+			return GUIEvent.Create(pos, val);
+		}
+
+		public static GUIEvent<Enum> EnumPopup(Rect pos, GUICon label, Enum selected, GUIStyle style)
+		{
+			var val = EditorGUI.EnumPopup(pos, label, selected, style);
+
+			return GUIEvent.Create(pos, val);
+		}
+#endregion
+
+#region ProgressBar
 		public static GUIEvent ProgressBar(Rect rect, float fillAmount, string label = "")
 		{
 			var data = new GUIEvent {Event = new Event(Event.current), Rect = rect};
@@ -863,7 +975,9 @@ namespace ForestOfChaosLib.Editor
 			EditorGUI.ProgressBar(leftPos,  +leftValue,  "");
 			EditorGUI.ProgressBar(rightPos, +rightValue, "");
 		}
+#endregion
 
+#region WithMenus
 		private const float MENU_BUTTON_SIZE = 16f;
 
 		public static eInt DrawPropertyWithMenu(Rect position, SerProp property, GUICon label, GUICon[] Options, int active, bool autoLabelField = false)
@@ -873,16 +987,15 @@ namespace ForestOfChaosLib.Editor
 
 		public static eInt DrawDisabledPropertyWithMenu(bool disabled, Rect position, SerProp property, GUICon label, GUICon[] Options, int active, bool autoLabelField = false)
 		{
-			var propRect  = position.Edit(RectEdit.SetWidth(position.width - MENU_BUTTON_SIZE         - 2));
-			var rectWidth = position.x + (position.width - (MENU_BUTTON_SIZE * (EditorGUI.indentLevel + 1)));
-			var menuRect  = new Rect(rectWidth, position.y, position.width - rectWidth, position.height);
+			Action<Rect> draw = (rect) =>
+			{
+				using(FoCsEditor.Disposables.SetIndent(0))
+				{
+					PropertyField(rect.Edit(RectEdit.SetHeight(GetPropertyHeight(property))), property, GUICon.none, property.hasVisibleChildren, autoLabelField);
+				}
+			};
 
-			using(FoCsEditor.Disposables.DisabledScope(disabled))
-				PropertyField(propRect, property, label, property.hasVisibleChildren, autoLabelField);
-
-			var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);
-
-			return GUIEvent.Create(position, index);
+			return DrawActionWithMenu(disabled, position, draw, label, Options, active);
 		}
 
 		public static eInt DrawActionWithMenu(Rect position, Action<Rect> draw, GUICon label, GUICon[] Options, int active)
@@ -892,17 +1005,32 @@ namespace ForestOfChaosLib.Editor
 
 		public static eInt DrawActionWithMenu(bool disabled, Rect position, Action<Rect> draw, GUICon label, GUICon[] Options, int active)
 		{
-			var propRect  = position.Edit(RectEdit.SetWidth(position.width - MENU_BUTTON_SIZE         - 2), RectEdit.SubtractHeight(2));
-			var rectWidth = position.x + (position.width - (MENU_BUTTON_SIZE * (EditorGUI.indentLevel + 1)));
-			var menuRect  = new Rect(rectWidth, position.y, position.width - rectWidth, position.height);
+			var propRect  = new Rect(position);
+			var labelRect = new Rect(position);
+			var menuRect  = new Rect(position);
+
+			labelRect = labelRect.Edit(RectEdit.SetWidth(EditorGUIUtility.labelWidth));
+
+			menuRect.xMin = menuRect.xMax - (MENU_BUTTON_SIZE);
+			menuRect.xMax = position.xMax;
+
+
+			propRect.xMin = labelRect.xMax;
+			propRect.xMax = menuRect.xMin - 2;
+
+			Label(labelRect, label);
 
 			using(FoCsEditor.Disposables.DisabledScope(disabled))
 				draw.Trigger(propRect);
 
-			var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);
+			using(FoCsEditor.Disposables.SetIndent(0))
+			{
+				var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);
 
-			return GUIEvent.Create(position, index);
+				return GUIEvent.Create(position, index);
+			}
 		}
 #endregion
+
 	}
 }

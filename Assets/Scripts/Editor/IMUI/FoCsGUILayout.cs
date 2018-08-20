@@ -1,4 +1,5 @@
 ﻿using System;
+using ForestOfChaosLib.Editor.PropertyDrawers;
 using UnityEditor;
 using UnityEngine;
 using GUICon = UnityEngine.GUIContent;
@@ -78,6 +79,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
 #endregion
+
 #region LabelField
 			public static GUIEvent LabelField(params GUILayOpt[] options)
 			{
@@ -126,6 +128,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
 #endregion
+
 #region Button
 			public static eBool Button(params GUILayOpt[] options)
 			{
@@ -174,6 +177,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), b);
 			}
 #endregion
+
 #region Toggle
 			public static eBool Toggle(bool toggle, params GUILayOpt[] options)
 			{
@@ -222,6 +226,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region ToggleField
 			public static eBool ToggleField(bool toggle, params GUILayOpt[] options)
 			{
@@ -270,6 +275,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region Foldout
 			public static eBool Foldout(bool foldout)
 			{
@@ -338,6 +344,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region IntField
 			public static eInt IntField(int value, params GUILayOpt[] options)
 			{
@@ -383,6 +390,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region DelayedIntField
 			public static eInt DelayedIntField(int value, params GUILayOpt[] options)
 			{
@@ -428,6 +436,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region FloatField
 			public static eFloat FloatField(float value, params GUILayOpt[] options)
 			{
@@ -473,6 +482,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region DelayedFloatField
 			public static eFloat DelayedFloatField(float value, params GUILayOpt[] options)
 			{
@@ -518,6 +528,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region DoubleField
 			public static eDouble DoubleField(double value, params GUILayOpt[] options)
 			{
@@ -563,6 +574,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region DelayedDoubleField
 			public static eDouble DelayedDoubleField(double value, params GUILayOpt[] options)
 			{
@@ -608,6 +620,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region LongField
 			public static eLong LongField(long value, params GUILayOpt[] options)
 			{
@@ -653,6 +666,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region TextField
 			public static eString TextField(string value, params GUILayOpt[] options)
 			{
@@ -698,6 +712,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region DelayedTextField
 			public static eString DelayedTextField(string value, params GUILayOpt[] options)
 			{
@@ -743,6 +758,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region TextArea
 			public static eString TextArea(string value, params GUILayOpt[] options)
 			{
@@ -761,6 +777,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region RawObjectField
 			public static eObject RawObjectField(Object value, Type type, bool allowSceneObjects, params GUILayOpt[] options)
 			{
@@ -791,6 +808,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region ObjectFieldGeneric
 			public static GUIEvent<T> ObjectField<T>(T value, bool allowSceneObjects, params GUILayOpt[] options) where T: Object
 			{
@@ -821,6 +839,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region HelpBox
 			public static GUIEvent ErrorBox(string text)
 			{
@@ -842,6 +861,7 @@ namespace ForestOfChaosLib.Editor
 				return FoCsGUI.HelpBox(GUILayoutUtility.GetRect(0, SingleLine * 2.5f, Styles.Unity.HelpBox, null), text);
 			}
 #endregion
+
 #region PropertyField
 			public static eBool PropertyField(SerializedProperty property)
 			{
@@ -870,6 +890,16 @@ namespace ForestOfChaosLib.Editor
 
 			private static eBool PropertyFieldMaster(SerializedProperty property, bool includeChildren, params GUILayOpt[] options)
 			{
+				if(property.propertyType == SerializedPropertyType.Quaternion)
+				{
+					using(var cc = FoCsEditor.Disposables.ChangeCheck())
+					{
+						QuaternionPropertyDrawer.Draw(GetControlRect(false, options), property, GUICon.none);
+
+						return GUIEvent.Create(GUILayoutUtility.GetLastRect(), cc.changed);
+					}
+				}
+
 				var val = EditorGUILayout.PropertyField(property, includeChildren, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
@@ -877,11 +907,22 @@ namespace ForestOfChaosLib.Editor
 
 			private static eBool PropertyFieldMaster(GUICon label, SerializedProperty property, bool includeChildren, params GUILayOpt[] options)
 			{
-				var val = EditorGUILayout.PropertyField(property, label, includeChildren, options);
+				if(property.propertyType == SerializedPropertyType.Quaternion)
+				{
+					using(var cc = FoCsEditor.Disposables.ChangeCheck())
+					{
+						QuaternionPropertyDrawer.Draw(GetControlRect(false, options), property, label);
+
+						return GUIEvent.Create(GUILayoutUtility.GetLastRect(), cc.changed);
+					}
+				}
+
+				var val = EditorGUILayout.PropertyField(property, includeChildren, options);
 
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region GetControlRect
 			public static Rect GetControlRect(params GUILayOpt[] options)
 			{
@@ -903,6 +944,7 @@ namespace ForestOfChaosLib.Editor
 				return EditorGUILayout.GetControlRect(hasLabel, height, style, options);
 			}
 #endregion
+
 #region SelectableLabel
 			public static GUIEvent SelectableLabel(string text, params GUILayOpt[] options)
 			{
@@ -918,6 +960,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
 #endregion
+
 #region PasswordField
 			public static eString PasswordField(string password, params GUILayOpt[] options)
 			{
@@ -971,6 +1014,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect(), val);
 			}
 #endregion
+
 #region Slider
 			public static eFloat Slider(float value, float leftValue, float rightValue, params GUILayOpt[] options)
 			{
@@ -1000,6 +1044,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
 #endregion
+
 #region IntSlider
 			public static eInt Slider(int value, int leftValue, int rightValue, params GUILayOpt[] options)
 			{
@@ -1029,6 +1074,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(GUILayoutUtility.GetLastRect());
 			}
 #endregion
+
 #region Popup
 			public static eInt Popup(int selectedIndex, string[] displayedOptions, params GUILayOpt[] options)
 			{
@@ -1086,6 +1132,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(val);
 			}
 #endregion
+
 #region EnumPopup
 			public static GUIEvent<Enum> EnumPopup(Enum selected, params GUILayOpt[] options)
 			{
@@ -1129,6 +1176,7 @@ namespace ForestOfChaosLib.Editor
 				return GUIEvent.Create(val);
 			}
 #endregion
+
 #region Other
 			public static GUIEvent ProgressBar(float fillAmount, string label = "", params GUILayOpt[] options)
 			{
@@ -1146,6 +1194,7 @@ namespace ForestOfChaosLib.Editor
 				return data;
 			}
 #endregion
+
 		}
 	}
 }

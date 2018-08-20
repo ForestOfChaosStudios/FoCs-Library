@@ -97,12 +97,12 @@ namespace ForestOfChaosLib.Editor
 			{
 				OnLimitingChange           += ChangeLimiting;
 				List                       =  new ReorderableList(Property.serializedObject, Property, dragable, displayHeader, displayAdd, displayRemove);
-				List.drawHeaderCallback    += OnListDrawHeaderCallback;
-				List.onCanRemoveCallback   += OnListOnCanRemoveCallback;
-				List.drawElementCallback   += DrawElement;
-				List.elementHeightCallback += OnListElementHeightCallback;
+				List.drawHeaderCallback    = OnListDrawHeaderCallback;
+				List.onCanRemoveCallback   = OnListOnCanRemoveCallback;
+				List.drawElementCallback   = DrawElement;
+				List.elementHeightCallback = OnListElementHeightCallback;
 				//TODO Implement limited view of lists, eg only show index 50-100, and buttons to move limits
-				List.drawFooterCallback    += OnListDrawFooterCallback;
+				List.drawFooterCallback    = OnListDrawFooterCallback;
 				List.showDefaultBackground =  true;
 				SetSerializedPropertyType();
 				CheckLimiter();

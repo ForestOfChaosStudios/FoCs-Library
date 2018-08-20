@@ -1,17 +1,32 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿#define CUSTOM_LIST
+
+using UnityEditor;
 
 namespace ForestOfChaosLib.Editor
 {
 	internal class ListHandler: IPropertyLayoutHandler
 	{
 		private readonly FoCsEditor owner;
-
 		public ListHandler(FoCsEditor _owner)
 		{
 			owner = _owner;
 		}
+#if CUSTOM_LIST
+		public void HandleProperty(SerializedProperty property)
+		{
+			var list = owner.ALLStorage.GetList(property);
 
+			using(FoCsEditor.Disposables.IndentOnlyIfLessThenIndent(2))
+				list.Draw();
+		}
+
+		public float PropertyHeight(SerializedProperty property)
+		{
+			var list = owner.ALLStorage.GetList(property);
+
+			return list.GetTotalHeight();
+		}
+#else
 		public void HandleProperty(SerializedProperty property)
 		{
 			var list = owner.URLPStorage.GetList(property);
@@ -20,7 +35,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				using(FoCsEditor.Disposables.HorizontalScope())
 				{
-					FoCsGUI.Layout.GetControlRect(GUILayout.Width(5));
+					FoCsGUI.Layout.GetControlRect(UnityEngine.GUILayout.Width(5));
 					list.HandleDrawing();
 				}
 			}
@@ -32,10 +47,7 @@ namespace ForestOfChaosLib.Editor
 
 			return list.GetTotalHeight();
 		}
-
-		public bool IsValidProperty(SerializedProperty property)
-		{
-			return property.isArray && (property.propertyType != SerializedPropertyType.String);
-		}
+#endif
+		public bool IsValidProperty(SerializedProperty property) => property.isArray && (property.propertyType != SerializedPropertyType.String);
 	}
 }
