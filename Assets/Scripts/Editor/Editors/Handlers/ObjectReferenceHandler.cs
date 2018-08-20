@@ -12,6 +12,12 @@ namespace ForestOfChaosLib.Editor
 			owner = _owner;
 		}
 
+		public ObjectReferenceHandler(UnityReorderableListStorage _URLStorage)
+		{
+			storage = _URLStorage;
+			owner = null;
+		}
+
 		public UnityReorderableListStorage URLStorage
 		{
 			get { return storage ?? (storage = new UnityReorderableListStorage(owner)); }

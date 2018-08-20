@@ -6,10 +6,16 @@ namespace ForestOfChaosLib.Editor
 {
 	internal class ListHandler: IPropertyLayoutHandler
 	{
-		private readonly FoCsEditor owner;
+		private readonly UnityReorderableListStorage ListStorage;
+
 		public ListHandler(FoCsEditor _owner)
 		{
-			owner = _owner;
+			ListStorage = _owner.URLPStorage;
+		}
+
+		public ListHandler(UnityReorderableListStorage _ListStorage)
+		{
+			ListStorage = _ListStorage;
 		}
 #if CUSTOM_LIST
 		public void HandleProperty(SerializedProperty property)
@@ -29,7 +35,7 @@ namespace ForestOfChaosLib.Editor
 #else
 		public void HandleProperty(SerializedProperty property)
 		{
-			var list = owner.URLPStorage.GetList(property);
+			var list = ListStorage.GetList(property);
 
 			using(Disposables.LabelFieldAddWidth(-31))
 			{
@@ -43,7 +49,7 @@ namespace ForestOfChaosLib.Editor
 
 		public float PropertyHeight(SerializedProperty property)
 		{
-			var list = owner.URLPStorage.GetList(property);
+			var list = ListStorage.GetList(property);
 
 			return list.GetTotalHeight();
 		}

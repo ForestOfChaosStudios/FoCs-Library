@@ -6,7 +6,7 @@ namespace ForestOfChaosLib.Editor
 	public class UnityReorderableListStorage
 	{
 		internal static List<UnityReorderableListStorage> storages = new List<UnityReorderableListStorage>();
-		public          FoCsEditor                        owner;
+		public IRepaintable owner;
 
 		public UnityReorderableListStorage()
 		{
@@ -14,6 +14,12 @@ namespace ForestOfChaosLib.Editor
 		}
 
 		public UnityReorderableListStorage(FoCsEditor painter)
+		{
+			storages.Add(this);
+			owner = painter;
+		}
+
+		public UnityReorderableListStorage(IRepaintable painter)
 		{
 			storages.Add(this);
 			owner = painter;

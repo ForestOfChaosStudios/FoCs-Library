@@ -36,6 +36,11 @@ namespace ForestOfChaosLib.Extensions
 
 			return array;
 		}
+
+		public static bool IsNullOrEmpty<T>(this T[] array)
+		{
+			return (array == null) || (array.Length == 0);
+		}
 	}
 
 	public static class Array2DHelpers

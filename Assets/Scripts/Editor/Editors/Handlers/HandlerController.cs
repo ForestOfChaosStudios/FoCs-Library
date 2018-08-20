@@ -64,6 +64,15 @@ namespace ForestOfChaosLib.Editor
 				fallbackHandler = new PropertyHandler();
 		}
 
+		public void VerifyIPropertyLayoutHandlerArray(ObjectReferenceHandler owner)
+		{
+			if(Handlers == null)
+				Handlers = new IPropertyLayoutHandler[] {new ListHandler(owner.owner), new DefaultScriptPropertyHandler(owner.owner),};
+
+			if(fallbackHandler == null)
+				fallbackHandler = new PropertyHandler();
+		}
+
 		public void VerifyIPropertyLayoutHandlerArrayNoObject(FoCsEditor owner)
 		{
 			if(Handlers == null)
@@ -73,10 +82,10 @@ namespace ForestOfChaosLib.Editor
 				fallbackHandler = new PropertyHandler();
 		}
 
-		public void VerifyIPropertyLayoutHandlerArray(ObjectReferenceHandler owner)
+		public void VerifyIPropertyLayoutHandlerArrayNoObject(UnityReorderableListStorage storage)
 		{
 			if(Handlers == null)
-				Handlers = new IPropertyLayoutHandler[] {new ListHandler(owner.owner), new DefaultScriptPropertyHandler(owner.owner),};
+				Handlers = new IPropertyLayoutHandler[] { new ListHandler(storage), new DefaultScriptPropertyHandler(),};
 
 			if(fallbackHandler == null)
 				fallbackHandler = new PropertyHandler();

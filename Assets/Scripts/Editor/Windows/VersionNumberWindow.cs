@@ -1,4 +1,5 @@
-﻿using ForestOfChaosLib.Editor.UnitySettings;
+﻿using System.Linq;
+using ForestOfChaosLib.Editor.UnitySettings;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ namespace ForestOfChaosLib.Editor.Windows
 
 		private void OnEnable()
 		{
-			SerializedObject = new SerializedObject(UnitySettingsReader.ProjectSettings);
+			SerializedObject = new SerializedObject(UnitySettingsReader.ProjectSettings.Assets.First());
 			versionNumber    = BundleVersion.stringValue;
 		}
 

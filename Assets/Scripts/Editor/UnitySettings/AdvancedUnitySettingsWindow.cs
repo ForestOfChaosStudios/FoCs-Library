@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Editor.Windows;
 using ForestOfChaosLib.Extensions;
@@ -13,7 +14,6 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 	{
 		private const string                             Title = "Advanced Unity Settings Window";
 		private       Tab<AdvancedUnitySettingsWindow>[] tabs;
-
 		public override Tab<AdvancedUnitySettingsWindow>[] Tabs
 		{
 			get
@@ -39,184 +39,114 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 		private void CreatePrivateTabsArray()
 		{
-			var arry = UnitySettingsReader.Assets;
+			var arry = UnitySettingsReader.RawAssets;
 			tabs = new Tab<AdvancedUnitySettingsWindow>[arry.Length];
 
 			for(var i = 0; i < arry.Length; i++)
-					//if(arry[i].FileName == UnitySettingsReader.EditorSettings.FileName)
-					//	tabs[i] = new SearchableTab(arry[i], arry[i]);
-					//else
-				tabs[i] = new SearchableTab(arry[i], arry[i]);
+				tabs[i] = new SearchableTab(arry[i], arry[i].Assets.Select(a => new SerializedObject(a)).ToArray());
 		}
 
-		private class Tab: Tab<AdvancedUnitySettingsWindow>
+		private class SearchableTab: Tab<AdvancedUnitySettingsWindow>
 		{
-			protected const    float                    EXTRA_LABEL_WIDTH = 128;
-			protected const    float                    LEFT_BORDER       = 32f;
-			protected const    float                    RIGHT_BORDER      = 0;
-			protected readonly SerializedObject         Asset;
-			private readonly   Dictionary<string, URLP> reorderableLists = new Dictionary<string, URLP>(1);
-			protected          Vector2                  vector2          = Vector2.zero;
-			public override    string                   TabName { get; }
+			private static readonly GUIContent                  SearchGuiContent = new GUIContent("Search: ", "This will only show properties that match, Ignores case.");
+			private                 string                      Search;
+			//private                 HandlerController[]         handlerControllers = null;
+			//private                 UnityReorderableListStorage storage             = null;
+			private const           float                       EXTRA_LABEL_WIDTH = 128;
+			private const           float                       LEFT_BORDER       = 32f;
+			private const           float                       RIGHT_BORDER      = 0;
+			private readonly        SerializedObject[]            Assets;
+			private                 Vector2                     vector2 = Vector2.zero;
+			public override         string                      TabName { get; }
 
-			public Tab(string tabName, SerializedObject asset)
+			public SearchableTab(string tabName, SerializedObject[] assets)
 			{
 				TabName = tabName;
-				Asset   = asset;
+				Assets   = assets;
 			}
 
 			public override void DrawTab(FoCsWindow<AdvancedUnitySettingsWindow> owner)
 			{
+				//if(storage == null)
+				//	storage = new UnityReorderableListStorage(owner);
+
 				using(Disposables.HorizontalScope(GUI.skin.box))
 					EditorGUILayout.LabelField(TabName);
 
-				using(Disposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
+				using(Disposables.HorizontalScope())
 				{
-					Asset.Update();
+					DrawSpace(LEFT_BORDER * 0.5f);
+					Search = FoCsGUI.Layout.TextField(SearchGuiContent, Search);
+				}
 
-					using(Disposables.HorizontalScope())
+				using(Disposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
+				using (Disposables.SetIndent(1))
+				{
+					//if(handlerControllers.IsNullOrEmpty())
+					//{
+					//	handlerControllers = new HandlerController[Assets.Length];
+					//
+					//	for(var i = 0; i < handlerControllers.Length; i++)
+					//		handlerControllers[i] = new HandlerController();
+					//}
+
+					for(var i = 0; i < Assets.Length; i++)
 					{
-						DrawSpace(LEFT_BORDER);
+						var asset = Assets[i];
+						//var handlerController = handlerControllers[i];
+						asset.Update();
 
-						using(var scrollViewScope = Disposables.ScrollViewScope(vector2, true))
+						//handlerController.VerifyIPropertyLayoutHandlerArrayNoObject(storage);
+						//handlerController.VerifyHandlingDictionary(asset);
+
+						using(Disposables.HorizontalScope())
 						{
-							vector2 = scrollViewScope.scrollPosition;
+							DrawSpace(LEFT_BORDER);
 
-							using(var changeCheckScope = Disposables.ChangeCheck())
+							using(var scrollViewScope = Disposables.ScrollViewScope(vector2, true))
 							{
-								var unityDefProp = true;
+								vector2 = scrollViewScope.scrollPosition;
 
-								foreach(var property in Asset.Properties())
+								using(var changeCheckScope = Disposables.ChangeCheck())
 								{
-									if(unityDefProp)
+									foreach(var property in asset.Properties())
 									{
-										unityDefProp = false;
-
-										continue;
+										if(Search.IsNullOrEmpty())
+											FoCsGUI.Layout.PropertyField(property);
+										else if(property.name.ToLower().Contains(Search.ToLower()))
+											FoCsGUI.Layout.PropertyField(property);
 									}
 
-									DrawProperty(property);
+									if(changeCheckScope.changed)
+									{
+										asset.ApplyModifiedProperties();
+									}
 								}
-
-								if(changeCheckScope.changed)
-									EditorUtility.SetDirty(Asset.targetObject);
 							}
-						}
 
-						DrawSpace(RIGHT_BORDER);
+							DrawSpace(RIGHT_BORDER);
+						}
 					}
 				}
 
 				DrawFooter();
 			}
 
-			protected void DrawFooter()
+			private void DrawFooter()
 			{
 				using(Disposables.VerticalScope())
 				{
 					if(FoCsGUI.Layout.Button("Force save"))
-						EditorUtility.SetDirty(Asset.targetObject);
+					{
+						foreach(var serializedObject in Assets)
+						{
+							EditorUtility.SetDirty(serializedObject.targetObject);
+						}
+					}
 
 					using(Disposables.HorizontalScope(GUI.skin.box))
 						EditorGUILayout.HelpBox("Warning, This window has not been tested for all the settings being validated.\nIt is still recommended to use the Unity settings windows.", MessageType.Warning);
 				}
-			}
-
-			private void DrawListProperty(SerializedProperty itr)
-			{
-				var ReorderableListProperty = GetReorderableList(itr);
-
-				using(Disposables.VerticalScope(GUI.skin.box))
-					ReorderableListProperty.HandleDrawing();
-			}
-
-			private static void DrawSingleProperty(SerializedProperty itr)
-			{
-				using(Disposables.HorizontalScope(GUI.skin.box))
-					EditorGUILayout.PropertyField(itr, true);
-			}
-
-			protected void DrawProperty(SerializedProperty itr)
-			{
-				if(itr.isArray && (itr.propertyType != SerializedPropertyType.String))
-					DrawListProperty(itr);
-				else
-					DrawSingleProperty(itr);
-			}
-
-			private URLP GetReorderableList(SerializedProperty property)
-			{
-				var                                     id = property.propertyPath + "-" + property.name;
-				URLP ret;
-
-				if(reorderableLists.TryGetValue(id, out ret))
-				{
-					ret.Property = property;
-
-					return ret;
-				}
-
-				ret = new URLP(property);
-				reorderableLists.Add(id, ret);
-
-				return ret;
-			}
-		}
-
-		private class SearchableTab: Tab
-		{
-			private static readonly GUIContent SearchGuiContent = new GUIContent("Search: ", "This will only show properties that match, Ignores case.");
-			private                 string     Search;
-			public SearchableTab(string tabName, SerializedObject asset): base(tabName, asset) { }
-
-			public override void DrawTab(FoCsWindow<AdvancedUnitySettingsWindow> owner)
-			{
-				using(Disposables.HorizontalScope(GUI.skin.box))
-					EditorGUILayout.LabelField(TabName);
-
-				Search = FoCsGUI.Layout.TextField(SearchGuiContent, Search);
-
-				using(Disposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
-				{
-					Asset.Update();
-
-					using(Disposables.HorizontalScope())
-					{
-						DrawSpace(LEFT_BORDER);
-
-						using(var scrollViewScope = Disposables.ScrollViewScope(vector2, true))
-						{
-							vector2 = scrollViewScope.scrollPosition;
-
-							using(var changeCheckScope = Disposables.ChangeCheck())
-							{
-								var unityDefProp = true;
-
-								foreach(var property in Asset.Properties())
-								{
-									if(unityDefProp)
-									{
-										unityDefProp = false;
-
-										continue;
-									}
-
-									if(Search.IsNullOrEmpty())
-										DrawProperty(property);
-									else if(property.name.ToLower().Contains(Search.ToLower()))
-										DrawProperty(property);
-								}
-
-								if(changeCheckScope.changed)
-									EditorUtility.SetDirty(Asset.targetObject);
-							}
-						}
-
-						DrawSpace(RIGHT_BORDER);
-					}
-				}
-
-				DrawFooter();
 			}
 		}
 	}

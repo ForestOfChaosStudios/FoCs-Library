@@ -1,5 +1,7 @@
-﻿using UnityEditor;
+﻿using System.Linq;
+using UnityEditor;
 using UnityEngine;
+using ForestOfChaosLib.Extensions;
 
 namespace ForestOfChaosLib.Editor.UnitySettings
 {
@@ -15,13 +17,13 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 		public static SettingsFile NavMeshAreas         = new SettingsFile("NavMeshAreas");
 		public static SettingsFile NetworkManager       = new SettingsFile("NetworkManager");
 		public static SettingsFile Physics2DSettings    = new SettingsFile("Physics2DSettings");
+		public static SettingsFile PresetManager        = new SettingsFile("PresetManager");
 		public static SettingsFile ProjectSettings      = new SettingsFile("ProjectSettings");
 		public static SettingsFile QualitySettings      = new SettingsFile("QualitySettings");
 		public static SettingsFile TagManager           = new SettingsFile("TagManager");
 		public static SettingsFile TimeManager          = new SettingsFile("TimeManager");
 		public static SettingsFile UnityConnectSettings = new SettingsFile("UnityConnectSettings");
-
-		public static SettingsFile[] Assets
+		public static SettingsFile[] RawAssets
 		{
 			get
 			{
@@ -37,6 +39,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 						NavMeshAreas,
 						NetworkManager,
 						Physics2DSettings,
+						PresetManager,
 						ProjectSettings,
 						QualitySettings,
 						TagManager,
@@ -48,15 +51,16 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 		public class SettingsFile
 		{
-			private Object _Asset;
-			public  string FileName;
-
-			public Object Asset
+			private Object[] _Asset;
+			public  string   FileName;
+			public Object[] Assets
 			{
 				get
 				{
-					if(!_Asset)
-						_Asset = AssetDatabase.LoadAllAssetsAtPath(string.Format("ProjectSettings/{0}.asset", FileName))[0];
+					if(_Asset.IsNullOrEmpty())
+					{
+						_Asset = AssetDatabase.LoadAllAssetsAtPath($"ProjectSettings/{FileName}.asset");
+					}
 
 					return _Asset;
 				}
@@ -69,7 +73,12 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			public static implicit operator Object(SettingsFile input)
 			{
-				return input.Asset;
+				return input.Assets.FirstOrDefault();
+			}
+
+			public static implicit operator Object[](SettingsFile input)
+			{
+				return input.Assets;
 			}
 
 			public static implicit operator string(SettingsFile input)
@@ -81,10 +90,14 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 			{
 				return input.GetInputAxisSerializedObject();
 			}
+			public static implicit operator SerializedObject[](SettingsFile input)
+			{
+				return input.Assets.Select(a => new SerializedObject(a)).ToArray();
+			}
 
 			public SerializedObject GetInputAxisSerializedObject()
 			{
-				return new SerializedObject(Asset);
+				return new SerializedObject(Assets.FirstOrDefault());
 			}
 		}
 	}

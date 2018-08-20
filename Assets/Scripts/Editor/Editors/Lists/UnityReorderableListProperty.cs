@@ -223,11 +223,10 @@ namespace ForestOfChaosLib.Editor
 			{
 				indentLevel = 0;
 			}
-			else if(element.propertyType == SerializedPropertyType.Generic)
-			{
-				if(FoCsGUI.GetPropertyHeight(element) != FoCsGUI.SingleLine)
-					indentLevel = 0;
-			}
+			//else if(element.propertyType == SerializedPropertyType.Generic)
+			//{
+			//	indentLevel = 0;
+			//}
 
 			using(Disposables.Indent(indentLevel))
 			{

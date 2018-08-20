@@ -7,6 +7,10 @@ namespace ForestOfChaosLib.Editor
 	{
 		private readonly FoCsEditor owner;
 
+		public DefaultScriptPropertyHandler()
+		{
+			owner = null;
+		}
 		public DefaultScriptPropertyHandler(FoCsEditor _owner)
 		{
 			owner = _owner;
@@ -14,7 +18,7 @@ namespace ForestOfChaosLib.Editor
 
 		public void HandleProperty(SerializedProperty property)
 		{
-			if(owner.HideDefaultProperty)
+			if(owner && owner.HideDefaultProperty)
 			{
 				var isDefaultScriptProperty = FoCsEditor.GetDefaultPropertyType(property);
 
@@ -37,7 +41,7 @@ namespace ForestOfChaosLib.Editor
 
 		public float PropertyHeight(SerializedProperty property)
 		{
-			if(owner.HideDefaultProperty)
+			if(owner && owner.HideDefaultProperty)
 				return 0;
 
 			return FoCsGUI.SingleLine;
