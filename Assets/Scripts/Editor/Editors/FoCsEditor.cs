@@ -4,10 +4,8 @@ using System.Linq;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Extensions;
 using UnityEditor;
-using UnityEditor.AnimatedValues;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using ORD = ForestOfChaosLib.Editor.PropertyDrawers.ObjectReferenceDrawer;
 using OR = ForestOfChaosLib.Editor.ObjectReference;
 
 //Based off of the CustomBaseEditor available at
@@ -19,7 +17,6 @@ namespace ForestOfChaosLib.Editor
 	public partial class FoCsEditor: UnityEditor.Editor, IRepaintable
 	{
 		internal         UnityReorderableListStorage URLPStorage;
-		internal         AdvancedListLayoutStorage   ALLStorage;
 		internal         Dictionary<string, OR>      objectDrawer           = new Dictionary<string, OR>(1);
 		protected        bool                        showContextMenuButtons = true;
 		protected        SortMode                    sortingMode            = SortMode.Standard;
@@ -68,9 +65,6 @@ namespace ForestOfChaosLib.Editor
 
 			if(URLPStorage == null)
 				URLPStorage = new UnityReorderableListStorage(this);
-
-			if(ALLStorage == null)
-				ALLStorage = new AdvancedListLayoutStorage(this);
 
 			InitContextMenu();
 		}
