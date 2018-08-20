@@ -22,8 +22,9 @@ namespace ForestOfChaosLib.Curves.Editor
 
 		private T Curve;
 
-		protected void OnEnable()
+		protected override void OnEnable()
 		{
+			base.OnEnable();
 			Curve = target as T;
 		}
 

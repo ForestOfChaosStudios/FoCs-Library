@@ -7,11 +7,12 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using ObjRef = ForestOfChaosLib.Editor.ObjectReference;
+using SerializedProperty = UnityEditor.SerializedProperty;
 
 namespace ForestOfChaosLib.Editor
 {
-	[CustomEditor(typeof(object), true, isFallback = true)]
 	[CanEditMultipleObjects]
+	[CustomEditor(typeof(object), true, isFallback = true)]
 	public partial class FoCsEditor: UnityEditor.Editor, IRepaintable
 	{
 		private static          string                      search;
@@ -21,12 +22,12 @@ namespace ForestOfChaosLib.Editor
 		private readonly        HandlerController           Handler              = new HandlerController();
 		internal                UnityReorderableListStorage URLPStorage;
 		internal                Dictionary<string, ObjRef>  objectDrawer           = new Dictionary<string, ObjRef>(1);
-		protected               bool                        showContextMenuButtons = true;
-		protected               int                         sortingModeIndex;
-		protected               bool                        GUIChanged           { get; private set; }
-		public virtual          bool                        HideDefaultProperty  => true;
-		public virtual          bool                        ShowCopyPasteButtons => true;
-		public virtual          bool                        AllowsModeChanging   => true;
+		private                 bool                        showContextMenuButtons = true;
+		private                 int                         sortingModeIndex;
+		protected               bool                        GUIChanged                { get; private set; }
+		public virtual          bool                        HideDefaultProperty       => true;
+		public virtual          bool                        ShowCopyPasteButtons      => true;
+		public virtual          bool                        AllowsSortingModeChanging => true;
 		public virtual bool ShowContextMenuButtons
 		{
 			get { return showContextMenuButtons; }
@@ -37,13 +38,16 @@ namespace ForestOfChaosLib.Editor
 			get { return search; }
 			private set { EditorPrefs.SetString("FoCsEditor.search", search = value); }
 		}
-		public int SortingModeIndex
+		public virtual int SortingModeIndex
 		{
 			get { return sortingModeIndex; }
 			private set { EditorPrefs.SetInt("FoCsEditor.sortingMode", sortingModeIndex = value); }
 		}
 
-		private void OnEnable()
+		/// <summary>
+		/// If you override this, either do base.OnEnable(), or check if a feature is initiated if you don't
+		/// </summary>
+		protected virtual void OnEnable()
 		{
 			search                 = EditorPrefs.GetString("FoCsEditor.search");
 			sortingModeIndex       = EditorPrefs.GetInt("FoCsEditor.sortingMode");
@@ -60,22 +64,30 @@ namespace ForestOfChaosLib.Editor
 		public override void OnInspectorGUI()
 		{
 			serializedObject.Update();
-			VerifyHandler();
 			GUIChanged = false;
-			DoTopPadding();
-			DoDrawHeader();
+			VerifyHandler();
 
 			using(var changeCheckScope = Disposables.ChangeCheck())
 			{
 				using(Disposables.Indent())
 				{
-					var cachedGuiColor = GUI.color;
-					var sorter         = Sorters[SortingModeIndex];
-					var list           = sorter.GetPropertyOrder(serializedObject.Properties());
-					sorter.DoExtraDraw();
+					DoTopPadding();
+					DoDrawHeader();
+
+					var                      cachedGuiColor = GUI.color;
+					List<SerializedProperty> list;
+
+					if(AllowsSortingModeChanging)
+					{
+						var sorter = Sorters[SortingModeIndex];
+						list = sorter.GetPropertyOrder(serializedObject.Properties());
+						sorter.DoExtraDraw();
+					}
+					else
+						list = NormalSorter.Instance.GetPropertyOrder(serializedObject.Properties());
 
 					foreach(var serializedProperty in list)
-						Handler.Handle(serializedProperty);
+						DrawProperty(serializedProperty);
 
 					GUI.color = cachedGuiColor;
 				}
@@ -91,17 +103,6 @@ namespace ForestOfChaosLib.Editor
 
 			if(ShowContextMenuButtons)
 				DrawContextMenuButtons();
-		}
-
-		public void VerifyHandler()
-		{
-			Handler.VerifyIPropertyLayoutHandlerArray(this);
-			Handler.VerifyHandlingDictionary(serializedObject);
-		}
-
-		protected void DrawProperty(SerializedProperty property)
-		{
-			Handler.Handle(property);
 		}
 
 		public override bool RequiresConstantRepaint()
@@ -120,6 +121,27 @@ namespace ForestOfChaosLib.Editor
 			return false;
 		}
 
+		/// <summary>
+		/// Verify the internal data of the HandlerController
+		/// </summary>
+		public void VerifyHandler()
+		{
+			Handler.VerifyIPropertyLayoutHandlerArray(this);
+			Handler.VerifyHandlingDictionary(serializedObject);
+		}
+
+		/// <summary>
+		/// Draw property using <see cref="Handler"/>.Handle(property)
+		/// </summary>
+		/// <param name="property">Property to draw</param>
+		protected void DrawProperty(SerializedProperty property)
+		{
+			Handler.Handle(property);
+		}
+
+		/// <summary>
+		/// Draw top padding space
+		/// </summary>
 		protected static void DoTopPadding()
 		{
 			FoCsGUI.Layout.GetControlRect(false, 0.3f);
@@ -130,11 +152,17 @@ namespace ForestOfChaosLib.Editor
 		/// </summary>
 		protected virtual void DoExtraDraw() { }
 
+		/// <summary>
+		/// Draw Copy & Paste buttons
+		/// </summary>
 		protected virtual void DrawCopyPasteButtons()
 		{
 			EditorHelpers.CopyPastObjectButtons(serializedObject);
 		}
 
+		/// <summary>
+		/// Draws heading buttons based of off what gets returned by GetHeaderButtons
+		/// </summary>
 		protected virtual void DoDrawHeader()
 		{
 			var headerButtons = new List<Action>();
@@ -150,9 +178,13 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
+		/// <summary>
+		/// Get header button drawing methods, return 0 or null for no heading
+		/// </summary>
+		/// <param name="headerButtons">value passed so that inherited classes can add more</param>
 		protected virtual void GetHeaderButtons(List<Action> headerButtons)
 		{
-			if(AllowsModeChanging)
+			if(AllowsSortingModeChanging)
 				headerButtons.Add(DoSortButtons);
 
 			headerButtons.Add(DoContextMenuHeader);
@@ -161,7 +193,10 @@ namespace ForestOfChaosLib.Editor
 				headerButtons.Add(() => EditorHelpers.CopyPastObjectButtons(serializedObject));
 		}
 
-		private void DoSortButtons()
+		/// <summary>
+		/// Draws the Sorting mode options
+		/// </summary>
+		protected void DoSortButtons()
 		{
 			using(Disposables.HorizontalScope(GUILayout.MaxWidth(Screen.width * 0.3f)))
 			{
@@ -176,12 +211,21 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
+		/// <summary>
+		/// Draw Context toggle header menu
+		/// </summary>
 		protected virtual void DoContextMenuHeader()
 		{
 			if(contextData.Count > 0)
 				ShowContextMenuButtons = FoCsGUI.Layout.Toggle(ShowContextMenuButtons? "Hide Context Buttons" : "Show Context Buttons", ShowContextMenuButtons, FoCsGUI.Styles.Unity.ToolbarButton);
 		}
 
+		/// <summary>
+		/// Get the Object Reference drawer from the passed property
+		/// </summary>
+		/// <param name="property">Property to be drawing, and the index of</param>
+		/// <param name="owner">The editor currently drawing the list</param>
+		/// <returns>The object reference drawer class</returns>
 		internal ObjRef GetObjectDrawer(SerializedProperty property, FoCsEditor owner)
 		{
 			var    id = GetUniqueStringID(property);
@@ -201,6 +245,9 @@ namespace ForestOfChaosLib.Editor
 			return objDraw;
 		}
 
+		/// <summary>
+		/// Draws all of the default properties
+		/// </summary>
 		private void DrawOnlyDefault()
 		{
 			foreach(var property in serializedObject.Properties())
@@ -214,23 +261,93 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
+		/// <summary>
+		/// Draw the search box
+		/// </summary>
 		public static void DrawSearchBox()
 		{
 			search = FoCsGUI.Layout.TextField("Search: ", Search);
 		}
 
+		/// <summary>
+		/// Adds custom sorting modes, for extra usability
+		/// </summary>
+		/// <param name="foCsEditorSorter"></param>
 		public static void AddSortingMode(FoCsEditorSorter foCsEditorSorter)
 		{
 			Sorters.AddWithDuplicateCheck(foCsEditorSorter);
 		}
 
-		public abstract class FoCsEditorSorter
+		public List<SerializedProperty> GetDefaultProperties()
 		{
-			public abstract GUIContent               ModeName { get; }
-			public abstract List<SerializedProperty> GetPropertyOrder(IEnumerable<SerializedProperty> properties);
-			public virtual  void                     DoExtraDraw() { }
+			var rtnVal = new List<SerializedProperty>();
+
+			foreach(var property in serializedObject.Properties())
+			{
+				if(IsDefaultScriptProperty(property))
+					rtnVal.Add(property);
+			}
+
+			return rtnVal;
 		}
 
+		/// <summary>
+		/// Get a list of all Default properties
+		/// </summary>
+		/// <param name="serializedObject">Object from where the properties are from</param>
+		/// <returns>Default properties list</returns>
+		public static List<SerializedProperty> GetDefaultProperties(SerializedObject serializedObject)
+		{
+			var rtnVal = new List<SerializedProperty>();
+
+			foreach(var property in serializedObject.Properties())
+			{
+				if(IsDefaultScriptProperty(property))
+					rtnVal.Add(property);
+			}
+
+			return rtnVal;
+		}
+
+		/// <summary>
+		/// Removes any "Default" properties from the list.
+		/// </summary>
+		/// <param name="list">List to remove "Default" properties</param>
+		public static void RemoveDefaultProperties(List<SerializedProperty> list)
+		{
+			for(var i = list.Count - 1; i >= 0; i--)
+			{
+				if(IsDefaultScriptProperty(list[i]))
+					list.RemoveAt(i);
+			}
+		}
+
+		/// <summary>
+		/// The base class that any Sorting mode inherits from
+		/// </summary>
+		public abstract class FoCsEditorSorter
+		{
+			/// <summary>
+			/// How the mode will be displayed in the drop down list
+			/// </summary>
+			public abstract GUIContent ModeName { get; }
+
+			/// <summary>
+			/// Returns a list of the properties to draw, and in what order to draw them
+			/// </summary>
+			/// <param name="properties">The properties of the SerializedObject</param>
+			/// <returns>A Sorted and Ordered List</returns>
+			public abstract List<SerializedProperty> GetPropertyOrder(IEnumerable<SerializedProperty> properties);
+
+			/// <summary>
+			/// Used to draw any controls before the properties are drawn
+			/// </summary>
+			public virtual void DoExtraDraw() { }
+		}
+
+		/// <summary>
+		/// A custom way of sorting SerializedProperty
+		/// </summary>
 		public struct SortableSerializedProperty
 		{
 			public SerializedProperty Property;
@@ -256,6 +373,10 @@ namespace ForestOfChaosLib.Editor
 		}
 	}
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <typeparam name="T">Type of <see cref="UnityEngine.Object"/> that the target serializedObject</typeparam>
 	public class FoCsEditor<T>: FoCsEditor where T: Object
 	{
 		protected T Target => (T)target;

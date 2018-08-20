@@ -60,7 +60,7 @@ namespace ForestOfChaosLib.Editor
 		private static readonly Type ContextMenuType       = typeof(ContextMenu);
 		private static readonly Type ContextMenuLayoutType = typeof(ContextMenuLayoutAttribute);
 
-		private void InitContextMenu()
+		protected void InitContextMenu()
 		{
 			if(contextData == null)
 				contextData = new Dictionary<string, ContextMenuData>();

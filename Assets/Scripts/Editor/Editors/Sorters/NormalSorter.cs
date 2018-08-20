@@ -8,14 +8,24 @@ namespace ForestOfChaosLib.Editor
 	[InitializeOnLoad]
 	internal class NormalSorter: FoCsEditor.FoCsEditorSorter
 	{
-		public static readonly GUIContent modeName = new GUIContent("Normal");
-		public override        GUIContent ModeName => modeName;
+		public static          NormalSorter Instance;
+		public static readonly GUIContent   modeName = new GUIContent("Normal");
+		///<inheritdoc />
+		public override GUIContent ModeName => modeName;
 
 		static NormalSorter()
 		{
-			FoCsEditor.AddSortingMode(new NormalSorter());
+			Instance                     = new NormalSorter();
+			AlphaSorter.Instance         = new AlphaSorter();
+			InvertedAlphaSorter.Instance = new InvertedAlphaSorter();
+			SearchSorter.Instance        = new SearchSorter();
+			FoCsEditor.AddSortingMode(Instance);
+			FoCsEditor.AddSortingMode(AlphaSorter.Instance);
+			FoCsEditor.AddSortingMode(InvertedAlphaSorter.Instance);
+			FoCsEditor.AddSortingMode(SearchSorter.Instance);
 		}
 
+		///<inheritdoc />
 		public override List<SerializedProperty> GetPropertyOrder(IEnumerable<SerializedProperty> properties) => properties.ToList();
 	}
 }

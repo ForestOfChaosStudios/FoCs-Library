@@ -6,22 +6,22 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
 {
-	[InitializeOnLoad]
 	internal class InvertedAlphaSorter: FoCsEditor.FoCsEditorSorter
 	{
-		public static readonly GUIContent modeName = new GUIContent("Z-A");
-		public override        GUIContent ModeName => modeName;
+		public static          InvertedAlphaSorter Instance;
+		public static readonly GUIContent          modeName = new GUIContent("Z-A");
+		///<inheritdoc />
+		public override GUIContent ModeName => modeName;
 
-		static InvertedAlphaSorter()
-		{
-			FoCsEditor.AddSortingMode(new InvertedAlphaSorter());
-		}
-
+		///<inheritdoc />
 		public override List<SerializedProperty> GetPropertyOrder(IEnumerable<SerializedProperty> properties)
 		{
-			var list = properties.ToList();
+			var serializedProperties = properties.ToList();
+			var list                 = serializedProperties.ToList();
+			FoCsEditor.RemoveDefaultProperties(list);
 			list.Sort((a, b) => string.Compare(a.name, b.name, StringComparison.Ordinal));
 			list.Reverse();
+			list.InsertRange(0, FoCsEditor.GetDefaultProperties(serializedProperties.First().serializedObject));
 
 			return list;
 		}

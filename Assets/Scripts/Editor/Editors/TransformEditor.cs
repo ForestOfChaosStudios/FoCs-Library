@@ -22,7 +22,7 @@ namespace ForestOfChaosLib.Editor
 		private readonly        KeyValuePair<Func<bool, bool>, Action>[] TabName;
 
 		public override bool ShowCopyPasteButtons => true;
-		public override bool AllowsModeChanging => false;
+		public override bool AllowsSortingModeChanging => false;
 
 		private static int TabNum
 		{
@@ -52,13 +52,9 @@ namespace ForestOfChaosLib.Editor
 			};
 		}
 
-		public override bool UseDefaultMargins()
+		protected override void OnEnable()
 		{
-			return false;
-		}
-
-		protected void OnEnable()
-		{
+			base.OnEnable();
 			tabNum = EditorPrefs.GetInt("FoCsTE.TabNum");
 		}
 

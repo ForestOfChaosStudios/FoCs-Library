@@ -8,14 +8,17 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.PropertyDrawers
 {
+	/// <summary>
+	/// This class is no longer used by the FoCsEditor, the new <see cref="ObjectReference"/>
+	/// However it can't currently be removed as AdvRef uses it.
+	/// </summary>
 	public class ObjectReferenceDrawer: FoCsPropertyDrawer
 	{
 		private static            UnityReorderableListStorage URLPStorage       = new UnityReorderableListStorage();
-		protected static readonly GUIContent                             foldoutGUIContent = new GUIContent("", "Open up the References Data");
-		public                    SerializedObject                       SerializedObject { get; protected set; }
-		public                    AnimBool                               IsExpanded;
-		private                   bool                                   foldout;
-
+		protected static readonly GUIContent                  foldoutGUIContent = new GUIContent("", "Open up the References Data");
+		public                    SerializedObject            SerializedObject { get; protected set; }
+		public                    AnimBool                    IsExpanded;
+		private                   bool                        foldout;
 		public bool Foldout
 		{
 			get { return foldout; }
@@ -27,7 +30,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 					IsExpanded.value = foldout;
 			}
 		}
-
 		public ObjectReferenceDrawer(): this(false) { }
 
 		public ObjectReferenceDrawer(bool _foldout)
@@ -230,5 +232,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			return objDraw;
 		}
 #endregion
+
 	}
 }

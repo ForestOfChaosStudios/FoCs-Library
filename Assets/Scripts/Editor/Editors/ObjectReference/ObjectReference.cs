@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
 {
+	/// <summary>
+	/// A class that manages the Object Reference drawing, used by FoCsEditor
+	/// </summary>
 	public class ObjectReference
 	{
 		private UnityReorderableListStorage listHandler;
@@ -37,9 +40,11 @@ namespace ForestOfChaosLib.Editor
 			Property   = _property;
 			owner = _owner;
 			IsReferenceOpen = new AnimBool(false) {speed = 0.7f};
-
 		}
 
+		/// <summary>
+		/// Draws the Object Reference field, and foldout GUI
+		/// </summary>
 		public void DrawHeader()
 		{
 			using(var cc = Disposables.ChangeCheck())
@@ -70,13 +75,16 @@ namespace ForestOfChaosLib.Editor
 				Handler.ClearHandlingDictionary();
 				SerializedObject = new SerializedObject(Property.objectReferenceValue);
 			}
-			Handler.VerifyIPropertyLayoutHandlerArrayNoObject(owner);
-			Handler.VerifyHandlingDictionary(SerializedObject);
+
+			VerifyHandler();
 
 			ReferenceOpen = FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), ReferenceOpen);
 		}
 
-
+		/// <summary>
+		/// Draws the Object references referenced Object...
+		/// </summary>
+		/// <param name="URLStorage"></param>
 		public void DrawReference(UnityReorderableListStorage URLStorage)
 		{
 			if(!ReferenceOpen)
@@ -87,11 +95,18 @@ namespace ForestOfChaosLib.Editor
 				using(Disposables.Indent())
 				{
 					foreach(var property in SerializedObject.Properties())
-					{
-						Handler[property].HandleProperty(property);
-					}
+						Handler.Handle(property);
 				}
 			}
+		}
+
+		/// <summary>
+		/// Verify the internal data of the HandlerController
+		/// </summary>
+		public void VerifyHandler()
+		{
+			Handler.VerifyIPropertyLayoutHandlerArray(owner);
+			Handler.VerifyHandlingDictionary(SerializedObject);
 		}
 	}
 }
