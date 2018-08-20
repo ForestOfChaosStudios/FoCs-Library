@@ -14,6 +14,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		public static readonly GUIContent W_Content   = new GUIContent("W", "The W Value Of this Vector");
 	}
 
+	[CustomPropertyDrawer(typeof(Vector2Int))] public class Vector2IntPropEditor: Vector2PropEditor { }
+
 	[CustomPropertyDrawer(typeof(Vector2))]
 	public class Vector2PropEditor: VectorPropEditor
 	{
@@ -63,6 +65,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			}
 		}
 	}
+
+	[CustomPropertyDrawer(typeof(Vector3Int))] public class Vector3IntPropEditor: Vector3PropEditor { }
 
 	[CustomPropertyDrawer(typeof(Vector3))]
 	public class Vector3PropEditor: VectorPropEditor

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
@@ -225,14 +225,29 @@ namespace ForestOfChaosLib.Editor
 
 			private void DoDrawElement(Rect rect, int index)
 			{
-				if(List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
-					HandleObjectReference(rect, List.serializedProperty.GetArrayElementAtIndex(index));
-				else
+				var element = List.serializedProperty.GetArrayElementAtIndex(index);
+				var indentLevel = -1;
+
+				if(element.propertyType == SerializedPropertyType.ObjectReference)
 				{
-					List.elementHeight =  rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(property.GetArrayElementAtIndex(index), property.GetArrayElementAtIndex(index).isExpanded));
-					rect.y             += 1;
-					var iProp = property.GetArrayElementAtIndex(index);
-					FoCsGUI.PropertyField(rect, iProp, new GUIContent(iProp.displayName), true);
+					indentLevel = 0;
+				}
+				else if(element.propertyType == SerializedPropertyType.Generic)
+				{
+					if(FoCsGUI.GetPropertyHeight(element) != FoCsGUI.SingleLine)
+						indentLevel = 0;
+				}
+
+				using(Disposables.Indent(indentLevel))
+				{
+					if(element.propertyType == SerializedPropertyType.ObjectReference)
+						HandleObjectReference(rect, List.serializedProperty.GetArrayElementAtIndex(index));
+					else
+					{
+						List.elementHeight =  rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(element, element.isExpanded));
+						rect.y             += 1;
+						FoCsGUI.PropertyField(rect, element, new GUIContent(element.displayName), true);
+					}
 				}
 			}
 
@@ -643,8 +658,7 @@ namespace ForestOfChaosLib.Editor
 					var style = property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none;
 					FoCsGUI.Label(rect, string.Format("{0} [{1}]", property.displayName, property.arraySize), style);
 
-					if(FoCsGUI.Foldout(rect.Edit(RectEdit.SubtractWidth(64)), property.isExpanded).Pressed)
-						property.isExpanded = !property.isExpanded;
+					property.isExpanded = FoCsGUI.Foldout(rect.Edit(RectEdit.SubtractWidth(64)), property.isExpanded);
 				}
 
 				using(Disposables.DisabledScope(!property.isExpanded))
