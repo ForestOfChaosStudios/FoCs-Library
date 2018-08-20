@@ -15,6 +15,7 @@ namespace ForestOfChaosLib.Editor
 		{
 			get { return listHandler ?? (listHandler = new FoCsEditor.UnityReorderableListStorage(owner)); }
 		}
+		private readonly HandlerController Handler = new HandlerController();
 		public  AnimBool IsReferenceOpen;
 		private bool     referenceOpen;
 		public FoCsEditor owner;
@@ -54,7 +55,10 @@ namespace ForestOfChaosLib.Editor
 						IsReferenceOpen.value = false;
 					}
 					else
+					{
 						SerializedObject = new SerializedObject(Property.objectReferenceValue);
+						Handler.ClearHandlingDictionary();
+					}
 				}
 			}
 
@@ -62,10 +66,14 @@ namespace ForestOfChaosLib.Editor
 				return;
 
 			if(SerializedObject == null)
+			{
+				Handler.ClearHandlingDictionary();
 				SerializedObject = new SerializedObject(Property.objectReferenceValue);
+			}
+			Handler.VerifyIPropertyLayoutHandlerArrayNoObject(owner);
+			Handler.VerifyHandlingDictionary(SerializedObject);
 
-			if(FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), ReferenceOpen).Pressed)
-				ReferenceOpen = !ReferenceOpen;
+			ReferenceOpen = FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), ReferenceOpen);
 		}
 
 
@@ -80,10 +88,7 @@ namespace ForestOfChaosLib.Editor
 				{
 					foreach(var property in SerializedObject.Properties())
 					{
-						if(FoCsEditor.PropertyIsArrayAndNotString(property))
-							ListHandler.GetList(property).HandleDrawing();
-						else
-							FoCsGUI.Layout.PropertyField(property, property.isExpanded);
+						Handler[property].HandleProperty(property);
 					}
 				}
 			}

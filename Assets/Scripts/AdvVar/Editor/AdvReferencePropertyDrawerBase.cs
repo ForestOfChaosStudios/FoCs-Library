@@ -19,6 +19,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 		internal static readonly GUIContent   localConstantGUIContent   = new GUIContent("Use Local Value", "Use Local Value");
 		internal static readonly GUIContent   globalReferenceGUIContent = new GUIContent("Use Reference",   "Use Reference");
 		internal static readonly GUIContent[] OPTIONS_ARRAY             = {localConstantGUIContent, globalReferenceGUIContent};
+		internal static readonly RectEdit[]   EDITS_ARRAY               = {RectEdit.SetHeight(SingleLine), RectEdit.ChangeY(1)};
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -35,8 +36,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			{
 				label = propScope.content;
 
-				useLocal.boolValue =
-						FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.ChangeY(1)), useLocal.boolValue? localValue : globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
+				useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(EDITS_ARRAY), useLocal.boolValue? localValue : globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 			}
 
 			if(globalReference.objectReferenceValue)

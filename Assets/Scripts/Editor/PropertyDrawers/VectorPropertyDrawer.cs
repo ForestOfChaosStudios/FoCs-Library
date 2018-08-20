@@ -169,6 +169,4 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			}
 		}
 	}
-
-	[CustomPropertyDrawer(typeof(Quaternion))] public class QuaternionPropEditor: Vector4PropEditor { }
 }

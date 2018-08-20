@@ -1,19 +1,20 @@
 ﻿using UnityEditor;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
 {
 	public class PropertyHandler: IPropertyLayoutHandler
 	{
-		private readonly FoCsEditor owner;
-
-		public PropertyHandler(FoCsEditor _owner)
-		{
-			owner = _owner;
-		}
+		//private readonly FoCsEditor owner;
+		//
+		//public PropertyHandler(FoCsEditor _owner)
+		//{
+		//	owner = _owner;
+		//}
 
 		public void HandleProperty(SerializedProperty property)
 		{
-			FoCsGUI.Layout.PropertyField(property, property.isExpanded);
+			FoCsGUI.Layout.PropertyField(new GUIContent(property.displayName), property, property.isExpanded);
 		}
 
 		public float PropertyHeight(SerializedProperty property)
