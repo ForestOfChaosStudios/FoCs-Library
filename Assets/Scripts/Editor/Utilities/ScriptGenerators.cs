@@ -6,7 +6,7 @@ using System.Text;
 using ForestOfChaosLib.Types;
 using UnityEditor;
 
-namespace ForestOfChaosLib.Editor.Tools
+namespace ForestOfChaosLib.Editor.Utilities
 {
 	public static class ScriptGenerators
 	{
@@ -20,7 +20,16 @@ namespace ForestOfChaosLib.Editor.Tools
 				{Type.Byte, typeof(TypeWithNameAndData.ByteType)},
 				{Type.Bool, typeof(TypeWithNameAndData.BoolType)}
 		};
-		public static Dictionary<Type, object> TypeToData = new Dictionary<Type, object> {{Type.String, "\"\""}, {Type.Int, 0}, {Type.Int32, 0}, {Type.Int64, 0}, {Type.Float, 0}, {Type.Byte, 0}, {Type.Bool, false}};
+		public static Dictionary<Type, object> TypeToData = new Dictionary<Type, object>
+		{
+				{Type.String, "\"\""},
+				{Type.Int, 0},
+				{Type.Int32, 0},
+				{Type.Int64, 0},
+				{Type.Float, 0},
+				{Type.Byte, 0},
+				{Type.Bool, false}
+		};
 
 		[Serializable]
 		public enum Type
@@ -137,8 +146,6 @@ namespace ForestOfChaosLib.Editor.Tools
 			sb.AppendLine();
 			sb.Append("\t}");
 
-			//sb.AppendLine();
-			//sb.Append("}");
 			return sb.ToString();
 		}
 
