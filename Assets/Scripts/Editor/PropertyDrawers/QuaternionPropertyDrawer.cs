@@ -20,7 +20,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label           = propScope.content;
 				position.height = SingleLine;
@@ -40,9 +40,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		{
 			var val = property.quaternionValue;
 
-			using(var cc = FoCsEditor.Disposables.ChangeCheck())
+			using(var cc = Disposables.ChangeCheck())
 			{
-				using(FoCsEditor.Disposables.SetIndent(0))
+				using(Disposables.SetIndent(0))
 					val.eulerAngles = EditorGUI.Vector3Field(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SubtractWidth(2)), GUIContent.none, val.eulerAngles);
 
 				if(cc.changed)
@@ -52,11 +52,11 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		private static void DrawNormal(Rect position, SerializedProperty property)
 		{
-			using(FoCsEditor.Disposables.SetIndent(0))
+			using(Disposables.SetIndent(0))
 			{
-				using(FoCsEditor.Disposables.LabelSetWidth(LABEL_WIDTH))
+				using(Disposables.LabelSetWidth(LABEL_WIDTH))
 				{
-					using(var scope = FoCsEditor.Disposables.RectHorizontalScope(4, position))
+					using(var scope = Disposables.RectHorizontalScope(4, position))
 					{
 						property.Next(true);
 						EditorGUI.PropertyField(scope.GetNext(RectEdit.SubtractWidth(2)), property, X_Content);

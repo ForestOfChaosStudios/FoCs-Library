@@ -12,7 +12,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
 
@@ -20,7 +20,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 					GetAttribute.CurrentlyEditable = FoCsGUI.DrawDisabledPropertyWithMenu(!GetAttribute.CurrentlyEditable, position, property, label, OPTIONS_ARRAY, GetAttribute.CurrentlyEditable? 0 : 1).Value == 0;
 				else
 				{
-					using(FoCsEditor.Disposables.DisabledScope(true))
+					using(Disposables.DisabledScope(true))
 						FoCsGUI.PropertyField(position, property, label, true, false);
 				}
 			}

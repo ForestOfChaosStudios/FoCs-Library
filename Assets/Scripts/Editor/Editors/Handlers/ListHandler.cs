@@ -16,7 +16,7 @@ namespace ForestOfChaosLib.Editor
 		{
 			var list = owner.ALLStorage.GetList(property);
 
-			using(FoCsEditor.Disposables.IndentOnlyIfLessThenIndent(2))
+			using(Disposables.IndentOnlyIfLessThenIndent(2))
 				list.Draw();
 		}
 
@@ -31,9 +31,9 @@ namespace ForestOfChaosLib.Editor
 		{
 			var list = owner.URLPStorage.GetList(property);
 
-			using(FoCsEditor.Disposables.LabelFieldAddWidth(-31))
+			using(Disposables.LabelFieldAddWidth(-31))
 			{
-				using(FoCsEditor.Disposables.HorizontalScope())
+				using(Disposables.HorizontalScope())
 				{
 					FoCsGUI.Layout.GetControlRect(UnityEngine.GUILayout.Width(5));
 					list.HandleDrawing();

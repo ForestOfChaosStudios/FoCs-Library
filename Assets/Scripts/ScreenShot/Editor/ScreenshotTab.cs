@@ -15,13 +15,13 @@ namespace ForestOfChaosLib.ScreenCap
 		{
 			Owner = owner as ScreenCapWindow;
 
-			using(FoCsEditor.Disposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 			{
-				using(FoCsEditor.Disposables.VerticalScope())
+				using(Disposables.VerticalScope())
 				{
 					DrawVariables();
 
-					using(FoCsEditor.Disposables.HorizontalScope())
+					using(Disposables.HorizontalScope())
 						DrawTakeImageGUI();
 				}
 			}
@@ -48,7 +48,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void DrawPathUI()
 		{
-			using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
+			using(Disposables.VerticalScope(GUI.skin.box))
 			{
 				EditorGUILayout.LabelField("Path");
 				Owner.path = EditorGUILayout.TextField(Owner.path, GUILayout.ExpandWidth(true));
@@ -59,7 +59,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void DrawFileUI()
 		{
-			using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
+			using(Disposables.VerticalScope(GUI.skin.box))
 			{
 				EditorGUILayout.LabelField("File Name (Leave blank for name to be the date/time)");
 				Owner.filename = EditorGUILayout.TextField(Owner.filename, GUILayout.ExpandWidth(true));
@@ -68,7 +68,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void DrawFilePathGUI()
 		{
-			using(FoCsEditor.Disposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 				GUILayout.Label("Save Path", EditorStyles.boldLabel);
 
 			EditorGUILayout.TextField(Owner.path, GUILayout.ExpandWidth(true));
@@ -77,7 +77,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void PathButtons()
 		{
-			using(FoCsEditor.Disposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 			{
 				if(GUILayout.Button("Browse"))
 					Owner.path = EditorUtility.SaveFolderPanel("Path to Save Images", Owner.path, Application.dataPath);
@@ -94,7 +94,7 @@ namespace ForestOfChaosLib.ScreenCap
 
 		private void DrawTakeImageGUI()
 		{
-			using(FoCsEditor.Disposables.DisabledScope(!Application.isPlaying))
+			using(Disposables.DisabledScope(!Application.isPlaying))
 			{
 				if(GUILayout.Button("Take Screenshot", GUILayout.MinHeight(40)))
 				{

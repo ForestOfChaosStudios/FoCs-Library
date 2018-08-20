@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.Editor
 	{
 		public static void DrawGUI(FoCsControlPanel owner)
 		{
-			using(FoCsEditor.Disposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 			{
 				FoCsGUI.Layout.Label("Type of Object", GUILayout.Width(Screen.width * 0.4f));
 				FoCsGUI.Layout.Label("Method of copy");
@@ -16,7 +16,7 @@ namespace ForestOfChaosLib.Editor
 
 			foreach(var copyMode in CopyPasteUtility.TypeCopyData)
 			{
-				using(FoCsEditor.Disposables.HorizontalScope())
+				using(Disposables.HorizontalScope())
 				{
 					FoCsGUI.Layout.Label(copyMode.Key.ToString(), GUILayout.Width(Screen.width * 0.4f));
 					FoCsGUI.Layout.Label(copyMode.Value.ToString());

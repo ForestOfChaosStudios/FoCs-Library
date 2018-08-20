@@ -4,7 +4,7 @@ namespace ForestOfChaosLib.Editor
 {
 	public class ObjectReferenceHandler: IPropertyLayoutHandler
 	{
-		private FoCsEditor.UnityReorderableListStorage storage;
+		private UnityReorderableListStorage storage;
 		public readonly FoCsEditor owner;
 
 		public ObjectReferenceHandler(FoCsEditor _owner)
@@ -12,9 +12,9 @@ namespace ForestOfChaosLib.Editor
 			owner = _owner;
 		}
 
-		public FoCsEditor.UnityReorderableListStorage URLStorage
+		public UnityReorderableListStorage URLStorage
 		{
-			get { return storage ?? (storage = new FoCsEditor.UnityReorderableListStorage(owner)); }
+			get { return storage ?? (storage = new UnityReorderableListStorage(owner)); }
 			set { storage = value; }
 		}
 
@@ -22,13 +22,13 @@ namespace ForestOfChaosLib.Editor
 		{
 			var drawer = owner.GetObjectDrawer(property, owner);
 
-			using(var cc = FoCsEditor.Disposables.ChangeCheck())
+			using(var cc = Disposables.ChangeCheck())
 			{
 				drawer.IsReferenceOpen.target = drawer.ReferenceOpen;
 
 				drawer.DrawHeader();
 
-				using(var fade = FoCsEditor.Disposables.FadeGroupScope(drawer.IsReferenceOpen.faded))
+				using(var fade = Disposables.FadeGroupScope(drawer.IsReferenceOpen.faded))
 				{
 					if(fade.visible)
 						drawer.DrawReference(URLStorage);

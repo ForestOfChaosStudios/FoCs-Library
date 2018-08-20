@@ -44,14 +44,14 @@ namespace ForestOfChaosLib.Editor
 		{
 			FoCsGUI.Layout.Label(TITLE, FoCsGUI.Styles.Unity.BoldLabel);
 
-			using(FoCsEditor.Disposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 			{
-				using(FoCsEditor.Disposables.VerticalScope(GUILayout.Width(200)))
+				using(Disposables.VerticalScope(GUILayout.Width(200)))
 					DrawWindowButtons();
 
-				using(FoCsEditor.Disposables.VerticalScope())
+				using(Disposables.VerticalScope())
 				{
-					using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+					using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
 						DrawTabButtons();
 
 					if(TabList.InRange(ActiveTab))
@@ -75,7 +75,7 @@ namespace ForestOfChaosLib.Editor
 		{
 			foreach(var key in WindowList)
 			{
-				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+				using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
 				{
 					var @event = FoCsGUI.Layout.Button(key.Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
 
@@ -99,7 +99,7 @@ namespace ForestOfChaosLib.Editor
 
 			foreach(var key in TabList)
 			{
-				using(FoCsEditor.Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+				using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
 				{
 					var @event = FoCsGUI.Layout.Toggle(key.Name.SplitCamelCase(), ActiveTab == index, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
 

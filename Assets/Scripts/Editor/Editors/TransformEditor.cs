@@ -21,10 +21,8 @@ namespace ForestOfChaosLib.Editor
 		private static readonly GUIContent                               TimesContent      = new GUIContent("Times:");
 		private readonly        KeyValuePair<Func<bool, bool>, Action>[] TabName;
 
-		public override bool ShowCopyPasteButtons
-		{
-			get { return true; }
-		}
+		public override bool ShowCopyPasteButtons => true;
+		public override bool AllowsModeChanging => false;
 
 		private static int TabNum
 		{
@@ -46,10 +44,10 @@ namespace ForestOfChaosLib.Editor
 		{
 			TabName = new[]
 			{
-					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("Nothing",       "Hides Any Extra Options")),                null),
-					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("Scale Options", "Scale Preset Options")),                   ScaleButtonsEnabled),
-					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("Global Values", "Force Display of Global Transform Data")), DrawGlobalTransformOptions),
-					Pair.Create<Func<bool, bool>, Action>(a => NormalHeaderButton(a, new GUIContent("T Data",        "Transform Data Copy Paste")),              DrawTDCopyPaste),
+					Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("Nothing",       "Hides Any Extra Options")),                null),
+					Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("Scale Options", "Scale Preset Options")),                   ScaleButtonsEnabled),
+					Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("Global Values", "Force Display of Global Transform Data")), DrawGlobalTransformOptions),
+					Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("T Data",        "Transform Data Copy Paste")),              DrawTDCopyPaste),
 					Pair.Create<Func<bool, bool>, Action>(PingObject,                                                                                            null)
 			};
 		}
@@ -85,11 +83,9 @@ namespace ForestOfChaosLib.Editor
 				TabName[TabNum].Value.Trigger();
 				serializedObject.ApplyModifiedProperties();
 			}
-
-			DoBottomPadding();
 		}
 
-		private static bool NormalHeaderButton(bool active, GUIContent con)
+		private static bool NormalToolbarButton(bool active, GUIContent con)
 		{
 			return FoCsGUI.Layout.Toggle(con, active, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
 		}
@@ -194,31 +190,32 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		protected void DoDrawHeader()
+		protected override void GetHeaderButtons(List<Action> headerButtons)
 		{
-			using(Disposables.HorizontalScope(EditorStyles.toolbar))
+			headerButtons.Add(ExtraHeader);
+			base.GetHeaderButtons(headerButtons);
+		}
+
+		protected void ExtraHeader()
+		{
+			var transform = Target;
+			var resetBtn  = FoCsGUI.Layout.Button(ResetContent, EditorStyles.toolbarButton);
+
+			if(transform.parent)
 			{
-				var transform = Target;
-				var resetBtn  = FoCsGUI.Layout.Button(ResetContent, EditorStyles.toolbarButton);
+				var resetLocalBtn = FoCsGUI.Layout.Button(ResetLocalContent, EditorStyles.toolbarButton);
 
-				if(transform.parent)
+				if(resetLocalBtn)
 				{
-					var resetLocalBtn = FoCsGUI.Layout.Button(ResetLocalContent, EditorStyles.toolbarButton);
-
-					if(resetLocalBtn)
-					{
-						Undo.RecordObject(transform, "ResetLocalPosRotScale");
-						transform.ResetLocalPosRotScale();
-					}
+					Undo.RecordObject(transform, "ResetLocalPosRotScale");
+					transform.ResetLocalPosRotScale();
 				}
+			}
 
-				if(resetBtn)
-				{
-					Undo.RecordObject(transform, "ResetPosRotScale");
-					transform.ResetPosRotScale();
-				}
-
-				DrawCopyPasteButtons();
+			if(resetBtn)
+			{
+				Undo.RecordObject(transform, "ResetPosRotScale");
+				transform.ResetPosRotScale();
 			}
 		}
 

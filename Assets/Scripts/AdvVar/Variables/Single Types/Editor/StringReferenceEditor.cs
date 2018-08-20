@@ -12,8 +12,8 @@ public class StringReferenceEditor: FoCsEditor
 	{
 		using(Disposables.Indent())
 		{
-			DrawCopyPasteButtonsHeader();
-
+			DoDrawHeader();
+			VerifyHandler();
 			using(var changeCheckScope = Disposables.ChangeCheck())
 			{
 				serializedObject.Update();
@@ -21,7 +21,7 @@ public class StringReferenceEditor: FoCsEditor
 				foreach(var serializedProperty in serializedObject.Properties())
 				{
 
-					if(serializedProperty.name == "value")
+					if(serializedProperty.name == "storedValue")
 						DoTextBox(serializedProperty);
 					else
 						DrawProperty(serializedProperty);

@@ -21,7 +21,7 @@ namespace ForestOfChaosLib.Types.EventVariable.Editor
 		{
 			property.Next(true);
 
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
 				EditorGUI.PropertyField(position, property, label);

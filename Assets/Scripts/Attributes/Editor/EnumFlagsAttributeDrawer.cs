@@ -25,7 +25,7 @@ namespace ForestOfChaosLib.Attributes
 			var buttonPressed   = new bool[enumLength];
 			FoCsGUI.Label(new Rect(position.x, position.y, labelWidth, position.height), label);
 
-			using(var cc = FoCsEditor.Disposables.ChangeCheck())
+			using(var cc = Disposables.ChangeCheck())
 			{
 				//if(property.enumNames.Length <= 4)
 				buttonsIntValue = DoLessThen4Draw(position, property, buttonsIntValue, labelWidth, enumLength, buttonPressed);
@@ -39,7 +39,7 @@ namespace ForestOfChaosLib.Attributes
 
 		private static int DoLessThen4Draw(Rect position, SerializedProperty property, int buttonsIntValue, float labelWidth, int enumLength, bool[] buttonPressed)
 		{
-			using(var scope = FoCsEditor.Disposables.RectHorizontalScope(enumLength, position.Edit(RectEdit.SetWidth(position.width - labelWidth), RectEdit.AddX(labelWidth))))
+			using(var scope = Disposables.RectHorizontalScope(enumLength, position.Edit(RectEdit.SetWidth(position.width - labelWidth), RectEdit.AddX(labelWidth))))
 			{
 				for(var i = 0; i < enumLength; i++)
 				{
@@ -61,7 +61,7 @@ namespace ForestOfChaosLib.Attributes
 		//{
 		//	for(var x = 0; x < enumLength; x += 4)
 		//	{
-		//		using(var scope = FoCsEditor.Disposables.RectHorizontalScope(4, position.Edit(RectEdit.SetWidth(position.width - labelWidth), RectEdit.AddX(labelWidth), RectEdit.SetHeight(SingleLine))))
+		//		using(var scope = Disposables.RectHorizontalScope(4, position.Edit(RectEdit.SetWidth(position.width - labelWidth), RectEdit.AddX(labelWidth), RectEdit.SetHeight(SingleLine))))
 		//		{
 		//			for(var i = x; i < 4; i++)
 		//			{

@@ -9,7 +9,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 	{
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
 				var rect = position;
@@ -25,7 +25,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 				property.isExpanded = EditorGUI.Foldout(rect2, property.isExpanded, "");
 				rect2               = rect;
 
-				using(var ChangeCheck = FoCsEditor.Disposables.ChangeCheck())
+				using(var ChangeCheck = Disposables.ChangeCheck())
 				{
 					var col = EditorGUI.ColorField(rect2, new GUIContent(property.displayName, property.displayName), colour);
 					colour.SetColor(col);
@@ -33,7 +33,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 					if(!property.isExpanded)
 						return;
 
-					using(FoCsEditor.Disposables.Indent())
+					using(Disposables.Indent())
 					{
 						rect.y += 1 + SingleLine;
 						var A = EditorGUI.IntField(rect, new GUIContent("Alpha", "Alpha"), colour.A);

@@ -42,7 +42,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 				notSelectedLabel = true;
 			}
 
-			using(FoCsEditor.Disposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 			{
 				if(FoCsGUI.Layout.Button(currentArguments.SubmitMessage))
 				{

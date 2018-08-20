@@ -10,7 +10,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 	{
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				var rect = position;
 				label               = propScope.content;
@@ -25,7 +25,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 				property.NextVisible(true);
 
-				using(FoCsEditor.Disposables.Indent())
+				using(Disposables.Indent())
 				{
 					foreach(var child in property.GetChildren())
 					{

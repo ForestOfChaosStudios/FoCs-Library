@@ -34,9 +34,9 @@ namespace ForestOfChaosLib.Editor.Windows
 		{
 			FoCsGUI.Layout.Label(Heading);
 
-			using(FoCsEditor.Disposables.HorizontalScope())
+			using(Disposables.HorizontalScope())
 			{
-				using(var cc = FoCsEditor.Disposables.ChangeCheck())
+				using(var cc = Disposables.ChangeCheck())
 				{
 					versionNumber = FoCsGUI.Layout.DelayedTextField(versionNumber);
 

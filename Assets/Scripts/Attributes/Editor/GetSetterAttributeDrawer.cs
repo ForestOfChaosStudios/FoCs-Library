@@ -17,11 +17,11 @@ namespace ForestOfChaosLib.Attributes
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
 
-				using(var cc = FoCsEditor.Disposables.ChangeCheck())
+				using(var cc = Disposables.ChangeCheck())
 				{
 					GetAttribute.CallSetter = FoCsGUI.DrawPropertyWithMenu(position, property, label, OPTIONS_ARRAY, GetAttribute.CallSetter? 0 : 1).Value == 0;
 

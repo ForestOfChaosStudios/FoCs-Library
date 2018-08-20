@@ -32,7 +32,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			var localValue      = property.GetLocal();
 			var globalReference = property.GetReference();
 
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
 
@@ -51,7 +51,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 			var localValue      = property.FindPropertyRelative(LOCAL_VALUE_STR);
 			var globalReference = property.FindPropertyRelative(REFERENCE_STR);
 
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
 
@@ -88,9 +88,9 @@ namespace ForestOfChaosLib.AdvVar.Editor
 					DrawSurroundingBox(position);
 					position.y += Padding;
 
-					using(FoCsEditor.Disposables.Indent())
+					using(Disposables.Indent())
 					{
-						using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
+						using(var changeCheckScope = Disposables.ChangeCheck())
 						{
 							var next = iterator.NextVisible(true);
 

@@ -10,7 +10,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 {
 	public class ObjectReferenceDrawer: FoCsPropertyDrawer
 	{
-		private static            FoCsEditor.UnityReorderableListStorage URLPStorage       = new FoCsEditor.UnityReorderableListStorage();
+		private static            UnityReorderableListStorage URLPStorage       = new UnityReorderableListStorage();
 		protected static readonly GUIContent                             foldoutGUIContent = new GUIContent("", "Open up the References Data");
 		public                    SerializedObject                       SerializedObject { get; protected set; }
 		public                    AnimBool                               IsExpanded;
@@ -71,11 +71,11 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			CheckAnimBool(property);
 			var elementHeight = FoCsGUI.GetPropertyHeight(property, FoCsGUI.AttributeCheck.DoCheck);
 
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
 
-				using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
+				using(var changeCheckScope = Disposables.ChangeCheck())
 				{
 					FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(elementHeight)), property, label);
 
@@ -120,9 +120,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 			DrawSurroundingBox(position);
 
-			using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
+			using(var changeCheckScope = Disposables.ChangeCheck())
 			{
-				using(FoCsEditor.Disposables.Indent())
+				using(Disposables.Indent())
 				{
 					var drawPos = position.Edit(RectEdit.AddY(SingleLine), RectEdit.SubtractHeight(SingleLine), RectEdit.ChangeY(1));
 
@@ -153,7 +153,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				var height = list.GetTotalHeight();
 				drawPos.height = height;
 
-				using(FoCsEditor.Disposables.SetIndent(0))
+				using(Disposables.SetIndent(0))
 				{
 					if(prop.isExpanded)
 						list.HandleDrawing(drawPos.Edit(RectEdit.ChangeX(16)));
@@ -200,7 +200,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			iterator.Next(true);
 			var height = SingleLine + Padding;
 
-			using(FoCsEditor.Disposables.Indent())
+			using(Disposables.Indent())
 			{
 				do
 				{

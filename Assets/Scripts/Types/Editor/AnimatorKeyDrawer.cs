@@ -27,30 +27,30 @@ namespace ForestOfChaosLib.Animation
 
 		public static void DoDraw(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				position.height = SingleLine;
 				label           = propScope.content;
 				var labelPos = position.Edit(RectEdit.SetWidth(EditorGUIUtility.labelWidth));
 				FoCsGUI.Label(labelPos, label);
 
-				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(6, position.Edit(RectEdit.AddX(labelPos.width), RectEdit.SetWidth(position.width - labelPos.width))))
+				using(var scope = Disposables.RectHorizontalScope(6, position.Edit(RectEdit.AddX(labelPos.width), RectEdit.SetWidth(position.width - labelPos.width))))
 				{
-					using(FoCsEditor.Disposables.IndentSet(0))
+					using(Disposables.IndentSet(0))
 					{
-						using(var innerScope = FoCsEditor.Disposables.RectHorizontalScope(3, scope.GetNext(2)))
+						using(var innerScope = Disposables.RectHorizontalScope(3, scope.GetNext(2)))
 						{
 							FoCsGUI.Label(innerScope.GetNext(), KEY_LABEL);
 							FoCsGUI.PropertyField(innerScope.GetNext(2), property.FindPropertyRelative(KEY), GUIContent.none);
 						}
 
-						using(var innerScope = FoCsEditor.Disposables.RectHorizontalScope(5, scope.GetNext(2)))
+						using(var innerScope = Disposables.RectHorizontalScope(5, scope.GetNext(2)))
 						{
 							FoCsGUI.Label(innerScope.GetNext(2), KEY_TYPE_LABEL);
 							FoCsGUI.PropertyField(innerScope.GetNext(3), property.FindPropertyRelative(KEY_TYPE), GUIContent.none);
 						}
 
-						using(var innerScope = FoCsEditor.Disposables.RectHorizontalScope(5, scope.GetNext(2)))
+						using(var innerScope = Disposables.RectHorizontalScope(5, scope.GetNext(2)))
 						{
 							var key     = property.GetTargetObjectOfProperty<AnimatorKey>();
 							var typeStr = GetDisplayString(key);

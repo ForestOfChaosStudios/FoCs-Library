@@ -24,6 +24,11 @@ namespace ForestOfChaosLib.Editor
 			return fallbackHandler;
 		}
 
+		public void Handle(SerializedProperty property)
+		{
+			this[property].HandleProperty(property);
+		}
+
 		public IPropertyLayoutHandler this[FoCsEditor.SortableSerializedProperty i]
 		{
 			get { return PropertyHandlingDictionary[i]; }

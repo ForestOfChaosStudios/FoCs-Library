@@ -4,7 +4,7 @@ using ForestOfChaosLib.Editor.Windows;
 using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
-using URLP = ForestOfChaosLib.Editor.FoCsEditor.UnityReorderableListProperty;
+using URLP = ForestOfChaosLib.Editor.UnityReorderableListProperty;
 
 namespace ForestOfChaosLib.Editor.UnitySettings
 {
@@ -67,22 +67,22 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			public override void DrawTab(FoCsWindow<AdvancedUnitySettingsWindow> owner)
 			{
-				using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
+				using(Disposables.HorizontalScope(GUI.skin.box))
 					EditorGUILayout.LabelField(TabName);
 
-				using(FoCsEditor.Disposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
+				using(Disposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
 				{
 					Asset.Update();
 
-					using(FoCsEditor.Disposables.HorizontalScope())
+					using(Disposables.HorizontalScope())
 					{
 						DrawSpace(LEFT_BORDER);
 
-						using(var scrollViewScope = FoCsEditor.Disposables.ScrollViewScope(vector2, true))
+						using(var scrollViewScope = Disposables.ScrollViewScope(vector2, true))
 						{
 							vector2 = scrollViewScope.scrollPosition;
 
-							using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
+							using(var changeCheckScope = Disposables.ChangeCheck())
 							{
 								var unityDefProp = true;
 
@@ -112,12 +112,12 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			protected void DrawFooter()
 			{
-				using(FoCsEditor.Disposables.VerticalScope())
+				using(Disposables.VerticalScope())
 				{
 					if(FoCsGUI.Layout.Button("Force save"))
 						EditorUtility.SetDirty(Asset.targetObject);
 
-					using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
+					using(Disposables.HorizontalScope(GUI.skin.box))
 						EditorGUILayout.HelpBox("Warning, This window has not been tested for all the settings being validated.\nIt is still recommended to use the Unity settings windows.", MessageType.Warning);
 				}
 			}
@@ -126,13 +126,13 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 			{
 				var ReorderableListProperty = GetReorderableList(itr);
 
-				using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
+				using(Disposables.VerticalScope(GUI.skin.box))
 					ReorderableListProperty.HandleDrawing();
 			}
 
 			private static void DrawSingleProperty(SerializedProperty itr)
 			{
-				using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
+				using(Disposables.HorizontalScope(GUI.skin.box))
 					EditorGUILayout.PropertyField(itr, true);
 			}
 
@@ -171,24 +171,24 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 			public override void DrawTab(FoCsWindow<AdvancedUnitySettingsWindow> owner)
 			{
-				using(FoCsEditor.Disposables.HorizontalScope(GUI.skin.box))
+				using(Disposables.HorizontalScope(GUI.skin.box))
 					EditorGUILayout.LabelField(TabName);
 
 				Search = FoCsGUI.Layout.TextField(SearchGuiContent, Search);
 
-				using(FoCsEditor.Disposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
+				using(Disposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
 				{
 					Asset.Update();
 
-					using(FoCsEditor.Disposables.HorizontalScope())
+					using(Disposables.HorizontalScope())
 					{
 						DrawSpace(LEFT_BORDER);
 
-						using(var scrollViewScope = FoCsEditor.Disposables.ScrollViewScope(vector2, true))
+						using(var scrollViewScope = Disposables.ScrollViewScope(vector2, true))
 						{
 							vector2 = scrollViewScope.scrollPosition;
 
-							using(var changeCheckScope = FoCsEditor.Disposables.ChangeCheck())
+							using(var changeCheckScope = Disposables.ChangeCheck())
 							{
 								var unityDefProp = true;
 

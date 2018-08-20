@@ -28,11 +28,11 @@ namespace ForestOfChaosLib.AdvDebug
 
 		private static void DrawField(KeyValuePair<string, AdvDebug.DictionaryData> data)
 		{
-			using(FoCsEditor.Disposables.VerticalScope(GUI.skin.box))
+			using(Disposables.VerticalScope(GUI.skin.box))
 			{
 				EditorGUILayout.LabelField(data.Key);
 
-				using(FoCsEditor.Disposables.HorizontalScope())
+				using(Disposables.HorizontalScope())
 				{
 					DrawData(data.Value);
 					var tempData = data.Value.previousData;
@@ -51,7 +51,7 @@ namespace ForestOfChaosLib.AdvDebug
 
 		private static void DrawData(AdvDebug.DictionaryData data)
 		{
-			using(FoCsEditor.Disposables.VerticalScope())
+			using(Disposables.VerticalScope())
 			{
 				EditorGUILayout.LabelField(data.Value);
 				EditorGUILayout.LabelField($"Time: {data.Time}");

@@ -32,7 +32,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		{
 			var showLabel = ShowLabel(label.text);
 
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
 
@@ -47,14 +47,14 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				var value            = new EditorEntry($"{(ValueInverted.Property.boolValue? "Non Inverted " : "")}Value", property.FindPropertyRelative("value"));
 				var deadZone         = new EditorEntry("DeadZone",                                                         property.FindPropertyRelative("deadZone"));
 
-				using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, position))
+				using(var horizontalScope = Disposables.RectHorizontalScope(2, position))
 				{
-					using(FoCsEditor.Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
+					using(Disposables.LabelFieldSetWidth(horizontalScope.FirstRect.width * LABEL_SIZE))
 					{
-						using(var verticalScope = FoCsEditor.Disposables.RectVerticalScope(showLabel? 5 : 4, horizontalScope.GetNext()))
+						using(var verticalScope = Disposables.RectVerticalScope(showLabel? 5 : 4, horizontalScope.GetNext()))
 						{
 							if(showLabel)
-								FoCsGUI.Label(verticalScope.GetNext(RectEdit.SetHeight(SingleLine)), label);
+								FoCsGUI.Label(verticalScope.GetNext(RectEdit.SetHeight(SingleLine),RectEdit.SubtractX(16f)), label);
 
 							DrawDropDown(Axis, verticalScope.GetNext(RectEdit.SetHeight(SingleLine)));
 							ProgressBar(verticalScope.GetNext(RectEdit.SetHeight(SingleLine)), value);
@@ -62,7 +62,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 							OnlyButtonEvents.Draw(verticalScope.GetNext(RectEdit.SetHeight(SingleLine)));
 						}
 
-						using(var verticalScope = FoCsEditor.Disposables.RectVerticalScope(showLabel? 5 : 4, horizontalScope.GetNext(RectEdit.ChangeX(SingleLine))))
+						using(var verticalScope = Disposables.RectVerticalScope(showLabel? 5 : 4, horizontalScope.GetNext(RectEdit.ChangeX(SingleLine))))
 						{
 							if(showLabel)
 								verticalScope.GetNext();
@@ -93,7 +93,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			if(array.Contains(Axis.stringValue))
 				num = array.ToList().IndexOf(Axis.stringValue);
 
-			using(var cc = FoCsEditor.Disposables.ChangeCheck())
+			using(var cc = Disposables.ChangeCheck())
 			{
 				var index = EditorGUI.Popup(pos, PopupContent, num, array.Select(a => new GUIContent(a)).ToArray());
 
@@ -104,7 +104,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		private static void ProgressBar(Rect pos, EditorEntry m_Value)
 		{
-			using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(2, pos))
+			using(var horizontalScope = Disposables.RectHorizontalScope(2, pos))
 			{
 				EditorGUI.LabelField(horizontalScope.GetNext(), ProgressBarContent);
 				var value = (m_Value.Property.floatValue + 1) * 0.5f;

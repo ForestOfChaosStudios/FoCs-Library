@@ -9,11 +9,11 @@ namespace ForestOfChaosLib.Editor
 {
 	public class ObjectReference
 	{
-		private FoCsEditor.UnityReorderableListStorage listHandler;
+		private UnityReorderableListStorage listHandler;
 
-		private FoCsEditor.UnityReorderableListStorage ListHandler
+		private UnityReorderableListStorage ListHandler
 		{
-			get { return listHandler ?? (listHandler = new FoCsEditor.UnityReorderableListStorage(owner)); }
+			get { return listHandler ?? (listHandler = new UnityReorderableListStorage(owner)); }
 		}
 		private readonly HandlerController Handler = new HandlerController();
 		public  AnimBool IsReferenceOpen;
@@ -42,7 +42,7 @@ namespace ForestOfChaosLib.Editor
 
 		public void DrawHeader()
 		{
-			using(var cc = FoCsEditor.Disposables.ChangeCheck())
+			using(var cc = Disposables.ChangeCheck())
 			{
 				FoCsGUI.Layout.PropertyField(Property, false);
 
@@ -77,14 +77,14 @@ namespace ForestOfChaosLib.Editor
 		}
 
 
-		public void DrawReference(FoCsEditor.UnityReorderableListStorage URLStorage)
+		public void DrawReference(UnityReorderableListStorage URLStorage)
 		{
 			if(!ReferenceOpen)
 				return;
 
-			using(FoCsEditor.Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box))
+			using(Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box))
 			{
-				using(FoCsEditor.Disposables.Indent())
+				using(Disposables.Indent())
 				{
 					foreach(var property in SerializedObject.Properties())
 					{

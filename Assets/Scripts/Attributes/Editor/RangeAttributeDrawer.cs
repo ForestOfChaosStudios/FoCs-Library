@@ -13,7 +13,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
 				// First get the attribute since it contains the range for the scrollbar

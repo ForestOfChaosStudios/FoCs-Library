@@ -686,7 +686,7 @@ namespace ForestOfChaosLib.Editor
 			if(!autoLabelField)
 				return PropDraw(pos, prop, cont, includeChildren, ignoreCheck);
 
-			using(FoCsEditor.Disposables.LabelFieldSetWidth(pos.width * 0.4f))
+			using(Disposables.LabelFieldSetWidth(pos.width * 0.4f))
 				return PropDraw(pos, prop, cont, includeChildren, ignoreCheck);
 		}
 
@@ -989,7 +989,7 @@ namespace ForestOfChaosLib.Editor
 		{
 			Action<Rect> draw = (rect) =>
 			{
-				using(FoCsEditor.Disposables.SetIndent(0))
+				using(Disposables.SetIndent(0))
 				{
 					PropertyField(rect.Edit(RectEdit.SetHeight(GetPropertyHeight(property))), property, GUICon.none, property.hasVisibleChildren, autoLabelField);
 				}
@@ -1020,10 +1020,10 @@ namespace ForestOfChaosLib.Editor
 
 			Label(labelRect, label);
 
-			using(FoCsEditor.Disposables.DisabledScope(disabled))
+			using(Disposables.DisabledScope(disabled))
 				draw.Trigger(propRect);
 
-			using(FoCsEditor.Disposables.SetIndent(0))
+			using(Disposables.SetIndent(0))
 			{
 				var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);
 

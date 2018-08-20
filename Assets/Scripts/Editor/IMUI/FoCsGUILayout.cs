@@ -892,7 +892,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				if(property.propertyType == SerializedPropertyType.Quaternion)
 				{
-					using(var cc = FoCsEditor.Disposables.ChangeCheck())
+					using(var cc = Disposables.ChangeCheck())
 					{
 						QuaternionPropertyDrawer.Draw(GetControlRect(false, options), property, GUICon.none);
 
@@ -909,7 +909,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				if(property.propertyType == SerializedPropertyType.Quaternion)
 				{
-					using(var cc = FoCsEditor.Disposables.ChangeCheck())
+					using(var cc = Disposables.ChangeCheck())
 					{
 						QuaternionPropertyDrawer.Draw(GetControlRect(false, options), property, label);
 

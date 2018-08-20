@@ -30,7 +30,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label           = propScope.content;
 				position.height = SingleLine;
@@ -41,7 +41,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				{
 					EditorGUI.LabelField(position, label);
 
-					using(FoCsEditor.Disposables.IndentSet(0))
+					using(Disposables.IndentSet(0))
 					{
 						var pos = position.Edit(RectEdit.AddX(EditorGUIUtility.labelWidth), RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
 						DoFieldsDraw(pos, property);
@@ -52,9 +52,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		private static void DoFieldsDraw(Rect position, SerializedProperty property)
 		{
-			using(FoCsEditor.Disposables.LabelSetWidth(LABEL_WIDTH))
+			using(Disposables.LabelSetWidth(LABEL_WIDTH))
 			{
-				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(2, position))
+				using(var scope = Disposables.RectHorizontalScope(2, position))
 				{
 					property.Next(true);
 					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1), RectEdit.SubtractWidth(2)), property, X_Content);
@@ -81,7 +81,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label           = propScope.content;
 				position.height = SingleLine;
@@ -92,7 +92,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				{
 					EditorGUI.LabelField(position, label);
 
-					using(FoCsEditor.Disposables.IndentSet(0))
+					using(Disposables.IndentSet(0))
 					{
 						var pos = position.Edit(RectEdit.AddX(EditorGUIUtility.labelWidth), RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
 						DoFieldsDraw(pos, property);
@@ -103,9 +103,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		private static void DoFieldsDraw(Rect position, SerializedProperty property)
 		{
-			using(FoCsEditor.Disposables.LabelSetWidth(LABEL_WIDTH))
+			using(Disposables.LabelSetWidth(LABEL_WIDTH))
 			{
-				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(3, position))
+				using(var scope = Disposables.RectHorizontalScope(3, position))
 				{
 					property.Next(true);
 					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1), RectEdit.SubtractWidth(2)), property, X_Content);
@@ -133,7 +133,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label           = propScope.content;
 				position.height = SingleLine;
@@ -144,7 +144,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				{
 					EditorGUI.LabelField(position, label);
 
-					using(FoCsEditor.Disposables.IndentSet(0))
+					using(Disposables.IndentSet(0))
 					{
 						var pos = position.Edit(RectEdit.AddX(EditorGUIUtility.labelWidth), RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
 						DoFieldsDraw(pos, property);
@@ -155,9 +155,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		private static void DoFieldsDraw(Rect position, SerializedProperty property)
 		{
-			using(FoCsEditor.Disposables.LabelSetWidth(LABEL_WIDTH))
+			using(Disposables.LabelSetWidth(LABEL_WIDTH))
 			{
-				using(var scope = FoCsEditor.Disposables.RectHorizontalScope(4, position))
+				using(var scope = Disposables.RectHorizontalScope(4, position))
 				{
 					property.Next(true);
 					EditorGUI.PropertyField(scope.GetNext(RectEdit.AddY(1), RectEdit.SubtractHeight(1), RectEdit.SubtractWidth(2)), property, X_Content);

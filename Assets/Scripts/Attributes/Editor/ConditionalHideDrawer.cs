@@ -9,7 +9,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 	{
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
 				//check if the property we want to draw should be enabled
@@ -24,7 +24,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 				{
 					property.isExpanded = true;
 
-					using(FoCsEditor.Disposables.Indent())
+					using(Disposables.Indent())
 						EditorGUI.PropertyField(position, property, label, true);
 				}
 				else

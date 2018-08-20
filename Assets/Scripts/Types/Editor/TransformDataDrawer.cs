@@ -19,25 +19,25 @@ namespace ForestOfChaosLib.Curves.Editor
 		/// <inheritdoc />
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var prop = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var prop = Disposables.PropertyScope(position, label, property))
 			{
 				var owner = GetOwner(property);
 				FoCsGUI.Label(position.Edit(RectEdit.SetHeight(SingleLine)), prop.content);
 				DoDragDrop(position.Edit(RectEdit.MultiplyWidth(0.5f)), property);
 
-				using(FoCsEditor.Disposables.Indent())
+				using(Disposables.Indent())
 				{
 					var Position = property.FindPropertyRelative("Position");
 					var Rotation = property.FindPropertyRelative("Rotation");
 					var Scale    = property.FindPropertyRelative("Scale");
 
-					using(var horizontalScope = FoCsEditor.Disposables.RectHorizontalScope(5, position.Edit(RectEdit.SetHeight(SingleLine - 2), RectEdit.DivideWidth(2), RectEdit.AddX(position.width * 0.5f))))
+					using(var horizontalScope = Disposables.RectHorizontalScope(5, position.Edit(RectEdit.SetHeight(SingleLine - 2), RectEdit.DivideWidth(2), RectEdit.AddX(position.width * 0.5f))))
 					{
 						var                  copyBtn = FoCsGUI.Button(horizontalScope.GetNext(2), CopyContent);
 						var                  isType  = CopyPasteUtility.IsTypeInBuffer(owner);
 						FoCsGUI.GUIEventBool pasteBtn;
 
-						using(FoCsEditor.Disposables.ColorChanger(isType? GUI.color : Color.red))
+						using(Disposables.ColorChanger(isType? GUI.color : Color.red))
 							pasteBtn = FoCsGUI.Button(horizontalScope.GetNext(2), PasteContent);
 
 						var resetBtn = FoCsGUI.Button(horizontalScope.GetNext(1), ResetContent);
@@ -62,7 +62,7 @@ namespace ForestOfChaosLib.Curves.Editor
 						}
 					}
 
-					using(var vertScope = FoCsEditor.Disposables.RectVerticalScope(3, position.Edit(RectEdit.SetHeight(SingleLine * 3), RectEdit.AddY(SingleLine))))
+					using(var vertScope = Disposables.RectVerticalScope(3, position.Edit(RectEdit.SetHeight(SingleLine * 3), RectEdit.AddY(SingleLine))))
 					{
 						FoCsGUI.PropertyField(vertScope.GetNext(), Position);
 						FoCsGUI.PropertyField(vertScope.GetNext(), Rotation);
@@ -88,12 +88,12 @@ namespace ForestOfChaosLib.Curves.Editor
 			{
 				if(go || transform || component)
 				{
-					using(FoCsEditor.Disposables.ColorChanger(Color.green))
+					using(Disposables.ColorChanger(Color.green))
 						FoCsGUI.Styles.Unity.Box.Draw(pos, false, false, false, false);
 				}
 				else
 				{
-					using(FoCsEditor.Disposables.ColorChanger(Color.red))
+					using(Disposables.ColorChanger(Color.red))
 						FoCsGUI.Styles.Unity.Box.Draw(pos, false, false, false, false);
 				}
 			}

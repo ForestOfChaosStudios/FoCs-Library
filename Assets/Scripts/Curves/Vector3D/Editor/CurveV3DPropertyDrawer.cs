@@ -4,7 +4,7 @@ using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
 using UnityEngine;
-using URLP = ForestOfChaosLib.Editor.FoCsEditor.UnityReorderableListProperty;
+using URLP = ForestOfChaosLib.Editor.UnityReorderableListProperty;
 
 namespace ForestOfChaosLib.Curves.Editor
 {
@@ -21,7 +21,7 @@ namespace ForestOfChaosLib.Curves.Editor
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			using(var propScope = FoCsEditor.Disposables.PropertyScope(position, label, property))
+			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
 				label = propScope.content;
 				var useGlobalSpaceProp = property.FindPropertyRelative("useGlobalSpace");
