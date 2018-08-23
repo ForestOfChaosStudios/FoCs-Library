@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using ForestOfChaosLib.Editor.Utilities;
 using ForestOfChaosLib.Editor.Windows;
 using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
-using URLP = ForestOfChaosLib.Editor.UnityReorderableListProperty;
 
 namespace ForestOfChaosLib.Editor.UnitySettings
 {
