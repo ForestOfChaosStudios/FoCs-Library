@@ -47,4 +47,6 @@ Assets/Editor Default Resources\.meta
 *Thumbs\.db
 *Thumbs\.db.meta
 
-UIElementsSchema/
+Packages/
+
+UIElementsSchema/
