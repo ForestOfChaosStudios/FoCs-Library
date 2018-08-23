@@ -64,7 +64,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 			{
 				outfile.WriteLine("//");
 				outfile.WriteLine("//It is not recommended to edit this file, as there are no checks on if the user has changed it.");
-				outfile.WriteLine("//THIS FILE IS OVER WITTEN REGUADLESS OF CHANGES, EDIT THIS IN THE EDITOR IT WAS GENERATED FROM");
+				outfile.WriteLine("//THIS FILE IS OVER WRITTEN WITH NO CHECKS");
 				outfile.WriteLine("//");
 				outfile.WriteLine("namespace Generated{");
 				outfile.WriteLine("\t/// <summary>");
@@ -83,7 +83,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 				outfile.WriteLine("}");
 			} //File written
 
-			DefineManager.AddDefine(className + "_DEFINE");
+			//DefineManager.AddDefine(className + "_DEFINE");
 			AssetDatabase.Refresh();
 		}
 #endregion
@@ -194,7 +194,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 				outfile.WriteLine("#endif");
 			} //File written
 
-			DefineManager.AddDefine(enumName + "_DEFINE");
+			//DefineManager.AddDefine(enumName + "_DEFINE");
 			AssetDatabase.Refresh();
 		}
 
@@ -243,7 +243,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 				outfile.WriteLine("#endif");
 			} //File written
 
-			DefineManager.AddDefine(enumName + "_DEFINE");
+			//DefineManager.AddDefine(enumName + "_DEFINE");
 			AssetDatabase.Refresh();
 		}
 
@@ -298,7 +298,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 				outfile.WriteLine("#endif");
 			} //File written
 
-			DefineManager.AddDefine(enumName + "_DEFINE");
+			//DefineManager.AddDefine(enumName + "_DEFINE");
 			AssetDatabase.Refresh();
 		}
 
@@ -353,7 +353,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 				outfile.WriteLine("#endif");
 			} //File written
 
-			DefineManager.AddDefine(enumName + "_DEFINE");
+			//DefineManager.AddDefine(enumName + "_DEFINE");
 			AssetDatabase.Refresh();
 		}
 #endregion
