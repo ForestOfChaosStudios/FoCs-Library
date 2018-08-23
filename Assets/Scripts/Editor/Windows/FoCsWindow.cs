@@ -1,5 +1,4 @@
 ﻿using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Editor.Windows
@@ -15,7 +14,6 @@ namespace ForestOfChaosLib.Editor.Windows
 	public abstract class FoCsWindow<T>: FoCsWindow where T: FoCsWindow, IRepaintable
 	{
 		private static T window;
-
 		protected static T Window
 		{
 			get { return window ?? (window = GetWindow()); }
@@ -48,13 +46,11 @@ namespace ForestOfChaosLib.Editor.Windows
 
 			return window;
 		}
+	}
 
+	public abstract class FoCsWindow: EditorWindow, IRepaintable
+	{
 		protected abstract void OnGUI();
-
-		protected static void DrawReorderableList(ReorderableList list)
-		{
-			list.DoLayoutList();
-		}
 
 		public static void DrawSpace()
 		{
@@ -71,9 +67,5 @@ namespace ForestOfChaosLib.Editor.Windows
 		{
 			GUILayout.Space(size);
 		}
-	}
-	public abstract class FoCsWindow: EditorWindow, IRepaintable
-	{
-
 	}
 }
