@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib
 {
-	public class FoCsBehaviour: FoCsBe
+	public class FoCsBehaviour: FoCsInternalBehaviour
 	{
 		private Transform m_Transform;
 		public Transform Transform
@@ -44,7 +44,7 @@ namespace ForestOfChaosLib
 		public Vector3 Down     => -Transform.up;
 	}
 
-	public class FoCs2DBehavior: FoCsBe
+	public class FoCs2DBehavior: FoCsInternalBehaviour
 	{
 		private RectTransform m_RectTransform;
 		public RectTransform Transform
