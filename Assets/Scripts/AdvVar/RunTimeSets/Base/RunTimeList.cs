@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef
 {
@@ -20,7 +21,7 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 		}
 	}
 
-	public abstract class RunTimeList: FoCsScriptableObject
+	public abstract class RunTimeList: ScriptableObject
 	{
 		public abstract int Count { get; }
 	}

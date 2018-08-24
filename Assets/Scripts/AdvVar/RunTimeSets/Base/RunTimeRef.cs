@@ -1,5 +1,6 @@
 ﻿using System;
 using ForestOfChaosLib.Extensions;
+using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef
 {
@@ -21,7 +22,7 @@ namespace ForestOfChaosLib.AdvVar.RuntimeRef
 		public override bool HasReference => reference != null;
 	}
 
-	public abstract class RunTimeRef: FoCsScriptableObject
+	public abstract class RunTimeRef: ScriptableObject
 	{
 		public abstract bool HasReference { get; }
 	}

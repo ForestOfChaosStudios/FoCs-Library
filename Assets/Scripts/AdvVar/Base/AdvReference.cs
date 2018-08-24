@@ -26,7 +26,7 @@ namespace ForestOfChaosLib.AdvVar.Base
 	/// <summary>
 	///     This is a base class so that as Unity needs a none generic base class for editors/property drawers
 	/// </summary>
-	public class AdvReference: FoCsScriptableObject
+	public class AdvReference: ScriptableObject
 	{
 		public Action OnValueChange;
 	}
