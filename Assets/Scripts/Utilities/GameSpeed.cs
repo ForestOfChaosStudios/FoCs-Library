@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ForestOfChaosLib.GamePhysics
+namespace ForestOfChaosLib.Utilities
 {
 	public class GameSpeed
 	{
