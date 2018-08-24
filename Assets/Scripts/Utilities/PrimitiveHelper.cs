@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace ForestOfChaosLib.MeshHelpers
+namespace ForestOfChaosLib.Utilities
 {
 	public static class PrimitiveHelper
 	{
