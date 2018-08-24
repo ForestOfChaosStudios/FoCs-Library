@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ForestOfChaosLib.Camera.Effects
+namespace ForestOfChaosLib.Components.Camera.Effects
 {
 	public abstract class CameraEffectBase: FoCsBehaviour
 	{
