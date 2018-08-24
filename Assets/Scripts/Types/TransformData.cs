@@ -1,5 +1,6 @@
 ﻿using System;
 using ForestOfChaosLib.Maths;
+using ForestOfChaosLib.Maths.Lerp;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Types
@@ -141,12 +142,12 @@ namespace ForestOfChaosLib.Types
 
 		public TransformData Lerp(TransformData other, float time)
 		{
-			return TransformDataBezierLerp.Lerp(this, other, time);
+			return TransformDataLerp.Lerp(this, other, time);
 		}
 
 		public static TransformData Lerp(TransformData a, TransformData b, float time)
 		{
-			return TransformDataBezierLerp.Lerp(a, b, time);
+			return TransformDataLerp.Lerp(a, b, time);
 		}
 
 		public TransformData Copy()
