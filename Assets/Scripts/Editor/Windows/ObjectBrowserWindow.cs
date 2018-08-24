@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ForestOfChaosLib.Editor.Windows;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Utilities;
 using UnityEditor;
@@ -10,7 +9,7 @@ using Object = UnityEngine.Object;
 using SearchCompo = UnityEngine.Component;
 using SearchAsset = UnityEngine.ScriptableObject;
 
-namespace ForestOfChaosLib.Editor.ObjectBrowser
+namespace ForestOfChaosLib.Editor.Windows
 {
 	[FoCsWindow]
 	public class ObjectBrowserWindow: FoCsWindow<ObjectBrowserWindow>
