@@ -49,7 +49,7 @@ namespace ForestOfChaosLib.Extensions
 			if(array.IsNullOrEmpty())
 				return default(T);
 
-			return array[URandom.Range(0, array.Length - 1)];
+			return array[URandom.Range(0, array.Length)];
 		}
 
 		public static T UnityRandomObject<T>(this List<T> list)
@@ -57,7 +57,7 @@ namespace ForestOfChaosLib.Extensions
 			if(list.IsNullOrEmpty())
 				return default(T);
 
-			return list[URandom.Range(0, list.Count - 1)];
+			return list[URandom.Range(0, list.Count)];
 		}
 
 		public static T SystemRandomObject<T>(this T[] array)
