@@ -114,6 +114,11 @@ namespace ForestOfChaosLib.Extensions
 			return Vector3.Distance(vec, other);
 		}
 
+		public static Vector3 Direction(this Vector3 from, Vector3 target)
+		{
+			return (target - from).normalized;
+		}
+
 		public static Vector3 Copy(this Vector3 vec)
 		{
 			return vec;
