@@ -1,5 +1,4 @@
-﻿using ForestOfChaosLib.AdvVar;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
@@ -14,7 +13,7 @@ namespace ForestOfChaosLib.Components
 
 		public Mode         CallMode = Mode.OnEnable;
 		public Transform    ChildTransform;
-		public BoolVariable DestroyComponentAfterCall = true;
+		public bool DestroyComponentAfterCall = true;
 		public Transform    ParentTransform;
 
 		private void OnEnable()
@@ -39,7 +38,7 @@ namespace ForestOfChaosLib.Components
 		{
 			ChildTransform.SetParent(ParentTransform);
 
-			if(DestroyComponentAfterCall.Value)
+			if(DestroyComponentAfterCall)
 				Destroy(this);
 		}
 
