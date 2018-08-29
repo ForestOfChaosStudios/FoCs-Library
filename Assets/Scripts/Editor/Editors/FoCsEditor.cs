@@ -12,7 +12,7 @@ using SerializedProperty = UnityEditor.SerializedProperty;
 namespace ForestOfChaosLib.Editor
 {
 	[CanEditMultipleObjects]
-	[CustomEditor(typeof(object), true, isFallback = true)]
+	[CustomEditor(typeof(MonoBehaviour), true, isFallback = true)]
 	public partial class FoCsEditor: UnityEditor.Editor, IRepaintable
 	{
 		private static          string                      search;
@@ -380,5 +380,12 @@ namespace ForestOfChaosLib.Editor
 	public class FoCsEditor<T>: FoCsEditor where T: Object
 	{
 		protected T Target => (T)target;
+	}
+
+	[CanEditMultipleObjects]
+	[CustomEditor(typeof(ScriptableObject), true, isFallback = true)]
+	class ScriptableObjectFoCsEditor : FoCsEditor
+	{
+		
 	}
 }
