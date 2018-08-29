@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.Maths.Curves
 	[Serializable]
 	public class CurveV3D: ICurveV3D
 	{
-		[SerializeField] private List<Vector3> Positions;
+		[SerializeField] private List<Vector3> Positions = new List<Vector3>();
 		[SerializeField] private bool          useGlobalSpace = true;
 
 		public bool UseGlobalSpace

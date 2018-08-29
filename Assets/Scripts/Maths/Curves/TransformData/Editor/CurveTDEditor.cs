@@ -1,6 +1,5 @@
 ﻿using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Extensions;
-using ForestOfChaosLib.Maths;
 using ForestOfChaosLib.Maths.Curves.Components;
 using ForestOfChaosLib.Maths.Lerp;
 using ForestOfChaosLib.Types;

@@ -991,7 +991,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				using(Disposables.SetIndent(0))
 				{
-					PropertyField(rect.Edit(RectEdit.SetHeight(GetPropertyHeight(property))), property, GUICon.none, property.hasVisibleChildren, autoLabelField);
+					PropertyField(rect.Edit(RectEdit.ChangeY(-1), RectEdit.SetHeight(SingleLine)), property, GUICon.none, property.hasVisibleChildren, autoLabelField);
 				}
 			};
 
@@ -1009,11 +1009,10 @@ namespace ForestOfChaosLib.Editor
 			var labelRect = new Rect(position);
 			var menuRect  = new Rect(position);
 
-			labelRect = labelRect.Edit(RectEdit.SetWidth(EditorGUIUtility.labelWidth));
+			labelRect = labelRect.Edit(RectEdit.SubtractY(1), RectEdit.SetWidth(EditorGUIUtility.labelWidth));
 
 			menuRect.xMin = menuRect.xMax - (MENU_BUTTON_SIZE);
 			menuRect.xMax = position.xMax;
-
 
 			propRect.xMin = labelRect.xMax;
 			propRect.xMax = menuRect.xMin - 2;

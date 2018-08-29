@@ -26,8 +26,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 				label = propScope.content;
 				var useGlobalSpaceProp = property.FindPropertyRelative("useGlobalSpace");
 				var positionsProp      = property.FindPropertyRelative("Positions");
-				var useGlobalBoolRect  = position;
-				useGlobalBoolRect.height = SingleLine;
+				var useGlobalBoolRect = position.Edit(RectEdit.SetHeight(SingleLine));
 				position                 = position.Edit(RectEdit.ChangeY(SingleLine));
 				EditorGUI.PropertyField(useGlobalBoolRect, useGlobalSpaceProp);
 				var targ = property.GetTargetObjectOfProperty<ICurveV3D>();
@@ -52,6 +51,8 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 				list                       = new URLP(property.FindPropertyRelative("Positions"));
 				list.List.onCanAddCallback = reorderableList => !targ.IsFixedLength;
 			}
+			else
+				list.Property = property.FindPropertyRelative("Positions");
 		}
 	}
 

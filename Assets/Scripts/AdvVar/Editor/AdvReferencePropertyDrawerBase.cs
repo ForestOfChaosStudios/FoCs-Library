@@ -80,7 +80,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 			if(!useLocal.boolValue && (globalReference.objectReferenceValue != null))
 			{
-				foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(2)), foldout, foldoutGUIContent);
+				foldout = EditorGUI.Foldout(position.Edit(RectEdit.AddY(1), RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine)), foldout, foldoutGUIContent);
 
 				if(foldout)
 				{

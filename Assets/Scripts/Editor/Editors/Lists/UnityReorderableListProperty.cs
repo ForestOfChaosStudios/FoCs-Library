@@ -69,7 +69,6 @@ namespace ForestOfChaosLib.Editor
 		public UnityReorderableListProperty(SerializedProperty property, bool dragable, bool displayHeader = false, bool displayAdd = true, bool displayRemove = true): this()
 		{
 			this.property = property;
-			IsExpanded    = new AnimBool(property.isExpanded) {speed = 0.7f};
 			InitList(dragable, displayHeader, displayAdd, displayRemove);
 		}
 
@@ -87,6 +86,8 @@ namespace ForestOfChaosLib.Editor
 
 		private void InitList(bool dragable = true, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true)
 		{
+			IsExpanded = new AnimBool(property.isExpanded) {speed = 0.7f};
+
 			OnLimitingChange           += ChangeLimiting;
 			List                       =  new ReorderableList(Property.serializedObject, Property, dragable, displayHeader, displayAdd, displayRemove);
 			List.drawHeaderCallback    =  OnListDrawHeaderCallback;

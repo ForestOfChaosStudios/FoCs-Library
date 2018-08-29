@@ -13,6 +13,9 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		private static Transform debugTransform;
 		public static  float     DebugTime = 0.5f;
 
+		/// <inheritdoc />
+		public override bool AllowsSortingModeChanging => false;
+
 		public enum Mode
 		{
 			Hide,
