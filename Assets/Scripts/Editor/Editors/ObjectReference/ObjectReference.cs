@@ -90,6 +90,8 @@ namespace ForestOfChaosLib.Editor
 			if(!ReferenceOpen)
 				return;
 
+			SerializedObject.Update();
+
 			using(Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box))
 			{
 				using(Disposables.Indent())
@@ -98,6 +100,8 @@ namespace ForestOfChaosLib.Editor
 						Handler.Handle(property);
 				}
 			}
+
+			SerializedObject.ApplyModifiedProperties();
 		}
 
 		/// <summary>
