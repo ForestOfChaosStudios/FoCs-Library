@@ -1,0 +1,12 @@
+{
+    "name": "FoCsAdvTest",
+    "references": [
+        "FoCs"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
