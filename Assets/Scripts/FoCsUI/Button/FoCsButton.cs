@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.FoCsUI.Button
 	public abstract class FoCsButton: FoCsBehaviour
 	{
 		public          UButton    Button;
-		public          Action     onMouseClick = () => { };
+		public          Action     onMouseClick;
 		public abstract string     Text   { get; set; }
 		public abstract GameObject TextGO { get; }
 		public bool Interactable

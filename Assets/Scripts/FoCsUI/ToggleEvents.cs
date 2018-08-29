@@ -1,32 +1,32 @@
 using System;
 using ForestOfChaosLib.Extensions;
 using UnityEngine;
-using UnityEngine.UI;
+using UToggle = UnityEngine.UI.Toggle;
 
 namespace ForestOfChaosLib.FoCsUI
 {
-	[RequireComponent(typeof(Toggle))]
+	[RequireComponent(typeof(UToggle))]
 	public class ToggleEvents: FoCsBehaviour
 	{
-		public Toggle       _Toggle;
+		public UToggle Toggle;
 		public Action<bool> onValueChanged;
 		public bool Value
 		{
-			get { return _Toggle.isOn; }
-			set { _Toggle.isOn = value; }
+			get { return Toggle.isOn; }
+			set { Toggle.isOn = value; }
 		}
 
 		private void OnEnable()
 		{
-			if(_Toggle == null)
-				_Toggle = GetComponent<Toggle>();
+			if(Toggle == null)
+				Toggle = GetComponent<UToggle>();
 
-			_Toggle.onValueChanged.AddListener(ValueChanged);
+			Toggle.onValueChanged.AddListener(ValueChanged);
 		}
 
 		private void OnDisable()
 		{
-			_Toggle.onValueChanged.RemoveListener(ValueChanged);
+			Toggle.onValueChanged.RemoveListener(ValueChanged);
 		}
 
 		private void ValueChanged(bool value)
