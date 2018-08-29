@@ -11,6 +11,11 @@ namespace ForestOfChaosLib.Debugging
 			DataDictionary = new Dictionary<string, Data>();
 		}
 
+		public static void Log(string Key, object Data)
+		{
+			Log(Key, Data.ToString());
+		}
+
 		public static void Log(string Key, string Data)
 		{
 			if(DataDictionary.ContainsKey(Key))

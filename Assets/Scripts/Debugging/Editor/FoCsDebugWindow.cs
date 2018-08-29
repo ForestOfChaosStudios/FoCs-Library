@@ -21,15 +21,15 @@ namespace ForestOfChaosLib.Debugging
 			Window.titleContent.text = WINDOW_NAME;
 		}
 
-		private static KeyValue TEST_DATA = new KeyValue("a", FoCsDebug.Data.Empty());
+		//private static KeyValue TEST_DATA = new KeyValue("a", FoCsDebug.Data.Empty());
 
 		protected override void OnGUI()
 		{
-			if(TEST_DATA.Key == "a")
-				TEST_DATA = new KeyValue("TEST", FoCsDebug.Data.Build("1", "17"));
-
-			FoCsGUI.Layout.Label($"Time: {Time.time}");
-			DrawField(TEST_DATA);
+			//if(TEST_DATA.Key == "a")
+			//	TEST_DATA = new KeyValue("TEST", FoCsDebug.Data.Build("1", "17"));
+			//
+			//FoCsGUI.Layout.Label($"Time: {Time.time}");
+			//DrawField(TEST_DATA);
 
 			using(var scroll = Disposables.ScrollViewScope(ScrollPos, true))
 			{
