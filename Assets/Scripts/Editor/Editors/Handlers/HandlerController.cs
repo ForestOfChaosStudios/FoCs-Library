@@ -90,5 +90,10 @@ namespace ForestOfChaosLib.Editor
 			if(fallbackHandler == null)
 				fallbackHandler = new PropertyHandler();
 		}
+
+		public void DrawAfterEditor(FoCsEditor.SortableSerializedProperty serializedProperty)
+		{
+			this[serializedProperty].DrawAfterEditor(serializedProperty.Property);
+		}
 	}
 }

@@ -28,16 +28,19 @@ namespace ForestOfChaosLib.Editor
 		public virtual          bool                        HideDefaultProperty       => true;
 		public virtual          bool                        ShowCopyPasteButtons      => true;
 		public virtual          bool                        AllowsSortingModeChanging => true;
+
 		public virtual bool ShowContextMenuButtons
 		{
 			get { return showContextMenuButtons; }
 			private set { EditorPrefs.SetBool("FoCsEditor.showContextMenuButtons", showContextMenuButtons = value); }
 		}
+
 		public static string Search
 		{
 			get { return search; }
 			private set { EditorPrefs.SetString("FoCsEditor.search", search = value); }
 		}
+
 		public virtual int SortingModeIndex
 		{
 			get { return sortingModeIndex; }
@@ -64,6 +67,7 @@ namespace ForestOfChaosLib.Editor
 		public override void OnInspectorGUI()
 		{
 			serializedObject.Update();
+			List<SerializedProperty> list;
 			GUIChanged = false;
 			VerifyHandler();
 
@@ -73,9 +77,7 @@ namespace ForestOfChaosLib.Editor
 				{
 					DoTopPadding();
 					DoDrawHeader();
-
-					var                      cachedGuiColor = GUI.color;
-					List<SerializedProperty> list;
+					var cachedGuiColor = GUI.color;
 
 					if(AllowsSortingModeChanging)
 					{
@@ -87,7 +89,7 @@ namespace ForestOfChaosLib.Editor
 						list = NormalSorter.Instance.GetPropertyOrder(serializedObject.Properties());
 
 					foreach(var serializedProperty in list)
-						DrawProperty(serializedProperty);
+						Handler.Handle(serializedProperty);
 
 					GUI.color = cachedGuiColor;
 				}
@@ -103,6 +105,9 @@ namespace ForestOfChaosLib.Editor
 
 			if(ShowContextMenuButtons)
 				DrawContextMenuButtons();
+
+			foreach(var serializedProperty in list)
+				Handler.DrawAfterEditor(serializedProperty);
 		}
 
 		public override bool RequiresConstantRepaint()
@@ -367,9 +372,9 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			public static implicit operator SortableSerializedProperty(SerializedProperty input) => new SortableSerializedProperty(input);
-			public override                 bool Equals(object                            obj)   => obj is SortableSerializedProperty && Equals((SortableSerializedProperty)obj);
-			public                          bool Equals(SortableSerializedProperty        obj)   => UID == obj.UID;
-			public override                 int  GetHashCode()                                   => UID.GetHashCode() + 1;
+			public override bool Equals(object                                            obj) => obj is SortableSerializedProperty && Equals((SortableSerializedProperty)obj);
+			public bool Equals(SortableSerializedProperty                                 obj) => UID == obj.UID;
+			public override int GetHashCode() => UID.GetHashCode() + 1;
 		}
 	}
 

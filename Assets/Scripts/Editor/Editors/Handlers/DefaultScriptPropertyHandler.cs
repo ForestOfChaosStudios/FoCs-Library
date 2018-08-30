@@ -61,5 +61,10 @@ namespace ForestOfChaosLib.Editor
 					return true;
 			}
 		}
+
+		public void DrawAfterEditor(SerializedProperty serializedProperty)
+		{
+
+		}
 	}
 }

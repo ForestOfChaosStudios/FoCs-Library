@@ -55,5 +55,10 @@ namespace ForestOfChaosLib.Editor
 		}
 #endif
 		public bool IsValidProperty(SerializedProperty property) => property.isArray && (property.propertyType != SerializedPropertyType.String);
+
+		public void DrawAfterEditor(SerializedProperty serializedProperty)
+		{
+
+		}
 	}
 }

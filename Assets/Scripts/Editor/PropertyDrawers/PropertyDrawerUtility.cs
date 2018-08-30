@@ -152,13 +152,15 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			return attributes;
 		}
 
-		public static bool GetSerializedPropertyAttributes<T>(this SerializedProperty prop) where T: PropertyAttribute
+		public static object[] GetSerializedPropertyAttributes<T>(this SerializedProperty prop) where T: Attribute
 		{
 			var type       = prop.serializedObject.targetObject.GetType();
 			var field      = type.GetField(prop.name);
 			var attributes = field.GetCustomAttributes(false);
 
-			return attributes.Contains(typeof(T));
+			return attributes;
 		}
+
+		public static string GetId(this SerializedProperty property) => string.Format("{0}:{1}-{2}", property.serializedObject.targetObject.GetInstanceID(), property.propertyPath, property.name);
 	}
 }

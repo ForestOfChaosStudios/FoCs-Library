@@ -47,6 +47,14 @@ namespace ForestOfChaosLib.Editor
 		/// </summary>
 		public void DrawHeader()
 		{
+			DrawHeader(true);
+		}
+
+		/// <summary>
+		/// Draws the Object Reference field, and foldout GUI
+		/// </summary>
+		public void DrawHeader(bool showFoldout)
+		{
 			using(var cc = Disposables.ChangeCheck())
 			{
 				FoCsGUI.Layout.PropertyField(Property, false);
@@ -55,8 +63,8 @@ namespace ForestOfChaosLib.Editor
 				{
 					if(Property.objectReferenceValue == null)
 					{
-						SerializedObject = null;
-						ReferenceOpen = false;
+						SerializedObject      = null;
+						ReferenceOpen         = false;
 						IsReferenceOpen.value = false;
 					}
 					else
@@ -78,7 +86,8 @@ namespace ForestOfChaosLib.Editor
 
 			VerifyHandler();
 
-			ReferenceOpen = FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), ReferenceOpen);
+			if(showFoldout)
+				ReferenceOpen = FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), ReferenceOpen);
 		}
 
 		/// <summary>
