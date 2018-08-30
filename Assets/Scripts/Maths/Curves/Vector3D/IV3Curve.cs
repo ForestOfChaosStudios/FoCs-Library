@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Maths.Curves
 {
-	public interface ICurveV3D
+	public interface IV3Curve
 	{
 		List<Vector3> CurvePositions { get; set; }
 		bool          IsFixedLength  { get; }

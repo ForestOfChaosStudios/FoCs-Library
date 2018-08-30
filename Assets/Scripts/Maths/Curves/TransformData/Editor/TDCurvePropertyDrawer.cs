@@ -8,7 +8,7 @@ using URLP = ForestOfChaosLib.Editor.UnityReorderableListProperty;
 
 namespace ForestOfChaosLib.Maths.Curves.Editor
 {
-	public class CurveV3DPropertyDrawer: FoCsPropertyDrawer
+	public class TDCurvePropertyDrawer: FoCsPropertyDrawer
 	{
 		private URLP list;
 
@@ -29,7 +29,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 				var useGlobalBoolRect  = position.Edit(RectEdit.SetHeight(SingleLine));
 				position = position.Edit(RectEdit.ChangeY(SingleLine));
 				EditorGUI.PropertyField(useGlobalBoolRect, useGlobalSpaceProp);
-				var targ = property.GetTargetObjectOfProperty<ICurveV3D>();
+				var targ = property.GetTargetObjectOfProperty<ITDCurve>();
 
 				if(targ.IsFixedLength)
 				{
@@ -44,7 +44,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 
 		private void ListNullCheck(SerializedProperty property)
 		{
-			var targ = property.GetTargetObjectOfProperty<ICurveV3D>();
+			var targ = property.GetTargetObjectOfProperty<ITDCurve>();
 
 			if(list == null)
 			{
@@ -56,9 +56,11 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		}
 	}
 
-	[CustomPropertyDrawer(typeof(CurveV3D))] public class BezierCurveV3DPropertyDrawer: CurveV3DPropertyDrawer { }
+	[CustomPropertyDrawer(typeof(TDCurve))] public class TDCurveArrayPropertyDrawer: TDCurvePropertyDrawer { }
 
-	[CustomPropertyDrawer(typeof(CurveV3DTri))] public class BezierCurveQuadV3DPropertyDrawer: CurveV3DPropertyDrawer { }
+	[CustomPropertyDrawer(typeof(TDCurve2Points))] public class TDCurve2PointsPropertyDrawer: TDCurvePropertyDrawer { }
 
-	[CustomPropertyDrawer(typeof(CurveV3DCube))] public class BezierCurveCubeV3DPropertyDrawer: CurveV3DPropertyDrawer { }
+	[CustomPropertyDrawer(typeof(TDCurve3Points))] public class TDCurve3PointsPropertyDrawer: TDCurvePropertyDrawer { }
+
+	[CustomPropertyDrawer(typeof(TDCurve4Points))] public class TDCurve4PointsPropertyDrawer: TDCurvePropertyDrawer { }
 }

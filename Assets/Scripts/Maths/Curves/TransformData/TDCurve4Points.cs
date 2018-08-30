@@ -8,7 +8,7 @@ using UnityEngine;
 namespace ForestOfChaosLib.Maths.Curves
 {
 	[Serializable]
-	public class CurveTDCube: ICurveTD
+	public class TDCurve4Points: ITDCurve
 	{
 		public const             int                 TOTAL_COUNT = 4;
 		[SerializeField] private List<TransformData> Positions   = new List<TransformData>(TOTAL_COUNT);

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Maths.Curves.Components
 {
-	public class ICurveV3DComponent<T>: ICurveV3DComponent, ICurveV3D where T: ICurveV3D
+	public class IV3CurveComponent<T>: ICurveV3DComponent, IV3Curve where T: IV3Curve
 	{
 		public T Curve;
 

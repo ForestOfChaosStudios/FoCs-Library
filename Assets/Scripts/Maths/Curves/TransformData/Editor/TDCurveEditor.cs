@@ -1,14 +1,13 @@
 ﻿using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Maths.Curves.Components;
-using ForestOfChaosLib.Maths.Lerp;
 using ForestOfChaosLib.Types;
 using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Maths.Curves.Editor
 {
-	public class CurveTDEditor<T>: FoCsEditor<T> where T: ICurveTDComponent
+	public class TDCurveEditor<T>: FoCsEditor<T> where T: ICurveTDComponent
 	{
 		private static float     resolution = 0.1f;
 		private static Mode      MyMode     = Mode.Move;
@@ -141,11 +140,11 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		}
 	}
 
-	[CustomEditor(typeof(CurveTDCubeBehaviour))] public class BezierCurveCubeTDBehaviourEditor: CurveTDEditor<CurveTDCubeBehaviour> { }
+	[CustomEditor(typeof(TDCurve4PointsBehaviour))] public class TDCurve4PointsBehaviourEditor: TDCurveEditor<TDCurve4PointsBehaviour> { }
 
-	[CustomEditor(typeof(CurveTDTriBehaviour))] public class BezierCurveQuadTDBehaviourEditor: CurveTDEditor<CurveTDTriBehaviour> { }
+	[CustomEditor(typeof(TDCurve3PointsBehaviour))] public class TDCurve3PointsBehaviourEditor: TDCurveEditor<TDCurve3PointsBehaviour> { }
 
-	[CustomEditor(typeof(CurveTDDoubleBehaviour))] public class BezierCurveTDDoubleBehaviourEditor: CurveTDEditor<CurveTDBehaviour> { }
+	[CustomEditor(typeof(TDCurve2PointsBehaviour))] public class TDCurve2PointsBehaviourEditor: TDCurveEditor<TDCurveBehaviour> { }
 
-	[CustomEditor(typeof(CurveTDBehaviour))] public class BezierCurveTDBehaviourEditor: CurveTDEditor<CurveTDBehaviour> { }
+	[CustomEditor(typeof(TDCurveBehaviour))] public class TDCurveBehaviourEditor: TDCurveEditor<TDCurveBehaviour> { }
 }

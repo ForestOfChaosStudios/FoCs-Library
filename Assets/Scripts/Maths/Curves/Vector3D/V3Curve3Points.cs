@@ -7,9 +7,9 @@ using UnityEngine;
 namespace ForestOfChaosLib.Maths.Curves
 {
 	[Serializable]
-	public class CurveV3DCube: ICurveV3D
+	public class V3Curve3Points: IV3Curve
 	{
-		public const             int           TOTAL_COUNT    = 4;
+		public const             int           TOTAL_COUNT    = 3;
 		[SerializeField] private List<Vector3> Positions      = new List<Vector3>(TOTAL_COUNT);
 		[SerializeField] private bool          useGlobalSpace = true;
 
@@ -19,22 +19,16 @@ namespace ForestOfChaosLib.Maths.Curves
 			set { Positions[0] = value; }
 		}
 
-		public Vector3 MidPosOne
+		public Vector3 MidPos
 		{
 			get { return Positions[1]; }
 			set { Positions[1] = value; }
 		}
 
-		public Vector3 MidPosTwo
+		public Vector3 EndPos
 		{
 			get { return Positions[2]; }
 			set { Positions[2] = value; }
-		}
-
-		public Vector3 EndPos
-		{
-			get { return Positions[3]; }
-			set { Positions[3] = value; }
 		}
 
 		private void PosNullCheck()
@@ -72,28 +66,20 @@ namespace ForestOfChaosLib.Maths.Curves
 
 						return;
 					case 2:
-						StartPos  = value[0];
-						MidPosOne = value[1];
+						StartPos = value[0];
+						MidPos   = value[1];
 
 						return;
 					case 3:
-						StartPos  = value[0];
-						MidPosOne = value[1];
-						MidPosTwo = value[2];
-
-						return;
-					case 4:
-						StartPos  = value[0];
-						MidPosOne = value[1];
-						MidPosTwo = value[2];
-						EndPos    = value[3];
+						StartPos = value[0];
+						MidPos   = value[1];
+						EndPos   = value[2];
 
 						return;
 					default:
-						StartPos  = value[0];
-						MidPosOne = value[1];
-						MidPosTwo = value[2];
-						EndPos    = value[3];
+						StartPos = value[0];
+						MidPos   = value[1];
+						EndPos   = value[2];
 
 						break;
 				}

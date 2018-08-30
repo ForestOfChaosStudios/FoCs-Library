@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ForestOfChaosLib.Maths.Curves
 {
 	[Serializable]
-	public class CurveV3D: ICurveV3D
+	public class V3Curve: IV3Curve
 	{
 		[SerializeField] private List<Vector3> Positions      = new List<Vector3>();
 		[SerializeField] private bool          useGlobalSpace = true;

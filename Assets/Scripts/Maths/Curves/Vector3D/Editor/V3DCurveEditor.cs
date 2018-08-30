@@ -1,19 +1,18 @@
 ﻿using ForestOfChaosLib.Editor;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Maths.Curves.Components;
-using ForestOfChaosLib.Maths.Lerp;
 using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Maths.Curves.Editor
 {
-	public class CurveV3DEditor<T>: FoCsEditor<T> where T: ICurveV3DComponent
+	public class V3DCurveEditor<T>: FoCsEditor<T> where T: ICurveV3DComponent
 	{
 		private static float     resolution = 0.1f;
 		private static Mode      MyMode     = Mode.Move;
 		private static Transform debugTransform;
 		public static  float     DebugTime = 0.5f;
-		private static bool UseGizmo = false;
+		private static bool      UseGizmo  = false;
 
 		public enum Mode
 		{
@@ -40,6 +39,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 				MyMode         = (Mode)EditorGUILayout.EnumPopup(MyMode);
 				resolution     = FoCsGUI.Layout.Slider(new GUIContent("Resolution", "The Curve Display Resolution"), resolution, 0.01f, 0.5f);
 				debugTransform = FoCsGUI.Layout.ObjectField(debugTransform, new GUIContent("Example"), true);
+
 				using(var change = Disposables.ChangeCheck())
 				{
 					DebugTime = FoCsGUI.Layout.Slider(new GUIContent("Lerp Time: ", "Lerp Time"), DebugTime, 0f, 1f);
@@ -58,7 +58,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		{
 			if(UseGizmo && !debugTransform)
 			{
-				var data           = Target.Lerp(DebugTime);
+				var data = Target.Lerp(DebugTime);
 				Handles.DrawWireCube(data, Vector3.one);
 			}
 
@@ -101,9 +101,9 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		}
 	}
 
-	[CustomEditor(typeof(CurveV3DCubeBehaviour))] public class BezierCurveCubeV3DBehaviourEditor: CurveV3DEditor<CurveV3DCubeBehaviour> { }
+	[CustomEditor(typeof(V3CurveBehaviour))] public class V3DCurveBehaviourEditor: V3DCurveEditor<V3CurveBehaviour> { }
 
-	[CustomEditor(typeof(CurveV3DTriBehaviour))] public class BezierCurveQuadV3DBehaviourEditor: CurveV3DEditor<CurveV3DTriBehaviour> { }
+	[CustomEditor(typeof(V3Curve3PointsBehaviour))] public class V3DCurve3PointsBehaviourEditor: V3DCurveEditor<V3Curve3PointsBehaviour> { }
 
-	[CustomEditor(typeof(CurveV3DBehaviour))] public class BezierCurveV3DBehaviourEditor: CurveV3DEditor<CurveV3DBehaviour> { }
+	[CustomEditor(typeof(V3Curve4PointsBehaviour))] public class V3DCurve4PointsBehaviourEditor: V3DCurveEditor<V3Curve4PointsBehaviour> { }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Maths.Curves.Components
 {
-	public class ICurveTDComponent<T>: ICurveTDComponent, ICurveTD where T: ICurveTD
+	public class ITDCurveComponent<T>: ICurveTDComponent, ITDCurve where T: ITDCurve
 	{
 		public T Curve;
 

@@ -8,9 +8,9 @@ using UnityEngine;
 namespace ForestOfChaosLib.Maths.Curves
 {
 	[Serializable]
-	public class CurveTDDouble: ICurveTD
+	public class TDCurve3Points: ITDCurve
 	{
-		public const             int                 TOTAL_COUNT = 2;
+		public const             int                 TOTAL_COUNT = 3;
 		[SerializeField] private List<TransformData> Positions   = new List<TransformData>(TOTAL_COUNT);
 		[SerializeField] private bool                useGlobalSpace;
 
@@ -20,10 +20,16 @@ namespace ForestOfChaosLib.Maths.Curves
 			set { Positions[0] = value; }
 		}
 
-		public TransformData EndPos
+		public TransformData MidPos
 		{
 			get { return Positions[1]; }
 			set { Positions[1] = value; }
+		}
+
+		public TransformData EndPos
+		{
+			get { return Positions[2]; }
+			set { Positions[2] = value; }
 		}
 
 		private void PosNullCheck()
@@ -60,9 +66,21 @@ namespace ForestOfChaosLib.Maths.Curves
 						StartPos = value[0];
 
 						return;
+					case 2:
+						StartPos = value[0];
+						MidPos   = value[1];
+
+						return;
+					case 3:
+						StartPos = value[0];
+						MidPos   = value[1];
+						EndPos   = value[2];
+
+						return;
 					default:
 						StartPos = value[0];
-						EndPos   = value[1];
+						MidPos   = value[1];
+						EndPos   = value[2];
 
 						break;
 				}

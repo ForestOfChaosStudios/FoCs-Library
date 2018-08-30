@@ -7,7 +7,7 @@ using UnityEngine;
 namespace ForestOfChaosLib.Maths.Curves
 {
 	[Serializable]
-	public class CurveTD: ICurveTD
+	public class TDCurve: ITDCurve
 	{
 		[SerializeField] private List<TransformData> Positions;
 		[SerializeField] private bool                useGlobalSpace;

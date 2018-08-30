@@ -3,7 +3,7 @@ using ForestOfChaosLib.Types;
 
 namespace ForestOfChaosLib.Maths.Curves
 {
-	public interface ICurveTD
+	public interface ITDCurve
 	{
 		List<TransformData> CurvePositions { get; set; }
 		bool                IsFixedLength  { get; }
