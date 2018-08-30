@@ -202,12 +202,14 @@ namespace ForestOfChaosLib.Editor
 		/// </summary>
 		protected void DoSortButtons()
 		{
-			using(Disposables.HorizontalScope(GUILayout.MaxWidth(Screen.width * 0.3f)))
+			//using(Disposables.HorizontalScope(GUILayout.MaxWidth(Screen.width * 0.3f)))
+			var width = EditorGUIUtility.labelWidth - 8;
+			using(Disposables.HorizontalScope(GUILayout.MaxWidth(width), GUILayout.MinWidth(width)))
 			{
 				using(var cc = Disposables.ChangeCheck())
 				{
-					FoCsGUI.Layout.Label(SortModeContent, GUILayout.MaxWidth(Screen.width * 0.11f));
-					var mode = FoCsGUI.Layout.Popup(SortModeContentHover, SortingModeIndex, Sorters.Select(a => a.ModeName).ToArray(), FoCsGUI.Styles.Unity.ToolbarDropDown, GUILayout.MaxWidth(Screen.width * 0.19f)).Value;
+					FoCsGUI.Layout.Label(SortModeContent, GUILayout.MaxWidth(width * 0.6f));
+					var mode = FoCsGUI.Layout.Popup(SortModeContentHover, SortingModeIndex, Sorters.Select(a => a.ModeName).ToArray(), FoCsGUI.Styles.Unity.ToolbarDropDown, GUILayout.MaxWidth(width * 0.4f)).Value;
 
 					if(cc.changed)
 						SortingModeIndex = mode;
