@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 namespace ForestOfChaosLib.FoCsUI
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Scrollbar Events")]
 	[RequireComponent(typeof(Scrollbar))]
 	public class ScrollbarEvents: FoCsBehaviour
 	{
 		public Scrollbar     _Scrollbar;
 		public Action<float> onValueChanged;
+
 		public float Value
 		{
 			get { return _Scrollbar.value; }

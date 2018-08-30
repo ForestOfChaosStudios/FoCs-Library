@@ -26,8 +26,8 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 				label = propScope.content;
 				var useGlobalSpaceProp = property.FindPropertyRelative("useGlobalSpace");
 				var positionsProp      = property.FindPropertyRelative("Positions");
-				var useGlobalBoolRect = position.Edit(RectEdit.SetHeight(SingleLine));
-				position                 = position.Edit(RectEdit.ChangeY(SingleLine));
+				var useGlobalBoolRect  = position.Edit(RectEdit.SetHeight(SingleLine));
+				position = position.Edit(RectEdit.ChangeY(SingleLine));
 				EditorGUI.PropertyField(useGlobalBoolRect, useGlobalSpaceProp);
 				var targ = property.GetTargetObjectOfProperty<ICurveV3D>();
 
@@ -58,7 +58,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 
 	[CustomPropertyDrawer(typeof(CurveV3D))] public class BezierCurveV3DPropertyDrawer: CurveV3DPropertyDrawer { }
 
-	[CustomPropertyDrawer(typeof(CurveV3DQuad))] public class BezierCurveQuadV3DPropertyDrawer: CurveV3DPropertyDrawer { }
+	[CustomPropertyDrawer(typeof(CurveV3DTri))] public class BezierCurveQuadV3DPropertyDrawer: CurveV3DPropertyDrawer { }
 
 	[CustomPropertyDrawer(typeof(CurveV3DCube))] public class BezierCurveCubeV3DPropertyDrawer: CurveV3DPropertyDrawer { }
 }

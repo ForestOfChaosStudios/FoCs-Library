@@ -50,9 +50,6 @@ namespace ForestOfChaosLib.Utilities
 			return ret;
 		}
 
-		public static Texture2D ToTexture2D(this Color col)
-		{
-			return GetSolidTexture(col);
-		}
+		public static Texture2D ToTexture2D(this Color col) => GetSolidTexture(col);
 	}
 }

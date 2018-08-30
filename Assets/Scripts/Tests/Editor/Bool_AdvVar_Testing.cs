@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar
 {

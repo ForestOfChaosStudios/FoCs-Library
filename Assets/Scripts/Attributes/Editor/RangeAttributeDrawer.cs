@@ -7,7 +7,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 	[CustomPropertyDrawer(typeof(RangeAttribute))]
 	public class RangeAttributeDrawer: FoCsPropertyDrawerWithAttribute<RangeAttribute>
 	{
-		private bool foldout;
+		private static readonly List<IRangeDrawer> ExtraDrawers = new List<IRangeDrawer>();
+		private                 bool               foldout;
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -123,9 +124,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			foreach(var extraDrawer in ExtraDrawers)
 			{
 				if(extraDrawer.IsThisType(obj))
-				{
 					foldout = extraDrawer.Draw(position, property, label, range, foldout);
-				}
 			}
 
 			DrawErrorMessage(position, label);
@@ -146,17 +145,13 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 					foreach(var extraDrawer in ExtraDrawers)
 					{
 						if(extraDrawer.IsThisType(obj))
-						{
 							return extraDrawer.GetHeight(property, label, foldout);
-						}
 					}
 
 					return SingleLine;
 				default: return SingleLine;
 			}
 		}
-
-		private static readonly List<IRangeDrawer> ExtraDrawers = new List<IRangeDrawer>();
 
 		public static void AddExtraDrawer(IRangeDrawer extraDrawer)
 		{
@@ -165,8 +160,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		public interface IRangeDrawer
 		{
-			bool  IsThisType(object            obj);
-			bool  Draw(Rect                    position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout);
+			bool IsThisType(object             obj);
+			bool Draw(Rect                     position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout);
 			float GetHeight(SerializedProperty property, GUIContent         label,    bool       foldout);
 		}
 	}

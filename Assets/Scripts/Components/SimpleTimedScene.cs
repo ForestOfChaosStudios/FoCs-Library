@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace ForestOfChaosLib.Components
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "Simple Timed Scene")]
 	public class SimpleTimedScene: FoCsBehaviour
 	{
 		public int   levelNum;

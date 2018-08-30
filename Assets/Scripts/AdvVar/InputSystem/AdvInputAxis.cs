@@ -16,62 +16,74 @@ namespace ForestOfChaosLib.AdvVar.InputSystem
 			get { return Value.OnlyButtonEvents; }
 			set { Value.OnlyButtonEvents = value; }
 		}
+
 		public bool ValueInverted
 		{
 			get { return Value.ValueInverted; }
 			set { Value.ValueInverted = value; }
 		}
+
 		public KeyPosition KeyPos
 		{
 			get { return Value.KeyPos; }
 			set { Value.KeyPos = value; }
 		}
+
 		public Action OnKeyDown
 		{
 			get { return Value.OnKeyDown; }
 			set { Value.OnKeyDown = value; }
 		}
+
 		public Action OnKeyUp
 		{
 			get { return Value.OnKeyUp; }
 			set { Value.OnKeyUp = value; }
 		}
+
 		public Action OnKeyPositiveDown
 		{
 			get { return Value.OnKeyPositiveDown; }
 			set { Value.OnKeyPositiveDown = value; }
 		}
+
 		public Action OnKeyPositiveUp
 		{
 			get { return Value.OnKeyPositiveUp; }
 			set { Value.OnKeyPositiveUp = value; }
 		}
+
 		public Action OnKeyNegativeDown
 		{
 			get { return Value.OnKeyNegativeDown; }
 			set { Value.OnKeyNegativeDown = value; }
 		}
+
 		public Action OnKeyNegativeUp
 		{
 			get { return Value.OnKeyNegativeUp; }
 			set { Value.OnKeyNegativeUp = value; }
 		}
+
 		public Action OnKeyNoValue
 		{
 			get { return Value.OnKeyNoValue; }
 			set { Value.OnKeyNoValue = value; }
 		}
+
 		public Action<float> OnKey
 		{
 			get { return Value.OnKey; }
 			set { Value.OnKey = value; }
 		}
+
 		public Action<float> OnKeyNoDeadZone
 		{
 			get { return Value.OnKeyNoDeadZone; }
 			set { Value.OnKeyNoDeadZone = value; }
 		}
-		public bool InputInDeadZone()               => Value.InputInDeadZone();
+
+		public bool InputInDeadZone() => Value.InputInDeadZone();
 		public bool InputInDeadZone(float deadZone) => Value.InputInDeadZone(deadZone);
 
 		public void CallEvents()

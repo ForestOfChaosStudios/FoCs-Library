@@ -3,6 +3,7 @@
 namespace ForestOfChaosLib.Components.Camera.Effects
 {
 	[ExecuteInEditMode]
+	[AddComponentMenu(FoCsStrings.COMPONENTS_CAMERA_FOLDER_ + "Effects/LowerResolutionEffect")]
 	public class LowerResolutionEffect: CameraEffectBase
 	{
 		[Range(0, 8)] public int        DownResAmount;

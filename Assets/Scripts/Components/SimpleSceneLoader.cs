@@ -1,7 +1,9 @@
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace ForestOfChaosLib.Components
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "Simple Scene Loader")]
 	public class SimpleSceneLoader: FoCsBehaviour
 	{
 		public static void LoadSceneAsync(int s)

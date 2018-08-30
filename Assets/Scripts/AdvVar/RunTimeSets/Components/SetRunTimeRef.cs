@@ -2,10 +2,11 @@
 
 namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER + "/AdvVar/RunTime/" + "Set RunTime Ref")]
 	public class SetRunTimeRef: MonoBehaviour
 	{
-		public RunTimeRef RunTimeRef;
 		public bool       RemoveOnDisable = true;
+		public RunTimeRef RunTimeRef;
 
 		public void OnEnable()
 		{

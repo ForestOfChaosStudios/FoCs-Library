@@ -8,15 +8,8 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 	//The same Unity User "Sarkahn"
 	public class ReadInputManager
 	{
-		private static Object InputManagerAsset
-		{
-			get { return UnitySettingsReader.InputManager; }
-		}
-
-		public static SerializedObject GetInputAxisSerializedObject()
-		{
-			return new SerializedObject(InputManagerAsset);
-		}
+		private static Object InputManagerAsset => UnitySettingsReader.InputManager;
+		public static SerializedObject GetInputAxisSerializedObject() => new SerializedObject(InputManagerAsset);
 
 		public static SerializedProperty GetAxisArrayProperty()
 		{

@@ -11,6 +11,7 @@ namespace ForestOfChaosLib.AdvVar.Base
 		[NonSerialized]  public  Action<T> OnValueAdded;
 		[NonSerialized]  public  Action    OnValueChange;
 		[NonSerialized]  public  Action<T> OnValueRemoved;
+
 		public List<T> Value
 		{
 			get { return _value; }

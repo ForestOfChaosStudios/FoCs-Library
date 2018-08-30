@@ -6,54 +6,19 @@ namespace ForestOfChaosLib.Editor
 	// ReSharper disable once MismatchedFileName
 	public static partial class FoCsGUI
 	{
-		private static GUIStyle LabelStyle
-		{
-			get { return Styles.Unity.Label; }
-		}
-
-		private static GUIStyle ToggleStyle
-		{
-			get { return Styles.Unity.Toggle; }
-		}
-
-		private static GUIStyle ButtonStyle
-		{
-			get { return Styles.Unity.Button; }
-		}
-
-		private static GUIStyle FoldoutStyle
-		{
-			get { return Styles.Unity.Foldout; }
-		}
-
-		private static GUIStyle TextFieldStyle
-		{
-			get { return Styles.Unity.TextField_Editor; }
-		}
-
-		private static GUIStyle NumberFieldStyle
-		{
-			get { return Styles.Unity.NumberField; }
-		}
-
-		private static GUIStyle TextAreaStyle
-		{
-			get { return Styles.Unity.TextArea_Editor; }
-		}
+		private static GUIStyle LabelStyle       => Styles.Unity.Label;
+		private static GUIStyle ToggleStyle      => Styles.Unity.Toggle;
+		private static GUIStyle ButtonStyle      => Styles.Unity.Button;
+		private static GUIStyle FoldoutStyle     => Styles.Unity.Foldout;
+		private static GUIStyle TextFieldStyle   => Styles.Unity.TextField_Editor;
+		private static GUIStyle NumberFieldStyle => Styles.Unity.NumberField;
+		private static GUIStyle TextAreaStyle    => Styles.Unity.TextArea_Editor;
 
 		public static partial class Styles
 		{
 			private static SkinRef unitySkins;
-
-			public static SkinRef Unity
-			{
-				get { return unitySkins ?? (unitySkins = new SkinRef()); }
-			}
-
-			public static Texture2D GetTexture(string search)
-			{
-				return GetAsset<Texture2D>(search);
-			}
+			public static  SkinRef Unity => unitySkins ?? (unitySkins = new SkinRef());
+			public static Texture2D GetTexture(string search) => GetAsset<Texture2D>(search);
 
 			public static T GetAsset<T>(string search) where T: Object
 			{

@@ -2,10 +2,7 @@
 {
 	public static class RandomArray
 	{
-		public static T[] ShuffleArray<T>(this T[] array)
-		{
-			return ShuffleArray(array, RandomMaster.Random);
-		}
+		public static T[] ShuffleArray<T>(this T[] array) => ShuffleArray(array, RandomMaster.Random);
 
 		public static T[] ShuffleArray<T>(this T[] array, System.Random rng)
 		{

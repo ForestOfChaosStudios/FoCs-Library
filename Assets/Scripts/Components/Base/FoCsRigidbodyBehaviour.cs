@@ -3,7 +3,7 @@ using UnityEngine;
 namespace ForestOfChaosLib
 {
 	[RequireComponent(typeof(Rigidbody))]
-	public class FoCsRigidbodyBehaviour: FoCsBehaviour
+	public abstract class FoCsRigidbodyBehaviour: FoCsBehaviour
 	{
 		private Rigidbody m_Rigidbody;
 

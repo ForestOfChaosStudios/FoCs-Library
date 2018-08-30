@@ -1,4 +1,5 @@
 ﻿using ForestOfChaosLib.Editor;
+using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Maths.Curves.Components;
 using ForestOfChaosLib.Maths.Lerp;
 using UnityEditor;
@@ -13,9 +14,6 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		private static Transform debugTransform;
 		public static  float     DebugTime = 0.5f;
 
-		/// <inheritdoc />
-		public override bool AllowsSortingModeChanging => false;
-
 		public enum Mode
 		{
 			Hide,
@@ -23,6 +21,9 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		}
 
 		private T Curve;
+
+		/// <inheritdoc />
+		public override bool AllowsSortingModeChanging => false;
 
 		protected override void OnEnable()
 		{
@@ -49,7 +50,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		{
 			using(var cc = Disposables.ChangeCheck())
 			{
-				if(Curve == null)
+				if((Curve == null) || Curve.CurvePositions.IsNullOrEmpty())
 					return;
 
 				if(MyMode == Mode.Move)
@@ -82,11 +83,11 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 					if(Curve.UseGlobalSpace)
 					{
 						var a = Target.transform.TransformPoint(Vector3Lerp.Lerp(Curve.CurvePositions, i));
-						var b = Target.transform.TransformPoint(Vector3Lerp.Lerp(Curve.CurvePositions, (i + resolution), true));
+						var b = Target.transform.TransformPoint(Vector3Lerp.Lerp(Curve.CurvePositions, i + resolution, true));
 						Handles.DrawLine(a, b);
 					}
 					else
-						Handles.DrawLine(Vector3Lerp.Lerp(Curve.CurvePositions, i), Vector3Lerp.Lerp(Curve.CurvePositions, (i + resolution),true));
+						Handles.DrawLine(Vector3Lerp.Lerp(Curve.CurvePositions, i), Vector3Lerp.Lerp(Curve.CurvePositions, i + resolution, true));
 				}
 
 				if(cc.changed)
@@ -97,7 +98,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 
 	[CustomEditor(typeof(CurveV3DCubeBehaviour))] public class BezierCurveCubeV3DBehaviourEditor: CurveV3DEditor<CurveV3DCubeBehaviour> { }
 
-	[CustomEditor(typeof(CurveV3DQuadBehaviour))] public class BezierCurveQuadV3DBehaviourEditor: CurveV3DEditor<CurveV3DQuadBehaviour> { }
+	[CustomEditor(typeof(CurveV3DTriBehaviour))] public class BezierCurveQuadV3DBehaviourEditor: CurveV3DEditor<CurveV3DTriBehaviour> { }
 
 	[CustomEditor(typeof(CurveV3DBehaviour))] public class BezierCurveV3DBehaviourEditor: CurveV3DEditor<CurveV3DBehaviour> { }
 }

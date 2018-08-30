@@ -100,19 +100,8 @@ namespace ForestOfChaosLib.Maths.Curves
 			}
 		}
 
-		public bool IsFixedLength
-		{
-			get { return true; }
-		}
-
-		public int Length
-		{
-			get { return TOTAL_COUNT; }
-		}
-
-		public Vector3 Lerp(float time)
-		{
-			return Vector3Lerp.Lerp(Positions, time);
-		}
+		public bool IsFixedLength => true;
+		public int  Length        => TOTAL_COUNT;
+		public Vector3 Lerp(float time) => Vector3Lerp.Lerp(Positions, time);
 	}
 }

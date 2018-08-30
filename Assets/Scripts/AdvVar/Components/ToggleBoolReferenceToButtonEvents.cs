@@ -1,7 +1,9 @@
 ﻿using ForestOfChaosLib.FoCsUI.Button;
+using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.Components
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER + "/AdvVar/" + "Toggle Bool Reference To Button")]
 	public class ToggleBoolReferenceToButtonEvents: FoCsBehaviour
 	{
 		public BoolReference BoolReference;

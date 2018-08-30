@@ -136,9 +136,6 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		}
 
 		/// <inheritdoc />
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			return SingleLine * 4;
-		}
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => SingleLine * 4;
 	}
 }

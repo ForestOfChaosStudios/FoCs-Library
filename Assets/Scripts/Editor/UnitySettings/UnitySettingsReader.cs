@@ -1,7 +1,7 @@
 ﻿using System.Linq;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 using UnityEngine;
-using ForestOfChaosLib.Extensions;
 
 namespace ForestOfChaosLib.Editor.UnitySettings
 {
@@ -23,11 +23,9 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 		public static SettingsFile TagManager           = new SettingsFile("TagManager");
 		public static SettingsFile TimeManager          = new SettingsFile("TimeManager");
 		public static SettingsFile UnityConnectSettings = new SettingsFile("UnityConnectSettings");
-		public static SettingsFile[] RawAssets
-		{
-			get
-			{
-				return new[]
+
+		public static SettingsFile[] RawAssets =>
+				new[]
 				{
 						AudioManager,
 						ClusterInputManager,
@@ -46,21 +44,18 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 						TimeManager,
 						UnityConnectSettings
 				};
-			}
-		}
 
 		public class SettingsFile
 		{
 			private Object[] _Asset;
 			public  string   FileName;
+
 			public Object[] Assets
 			{
 				get
 				{
 					if(_Asset.IsNullOrEmpty())
-					{
 						_Asset = AssetDatabase.LoadAllAssetsAtPath($"ProjectSettings/{FileName}.asset");
-					}
 
 					return _Asset;
 				}
@@ -71,34 +66,17 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 				FileName = fileName;
 			}
 
-			public static implicit operator Object(SettingsFile input)
-			{
-				return input.Assets.FirstOrDefault();
-			}
+			public static implicit operator Object(SettingsFile           input) => input.Assets.FirstOrDefault();
+			public static implicit operator Object[](SettingsFile         input) => input.Assets;
+			public static implicit operator string(SettingsFile           input) => input.FileName;
+			public static implicit operator SerializedObject(SettingsFile input) => input.GetInputAxisSerializedObject();
 
-			public static implicit operator Object[](SettingsFile input)
-			{
-				return input.Assets;
-			}
-
-			public static implicit operator string(SettingsFile input)
-			{
-				return input.FileName;
-			}
-
-			public static implicit operator SerializedObject(SettingsFile input)
-			{
-				return input.GetInputAxisSerializedObject();
-			}
 			public static implicit operator SerializedObject[](SettingsFile input)
 			{
 				return input.Assets.Select(a => new SerializedObject(a)).ToArray();
 			}
 
-			public SerializedObject GetInputAxisSerializedObject()
-			{
-				return new SerializedObject(Assets.FirstOrDefault());
-			}
+			public SerializedObject GetInputAxisSerializedObject() => new SerializedObject(Assets.FirstOrDefault());
 		}
 	}
 }

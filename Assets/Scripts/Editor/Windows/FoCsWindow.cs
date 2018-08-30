@@ -13,11 +13,8 @@ namespace ForestOfChaosLib.Editor.Windows
 	/// <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
 	public abstract class FoCsWindow<T>: FoCsWindow where T: FoCsWindow, IRepaintable
 	{
-		private static T window;
-		protected static T Window
-		{
-			get { return window ?? (window = GetWindow()); }
-		}
+		private static   T window;
+		protected static T Window => window ?? (window = GetWindow());
 
 		protected static T GetWindow()
 		{

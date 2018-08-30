@@ -75,9 +75,6 @@ namespace ForestOfChaosLib.Animation
 			return TRIGGER_DATA;
 		}
 
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			return SingleLinePlusPadding;
-		}
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => SingleLinePlusPadding;
 	}
 }

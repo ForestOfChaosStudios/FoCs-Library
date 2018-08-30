@@ -10,16 +10,8 @@ namespace ForestOfChaosLib.Maths.Random
 		public const string ALL_CHARS       = ALPHA + NUMERIC + SYMBOLS;
 		public const string ALPHA_SYMBOLS   = ALPHA           + SYMBOLS;
 		public const string NUMERIC_SYMBOLS = NUMERIC         + SYMBOLS;
-
-		public static string GetRandomString(int length)
-		{
-			return GetRandomString(ALL_CHARS, length, DateTime.UtcNow.Millisecond);
-		}
-
-		public static string GetRandomString(int length, int seed)
-		{
-			return GetRandomString(ALL_CHARS, length, seed);
-		}
+		public static string GetRandomString(int length) => GetRandomString(ALL_CHARS,           length, DateTime.UtcNow.Millisecond);
+		public static string GetRandomString(int length, int seed) => GetRandomString(ALL_CHARS, length, seed);
 
 		public static string GetRandomString(string characters, int length, int seed)
 		{
@@ -37,10 +29,7 @@ namespace ForestOfChaosLib.Maths.Random
 			return s;
 		}
 
-		public static string GetRandomAltString(int length)
-		{
-			return GetRandomAltString(length, DateTime.UtcNow.Millisecond);
-		}
+		public static string GetRandomAltString(int length) => GetRandomAltString(length, DateTime.UtcNow.Millisecond);
 
 		public static string GetRandomAltString(int length, int seed)
 		{

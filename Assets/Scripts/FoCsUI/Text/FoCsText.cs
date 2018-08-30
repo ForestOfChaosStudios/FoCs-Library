@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ForestOfChaosLib.FoCsUI.Image
+namespace ForestOfChaosLib.FoCsUI.Text
 {
 	public abstract class FoCsText: FoCs2DBehavior
 	{

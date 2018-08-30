@@ -23,10 +23,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			Draw(position, property, label);
 		}
 
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			return SingleLine;
-		}
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => SingleLine;
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -74,10 +71,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			Draw(position, property, label);
 		}
 
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			return SingleLine;
-		}
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => SingleLine;
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
 		{
@@ -126,10 +120,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 			Draw(position, property, label);
 		}
 
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			return SingleLine;
-		}
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => SingleLine;
 
 		public static void Draw(Rect position, SerializedProperty property, GUIContent label)
 		{

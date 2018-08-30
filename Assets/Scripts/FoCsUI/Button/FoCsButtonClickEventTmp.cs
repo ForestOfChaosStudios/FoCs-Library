@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.FoCsUI.Button
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Button/Button (TextMesh Pro)")]
 	public class FoCsButtonClickEventTmp: FoCsButton
 	{
 		public TextMeshProUGUI TextObj;
@@ -20,7 +21,7 @@ namespace ForestOfChaosLib.FoCsUI.Button
 
 		private void Reset()
 		{
-			Button  = GetComponentAdvanced<UnityEngine.UI.Button>();
+			Button = GetComponentAdvanced<UnityEngine.UI.Button>();
 			TextObj = GetComponentInChildrenAdvanced<TextMeshProUGUI>();
 		}
 	}

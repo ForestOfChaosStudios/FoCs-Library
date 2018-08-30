@@ -46,10 +46,7 @@ namespace ForestOfChaosLib.Utilities
 			return list;
 		}
 
-		public static List<Type> GetInheritedClasses<TInherit>()
-		{
-			return GetInheritedClasses(typeof(TInherit));
-		}
+		public static List<Type> GetInheritedClasses<TInherit>() => GetInheritedClasses(typeof(TInherit));
 
 		public static List<Type> GetInheritedClasses(Type TInherit)
 		{

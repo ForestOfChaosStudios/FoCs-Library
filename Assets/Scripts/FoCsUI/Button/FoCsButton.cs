@@ -11,6 +11,7 @@ namespace ForestOfChaosLib.FoCsUI.Button
 		public          Action     onMouseClick;
 		public abstract string     Text   { get; set; }
 		public abstract GameObject TextGO { get; }
+
 		public bool Interactable
 		{
 			get { return Button.interactable; }

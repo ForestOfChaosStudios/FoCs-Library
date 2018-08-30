@@ -8,9 +8,15 @@ namespace ForestOfChaosLib.Editor
 {
 	public class ObjectReferenceHandler: IPropertyLayoutHandler
 	{
-		private         UnityReorderableListStorage       storage;
-		public readonly FoCsEditor                        owner;
-		private         Dictionary<string, EditorFoldout> ShowAfter = new Dictionary<string, EditorFoldout>();
+		public readonly  FoCsEditor                        owner;
+		private readonly Dictionary<string, EditorFoldout> ShowAfter = new Dictionary<string, EditorFoldout>();
+		private          UnityReorderableListStorage       storage;
+
+		public UnityReorderableListStorage URLStorage
+		{
+			get { return storage ?? (storage = new UnityReorderableListStorage(owner)); }
+			set { storage = value; }
+		}
 
 		public ObjectReferenceHandler(FoCsEditor _owner)
 		{
@@ -23,10 +29,22 @@ namespace ForestOfChaosLib.Editor
 			owner   = null;
 		}
 
-		public UnityReorderableListStorage URLStorage
+		private void NormalDraw(ObjectReference drawer)
 		{
-			get { return storage ?? (storage = new UnityReorderableListStorage(owner)); }
-			set { storage = value; }
+			using(var cc = Disposables.ChangeCheck())
+			{
+				drawer.IsReferenceOpen.target = drawer.ReferenceOpen;
+				drawer.DrawHeader();
+
+				using(var fade = Disposables.FadeGroupScope(drawer.IsReferenceOpen.faded))
+				{
+					if(fade.visible)
+						drawer.DrawReference(URLStorage);
+				}
+
+				if(cc.changed)
+					URLStorage.owner.Repaint();
+			}
 		}
 
 		public void HandleProperty(SerializedProperty property)
@@ -75,32 +93,6 @@ namespace ForestOfChaosLib.Editor
 				NormalDraw(drawer);
 		}
 
-		private void NormalDraw(ObjectReference drawer)
-		{
-			using(var cc = Disposables.ChangeCheck())
-			{
-				drawer.IsReferenceOpen.target = drawer.ReferenceOpen;
-				drawer.DrawHeader();
-
-				using(var fade = Disposables.FadeGroupScope(drawer.IsReferenceOpen.faded))
-				{
-					if(fade.visible)
-						drawer.DrawReference(URLStorage);
-				}
-
-				if(cc.changed)
-					URLStorage.owner.Repaint();
-			}
-		}
-
-		[Flags]
-		private enum AttributeType
-		{
-			None            = 0,
-			ShowAsComponent = 1,
-			NoObjectFoldout = 2
-		}
-
 		public float PropertyHeight(SerializedProperty property) => FoCsGUI.SingleLine;
 		public bool IsValidProperty(SerializedProperty property) => (property.propertyType == SerializedPropertyType.ObjectReference) && !FoCsEditor.IsDefaultScriptProperty(property);
 
@@ -129,6 +121,14 @@ namespace ForestOfChaosLib.Editor
 			}
 
 			ShowAfter[id] = editorFoldout;
+		}
+
+		[Flags]
+		private enum AttributeType
+		{
+			None            = 0,
+			ShowAsComponent = 1,
+			NoObjectFoldout = 2
 		}
 
 		private struct EditorFoldout

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.FoCsUI.Image
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Image/Image (TextMesh Pro)")]
 	public class FoCsImageEventTmp: FoCsImage
 	{
 		public TextMeshProUGUI TextObj;
@@ -20,7 +21,7 @@ namespace ForestOfChaosLib.FoCsUI.Image
 
 		private void Reset()
 		{
-			Image   = GetComponentAdvanced<UnityEngine.UI.Image>();
+			Image = GetComponentAdvanced<UnityEngine.UI.Image>();
 			TextObj = GetComponentInChildrenAdvanced<TextMeshProUGUI>();
 		}
 	}

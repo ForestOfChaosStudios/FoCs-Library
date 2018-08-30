@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "Simple Turntable Rotate")]
 	public class SimpleTurntableRotate: FoCsBehaviour
 	{
 		public Vector3   rotateAngle;

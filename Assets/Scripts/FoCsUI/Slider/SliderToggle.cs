@@ -6,10 +6,12 @@ using UnityEngine.EventSystems;
 
 namespace ForestOfChaosLib.FoCsUI.Slider
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Slider/Toggle")]
 	public class SliderToggle: FoCsSlider, IPointerClickHandler
 	{
-		public                                       Action<bool> OnToggle;
+		public                                          Action<bool> OnToggle;
 		[SerializeField] [GetSetter("Toggled")] private bool         toggled;
+
 		public bool Toggled
 		{
 			get { return toggled; }

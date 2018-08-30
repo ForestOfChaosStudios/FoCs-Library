@@ -145,15 +145,8 @@ namespace ForestOfChaosLib.Editor
 					Style = _style();
 				}
 
-				public static implicit operator GUIStyle(FoCsStyle input)
-				{
-					return input.Style;
-				}
-
-				public static implicit operator FoCsStyle(GUIStyle input)
-				{
-					return new FoCsStyle(input);
-				}
+				public static implicit operator GUIStyle(FoCsStyle input) => input.Style;
+				public static implicit operator FoCsStyle(GUIStyle input) => new FoCsStyle(input);
 			}
 		}
 	}

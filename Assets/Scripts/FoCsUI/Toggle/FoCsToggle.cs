@@ -6,8 +6,8 @@ namespace ForestOfChaosLib.FoCsUI.Toggle
 {
 	public abstract class FoCsToggle: FoCsBehaviour
 	{
-		public          UToggle      Toggle;
 		public          Action<bool> onValueChanged;
+		public          UToggle      Toggle;
 		public abstract string       Text   { get; set; }
 		public abstract GameObject   TextGO { get; }
 

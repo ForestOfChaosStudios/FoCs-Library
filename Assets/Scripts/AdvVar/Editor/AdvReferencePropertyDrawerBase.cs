@@ -34,8 +34,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
-				label = propScope.content;
-
+				label              = propScope.content;
 				useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(EDITS_ARRAY), useLocal.boolValue? localValue : globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 			}
 

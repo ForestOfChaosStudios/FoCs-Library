@@ -1,6 +1,4 @@
-﻿using UnityEditor;
-
-namespace ForestOfChaosLib.Editor.Windows
+﻿namespace ForestOfChaosLib.Editor.Windows
 {
 	public abstract class Tab<T> where T: FoCsWindow
 	{

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.AdvVar.InputSystem
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER + "/AdvVar/" + "Input Manager")]
 	public class AdvInputManager: Singleton<AdvInputManager>
 	{
 		public AdvInputAxis[]  Axes;

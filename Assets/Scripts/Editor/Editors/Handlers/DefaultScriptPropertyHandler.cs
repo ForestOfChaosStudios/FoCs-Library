@@ -11,6 +11,7 @@ namespace ForestOfChaosLib.Editor
 		{
 			owner = null;
 		}
+
 		public DefaultScriptPropertyHandler(FoCsEditor _owner)
 		{
 			owner = _owner;
@@ -57,14 +58,10 @@ namespace ForestOfChaosLib.Editor
 			switch(t)
 			{
 				case DefaultPropertyType.NotDefault: return false;
-					default:
-					return true;
+				default:                             return true;
 			}
 		}
 
-		public void DrawAfterEditor(SerializedProperty serializedProperty)
-		{
-
-		}
+		public void DrawAfterEditor(SerializedProperty serializedProperty) { }
 	}
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Base.HiddenClasses
 {
-	public class FoCsInternalBehaviour: MonoBehaviour
+	public abstract class FoCsInternalBehaviour: MonoBehaviour
 	{
 #region GetComponentAdvanced
 		/// <summary>

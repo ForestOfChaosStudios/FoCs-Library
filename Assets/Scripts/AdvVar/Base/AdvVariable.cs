@@ -7,10 +7,14 @@ namespace ForestOfChaosLib.AdvVar.Base
 	[Serializable]
 	public class AdvVariable<T, aT>: AdvVariable where aT: AdvReference<T>
 	{
+		private AdvVariableInternals internalData;
+
 		/*[GetSetter("Value")] */
 		[SerializeField] private T LocalValue;
+
 		/*[GetSetter("Value")] */
 		[SerializeField] private aT Reference;
+
 		public T Value
 		{
 			get
@@ -33,7 +37,7 @@ namespace ForestOfChaosLib.AdvVar.Base
 				OnValueChange.Trigger();
 			}
 		}
-		private AdvVariableInternals internalData;
+
 		public AdvVariableInternals InternalData => internalData ?? (internalData = new AdvVariableInternals(this));
 		public AdvVariable() { }
 
@@ -61,11 +65,13 @@ namespace ForestOfChaosLib.AdvVar.Base
 		public class AdvVariableInternals
 		{
 			private readonly AdvVariable<T, aT> classRef;
+
 			public aT GlobalReference
 			{
 				get { return classRef.Reference; }
 				set { classRef.Reference = value; }
 			}
+
 			public T LocalValue
 			{
 				get { return classRef.LocalValue; }

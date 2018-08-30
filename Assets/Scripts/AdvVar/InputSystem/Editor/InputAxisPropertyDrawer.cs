@@ -54,7 +54,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 						using(var verticalScope = Disposables.RectVerticalScope(showLabel? 5 : 4, horizontalScope.GetNext()))
 						{
 							if(showLabel)
-								FoCsGUI.Label(verticalScope.GetNext(RectEdit.SetHeight(SingleLine),RectEdit.SubtractX(16f)), label);
+								FoCsGUI.Label(verticalScope.GetNext(RectEdit.SetHeight(SingleLine), RectEdit.SubtractX(16f)), label);
 
 							DrawDropDown(Axis, verticalScope.GetNext(RectEdit.SetHeight(SingleLine)));
 							ProgressBar(verticalScope.GetNext(RectEdit.SetHeight(SingleLine)), value);

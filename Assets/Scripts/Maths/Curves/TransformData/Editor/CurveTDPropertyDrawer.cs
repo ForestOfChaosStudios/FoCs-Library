@@ -58,7 +58,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 
 	[CustomPropertyDrawer(typeof(CurveTD))] public class BezierCurveTDPropertyDrawer: CurveTDPropertyDrawer { }
 
-	[CustomPropertyDrawer(typeof(CurveTDQuad))] public class BezierCurveQuadTDPropertyDrawer: CurveTDPropertyDrawer { }
+	[CustomPropertyDrawer(typeof(CurveTDTri))] public class BezierCurveQuadTDPropertyDrawer: CurveTDPropertyDrawer { }
 
 	[CustomPropertyDrawer(typeof(CurveTDCube))] public class BezierCurveCubeTDPropertyDrawer: CurveTDPropertyDrawer { }
 }

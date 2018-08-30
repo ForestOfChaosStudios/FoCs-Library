@@ -8,7 +8,7 @@ namespace ForestOfChaosLib.Maths.Curves
 	[Serializable]
 	public class CurveV3D: ICurveV3D
 	{
-		[SerializeField] private List<Vector3> Positions = new List<Vector3>();
+		[SerializeField] private List<Vector3> Positions      = new List<Vector3>();
 		[SerializeField] private bool          useGlobalSpace = true;
 
 		public bool UseGlobalSpace
@@ -23,19 +23,8 @@ namespace ForestOfChaosLib.Maths.Curves
 			set { Positions = value; }
 		}
 
-		public bool IsFixedLength
-		{
-			get { return false; }
-		}
-
-		public int Length
-		{
-			get { return Positions.Count; }
-		}
-
-		public Vector3 Lerp(float time)
-		{
-			return Vector3Lerp.Lerp(Positions, time);
-		}
+		public bool IsFixedLength => false;
+		public int  Length        => Positions.Count;
+		public Vector3 Lerp(float time) => Vector3Lerp.Lerp(Positions, time);
 	}
 }

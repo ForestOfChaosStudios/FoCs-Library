@@ -10,6 +10,7 @@ namespace ForestOfChaosLib.Components.Linker
 	public abstract class EditorComponentLinker<T>: ComponentLinker<T>
 	{
 		[SerializeField] protected T link;
+
 		public override T Link
 		{
 			get { return link; }
@@ -20,6 +21,7 @@ namespace ForestOfChaosLib.Components.Linker
 	public abstract class ChildComponentLinker<T>: ComponentLinker<T>
 	{
 		[SerializeField] protected T link;
+
 		public override T Link
 		{
 			get { return link != null? link : (link = GetComponentInChildren<T>()); }
@@ -30,6 +32,7 @@ namespace ForestOfChaosLib.Components.Linker
 	public abstract class PerantComponentLinker<T>: ComponentLinker<T>
 	{
 		[SerializeField] protected T link;
+
 		public override T Link
 		{
 			get { return link != null? link : (link = GetComponentInParent<T>()); }

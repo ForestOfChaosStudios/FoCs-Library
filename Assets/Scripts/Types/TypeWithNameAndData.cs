@@ -16,9 +16,9 @@ namespace ForestOfChaosLib.Types
 				Name = name;
 			}
 
-			public virtual  void   SetData(object obj) { }
-			public override string ToString()          => Name;
-			public virtual  string GetDataString()     => "";
+			public virtual void SetData(object obj) { }
+			public override string ToString() => Name;
+			public virtual string GetDataString() => "";
 		}
 
 		[Serializable]
@@ -28,6 +28,7 @@ namespace ForestOfChaosLib.Types
 			[NonSerialized] public Action       OnAfterDataChange;
 			[NonSerialized] public Action       OnBeforeDataChange;
 			[NonSerialized] public Action<T, T> OnDataChangeOldNewValue;
+
 			public T Data
 			{
 				get { return _data; }
@@ -56,9 +57,9 @@ namespace ForestOfChaosLib.Types
 				Data = (T)obj;
 			}
 
-			public static implicit operator T(GenericType<T>                input) => input.Data;
-			public virtual                  T      GetTypeFromString(string data)  => default(T);
-			public override                 string ToString()                      => ToString(false);
+			public static implicit operator T(GenericType<T> input) => input.Data;
+			public virtual T GetTypeFromString(string        data) => default(T);
+			public override string ToString() => ToString(false);
 
 			public string ToString(bool b)
 			{

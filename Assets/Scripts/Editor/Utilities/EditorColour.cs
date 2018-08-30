@@ -42,9 +42,6 @@ namespace ForestOfChaosLib.Editor.Utilities
 			lightColor = lcolor;
 		}
 
-		public static implicit operator Color(EditorColour editorColour)
-		{
-			return EditorGUIUtility.isProSkin? editorColour.Color : editorColour.lightColor;
-		}
+		public static implicit operator Color(EditorColour editorColour) => EditorGUIUtility.isProSkin? editorColour.Color : editorColour.lightColor;
 	}
 }

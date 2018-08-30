@@ -26,10 +26,10 @@ namespace ForestOfChaosLib.Debugging
 
 		public class Data
 		{
-			public        Data   previousData;
-			public        float  Time;
-			public        string Value;
-			public static Data   Empty(string val = "") => new Data {Value = val, Time = 0};
+			public Data   previousData;
+			public float  Time;
+			public string Value;
+			public static Data Empty(string val = "") => new Data {Value = val, Time = 0};
 
 			public static Data Build(string val)
 			{

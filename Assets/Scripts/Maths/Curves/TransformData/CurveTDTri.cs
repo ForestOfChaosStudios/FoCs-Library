@@ -2,30 +2,31 @@ using System;
 using System.Collections.Generic;
 using ForestOfChaosLib.Extensions;
 using ForestOfChaosLib.Maths.Lerp;
+using ForestOfChaosLib.Types;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Maths.Curves
 {
 	[Serializable]
-	public class CurveV3DQuad: ICurveV3D
+	public class CurveTDTri: ICurveTD
 	{
-		public const             int           TOTAL_COUNT    = 3;
-		[SerializeField] private List<Vector3> Positions      = new List<Vector3>(TOTAL_COUNT);
-		[SerializeField] private bool          useGlobalSpace = true;
+		public const             int                 TOTAL_COUNT = 3;
+		[SerializeField] private List<TransformData> Positions   = new List<TransformData>(TOTAL_COUNT);
+		[SerializeField] private bool                useGlobalSpace;
 
-		public Vector3 StartPos
+		public TransformData StartPos
 		{
 			get { return Positions[0]; }
 			set { Positions[0] = value; }
 		}
 
-		public Vector3 MidPos
+		public TransformData MidPos
 		{
 			get { return Positions[1]; }
 			set { Positions[1] = value; }
 		}
 
-		public Vector3 EndPos
+		public TransformData EndPos
 		{
 			get { return Positions[2]; }
 			set { Positions[2] = value; }
@@ -34,7 +35,7 @@ namespace ForestOfChaosLib.Maths.Curves
 		private void PosNullCheck()
 		{
 			if(Positions == null)
-				Positions = new List<Vector3>(TOTAL_COUNT);
+				Positions = new List<TransformData>(TOTAL_COUNT);
 		}
 
 		public bool UseGlobalSpace
@@ -43,7 +44,7 @@ namespace ForestOfChaosLib.Maths.Curves
 			set { useGlobalSpace = value; }
 		}
 
-		public List<Vector3> CurvePositions
+		public List<TransformData> CurvePositions
 		{
 			get
 			{
@@ -86,19 +87,8 @@ namespace ForestOfChaosLib.Maths.Curves
 			}
 		}
 
-		public bool IsFixedLength
-		{
-			get { return true; }
-		}
-
-		public int Length
-		{
-			get { return TOTAL_COUNT; }
-		}
-
-		public Vector3 Lerp(float time)
-		{
-			return Vector3Lerp.Lerp(Positions, time);
-		}
+		public bool IsFixedLength => true;
+		public int  Length        => TOTAL_COUNT;
+		public TransformData Lerp(float time) => TransformDataLerp.Lerp(Positions, time);
 	}
 }

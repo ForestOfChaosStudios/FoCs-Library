@@ -13,10 +13,8 @@ namespace ForestOfChaosLib.Editor
 		private static readonly GUIContent PasteContent         = new GUIContent("P",        "Pastes the vectors data.");
 		private static readonly GUIContent ResetContent         = new GUIContent("R",        "Resets the vectors data.");
 
-		public static Vector3 DrawVector3(string label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn, out bool GUIChanged)
-		{
-			return DrawVector3(new GUIContent(label, "The vectors X,Y,Z values."), vec, defaultValue, objectIAmOn, out GUIChanged);
-		}
+		public static Vector3 DrawVector3(string label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn, out bool GUIChanged) =>
+				DrawVector3(new GUIContent(label, "The vectors X,Y,Z values."), vec, defaultValue, objectIAmOn, out GUIChanged);
 
 		public static Vector3 DrawVector3(GUIContent label, Vector3 vec, Vector3 defaultValue, Obj objectIAmOn, out bool GUIChanged)
 		{

@@ -52,7 +52,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		{
 			using(var cc = Disposables.ChangeCheck())
 			{
-				if(Curve == null)
+				if((Curve == null) || Curve.CurvePositions.IsNullOrEmpty())
 					return;
 
 				var pos = Curve.CurvePositions;
@@ -129,7 +129,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 
 	[CustomEditor(typeof(CurveTDCubeBehaviour))] public class BezierCurveCubeTDBehaviourEditor: CurveTDEditor<CurveTDCubeBehaviour> { }
 
-	[CustomEditor(typeof(CurveTDQuadBehaviour))] public class BezierCurveQuadTDBehaviourEditor: CurveTDEditor<CurveTDQuadBehaviour> { }
+	[CustomEditor(typeof(CurveTDTriBehaviour))] public class BezierCurveQuadTDBehaviourEditor: CurveTDEditor<CurveTDTriBehaviour> { }
 
 	[CustomEditor(typeof(CurveTDDoubleBehaviour))] public class BezierCurveTDDoubleBehaviourEditor: CurveTDEditor<CurveTDBehaviour> { }
 

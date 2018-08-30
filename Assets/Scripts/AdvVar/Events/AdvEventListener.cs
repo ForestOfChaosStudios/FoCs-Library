@@ -1,7 +1,9 @@
-﻿using UnityEngine.Events;
+﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace ForestOfChaosLib.AdvVar.Events
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER + "/AdvVar/" + "Adv Event Listener")]
 	public class AdvEventListener: FoCsBehaviour
 	{
 		public AdvEvent   Event;

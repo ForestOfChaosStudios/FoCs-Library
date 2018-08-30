@@ -1,5 +1,4 @@
 ﻿using System;
-using ForestOfChaosLib.Maths;
 using ForestOfChaosLib.Maths.Lerp;
 using UnityEngine;
 
@@ -8,14 +7,10 @@ namespace ForestOfChaosLib.Types
 	[Serializable]
 	public struct TransformData
 	{
-		public Vector3    Position;
-		public Quaternion Rotation;
-		public Vector3    Scale;
-
-		public static TransformData Empty
-		{
-			get { return new TransformData(Vector3.zero, Quaternion.identity, Vector3.one); }
-		}
+		public        Vector3       Position;
+		public        Quaternion    Rotation;
+		public        Vector3       Scale;
+		public static TransformData Empty => new TransformData(Vector3.zero, Quaternion.identity, Vector3.one);
 
 		public TransformData(Component component)
 		{
@@ -140,40 +135,13 @@ namespace ForestOfChaosLib.Types
 			transform.position   = Position;
 		}
 
-		public TransformData Lerp(TransformData other, float time)
-		{
-			return TransformDataLerp.Lerp(this, other, time);
-		}
-
-		public static TransformData Lerp(TransformData a, TransformData b, float time)
-		{
-			return TransformDataLerp.Lerp(a, b, time);
-		}
-
-		public TransformData Copy()
-		{
-			return new TransformData(this);
-		}
-
-		public static implicit operator TransformData(Transform input)
-		{
-			return new TransformData(input);
-		}
-
-		public static implicit operator TransformData(Component input)
-		{
-			return new TransformData(input.transform);
-		}
-
-		public static implicit operator TransformData(GameObject input)
-		{
-			return new TransformData(input.transform);
-		}
-
-		public static TransformData Create(Transform transform)
-		{
-			return new TransformData(transform);
-		}
+		public TransformData Lerp(TransformData        other, float         time) => TransformDataLerp.Lerp(this,       other, time);
+		public static TransformData Lerp(TransformData a,     TransformData b, float time) => TransformDataLerp.Lerp(a, b,     time);
+		public TransformData Copy() => new TransformData(this);
+		public static implicit operator TransformData(Transform  input) => new TransformData(input);
+		public static implicit operator TransformData(Component  input) => new TransformData(input.transform);
+		public static implicit operator TransformData(GameObject input) => new TransformData(input.transform);
+		public static TransformData Create(Transform             transform) => new TransformData(transform);
 	}
 
 	public static class TransformDataExtn
@@ -183,9 +151,6 @@ namespace ForestOfChaosLib.Types
 			data.ApplyData(transform);
 		}
 
-		public static TransformData GetTD(this Transform transform)
-		{
-			return transform;
-		}
+		public static TransformData GetTD(this Transform transform) => transform;
 	}
 }

@@ -20,15 +20,8 @@ namespace ForestOfChaosLib.Maths.Curves.Components
 			set { Curve.CurvePositions = value; }
 		}
 
-		public override bool IsFixedLength
-		{
-			get { return Curve.IsFixedLength; }
-		}
-
-		public override int Length
-		{
-			get { return Curve.Length; }
-		}
+		public override bool IsFixedLength => Curve.IsFixedLength;
+		public override int  Length        => Curve.Length;
 
 		public override TransformData Lerp(float time)
 		{

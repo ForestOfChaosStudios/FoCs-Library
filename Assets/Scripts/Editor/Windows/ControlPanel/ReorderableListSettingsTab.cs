@@ -2,7 +2,7 @@
 
 namespace ForestOfChaosLib.Editor
 {
-	[FoCsControlPanel.ControlPanelTab]
+	[FoCsControlPanel.ControlPanelTabAttribute]
 	public static class ReorderableListSettingsTab
 	{
 		private static readonly GUIContent Enabled  = new GUIContent("List Limiter Enabled");

@@ -24,19 +24,8 @@ namespace ForestOfChaosLib.Maths.Curves
 			set { Positions = value; }
 		}
 
-		public bool IsFixedLength
-		{
-			get { return false; }
-		}
-
-		public int Length
-		{
-			get { return Positions.Count; }
-		}
-
-		public TransformData Lerp(float time)
-		{
-			return TransformDataLerp.Lerp(Positions, time);
-		}
+		public bool IsFixedLength => false;
+		public int  Length        => Positions.Count;
+		public TransformData Lerp(float time) => TransformDataLerp.Lerp(Positions, time);
 	}
 }

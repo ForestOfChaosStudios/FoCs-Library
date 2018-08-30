@@ -20,9 +20,8 @@ namespace ForestOfChaosLib.Editor
 		private static readonly GUIContent                               SetContent        = new GUIContent("Set:  ");
 		private static readonly GUIContent                               TimesContent      = new GUIContent("Times:");
 		private readonly        KeyValuePair<Func<bool, bool>, Action>[] TabName;
-
-		public override bool ShowCopyPasteButtons => true;
-		public override bool AllowsSortingModeChanging => false;
+		public override         bool                                     ShowCopyPasteButtons      => true;
+		public override         bool                                     AllowsSortingModeChanging => false;
 
 		private static int TabNum
 		{
@@ -30,15 +29,8 @@ namespace ForestOfChaosLib.Editor
 			set { EditorPrefs.SetInt("FoCsTE.TabNum", tabNum = value); }
 		}
 
-		private static GUILayoutOption[] SCALE_LABEL_OPTIONS
-		{
-			get { return new[] {GUILayout.Width(60), SCALE_BUTTON_HEIGHT}; }
-		}
-
-		private static GUILayoutOption SCALE_BUTTON_HEIGHT
-		{
-			get { return GUILayout.Height(16); }
-		}
+		private static GUILayoutOption[] SCALE_LABEL_OPTIONS => new[] {GUILayout.Width(60), SCALE_BUTTON_HEIGHT};
+		private static GUILayoutOption   SCALE_BUTTON_HEIGHT => GUILayout.Height(16);
 
 		public TransformEditor()
 		{
@@ -48,7 +40,7 @@ namespace ForestOfChaosLib.Editor
 					Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("Scale Options", "Scale Preset Options")),                   ScaleButtonsEnabled),
 					Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("Global Values", "Force Display of Global Transform Data")), DrawGlobalTransformOptions),
 					Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("T Data",        "Transform Data Copy Paste")),              DrawTDCopyPaste),
-					Pair.Create<Func<bool, bool>, Action>(PingObject,                                                                                            null)
+					Pair.Create<Func<bool, bool>, Action>(PingObject,                                                                                             null)
 			};
 		}
 
@@ -81,10 +73,7 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 
-		private static bool NormalToolbarButton(bool active, GUIContent con)
-		{
-			return FoCsGUI.Layout.Toggle(con, active, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
-		}
+		private static bool NormalToolbarButton(bool active, GUIContent con) => FoCsGUI.Layout.Toggle(con, active, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
 
 		private void DrawTransformOptions()
 		{

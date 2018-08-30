@@ -13,10 +13,7 @@ namespace ForestOfChaosLib.Utilities
 {
 	public static class FoCsAssetFinder
 	{
-		public static T[] FindAssetsByType<T>() where T: Object
-		{
-			return FindAssetsByType(typeof(T)).Cast<T>().ToArray();
-		}
+		public static T[] FindAssetsByType<T>() where T: Object => FindAssetsByType(typeof(T)).Cast<T>().ToArray();
 
 		public static Object[] FindAssetsByType(Type type)
 		{
@@ -42,10 +39,7 @@ namespace ForestOfChaosLib.Utilities
 #endif
 		}
 
-		public static T[] FindAssetsByTypeWithScene<T>() where T: Object
-		{
-			return FindAssetsByTypeWithScene(typeof(T)).Cast<T>().ToArray();
-		}
+		public static T[] FindAssetsByTypeWithScene<T>() where T: Object => FindAssetsByTypeWithScene(typeof(T)).Cast<T>().ToArray();
 
 		public static Object[] FindAssetsByTypeWithScene(Type type)
 		{

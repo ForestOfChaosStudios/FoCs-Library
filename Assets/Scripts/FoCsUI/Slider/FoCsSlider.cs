@@ -1,15 +1,18 @@
 using System;
 using ForestOfChaosLib.AdvVar;
 using ForestOfChaosLib.Extensions;
+using UnityEngine;
 using USlider = UnityEngine.UI.Slider;
 
 namespace ForestOfChaosLib.FoCsUI.Slider
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Slider/Slider")]
 	public class FoCsSlider: FoCsBehaviour
 	{
 		public Action<float>  OnValueChanged;
 		public FloatReference ReferencedFloat;
 		public USlider        slider;
+
 		public float Value
 		{
 			get { return slider.value; }

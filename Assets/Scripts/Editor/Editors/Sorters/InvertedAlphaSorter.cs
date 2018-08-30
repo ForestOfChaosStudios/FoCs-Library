@@ -10,6 +10,7 @@ namespace ForestOfChaosLib.Editor
 	{
 		public static          InvertedAlphaSorter Instance;
 		public static readonly GUIContent          modeName = new GUIContent("Z-A");
+
 		///<inheritdoc />
 		public override GUIContent ModeName => modeName;
 

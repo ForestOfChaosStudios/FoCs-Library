@@ -8,6 +8,7 @@ namespace ForestOfChaosLib.Generics
 	{
 		protected static S    instance;
 		public static    bool instanceNull => instance == null;
+
 		public static S Instance
 		{
 			get
@@ -23,6 +24,7 @@ namespace ForestOfChaosLib.Generics
 				return instance;
 			}
 		}
+
 		public static bool InstanceNull => Instance == null;
 
 		public void DestroyOtherInstances()
