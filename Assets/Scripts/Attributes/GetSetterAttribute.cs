@@ -6,7 +6,7 @@ namespace ForestOfChaosLib.Attributes
 	{
 		public readonly string name;
 		public          bool   CallSetter = true;
-		public          bool   dirty;
+		public          bool   dirty      = false;
 
 		public GetSetterAttribute(string name)
 		{

@@ -1,4 +1,5 @@
 ﻿using System;
+using ForestOfChaosLib.Attributes;
 using ForestOfChaosLib.Extensions;
 using UnityEngine;
 
@@ -7,13 +8,9 @@ namespace ForestOfChaosLib.AdvVar.Base
 	[Serializable]
 	public class AdvVariable<T, aT>: AdvVariable where aT: AdvReference<T>
 	{
-		private AdvVariableInternals internalData;
-
-		/*[GetSetter("Value")] */
-		[SerializeField] private T LocalValue;
-
-		/*[GetSetter("Value")] */
-		[SerializeField] private aT Reference;
+		private                  AdvVariableInternals internalData;
+		[SerializeField] private T                    LocalValue;
+		[SerializeField] private aT                   Reference;
 
 		public T Value
 		{
