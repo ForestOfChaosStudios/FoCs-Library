@@ -13,6 +13,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		private static Mode      MyMode     = Mode.Move;
 		private static Transform debugTransform;
 		public static  float     DebugTime = 0.5f;
+		private static bool UseGizmo = false;
 
 		public enum Mode
 		{
@@ -39,7 +40,14 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 				MyMode         = (Mode)EditorGUILayout.EnumPopup(MyMode);
 				resolution     = FoCsGUI.Layout.Slider(new GUIContent("Resolution", "The Curve Display Resolution"), resolution, 0.01f, 0.5f);
 				debugTransform = FoCsGUI.Layout.ObjectField(debugTransform, new GUIContent("Example"), true);
-				DebugTime      = FoCsGUI.Layout.Slider(new GUIContent("Lerp Time: ", "Lerp Time"), DebugTime, 0f, 1f);
+				using(var change = Disposables.ChangeCheck())
+				{
+					DebugTime = FoCsGUI.Layout.Slider(new GUIContent("Lerp Time: ", "Lerp Time"), DebugTime, 0f, 1f);
+					UseGizmo  = FoCsGUI.Layout.ToggleField("Use Gizmos", UseGizmo);
+
+					if(change.changed && UseGizmo)
+						SceneView.RepaintAll();
+				}
 
 				if(debugTransform)
 					debugTransform.position = Target.Lerp(DebugTime);
@@ -48,6 +56,12 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 
 		public void OnSceneGUI()
 		{
+			if(UseGizmo && !debugTransform)
+			{
+				var data           = Target.Lerp(DebugTime);
+				Handles.DrawWireCube(data, Vector3.one);
+			}
+
 			using(var cc = Disposables.ChangeCheck())
 			{
 				if((Curve == null) || Curve.CurvePositions.IsNullOrEmpty())
@@ -61,13 +75,13 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 					{
 						using(var undoCheck = Disposables.ChangeCheck())
 						{
-							if(Curve.UseGlobalSpace)
+							if(!Curve.UseGlobalSpace)
 								pos[i] = Target.transform.TransformPoint(pos[i]);
 
 							pos[i] = Handles.DoPositionHandle(Curve.CurvePositions[i], Quaternion.identity);
 							Handles.Label(pos[i], new GUIContent(string.Format("Index: {0}", i)));
 
-							if(Curve.UseGlobalSpace)
+							if(!Curve.UseGlobalSpace)
 								pos[i] = Target.transform.InverseTransformPoint(pos[i]);
 
 							if(undoCheck.changed)
@@ -79,16 +93,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 				}
 
 				for(float i = 0; i < 1f; i += resolution)
-				{
-					if(Curve.UseGlobalSpace)
-					{
-						var a = Target.transform.TransformPoint(Vector3Lerp.Lerp(Curve.CurvePositions, i));
-						var b = Target.transform.TransformPoint(Vector3Lerp.Lerp(Curve.CurvePositions, i + resolution, true));
-						Handles.DrawLine(a, b);
-					}
-					else
-						Handles.DrawLine(Vector3Lerp.Lerp(Curve.CurvePositions, i), Vector3Lerp.Lerp(Curve.CurvePositions, i + resolution, true));
-				}
+					Handles.DrawLine(Target.Lerp(i), Target.Lerp((i + resolution).Clamp()));
 
 				if(cc.changed)
 					EditorUtility.SetDirty(target);

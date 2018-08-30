@@ -82,7 +82,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 					{
 						var tdPos = Curve.CurvePositions[i].Position;
 
-						if(Target.UseGlobalSpace)
+						if(!Target.UseGlobalSpace)
 							tdPos = Target.transform.TransformPoint(tdPos);
 
 						var tdScl = Curve.CurvePositions[i].Scale;
@@ -114,9 +114,9 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 								break;
 						}
 
-						Handles.Label(pos[i].Position, new GUIContent(string.Format("Index: {0}", i)));
+						Handles.Label(tdPos, new GUIContent(string.Format("Index: {0}", i)));
 
-						if(Target.UseGlobalSpace)
+						if(!Target.UseGlobalSpace)
 							tdPos = Target.transform.InverseTransformPoint(tdPos);
 
 						//pos[i].UpdateData(tdPos, tdRot, tdScl);
