@@ -76,9 +76,9 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static T GetTargetObjectOfProperty<T>(this SerializedProperty prop)
 		{
-			var    path     = prop.propertyPath.Replace(".Array.data[", "[");
-			object obj      = prop.serializedObject.targetObject;
-			var    elements = path.Split('.');
+			var    path        = prop.propertyPath.Replace(".Array.data[", "[");
+			var    elements    = path.Split('.');
+			object startingObj = prop.serializedObject.targetObject;
 
 			foreach(var element in elements)
 			{
@@ -86,13 +86,13 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				{
 					var elementName = element.Substring(0, element.IndexOf("["));
 					var index       = Convert.ToInt32(element.Substring(element.IndexOf("[")).Replace("[", "").Replace("]", ""));
-					obj = GetValue_Imp(obj, elementName, index);
+					startingObj = GetValue_Imp(startingObj, elementName, index);
 				}
 				else
-					obj = GetValue_Imp(obj, element);
+					startingObj = GetValue_Imp(startingObj, element);
 			}
 
-			return (T)obj;
+			return (T)startingObj;
 		}
 
 		private static object GetValue_Imp(object source, string name)
@@ -153,8 +153,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 		public static object[] GetSerializedPropertyAttributes<T>(this SerializedProperty prop) where T: Attribute
 		{
-			var type       = prop.serializedObject.targetObject.GetType();
-			var field      = type.GetField(prop.name);
+			var type  = prop.serializedObject.targetObject.GetType();
+			var field = type.GetField(prop.name);
 
 			if(field == null)
 				return null;

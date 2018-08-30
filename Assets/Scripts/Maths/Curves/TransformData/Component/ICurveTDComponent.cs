@@ -25,10 +25,10 @@ namespace ForestOfChaosLib.Maths.Curves.Components
 
 		public override TransformData Lerp(float time)
 		{
-			if(!UseGlobalSpace)
+			if(UseGlobalSpace)
 			{
 				var lerpTime = Curve.Lerp(time);
-				lerpTime.Position = transform.TransformPoint(lerpTime.Position);
+				lerpTime.Position = transform.InverseTransformPoint(lerpTime.Position);
 
 				return lerpTime;
 			}

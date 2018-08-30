@@ -15,7 +15,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 
 	public class FoCsPropertyDrawer<T>: FoCsPropertyDrawer
 	{
-		public T GetOwner(SerializedProperty prop) => prop.GetTargetObjectOfProperty<T>();
+		public T GetTargetObject(SerializedProperty prop) => prop.GetTargetObjectOfProperty<T>();
 	}
 
 	public class FoCsPropertyDrawerWithAttribute<A>: FoCsPropertyDrawer where A: PropertyAttribute

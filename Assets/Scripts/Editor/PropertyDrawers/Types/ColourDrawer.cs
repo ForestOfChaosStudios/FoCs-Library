@@ -15,7 +15,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Types
 				var rect = position;
 				rect.height =  SingleLine;
 				rect.y      += 1;
-				var colour = GetOwner(property);
+				var colour = GetTargetObject(property);
 
 				if(colour == null)
 					return;
