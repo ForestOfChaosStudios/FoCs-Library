@@ -93,7 +93,7 @@ namespace ForestOfChaosLib.Editor
 				var id = property.GetId();
 
 				if(!ShowAfter.ContainsKey(id))
-					ShowAfter.Add(id, new EditorFoldout());
+					ShowAfter.Add(id, new EditorFoldout{Foldout = true});
 			}
 			else if(hasAttribute == AttributeType.NoObjectFoldout)
 				drawer.DrawHeader(false);
