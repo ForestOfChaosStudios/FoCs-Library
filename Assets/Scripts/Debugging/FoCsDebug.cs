@@ -43,7 +43,7 @@ namespace ForestOfChaosLib.Debugging
 					return new Data {Value = val, Time = 0};
 				}
 #else
-				return new DictionaryData {Value = val, Time = UnityEngine.Time.time};
+				return new Data {Value = val, Time = UnityEngine.Time.time};
 #endif
 			}
 
@@ -59,7 +59,7 @@ namespace ForestOfChaosLib.Debugging
 					return new Data {Value = val, Time = 0, previousData = other};
 				}
 #else
-				return new DictionaryData {Value = val, Time = UnityEngine.Time.time, previousData = other};
+				return new Data {Value = val, Time = UnityEngine.Time.time, previousData = other};
 #endif
 			}
 

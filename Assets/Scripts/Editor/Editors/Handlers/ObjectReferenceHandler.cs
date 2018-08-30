@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ForestOfChaosLib.Attributes;
 using ForestOfChaosLib.Editor.PropertyDrawers;
+using ForestOfChaosLib.Extensions;
 using UnityEditor;
 
 namespace ForestOfChaosLib.Editor
@@ -62,20 +63,27 @@ namespace ForestOfChaosLib.Editor
 			var attribute    = property.GetSerializedPropertyAttributes<ShowAsComponentAttribute>();
 			var hasAttribute = AttributeType.None;
 
-			foreach(var a in attribute)
+			if(attribute.IsNullOrEmpty())
 			{
-				if(a is ShowAsComponentAttribute)
+				hasAttribute = AttributeType.None;
+			}
+			else
+			{
+				foreach(var a in attribute)
 				{
-					hasAttribute = AttributeType.ShowAsComponent;
+					if(a is ShowAsComponentAttribute)
+					{
+						hasAttribute = AttributeType.ShowAsComponent;
 
-					break;
-				}
+						break;
+					}
 
-				if(a is NoObjectFoldoutAttribute)
-				{
-					hasAttribute = AttributeType.NoObjectFoldout;
+					if(a is NoObjectFoldoutAttribute)
+					{
+						hasAttribute = AttributeType.NoObjectFoldout;
 
-					break;
+						break;
+					}
 				}
 			}
 

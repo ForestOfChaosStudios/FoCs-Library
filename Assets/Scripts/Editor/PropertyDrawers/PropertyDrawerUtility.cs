@@ -155,6 +155,10 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 		{
 			var type       = prop.serializedObject.targetObject.GetType();
 			var field      = type.GetField(prop.name);
+
+			if(field == null)
+				return null;
+
 			var attributes = field.GetCustomAttributes(false);
 
 			return attributes;
