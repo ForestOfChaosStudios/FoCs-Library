@@ -28,7 +28,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 						break;
 					case SerializedPropertyType.String:
-						DoString(position, property, label, range);
+						DoNamedString(position, property, label, range);
 
 						break;
 					case SerializedPropertyType.Integer:
@@ -57,7 +57,8 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		private static void DrawErrorMessage(Rect position, GUIContent label)
 		{
-			FoCsGUI.Label(position, label.text, "Use Range with float, int, string, Vector2 & Vector3.");
+			FoCsGUI.Label(position, label.text);
+			FoCsGUI.Label(position, "Use Range with float, int, string, Vector2 & Vector3.");
 		}
 
 		public static void DoFloat(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range)
@@ -103,7 +104,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			EditorGUI.IntSlider(position, property, (int)range.min, (int)range.max, label);
 		}
 
-		public static void DoString(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range)
+		public static void DoNamedString(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range)
 		{
 			var stringLabel = new GUIContent(label);
 			stringLabel.text += string.Format("  (Total Length:{0})", (int)range.max);
@@ -111,7 +112,12 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			if(string.IsNullOrEmpty(stringLabel.tooltip))
 				stringLabel.tooltip = string.Format("This string has a Total Length:{0})", (int)range.max);
 
-			EditorGUI.DelayedTextField(position, property, stringLabel);
+			DoString(position, property, stringLabel, range);
+		}
+
+		public static void DoString(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range)
+		{
+			EditorGUI.DelayedTextField(position, property, label);
 
 			if(property.stringValue.Length > range.max)
 				property.stringValue = property.stringValue.Substring(0, (int)range.max);
@@ -124,7 +130,12 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			foreach(var extraDrawer in ExtraDrawers)
 			{
 				if(extraDrawer.IsThisType(obj))
+				{
+					label   = extraDrawer.ChangeLabel(label, range);
 					foldout = extraDrawer.Draw(position, property, label, range, foldout);
+
+					return foldout;
+				}
 			}
 
 			DrawErrorMessage(position, label);
@@ -134,7 +145,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			var obj = property.GetTargetObjectOfProperty();
 
 			switch(property.propertyType)
 			{
@@ -142,27 +152,34 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 				case SerializedPropertyType.Vector3: return SingleLine * 4;
 				case SerializedPropertyType.Generic:
 
+				{
+					var obj = property.GetTargetObjectOfProperty();
+
 					foreach(var extraDrawer in ExtraDrawers)
 					{
 						if(extraDrawer.IsThisType(obj))
 							return extraDrawer.GetHeight(property, label, foldout);
 					}
+				}
 
 					return SingleLine;
 				default: return SingleLine;
 			}
 		}
 
-		public static void AddExtraDrawer(IRangeDrawer extraDrawer)
+		private static readonly List<ICustomRangeDrawer> ExtraDrawers = new List<ICustomRangeDrawer>();
+
+		public static void AddCustomRangeDrawer(ICustomRangeDrawer extraDrawer)
 		{
 			ExtraDrawers.Add(extraDrawer);
 		}
 
-		public interface IRangeDrawer
+		public interface ICustomRangeDrawer
 		{
-			bool IsThisType(object             obj);
-			bool Draw(Rect                     position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout);
-			float GetHeight(SerializedProperty property, GUIContent         label,    bool       foldout);
+			bool       IsThisType(object            obj);
+			bool       Draw(Rect                    position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout);
+			float      GetHeight(SerializedProperty property, GUIContent         label,    bool       foldout);
+			GUIContent ChangeLabel(GUIContent       label,    RangeAttribute     range);
 		}
 	}
 }
