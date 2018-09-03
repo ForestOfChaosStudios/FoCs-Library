@@ -168,10 +168,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 			return true;
 		}
 
-		public static T Paste<T>()
-		{
-			return Paste<T>(RemoveTypeFromCopyBuffer());
-		}
+		public static T Paste<T>() => Paste<T>(RemoveTypeFromCopyBuffer());
 
 		private static T Paste<T>(string buffer)
 		{
@@ -273,20 +270,9 @@ namespace ForestOfChaosLib.Editor.Utilities
 				EditorJsonUtility.FromJsonOverwrite(buffer, obj);
 		}
 
-		private static bool IsValidObjectInBuffer()
-		{
-			return IsValidObjectInBuffer(CopyBuffer);
-		}
-
-		private static bool IsValidObjectInBuffer(string buffer)
-		{
-			return buffer.Contains(COPY_SPLIT);
-		}
-
-		public static bool IsTypeInBuffer(object obj)
-		{
-			return IsTypeInBuffer(obj, CopyBuffer);
-		}
+		private static bool IsValidObjectInBuffer() => IsValidObjectInBuffer(CopyBuffer);
+		private static bool IsValidObjectInBuffer(string buffer) => buffer.Contains(COPY_SPLIT);
+		public static bool IsTypeInBuffer(object         obj) => IsTypeInBuffer(obj, CopyBuffer);
 
 		public static bool IsTypeInBuffer(object obj, string buffer)
 		{
@@ -303,10 +289,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 			return t.ToString() == GetJSONStoredType(buffer);
 		}
 
-		private static string RemoveTypeFromCopyBuffer()
-		{
-			return RemoveTypeFromCopyBuffer(CopyBuffer);
-		}
+		private static string RemoveTypeFromCopyBuffer() => RemoveTypeFromCopyBuffer(CopyBuffer);
 
 		public static string RemoveTypeFromCopyBuffer(string buffer)
 		{

@@ -16,16 +16,8 @@ namespace ForestOfChaosLib.Editor
 		public static  GUISkin    skin;
 		private static List<Type> windowList;
 		private static List<Type> tabList;
-
-		private static List<Type> WindowList
-		{
-			get { return windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false)); }
-		}
-
-		private static List<Type> TabList
-		{
-			get { return tabList ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTabAttribute>(false)); }
-		}
+		private static List<Type> WindowList => windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false));
+		private static List<Type> TabList    => tabList    ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTabAttribute>(false));
 
 		private static int ActiveTab
 		{

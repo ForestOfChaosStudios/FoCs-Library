@@ -10,6 +10,7 @@ namespace ForestOfChaosLib.Editor
 	{
 		public static          NormalSorter Instance;
 		public static readonly GUIContent   modeName = new GUIContent("Normal");
+
 		///<inheritdoc />
 		public override GUIContent ModeName => modeName;
 

@@ -11,6 +11,11 @@ namespace ForestOfChaosLib.Debugging
 			DataDictionary = new Dictionary<string, Data>();
 		}
 
+		public static void Log(string Key, object Data)
+		{
+			Log(Key, Data.ToString());
+		}
+
 		public static void Log(string Key, string Data)
 		{
 			if(DataDictionary.ContainsKey(Key))
@@ -21,10 +26,10 @@ namespace ForestOfChaosLib.Debugging
 
 		public class Data
 		{
-			public        Data   previousData;
-			public        float  Time;
-			public        string Value;
-			public static Data   Empty(string val = "") => new Data {Value = val, Time = 0};
+			public Data   previousData;
+			public float  Time;
+			public string Value;
+			public static Data Empty(string val = "") => new Data {Value = val, Time = 0};
 
 			public static Data Build(string val)
 			{
@@ -38,7 +43,7 @@ namespace ForestOfChaosLib.Debugging
 					return new Data {Value = val, Time = 0};
 				}
 #else
-				return new DictionaryData {Value = val, Time = UnityEngine.Time.time};
+				return new Data {Value = val, Time = UnityEngine.Time.time};
 #endif
 			}
 
@@ -54,7 +59,7 @@ namespace ForestOfChaosLib.Debugging
 					return new Data {Value = val, Time = 0, previousData = other};
 				}
 #else
-				return new DictionaryData {Value = val, Time = UnityEngine.Time.time, previousData = other};
+				return new Data {Value = val, Time = UnityEngine.Time.time, previousData = other};
 #endif
 			}
 

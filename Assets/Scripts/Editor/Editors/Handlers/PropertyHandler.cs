@@ -10,14 +10,8 @@ namespace ForestOfChaosLib.Editor
 			FoCsGUI.Layout.PropertyField(new GUIContent(property.displayName), property, property.isExpanded);
 		}
 
-		public float PropertyHeight(SerializedProperty property)
-		{
-			return FoCsGUI.GetPropertyHeight(property);
-		}
-
-		public bool IsValidProperty(SerializedProperty property)
-		{
-			return true;
-		}
+		public float PropertyHeight(SerializedProperty property) => FoCsGUI.GetPropertyHeight(property);
+		public bool IsValidProperty(SerializedProperty property) => true;
+		public void DrawAfterEditor(SerializedProperty serializedProperty) { }
 	}
 }

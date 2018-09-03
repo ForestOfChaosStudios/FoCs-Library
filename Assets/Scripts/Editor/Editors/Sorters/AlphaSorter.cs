@@ -12,7 +12,7 @@ namespace ForestOfChaosLib.Editor
 		public static readonly GUIContent  modeName = new GUIContent("A-Z");
 
 		///<inheritdoc />
-		public override        GUIContent  ModeName => modeName;
+		public override GUIContent ModeName => modeName;
 
 		///<inheritdoc />
 		public override List<SerializedProperty> GetPropertyOrder(IEnumerable<SerializedProperty> properties)

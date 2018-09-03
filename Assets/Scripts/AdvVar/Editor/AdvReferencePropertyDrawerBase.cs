@@ -34,8 +34,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 			using(var propScope = Disposables.PropertyScope(position, label, property))
 			{
-				label = propScope.content;
-
+				label              = propScope.content;
 				useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(EDITS_ARRAY), useLocal.boolValue? localValue : globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1).Value == 0;
 			}
 
@@ -80,7 +79,7 @@ namespace ForestOfChaosLib.AdvVar.Editor
 
 			if(!useLocal.boolValue && (globalReference.objectReferenceValue != null))
 			{
-				foldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(2)), foldout, foldoutGUIContent);
+				foldout = EditorGUI.Foldout(position.Edit(RectEdit.AddY(1), RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine)), foldout, foldoutGUIContent);
 
 				if(foldout)
 				{

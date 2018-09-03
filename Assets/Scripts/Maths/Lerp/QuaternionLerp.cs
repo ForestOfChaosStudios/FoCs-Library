@@ -42,10 +42,7 @@ namespace ForestOfChaosLib.Maths.Lerp
 			return Lerp(posOne, posTwo, time);
 		}
 
-		public static Quaternion Lerp(List<Quaternion> curve, float time, bool clamp = false)
-		{
-			return Lerp(curve.ToArray(), time, clamp);
-		}
+		public static Quaternion Lerp(List<Quaternion> curve, float time, bool clamp = false) => Lerp(curve.ToArray(), time, clamp);
 
 		public static Quaternion Lerp(Quaternion[] curve, float time, bool clamp = false)
 		{

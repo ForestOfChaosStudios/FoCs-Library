@@ -5,8 +5,9 @@ namespace ForestOfChaosLib.Editor
 {
 	public class UnityReorderableListStorage
 	{
-		internal static List<UnityReorderableListStorage> storages = new List<UnityReorderableListStorage>();
-		public IRepaintable owner;
+		internal static List<UnityReorderableListStorage>                storages = new List<UnityReorderableListStorage>();
+		public          IRepaintable                                     owner;
+		internal        Dictionary<string, UnityReorderableListProperty> URLPList = new Dictionary<string, UnityReorderableListProperty>(1);
 
 		public UnityReorderableListStorage()
 		{
@@ -29,8 +30,6 @@ namespace ForestOfChaosLib.Editor
 		{
 			storages.Remove(this);
 		}
-
-		internal Dictionary<string, UnityReorderableListProperty> URLPList = new Dictionary<string, UnityReorderableListProperty>(1);
 
 		public UnityReorderableListProperty GetList(SerializedProperty property)
 		{

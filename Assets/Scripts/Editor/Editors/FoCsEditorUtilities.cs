@@ -17,20 +17,11 @@ namespace ForestOfChaosLib.Editor
 			return DefaultPropertyType.NotDefault;
 		}
 
-		public static bool IsDefaultScriptProperty(SerializedProperty property)
-		{
-			return property.name.Equals("m_Script") && property.type.Equals("PPtr<MonoScript>") && (property.propertyType == SerializedPropertyType.ObjectReference) && property.propertyPath.Equals("m_Script");
-		}
+		public static bool IsDefaultScriptProperty(SerializedProperty property) =>
+				property.name.Equals("m_Script") && property.type.Equals("PPtr<MonoScript>") && (property.propertyType == SerializedPropertyType.ObjectReference) && property.propertyPath.Equals("m_Script");
 
-		public static bool IsPropertyHidden(SerializedProperty property)
-		{
-			return GetDefaultPropertyType(property) != DefaultPropertyType.NotDefault;
-		}
-
-		public static bool PropertyIsArrayAndNotString(SerializedProperty property)
-		{
-			return property.isArray && (property.propertyType != SerializedPropertyType.String);
-		}
+		public static bool IsPropertyHidden(SerializedProperty            property) => GetDefaultPropertyType(property) != DefaultPropertyType.NotDefault;
+		public static bool PropertyIsArrayAndNotString(SerializedProperty property) => property.isArray && (property.propertyType != SerializedPropertyType.String);
 
 		public int FileID()
 		{
@@ -50,19 +41,8 @@ namespace ForestOfChaosLib.Editor
 			return localId;
 		}
 
-		public string AssetPath()
-		{
-			return AssetPath(target);
-		}
-
-		public static string AssetPath(Object target)
-		{
-			return AssetDatabase.GetAssetPath(target);
-		}
-
-		private static string GetUniqueStringID(SerializedProperty property)
-		{
-			return string.Format("{0}-{1}", property.propertyPath, property.name);
-		}
+		public string AssetPath() => AssetPath(target);
+		public static string AssetPath(Object                      target) => AssetDatabase.GetAssetPath(target);
+		private static string GetUniqueStringID(SerializedProperty property) => string.Format("{0}-{1}", property.propertyPath, property.name);
 	}
 }

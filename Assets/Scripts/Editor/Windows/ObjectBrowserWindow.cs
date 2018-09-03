@@ -63,10 +63,7 @@ namespace ForestOfChaosLib.Editor.Windows
 			set { EditorPrefs.SetInt("FoCsOB.ActiveIndex", activeIndex = value); }
 		}
 
-		private static float TypeWidth
-		{
-			get { return Screen.width * TYPE_WIDTH; }
-		}
+		private static float TypeWidth => Screen.width * TYPE_WIDTH;
 
 		[MenuItem("Forest Of Chaos/" + TITLE)]
 		private static void Init()
@@ -351,15 +348,8 @@ namespace ForestOfChaosLib.Editor.Windows
 			}
 		}
 
-		private static bool SearchString(Object foundObject, string search)
-		{
-			return SearchString(foundObject.name, search);
-		}
-
-		private static bool SearchString(string foundObject, string search)
-		{
-			return foundObject.ToLower().Contains(search.ToLower());
-		}
+		private static bool SearchString(Object foundObject, string search) => SearchString(foundObject.name, search);
+		private static bool SearchString(string foundObject, string search) => foundObject.ToLower().Contains(search.ToLower());
 
 		private static void DrawFoundObject(Object foundObject)
 		{
@@ -470,10 +460,7 @@ namespace ForestOfChaosLib.Editor.Windows
 			FoundSceneObjects.TrimExcess();
 		}
 
-		private static int Sorter(Object x, Object y)
-		{
-			return string.Compare(x.name, y.name, StringComparison.Ordinal);
-		}
+		private static int Sorter(Object x, Object y) => string.Compare(x.name, y.name, StringComparison.Ordinal);
 
 		private static void SceneObjectChange()
 		{

@@ -1,54 +1,17 @@
-﻿using ForestOfChaosLib.Attributes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ForestOfChaosLib.Attributes;
 using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
 {
 	public partial class FoCsEditor
 	{
-		// Based off of https://github.com/SubjectNerd-Unity/ReorderableInspector/blob/master/Editor/ReorderableArrayInspector.cs
-		// Though I have added an extra attribute that allows you to specify how the buttons will be laid out
-		protected struct ContextMenuData
-		{
-			public string         MenuItem;
-			public MethodInfo     Function;
-			public MethodInfo     Validate;
-			public LayoutOptions? Layout;
-
-			public ContextMenuData(string item)
-			{
-				MenuItem = item;
-				Function = null;
-				Validate = null;
-				Layout   = null;
-			}
-
-			public struct LayoutOptions
-			{
-				public int Row;
-				public int Column;
-				public int AmountPerLine;
-
-				public LayoutOptions(int row, int column, int amountPerLine)
-				{
-					Row           = row;
-					Column        = column;
-					AmountPerLine = amountPerLine;
-				}
-
-				public LayoutOptions(ContextMenuLayoutAttribute layout)
-				{
-					Row           = layout.Row;
-					Column        = layout.Column;
-					AmountPerLine = layout.AmountPerLine;
-				}
-			}
-		}
-
-		protected Dictionary<string, ContextMenuData> contextData = new Dictionary<string, ContextMenuData>();
+		private static readonly Type                                ContextMenuType       = typeof(ContextMenu);
+		private static readonly Type                                ContextMenuLayoutType = typeof(ContextMenuLayoutAttribute);
+		protected               Dictionary<string, ContextMenuData> contextData           = new Dictionary<string, ContextMenuData>();
 
 		private static IEnumerable<MethodInfo> GetAllMethods(Type t)
 		{
@@ -56,9 +19,6 @@ namespace ForestOfChaosLib.Editor
 
 			return t == null? Enumerable.Empty<MethodInfo>() : t.GetMethods(binding).Concat(GetAllMethods(t.BaseType));
 		}
-
-		private static readonly Type ContextMenuType       = typeof(ContextMenu);
-		private static readonly Type ContextMenuLayoutType = typeof(ContextMenuLayoutAttribute);
 
 		protected void InitContextMenu()
 		{
@@ -189,6 +149,45 @@ namespace ForestOfChaosLib.Editor
 		private void InvokeMethod(KeyValuePair<string, ContextMenuData> kv)
 		{
 			kv.Value.Function.Invoke(target, null);
+		}
+
+		// Based off of https://github.com/SubjectNerd-Unity/ReorderableInspector/blob/master/Editor/ReorderableArrayInspector.cs
+		// Though I have added an extra attribute that allows you to specify how the buttons will be laid out
+		protected struct ContextMenuData
+		{
+			public string         MenuItem;
+			public MethodInfo     Function;
+			public MethodInfo     Validate;
+			public LayoutOptions? Layout;
+
+			public ContextMenuData(string item)
+			{
+				MenuItem = item;
+				Function = null;
+				Validate = null;
+				Layout   = null;
+			}
+
+			public struct LayoutOptions
+			{
+				public int Row;
+				public int Column;
+				public int AmountPerLine;
+
+				public LayoutOptions(int row, int column, int amountPerLine)
+				{
+					Row           = row;
+					Column        = column;
+					AmountPerLine = amountPerLine;
+				}
+
+				public LayoutOptions(ContextMenuLayoutAttribute layout)
+				{
+					Row           = layout.Row;
+					Column        = layout.Column;
+					AmountPerLine = layout.AmountPerLine;
+				}
+			}
 		}
 	}
 }

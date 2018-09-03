@@ -1,5 +1,8 @@
-﻿namespace ForestOfChaosLib.AdvVar.Components
+﻿using UnityEngine;
+
+namespace ForestOfChaosLib.AdvVar.Components
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER + "/AdvVar/" + "Sync Bool Reference to GameObject Active")]
 	public class SyncBoolReferenceToGameObjectActive: FoCsBehaviour
 	{
 		public BoolReference Reference;

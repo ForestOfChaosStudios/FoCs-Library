@@ -8,10 +8,7 @@ namespace ForestOfChaosLib.Maths.Lerp
 {
 	public static class TransformDataLerp
 	{
-		public static TransformData Lerp(TransformData value1, TransformData value2, float time, bool clamp = false)
-		{
-			return Lerp(value1, value2, time, TransformDataLerpSettings.Default, clamp);
-		}
+		public static TransformData Lerp(TransformData value1, TransformData value2, float time, bool clamp = false) => Lerp(value1, value2, time, TransformDataLerpSettings.Default, clamp);
 
 		public static TransformData Lerp(TransformData value1, TransformData value2, float time, TransformDataLerpSettings settings, bool clamp = false)
 		{
@@ -74,10 +71,7 @@ namespace ForestOfChaosLib.Maths.Lerp
 			return output;
 		}
 
-		public static TransformData Lerp(TransformData value1, TransformData value2, TransformData value3, float time, bool clamp = false)
-		{
-			return Lerp(value1, value2, value3, time, TransformDataLerpSettings.Default, clamp);
-		}
+		public static TransformData Lerp(TransformData value1, TransformData value2, TransformData value3, float time, bool clamp = false) => Lerp(value1, value2, value3, time, TransformDataLerpSettings.Default, clamp);
 
 		public static TransformData Lerp(TransformData value1, TransformData value2, TransformData value3, float time, TransformDataLerpSettings settings, bool clamp = false)
 		{
@@ -90,10 +84,8 @@ namespace ForestOfChaosLib.Maths.Lerp
 			return Lerp(one, two, time);
 		}
 
-		public static TransformData Lerp(TransformData value1, TransformData value2, TransformData value3, TransformData value4, float time, bool clamp = false)
-		{
-			return Lerp(value1, value2, value3, value4, time, TransformDataLerpSettings.Default, clamp);
-		}
+		public static TransformData Lerp(TransformData value1, TransformData value2, TransformData value3, TransformData value4, float time, bool clamp = false) =>
+				Lerp(value1, value2, value3, value4, time, TransformDataLerpSettings.Default, clamp);
 
 		public static TransformData Lerp(TransformData value1, TransformData value2, TransformData value3, TransformData value4, float time, TransformDataLerpSettings settings, bool clamp = false)
 		{
@@ -109,10 +101,7 @@ namespace ForestOfChaosLib.Maths.Lerp
 			return Lerp(posOne, posTwo, time);
 		}
 
-		public static TransformData Lerp(List<TransformData> curve, float time, bool clamp = false)
-		{
-			return Lerp(curve, time, TransformDataLerpSettings.Default, clamp);
-		}
+		public static TransformData Lerp(List<TransformData> curve, float time, bool clamp = false) => Lerp(curve, time, TransformDataLerpSettings.Default, clamp);
 
 		public static TransformData Lerp(List<TransformData> curve, float time, TransformDataLerpSettings settings, bool clamp = false)
 		{
@@ -150,10 +139,7 @@ namespace ForestOfChaosLib.Maths.Lerp
 			return Lerp(posOne, posTwo, time);
 		}
 
-		public static TransformData Lerp(TransformData[] curve, float time, bool clamp = false)
-		{
-			return Lerp(curve, time, TransformDataLerpSettings.Default, clamp);
-		}
+		public static TransformData Lerp(TransformData[] curve, float time, bool clamp = false) => Lerp(curve, time, TransformDataLerpSettings.Default, clamp);
 
 		public static TransformData Lerp(TransformData[] curve, float time, TransformDataLerpSettings settings, bool clamp = false)
 		{

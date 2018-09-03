@@ -14,13 +14,13 @@ public class StringReferenceEditor: FoCsEditor
 		{
 			DoDrawHeader();
 			VerifyHandler();
+
 			using(var changeCheckScope = Disposables.ChangeCheck())
 			{
 				serializedObject.Update();
 
 				foreach(var serializedProperty in serializedObject.Properties())
 				{
-
 					if(serializedProperty.name == "storedValue")
 						DoTextBox(serializedProperty);
 					else

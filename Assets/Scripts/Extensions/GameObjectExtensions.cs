@@ -14,25 +14,10 @@ namespace ForestOfChaosLib.Extensions
 			gO.transform.ResetPosRotScale();
 		}
 
-		public static Vector3 GetPosition(this GameObject gO)
-		{
-			return gO.transform.position;
-		}
-
-		public static Vector3 GetLocalPosition(this GameObject gO)
-		{
-			return gO.transform.localPosition;
-		}
-
-		public static Vector3 GetEulerAngles(this GameObject gO)
-		{
-			return gO.transform.eulerAngles;
-		}
-
-		public static Vector3 GetLocalEulerAngles(this GameObject gO)
-		{
-			return gO.transform.localEulerAngles;
-		}
+		public static Vector3 GetPosition(this         GameObject gO) => gO.transform.position;
+		public static Vector3 GetLocalPosition(this    GameObject gO) => gO.transform.localPosition;
+		public static Vector3 GetEulerAngles(this      GameObject gO) => gO.transform.eulerAngles;
+		public static Vector3 GetLocalEulerAngles(this GameObject gO) => gO.transform.localEulerAngles;
 
 		public static void SetPosition(this GameObject gO, Vector3 pos)
 		{

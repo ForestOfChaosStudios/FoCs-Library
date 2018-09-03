@@ -2,8 +2,9 @@
 using TMPro;
 using UnityEngine;
 
-namespace ForestOfChaosLib.FoCsUI.Image
+namespace ForestOfChaosLib.FoCsUI.Text
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Text/Events (TextMesh Pro)")]
 	public class FoCsTextEventTmp: FoCsText
 	{
 		public TextMeshProUGUI TextObj;

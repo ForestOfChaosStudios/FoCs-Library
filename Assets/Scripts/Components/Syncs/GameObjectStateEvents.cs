@@ -1,23 +1,25 @@
 ﻿using System;
 using ForestOfChaosLib.Extensions;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Components.Syncs
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "GameObject State Events")]
 	public class GameObjectStateEvents: FoCsBehaviour
 	{
-		public Action OnEnabled;
-		public Action OnDisabled;
 		public Action OnDestroyed;
+		public Action OnDisabled;
+		public Action OnEnabled;
 
-        private void OnEnable()
+		private void OnEnable()
 		{
 			OnEnabled.Trigger();
-        }
+		}
 
 		private void OnDisable()
 		{
 			OnDisabled.Trigger();
-        }
+		}
 
 		private void OnDestroy()
 		{

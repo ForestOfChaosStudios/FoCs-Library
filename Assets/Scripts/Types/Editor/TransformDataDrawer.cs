@@ -12,16 +12,19 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 	[CustomPropertyDrawer(typeof(TransformData))]
 	public class TransformDataDrawer: FoCsPropertyDrawer<TransformData>
 	{
-		private static readonly GUIContent CopyContent  = new GUIContent("Copy",  "Copies a new TransformData");
-		private static readonly GUIContent PasteContent = new GUIContent("Paste", "Pastes the TransformData");
-		private static readonly GUIContent ResetContent = new GUIContent("Reset", "Resets the TransformData to TransformData.Empty");
+		private static readonly GUIContent CopyContent     = new GUIContent("Copy",  "Copies a new TransformData");
+		private static readonly GUIContent PasteContent    = new GUIContent("Paste", "Pastes the TransformData");
+		private static readonly GUIContent ResetContent    = new GUIContent("Reset", "Resets the TransformData to TransformData.Empty");
+		private static readonly GUIContent PositionContent = new GUIContent("Position");
+		private static readonly GUIContent RotationContent = new GUIContent("Rotation");
+		private static readonly GUIContent ScaleContent    = new GUIContent("Scale");
 
 		/// <inheritdoc />
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			using(var prop = Disposables.PropertyScope(position, label, property))
 			{
-				var owner = GetOwner(property);
+				var owner = GetTargetObject(property);
 				FoCsGUI.Label(position.Edit(RectEdit.SetHeight(SingleLine)), prop.content);
 				DoDragDrop(position.Edit(RectEdit.MultiplyWidth(0.5f)), property);
 
@@ -43,7 +46,7 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 						var resetBtn = FoCsGUI.Button(horizontalScope.GetNext(1), ResetContent);
 
 						if(copyBtn)
-							CopyPasteUtility.Copy(GetOwner(property));
+							CopyPasteUtility.Copy(GetTargetObject(property));
 						else if(pasteBtn)
 						{
 							var tD = CopyPasteUtility.Paste<TransformData>();
@@ -64,9 +67,9 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 
 					using(var vertScope = Disposables.RectVerticalScope(3, position.Edit(RectEdit.SetHeight(SingleLine * 3), RectEdit.AddY(SingleLine))))
 					{
-						FoCsGUI.PropertyField(vertScope.GetNext(), Position);
-						FoCsGUI.PropertyField(vertScope.GetNext(), Rotation);
-						FoCsGUI.PropertyField(vertScope.GetNext(), Scale);
+						Vector3PropEditor.Draw(vertScope.GetNext(), Position, PositionContent);
+						QuaternionPropertyDrawer.Draw(vertScope.GetNext(), Rotation, RotationContent);
+						Vector3PropEditor.Draw(vertScope.GetNext(), Scale, ScaleContent);
 					}
 				}
 			}
@@ -136,9 +139,6 @@ namespace ForestOfChaosLib.Maths.Curves.Editor
 		}
 
 		/// <inheritdoc />
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			return SingleLine * 4;
-		}
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => SingleLine * 4;
 	}
 }

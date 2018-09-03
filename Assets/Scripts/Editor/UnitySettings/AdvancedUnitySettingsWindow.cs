@@ -12,6 +12,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 	{
 		private const string                             Title = "Advanced Unity Settings Window";
 		private       Tab<AdvancedUnitySettingsWindow>[] tabs;
+
 		public override Tab<AdvancedUnitySettingsWindow>[] Tabs
 		{
 			get
@@ -46,21 +47,21 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 
 		private class SearchableTab: Tab<AdvancedUnitySettingsWindow>
 		{
-			private static readonly GUIContent                  SearchGuiContent = new GUIContent("Search: ", "This will only show properties that match, Ignores case.");
-			private                 string                      Search;
 			//private                 HandlerController[]         handlerControllers = null;
 			//private                 UnityReorderableListStorage storage             = null;
-			private const           float                       EXTRA_LABEL_WIDTH = 128;
-			private const           float                       LEFT_BORDER       = 32f;
-			private const           float                       RIGHT_BORDER      = 0;
-			private readonly        SerializedObject[]            Assets;
-			private                 Vector2                     vector2 = Vector2.zero;
-			public override         string                      TabName { get; }
+			private const           float              EXTRA_LABEL_WIDTH = 128;
+			private const           float              LEFT_BORDER       = 32f;
+			private const           float              RIGHT_BORDER      = 0;
+			private static readonly GUIContent         SearchGuiContent  = new GUIContent("Search: ", "This will only show properties that match, Ignores case.");
+			private readonly        SerializedObject[] Assets;
+			private                 string             Search;
+			private                 Vector2            vector2 = Vector2.zero;
+			public override         string             TabName { get; }
 
 			public SearchableTab(string tabName, SerializedObject[] assets)
 			{
 				TabName = tabName;
-				Assets   = assets;
+				Assets  = assets;
 			}
 
 			public override void DrawTab(FoCsWindow<AdvancedUnitySettingsWindow> owner)
@@ -78,51 +79,51 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 				}
 
 				using(Disposables.LabelAddWidth(EXTRA_LABEL_WIDTH))
-				using (Disposables.SetIndent(1))
 				{
-					//if(handlerControllers.IsNullOrEmpty())
-					//{
-					//	handlerControllers = new HandlerController[Assets.Length];
-					//
-					//	for(var i = 0; i < handlerControllers.Length; i++)
-					//		handlerControllers[i] = new HandlerController();
-					//}
-
-					for(var i = 0; i < Assets.Length; i++)
+					using(Disposables.SetIndent(1))
 					{
-						var asset = Assets[i];
-						//var handlerController = handlerControllers[i];
-						asset.Update();
+						//if(handlerControllers.IsNullOrEmpty())
+						//{
+						//	handlerControllers = new HandlerController[Assets.Length];
+						//
+						//	for(var i = 0; i < handlerControllers.Length; i++)
+						//		handlerControllers[i] = new HandlerController();
+						//}
 
-						//handlerController.VerifyIPropertyLayoutHandlerArrayNoObject(storage);
-						//handlerController.VerifyHandlingDictionary(asset);
-
-						using(Disposables.HorizontalScope())
+						for(var i = 0; i < Assets.Length; i++)
 						{
-							DrawSpace(LEFT_BORDER);
+							var asset = Assets[i];
+							//var handlerController = handlerControllers[i];
+							asset.Update();
 
-							using(var scrollViewScope = Disposables.ScrollViewScope(vector2, true))
+							//handlerController.VerifyIPropertyLayoutHandlerArrayNoObject(storage);
+							//handlerController.VerifyHandlingDictionary(asset);
+
+							using(Disposables.HorizontalScope())
 							{
-								vector2 = scrollViewScope.scrollPosition;
+								DrawSpace(LEFT_BORDER);
 
-								using(var changeCheckScope = Disposables.ChangeCheck())
+								using(var scrollViewScope = Disposables.ScrollViewScope(vector2, true))
 								{
-									foreach(var property in asset.Properties())
-									{
-										if(Search.IsNullOrEmpty())
-											FoCsGUI.Layout.PropertyField(property);
-										else if(property.name.ToLower().Contains(Search.ToLower()))
-											FoCsGUI.Layout.PropertyField(property);
-									}
+									vector2 = scrollViewScope.scrollPosition;
 
-									if(changeCheckScope.changed)
+									using(var changeCheckScope = Disposables.ChangeCheck())
 									{
-										asset.ApplyModifiedProperties();
+										foreach(var property in asset.Properties())
+										{
+											if(Search.IsNullOrEmpty())
+												FoCsGUI.Layout.PropertyField(property);
+											else if(property.name.ToLower().Contains(Search.ToLower()))
+												FoCsGUI.Layout.PropertyField(property);
+										}
+
+										if(changeCheckScope.changed)
+											asset.ApplyModifiedProperties();
 									}
 								}
-							}
 
-							DrawSpace(RIGHT_BORDER);
+								DrawSpace(RIGHT_BORDER);
+							}
 						}
 					}
 				}
@@ -137,9 +138,7 @@ namespace ForestOfChaosLib.Editor.UnitySettings
 					if(FoCsGUI.Layout.Button("Force save"))
 					{
 						foreach(var serializedObject in Assets)
-						{
 							EditorUtility.SetDirty(serializedObject.targetObject);
-						}
 					}
 
 					using(Disposables.HorizontalScope(GUI.skin.box))

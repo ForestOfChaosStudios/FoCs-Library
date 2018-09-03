@@ -9,6 +9,7 @@ namespace ForestOfChaosLib.Editor
 	{
 		public static          SearchSorter Instance;
 		public static readonly GUIContent   modeName = new GUIContent("Search");
+
 		///<inheritdoc />
 		public override GUIContent ModeName => modeName;
 

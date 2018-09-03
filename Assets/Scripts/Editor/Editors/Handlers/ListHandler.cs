@@ -1,6 +1,7 @@
 ﻿//#define CUSTOM_LIST
 
 using UnityEditor;
+using UnityEngine;
 
 namespace ForestOfChaosLib.Editor
 {
@@ -41,7 +42,7 @@ namespace ForestOfChaosLib.Editor
 			{
 				using(Disposables.HorizontalScope())
 				{
-					FoCsGUI.Layout.GetControlRect(UnityEngine.GUILayout.Width(5));
+					FoCsGUI.Layout.GetControlRect(GUILayout.Width(5));
 					list.HandleDrawing();
 				}
 			}
@@ -55,5 +56,6 @@ namespace ForestOfChaosLib.Editor
 		}
 #endif
 		public bool IsValidProperty(SerializedProperty property) => property.isArray && (property.propertyType != SerializedPropertyType.String);
+		public void DrawAfterEditor(SerializedProperty serializedProperty) { }
 	}
 }

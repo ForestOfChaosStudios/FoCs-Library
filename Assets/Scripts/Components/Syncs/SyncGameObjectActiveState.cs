@@ -2,16 +2,16 @@
 
 namespace ForestOfChaosLib.Components.Syncs
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_SYNC_FOLDER_ + "GameObject Sync")]
 	public class SyncGameObjectActiveState: FoCsBehaviour
 	{
-		public GameObjectStateEvents GameObjectToSync;
-		private GameObject GameObject;
+		private GameObject            GameObject;
+		public  GameObjectStateEvents GameObjectToSync;
 
-        private void OnEnable()
-        {
-	        GameObject = gameObject;
-
-            GameObjectToSync.OnDisabled  += OnDisabled;
+		private void OnEnable()
+		{
+			GameObject                   =  gameObject;
+			GameObjectToSync.OnDisabled  += OnDisabled;
 			GameObjectToSync.OnEnabled   += OnEnabled;
 			GameObjectToSync.OnDestroyed += OnDestroy;
 		}

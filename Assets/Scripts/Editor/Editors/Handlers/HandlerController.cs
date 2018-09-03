@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ForestOfChaosLib.Editor.Utilities;
+﻿using ForestOfChaosLib.Editor.Utilities;
 using UnityEditor;
 using Dictionary = System.Collections.Generic.Dictionary<ForestOfChaosLib.Editor.FoCsEditor.SortableSerializedProperty, ForestOfChaosLib.Editor.IPropertyLayoutHandler>;
 
@@ -7,11 +6,17 @@ namespace ForestOfChaosLib.Editor
 {
 	public class HandlerController
 	{
-		public  IPropertyLayoutHandler[]   Handlers = null;
 		public  PropertyHandler            fallbackHandler;
+		public  IPropertyLayoutHandler[]   Handlers;
 		private Dictionary                 PropertyHandlingDictionary;
 		public  Dictionary.ValueCollection Values => PropertyHandlingDictionary.Values;
 		public  Dictionary.KeyCollection   Keys   => PropertyHandlingDictionary.Keys;
+
+		public IPropertyLayoutHandler this[FoCsEditor.SortableSerializedProperty i]
+		{
+			get { return PropertyHandlingDictionary[i]; }
+			set { PropertyHandlingDictionary[i] = value; }
+		}
 
 		public IPropertyLayoutHandler GetHandler(SerializedProperty property)
 		{
@@ -29,12 +34,6 @@ namespace ForestOfChaosLib.Editor
 			this[property].HandleProperty(property);
 		}
 
-		public IPropertyLayoutHandler this[FoCsEditor.SortableSerializedProperty i]
-		{
-			get { return PropertyHandlingDictionary[i]; }
-			set { PropertyHandlingDictionary[i] = value; }
-		}
-
 		public void ClearHandlingDictionary()
 		{
 			if(PropertyHandlingDictionary != null)
@@ -49,7 +48,7 @@ namespace ForestOfChaosLib.Editor
 			if(PropertyHandlingDictionary != null)
 				return;
 
-			PropertyHandlingDictionary = new Dictionary<FoCsEditor.SortableSerializedProperty, IPropertyLayoutHandler>(serializedObject.VisibleProperties());
+			PropertyHandlingDictionary = new Dictionary(serializedObject.VisibleProperties());
 
 			foreach(var property in serializedObject.Properties())
 				PropertyHandlingDictionary.Add(property, GetHandler(property));
@@ -58,7 +57,7 @@ namespace ForestOfChaosLib.Editor
 		public void VerifyIPropertyLayoutHandlerArray(FoCsEditor owner)
 		{
 			if(Handlers == null)
-				Handlers = new IPropertyLayoutHandler[] {new ObjectReferenceHandler(owner), new ListHandler(owner), new DefaultScriptPropertyHandler(owner),};
+				Handlers = new IPropertyLayoutHandler[] {new ObjectReferenceHandler(owner), new ListHandler(owner), new DefaultScriptPropertyHandler(owner)};
 
 			if(fallbackHandler == null)
 				fallbackHandler = new PropertyHandler();
@@ -67,7 +66,7 @@ namespace ForestOfChaosLib.Editor
 		public void VerifyIPropertyLayoutHandlerArray(ObjectReferenceHandler owner)
 		{
 			if(Handlers == null)
-				Handlers = new IPropertyLayoutHandler[] {new ListHandler(owner.owner), new DefaultScriptPropertyHandler(owner.owner),};
+				Handlers = new IPropertyLayoutHandler[] {new ListHandler(owner.owner), new DefaultScriptPropertyHandler(owner.owner)};
 
 			if(fallbackHandler == null)
 				fallbackHandler = new PropertyHandler();
@@ -76,7 +75,7 @@ namespace ForestOfChaosLib.Editor
 		public void VerifyIPropertyLayoutHandlerArrayNoObject(FoCsEditor owner)
 		{
 			if(Handlers == null)
-				Handlers = new IPropertyLayoutHandler[] { new ListHandler(owner), new DefaultScriptPropertyHandler(owner),};
+				Handlers = new IPropertyLayoutHandler[] {new ListHandler(owner), new DefaultScriptPropertyHandler(owner)};
 
 			if(fallbackHandler == null)
 				fallbackHandler = new PropertyHandler();
@@ -85,10 +84,15 @@ namespace ForestOfChaosLib.Editor
 		public void VerifyIPropertyLayoutHandlerArrayNoObject(UnityReorderableListStorage storage)
 		{
 			if(Handlers == null)
-				Handlers = new IPropertyLayoutHandler[] { new ListHandler(storage), new DefaultScriptPropertyHandler(),};
+				Handlers = new IPropertyLayoutHandler[] {new ListHandler(storage), new DefaultScriptPropertyHandler()};
 
 			if(fallbackHandler == null)
 				fallbackHandler = new PropertyHandler();
+		}
+
+		public void DrawAfterEditor(FoCsEditor.SortableSerializedProperty serializedProperty)
+		{
+			this[serializedProperty].DrawAfterEditor(serializedProperty.Property);
 		}
 	}
 }

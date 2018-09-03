@@ -1,5 +1,8 @@
-﻿namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
+﻿using UnityEngine;
+
+namespace ForestOfChaosLib.AdvVar.RuntimeRef.Components
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER + "/AdvVar/RunTime/" + "Sync Component to GameObject State")]
 	public class SyncComponentActiveWithGameObject: FoCsBehaviour
 	{
 		public MonoBehaviourRunTimeRef MonoBehaviourRunTimeRef;

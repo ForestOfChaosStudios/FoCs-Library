@@ -3,6 +3,7 @@ using UCamera = UnityEngine.Camera;
 
 namespace ForestOfChaosLib.Components.Camera
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_CAMERA_FOLDER_ + "Turn On Depth Buffer")]
 	public class TurnOnDepthBuffer: FoCsBehaviour
 	{
 		public void Start()

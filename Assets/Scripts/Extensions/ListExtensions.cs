@@ -8,20 +8,9 @@ namespace ForestOfChaosLib.Extensions
 {
 	public static class ListExtenstions
 	{
-		public static bool IsEmpty<T>(this List<T> list)
-		{
-			return list.Count == 0;
-		}
-
-		public static bool NotEmpty<T>(this List<T> list)
-		{
-			return list.Count > 0;
-		}
-
-		public static bool IsNullOrEmpty<T>(this List<T> list)
-		{
-			return (list == null) || (list.Count == 0);
-		}
+		public static bool IsEmpty<T>(this       List<T> list) => list.Count == 0;
+		public static bool NotEmpty<T>(this      List<T> list) => list.Count > 0;
+		public static bool IsNullOrEmpty<T>(this List<T> list) => (list == null) || (list.Count == 0);
 
 		public static IList<T> Clone<T>(this IList<T> listToClone) where T: ICloneable
 		{
@@ -49,7 +38,7 @@ namespace ForestOfChaosLib.Extensions
 			if(array.IsNullOrEmpty())
 				return default(T);
 
-			return array[URandom.Range(0, array.Length - 1)];
+			return array[URandom.Range(0, array.Length)];
 		}
 
 		public static T UnityRandomObject<T>(this List<T> list)
@@ -57,7 +46,7 @@ namespace ForestOfChaosLib.Extensions
 			if(list.IsNullOrEmpty())
 				return default(T);
 
-			return list[URandom.Range(0, list.Count - 1)];
+			return list[URandom.Range(0, list.Count)];
 		}
 
 		public static T SystemRandomObject<T>(this T[] array)

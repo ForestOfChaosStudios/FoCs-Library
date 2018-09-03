@@ -27,9 +27,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 			}
 		}
 
-		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label)
-		{
-			return GetAttribute.index == 0? SingleLinePlusPadding : 0;
-		}
+		public override float GetPropertyHeight(SerializedProperty prop, GUIContent label) => GetAttribute.index == 0? SingleLinePlusPadding : 0;
 	}
 }

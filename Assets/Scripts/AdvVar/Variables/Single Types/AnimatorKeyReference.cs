@@ -15,26 +15,31 @@ namespace ForestOfChaosLib.AdvVar
 			get { return Value.Key; }
 			set { Value.Key = value; }
 		}
+
 		public AnimatorKey.AnimType KeyType
 		{
 			get { return Value.KeyType; }
 			set { Value.KeyType = value; }
 		}
+
 		public int IntData
 		{
 			get { return Value.IntData; }
 			set { Value.IntData = value; }
 		}
+
 		public float FloatData
 		{
 			get { return Value.FloatData; }
 			set { Value.FloatData = value; }
 		}
+
 		public bool BoolData
 		{
 			get { return Value.BoolData; }
 			set { Value.BoolData = value; }
 		}
+
 		public bool TriggerData
 		{
 			get { return Value.TriggerData; }

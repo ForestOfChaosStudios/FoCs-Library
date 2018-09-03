@@ -20,6 +20,7 @@ namespace ForestOfChaosLib.Editor.Utilities
 				{Type.Byte, typeof(TypeWithNameAndData.ByteType)},
 				{Type.Bool, typeof(TypeWithNameAndData.BoolType)}
 		};
+
 		public static Dictionary<Type, object> TypeToData = new Dictionary<Type, object>
 		{
 				{Type.String, "\"\""},
@@ -357,6 +358,5 @@ namespace ForestOfChaosLib.Editor.Utilities
 			AssetDatabase.Refresh();
 		}
 #endregion
-
 	}
 }

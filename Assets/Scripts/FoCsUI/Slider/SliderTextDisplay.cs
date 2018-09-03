@@ -4,11 +4,12 @@ using TMPro;
 
 namespace ForestOfChaosLib.FoCsUI.Slider
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Slider/Toggle GameObjects")]
 	public class SliderTextDisplay: FoCsBehaviour
 	{
 		public FoCsSlider      FoCsSlider;
 		public string          NumberFormat = "0%";
-		public bool            Percentage   = true;
+		public bool            Percentage = true;
 		public TextMeshProUGUI Text;
 
 		private void OnEnable()

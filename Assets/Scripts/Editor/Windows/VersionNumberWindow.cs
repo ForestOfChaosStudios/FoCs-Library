@@ -8,15 +8,11 @@ namespace ForestOfChaosLib.Editor.Windows
 	[FoCsWindow]
 	public class VersionNumberWindow: FoCsWindow<VersionNumberWindow>
 	{
-		private const           string           TITLE   = "Version Number";
-		private static readonly GUIContent       Heading = new GUIContent("Bundle Version");
-		private static          SerializedObject SerializedObject;
-		private                 string           versionNumber;
-
-		private static SerializedProperty BundleVersion
-		{
-			get { return SerializedObject.FindProperty("bundleVersion"); }
-		}
+		private const           string             TITLE   = "Version Number";
+		private static readonly GUIContent         Heading = new GUIContent("Bundle Version");
+		private static          SerializedObject   SerializedObject;
+		private                 string             versionNumber;
+		private static          SerializedProperty BundleVersion => SerializedObject.FindProperty("bundleVersion");
 
 		[MenuItem(FileStrings.FORESTOFCHAOS_ + TITLE)]
 		internal static void Init()

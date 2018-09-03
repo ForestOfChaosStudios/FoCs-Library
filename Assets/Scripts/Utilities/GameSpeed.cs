@@ -92,6 +92,5 @@ namespace ForestOfChaosLib.Utilities
 		public const float TENxSPEED    = 10f;
 		public const float TWENTYxSPEED = 20f;
 #endregion
-
 	}
 }

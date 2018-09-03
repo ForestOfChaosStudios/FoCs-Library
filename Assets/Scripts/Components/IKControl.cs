@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Animation
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "IKControl")]
 	public class IKControl: FoCsBehaviour
 	{
 		[SerializeField] protected Animator  animator;
@@ -18,7 +19,6 @@ namespace ForestOfChaosLib.Animation
 				animator = GetComponent<Animator>();
 		}
 
-		//a callback for calculating IK
 		private void OnAnimatorIK()
 		{
 			if(!animator)

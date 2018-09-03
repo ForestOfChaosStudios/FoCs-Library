@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "On Collision Events")]
 	public class OnCollisionEvents: FoCsBehaviour
 	{
 		public event Action<Collision> OnCollEnter;

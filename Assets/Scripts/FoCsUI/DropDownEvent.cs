@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 namespace ForestOfChaosLib.FoCsUI
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Dropdown Events")]
 	[RequireComponent(typeof(Dropdown))]
 	public class DropDownEvent: FoCsBehaviour
 	{
 		public Dropdown    _DropDown;
 		public Action<int> onValueChanged;
+
 		public int Value
 		{
 			get { return _DropDown.value; }

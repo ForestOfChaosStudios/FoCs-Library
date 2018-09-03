@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.Components
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "On Trigger 2D Events")]
 	public class OnTrigger2DEvents: FoCsBehaviour
 	{
 		public event Action<Collider2D> OnTrigEnter;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLib.FoCsUI.InputField
 {
+	[AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "InputField/InputField (TextMesh Pro)")]
 	public class FoCsInputFieldEventTmp: FoCsInputField
 	{
 		public TMP_InputField InputField;
