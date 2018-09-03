@@ -7,7 +7,6 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers.Attributes
 	[CustomPropertyDrawer(typeof(RangeAttribute))]
 	public class RangeAttributeDrawer: FoCsPropertyDrawerWithAttribute<RangeAttribute>
 	{
-		private static readonly List<IRangeDrawer> ExtraDrawers = new List<IRangeDrawer>();
 		private                 bool               foldout;
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
