@@ -22,7 +22,6 @@ namespace ForestOfChaosLib.Editor
 		public           ListLimiter              Limiter;
 		private          SerializedProperty       property;
 		public           SerializedPropertyType   SerializedPropertyType;
-
 		public static bool LimitingEnabled
 		{
 			get
@@ -39,11 +38,9 @@ namespace ForestOfChaosLib.Editor
 				OnLimitingChange.Trigger();
 			}
 		}
-
 		public        ReorderableList          List       { get; private set; }
 		public        AnimBool                 IsExpanded { get; set; }
 		public static ReorderableList.Defaults Defaults   => s_Defaults ?? (s_Defaults = new ReorderableList.Defaults());
-
 		public SerializedProperty Property
 		{
 			get { return property; }
@@ -147,21 +144,21 @@ namespace ForestOfChaosLib.Editor
 			{
 				CheckLimiter();
 				IsExpanded.target = Property.isExpanded;
-				DrawHeader();
+				var headerHeight = List.headerHeight;
+				var totalHeight = GetTotalHeight();
+				var fadeOutOfHeader = Mathf.Lerp(0, totalHeight + totalHeight, IsExpanded.faded) > headerHeight;
 
-				using(var fade = Disposables.FadeGroupScope(IsExpanded.faded))
+				if(fadeOutOfHeader)
 				{
-					var tempHeaderHeight   = List.headerHeight;
-					var tempHeaderCallback = List.drawHeaderCallback;
-					List.drawHeaderCallback = null;
-					List.headerHeight       = 0;
-
-					if(fade.visible)
-						List.DoLayoutList();
-
-					List.headerHeight       = tempHeaderHeight;
-					List.drawHeaderCallback = tempHeaderCallback;
+					using(var fade = Disposables.FadeGroupScope(IsExpanded.faded))
+					{
+						if(fade.visible)
+							List.DoLayoutList();
+					}
 				}
+				else
+					DrawHeader();
+
 			}
 		}
 
@@ -218,10 +215,6 @@ namespace ForestOfChaosLib.Editor
 
 			if(element.propertyType == SerializedPropertyType.ObjectReference)
 				indentLevel = 0;
-			//else if(element.propertyType == SerializedPropertyType.Generic)
-			//{
-			//	indentLevel = 0;
-			//}
 
 			using(Disposables.Indent(indentLevel))
 			{
@@ -399,6 +392,7 @@ namespace ForestOfChaosLib.Editor
 
 		public static implicit operator UnityReorderableListProperty(SerializedProperty input) => new UnityReorderableListProperty(input);
 		public static implicit operator SerializedProperty(UnityReorderableListProperty input) => input.Property;
+
 #region Storage
 		private ORD GetObjectDrawer(SerializedProperty property)
 		{
@@ -428,7 +422,6 @@ namespace ForestOfChaosLib.Editor
 			public static readonly GUIStyle   BoxBackground     = new GUIStyle("RL Background");
 			public static readonly GUIStyle   PreButton         = new GUIStyle("RL FooterButton");
 			public static readonly GUIStyle   ElementBackground = new GUIStyle("RL Element");
-
 			public static GUIStyle MiniLabel
 			{
 				get
@@ -451,7 +444,6 @@ namespace ForestOfChaosLib.Editor
 			private        int                          _min;
 			public         UnityReorderableListProperty MyListProperty;
 			private        bool                         Update;
-
 			private static int _TOTAL_VISIBLE_COUNT
 			{
 				get
@@ -465,7 +457,6 @@ namespace ForestOfChaosLib.Editor
 				}
 				set { EditorPrefs.SetInt("FoCsRLP._TOTAL_VISIBLE_COUNT", Mathf.Clamp(value, 0, int.MaxValue)); }
 			}
-
 			public static int TOTAL_VISIBLE_COUNT
 			{
 				get { return _TOTAL_VISIBLE_COUNT; }
@@ -475,21 +466,17 @@ namespace ForestOfChaosLib.Editor
 					ChangeCount.Trigger();
 				}
 			}
-
 			private int Count => MyListProperty.Property.arraySize;
-
 			public int Min
 			{
 				get { return _min; }
 				set { _min = Math.Max(0, value); }
 			}
-
 			public int Max
 			{
 				get { return _max; }
 				set { _max = Math.Min(Count, value); }
 			}
-
 			public bool ShowElement(int index) => (index >= Min) && (index < Max);
 
 			public static ListLimiter GetLimiter(UnityReorderableListProperty listProperty)
@@ -777,6 +764,7 @@ namespace ForestOfChaosLib.Editor
 			}
 		}
 #endregion
+
 #region Delegate Setters
 		/// <summary>
 		///     SetAddCallBack
@@ -910,5 +898,6 @@ namespace ForestOfChaosLib.Editor
 			return this;
 		}
 #endregion
+
 	}
 }
