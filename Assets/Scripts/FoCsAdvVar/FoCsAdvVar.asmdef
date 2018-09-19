@@ -1,0 +1,10 @@
+{
+    "name": "FoCsAdvVar",
+    "references": [
+        "FoCsLibrary"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
