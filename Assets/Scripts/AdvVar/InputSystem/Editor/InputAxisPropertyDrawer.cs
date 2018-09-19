@@ -44,7 +44,7 @@ namespace ForestOfChaosLib.Editor.PropertyDrawers
 				var OnlyButtonEvents = new EditorEntry("Only Button Events",                                               property.FindPropertyRelative("OnlyButtonEvents"));
 				var UseSmoothInput   = new EditorEntry("Use Smooth Input",                                                 property.FindPropertyRelative("UseSmoothInput"));
 				var Axis             = new EditorEntry($"Axis: {axisProp.stringValue}",                                    axisProp);
-				var value            = new EditorEntry($"{(ValueInverted.Property.boolValue? "Non Inverted " : "")}Value", property.FindPropertyRelative("value"));
+				var value            = new EditorEntry($"{(ValueInverted.Property.boolValue? "Non Inverted " : "")}Value", property.FindPropertyRelative(UseSmoothInput.Property.boolValue? "valueSmooth" : "valueRaw"));
 				var deadZone         = new EditorEntry("DeadZone",                                                         property.FindPropertyRelative("deadZone"));
 
 				using(var horizontalScope = Disposables.RectHorizontalScope(2, position))

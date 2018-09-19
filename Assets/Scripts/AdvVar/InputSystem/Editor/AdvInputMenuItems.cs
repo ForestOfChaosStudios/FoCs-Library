@@ -23,12 +23,12 @@ namespace ForestOfChaosLib.AdvVar.InputSystem.Editor
 		[MenuItem("Assets/Create/ADV Variables/Add All Input Axes")]
 		private static void CreateInputManagerFolder(MenuCommand command)
 		{
-			if(!(Selection.activeObject is AdvFolder))
+			if(!(Selection.activeObject is AdvSOFolder))
 			{
 				if(IsAssetAFolder(Selection.activeObject))
 				{
 					var path = AssetDatabase.GetAssetPath(Selection.activeObject.GetInstanceID());
-					var obj  = ScriptableObject.CreateInstance<AdvFolder>();
+					var obj  = ScriptableObject.CreateInstance<AdvSOFolder>();
 					AssetDatabase.CreateAsset(obj, $"{path}/Input.asset");
 					Undo.RegisterCreatedObjectUndo(obj, "Created Input AdvFolder");
 					Selection.activeObject = obj;
