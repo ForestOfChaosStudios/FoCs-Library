@@ -13,6 +13,15 @@ using Object = UnityEngine.Object;
 
 namespace ForestOfChaosAdvVarEditor
 {
+	[InitializeOnLoad]
+	static class AdvFolderStaticEditor
+	{
+		static AdvFolderStaticEditor()
+		{
+			AdvFolderEditor.ReInit();
+		}
+	}
+
 	[CustomEditor(typeof(AdvSOFolder))]
 	[CanEditMultipleObjects]
 	public class AdvFolderEditor: FoCsEditor
@@ -21,6 +30,12 @@ namespace ForestOfChaosAdvVarEditor
 		private        int                                                  ActiveTab;
 		private        AdvFolderNameAttribute                               ActiveTabName;
 		private        bool                                                 showChildrenSettings = true;
+
+		protected override void OnEnable()
+		{
+			base.OnEnable();
+			Init();
+		}
 
 		public override void OnInspectorGUI()
 		{
@@ -34,12 +49,28 @@ namespace ForestOfChaosAdvVarEditor
 			EditorGUILayout.HelpBox("These options will add child assets to the current asset, this is done to help with sorting of the huge amount of Scriptable Objects this system could generate.", MessageType.Info);
 
 			if(typeDictionary == null)
-				typeDictionary = GetDictionaryTypes();
+			{
+				Init();
+				Repaint();
+
+				return;
+			}
 
 			DrawMenuTabs();
 			DrawTypeTabs();
 			DoPadding();
 			DrawChildrenGUI();
+		}
+
+		public static void Init()
+		{
+			if(typeDictionary == null)
+				typeDictionary = GetDictionaryTypes();
+		}
+
+		public static void ReInit()
+		{
+			typeDictionary = GetDictionaryTypes();
 		}
 
 		private void DrawChildrenGUI()
@@ -174,7 +205,6 @@ namespace ForestOfChaosAdvVarEditor
 
 		private void DrawAddTypeButton(Type type)
 		{
-			//using(Disposables.HorizontalScope())
 			var @event = FoCsGUI.Layout.Button(type.Name.SplitCamelCase());
 
 			if(@event)
