@@ -1,4 +1,5 @@
 ﻿using System;
+using ForestOfChaosLibrary.Maths.Lerp;
 
 namespace ForestOfChaosLibrary.Extensions
 {
@@ -10,6 +11,7 @@ namespace ForestOfChaosLibrary.Extensions
 		public static bool IsZeroOrPositive(this float f) => f >= 0;
 		public static bool IsPositive(this       float f) => f > 0;
 		public static float Abs(this             float f) => Math.Abs(f);
+		public static float Lerp(this float start, float end, float time, bool clamp = false) => Lerps.Lerp(start, end, time, clamp);
 
 		public static float Clamp(this float f, float min = 0, float max = 1)
 		{
@@ -19,6 +21,12 @@ namespace ForestOfChaosLibrary.Extensions
 				f = max;
 
 			return f;
+		}
+		public static float Truncate(this float value, int digits)
+		{
+			var mult   = Math.Pow(10.0, digits);
+			var result = Math.Truncate( mult * value ) / mult;
+			return (float) result;
 		}
 
 		public static int CastToInt(this float f) => (int)(f + 0.5f);
