@@ -1,4 +1,4 @@
-﻿namespace ForestOfChaosLibraryEditor.Windows
+﻿namespace ForestOfChaosLibrary.Editor.Windows
 {
 	public abstract class Tab<T> where T: FoCsWindow
 	{

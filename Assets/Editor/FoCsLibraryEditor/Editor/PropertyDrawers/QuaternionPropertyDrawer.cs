@@ -3,7 +3,7 @@ using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.PropertyDrawers
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers
 {
 	[CustomPropertyDrawer(typeof(Quaternion))]
 	public class QuaternionPropertyDrawer: VectorPropEditor

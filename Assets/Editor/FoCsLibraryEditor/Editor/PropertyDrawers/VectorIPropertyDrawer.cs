@@ -1,7 +1,7 @@
 ﻿using ForestOfChaosLibrary.Types;
 using UnityEditor;
 
-namespace ForestOfChaosLibraryEditor.PropertyDrawers
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers
 {
 	[CustomPropertyDrawer(typeof(Vector2I))] public class Vector2IPropEditor: Vector2PropEditor { }
 

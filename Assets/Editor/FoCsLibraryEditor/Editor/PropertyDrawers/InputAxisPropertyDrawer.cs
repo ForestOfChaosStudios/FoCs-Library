@@ -1,13 +1,13 @@
 using System.Linq;
+using ForestOfChaosLibrary.Editor.UnitySettings;
+using ForestOfChaosLibrary.Editor.Utilities;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.InputManager;
 using ForestOfChaosLibrary.Utilities;
-using ForestOfChaosLibraryEditor.UnitySettings;
-using ForestOfChaosLibraryEditor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.PropertyDrawers
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers
 {
 	[CustomPropertyDrawer(typeof(InputAxis))]
 	public class InputAxisPropertyDrawer: FoCsPropertyDrawer

@@ -1,4 +1,4 @@
-﻿namespace ForestOfChaosLibraryEditor
+﻿namespace ForestOfChaosLibrary.Editor
 {
 	public enum DefaultPropertyType
 	{

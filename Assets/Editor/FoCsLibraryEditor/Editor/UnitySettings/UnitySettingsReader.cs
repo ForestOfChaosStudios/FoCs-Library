@@ -3,7 +3,7 @@ using ForestOfChaosLibrary.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.UnitySettings
+namespace ForestOfChaosLibrary.Editor.UnitySettings
 {
 	public class UnitySettingsReader
 	{

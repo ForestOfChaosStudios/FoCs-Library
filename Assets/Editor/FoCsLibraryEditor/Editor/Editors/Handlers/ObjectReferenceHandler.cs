@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using ForestOfChaosLibrary.Attributes;
-using ForestOfChaosLibraryEditor.PropertyDrawers;
+using ForestOfChaosLibrary.Editor.PropertyDrawers;
 using ForestOfChaosLibrary.Extensions;
 using UnityEditor;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	public class ObjectReferenceHandler: IPropertyLayoutHandler
 	{

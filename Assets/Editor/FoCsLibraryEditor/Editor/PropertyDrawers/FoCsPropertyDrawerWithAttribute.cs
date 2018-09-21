@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.PropertyDrawers
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers
 {
 	public class FoCsPropertyDrawer: PropertyDrawer
 	{

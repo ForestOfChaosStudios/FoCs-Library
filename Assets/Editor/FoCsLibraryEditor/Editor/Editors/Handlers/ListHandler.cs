@@ -3,7 +3,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	internal class ListHandler: IPropertyLayoutHandler
 	{

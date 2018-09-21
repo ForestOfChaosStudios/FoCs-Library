@@ -1,8 +1,8 @@
-﻿using ForestOfChaosLibraryEditor.Utilities;
+﻿using ForestOfChaosLibrary.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Windows
+namespace ForestOfChaosLibrary.Editor.Windows
 {
 	[FoCsWindow]
 	public class TextureMaker: FoCsWindow<TextureMaker>

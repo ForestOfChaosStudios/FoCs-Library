@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using Obj = UnityEngine.Object;
 
-namespace ForestOfChaosLibraryEditor.Utilities
+namespace ForestOfChaosLibrary.Editor.Utilities
 {
 	public class EditorHelpers: FoCsEditor
 	{

@@ -1,9 +1,9 @@
-﻿using ForestOfChaosLibraryEditor.UnitySettings;
-using ForestOfChaosLibraryEditor.Utilities;
-using ForestOfChaosLibraryEditor.Windows;
+﻿using ForestOfChaosLibrary.Editor.UnitySettings;
+using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaosLibrary.Editor.Windows;
 using UnityEditor;
 
-namespace ForestOfChaosLibraryEditor.InputManager
+namespace ForestOfChaosLibrary.Editor.InputManager
 {
 	public class InputAxisWindow: FoCsWindow<InputAxisWindow>
 	{

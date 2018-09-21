@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaosLibrary.Editor.Windows;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
-using ForestOfChaosLibraryEditor.Utilities;
-using ForestOfChaosLibraryEditor.Windows;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	public partial class FoCsControlPanel: FoCsWindow<FoCsControlPanel>
 	{

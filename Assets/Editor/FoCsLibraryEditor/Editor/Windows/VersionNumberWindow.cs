@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using ForestOfChaosLibraryEditor.UnitySettings;
-using ForestOfChaosLibraryEditor.Utilities;
+using ForestOfChaosLibrary.Editor.UnitySettings;
+using ForestOfChaosLibrary.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Windows
+namespace ForestOfChaosLibrary.Editor.Windows
 {
 	[FoCsWindow]
 	public class VersionNumberWindow: FoCsWindow<VersionNumberWindow>

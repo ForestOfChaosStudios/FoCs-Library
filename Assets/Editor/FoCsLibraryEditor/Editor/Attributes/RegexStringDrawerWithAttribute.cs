@@ -3,7 +3,7 @@ using ForestOfChaosLibrary.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.PropertyDrawers.Attributes
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes
 {
 	[CustomPropertyDrawer(typeof(RegexStringAttribute))]
 	public class RegexStringDrawerWithAttribute: FoCsPropertyDrawerWithAttribute<RegexStringAttribute>

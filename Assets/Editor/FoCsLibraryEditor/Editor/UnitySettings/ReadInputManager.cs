@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.UnitySettings
+namespace ForestOfChaosLibrary.Editor.UnitySettings
 {
 	//From https://answers.unity.com/questions/951770/get-array-of-all-input-manager-axes.html
 	//And https://answers.unity.com/questions/566736/get-list-of-axes.html

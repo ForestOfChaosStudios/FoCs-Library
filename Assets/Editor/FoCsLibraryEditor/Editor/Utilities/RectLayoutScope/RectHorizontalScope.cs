@@ -2,7 +2,7 @@
 using ForestOfChaosLibrary.Utilities;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Utilities
+namespace ForestOfChaosLibrary.Editor.Utilities
 {
 	public sealed class RectHorizontalScope: RectLayoutScope
 	{

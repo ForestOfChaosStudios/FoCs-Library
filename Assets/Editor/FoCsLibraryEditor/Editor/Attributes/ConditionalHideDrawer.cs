@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.PropertyDrawers.Attributes
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes
 {
 	[CustomPropertyDrawer(typeof(ConditionalHideAttribute))]
 	public class ConditionalHideDrawer: FoCsPropertyDrawerWithAttribute<ConditionalHideAttribute>

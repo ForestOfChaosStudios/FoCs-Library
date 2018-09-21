@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	public partial class FoCsEditor
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ForestOfChaosAdvVar;
-using ForestOfChaosLibraryEditor;
+using ForestOfChaosLibrary.Editor;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosAdvVar.Base;
 using ForestOfChaosLibrary.Utilities;
@@ -11,7 +11,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ForestOfChaosAdvVarEditor
+namespace ForestOfChaosAdvVar.Editor
 {
 	[InitializeOnLoad]
 	static class AdvFolderStaticEditor

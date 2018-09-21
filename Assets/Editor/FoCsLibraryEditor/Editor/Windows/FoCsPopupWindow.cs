@@ -1,8 +1,8 @@
 ﻿using System;
-using ForestOfChaosLibraryEditor.Windows;
+using ForestOfChaosLibrary.Editor.Windows;
 using ForestOfChaosLibrary.Extensions;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	public class FoCsPopupWindow: FoCsWindow<FoCsPopupWindow>
 	{

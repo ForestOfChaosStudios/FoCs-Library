@@ -1,11 +1,11 @@
 ﻿using ForestOfChaosLibrary.Animation;
-using ForestOfChaosLibraryEditor.PropertyDrawers;
+using ForestOfChaosLibrary.Editor.PropertyDrawers;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Animation
+namespace ForestOfChaosLibrary.Editor.Animation
 {
 	[CustomPropertyDrawer(typeof(AnimatorKey))]
 	public class AnimatorKeyDrawer: FoCsPropertyDrawer<AnimatorKey>

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ForestOfChaosLibrary.Editor.Utilities;
 using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibraryEditor.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using ObjRef = ForestOfChaosLibraryEditor.ObjectReference;
+using ObjRef = ForestOfChaosLibrary.Editor.ObjectReference;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(object), true, isFallback = true)]

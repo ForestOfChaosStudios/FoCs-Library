@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.PropertyDrawers.Types
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Types
 {
 	[CustomPropertyDrawer(typeof(Colour))]
 	public class ColourDrawer: FoCsPropertyDrawer<Colour>

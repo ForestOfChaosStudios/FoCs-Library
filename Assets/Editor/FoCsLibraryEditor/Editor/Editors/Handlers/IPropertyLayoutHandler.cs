@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	public interface IPropertyLayoutHandler
 	{

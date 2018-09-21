@@ -1,11 +1,11 @@
 ﻿using ForestOfChaosLibrary.Debugging;
-using ForestOfChaosLibraryEditor.Utilities;
-using ForestOfChaosLibraryEditor.Windows;
+using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaosLibrary.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
 using KeyValue = System.Collections.Generic.KeyValuePair<string, ForestOfChaosLibrary.Debugging.FoCsDebug.Data>;
 
-namespace ForestOfChaosLibraryEditor.Debugging
+namespace ForestOfChaosLibrary.Editor.Debugging
 {
 	[FoCsWindow]
 	public class FoCsDebugWindow: FoCsWindow<FoCsDebugWindow>

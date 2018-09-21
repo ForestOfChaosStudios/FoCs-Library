@@ -1,7 +1,7 @@
-﻿using ForestOfChaosLibraryEditor.Utilities;
+﻿using ForestOfChaosLibrary.Editor.Utilities;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	[FoCsControlPanel.ControlPanelTabAttribute]
 	public static class CopyPasteUtilityTab

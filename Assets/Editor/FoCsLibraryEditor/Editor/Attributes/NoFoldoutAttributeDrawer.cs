@@ -1,9 +1,9 @@
 ﻿using ForestOfChaosLibrary.Attributes;
-using ForestOfChaosLibraryEditor.Utilities;
+using ForestOfChaosLibrary.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.PropertyDrawers.Attributes
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes
 {
 	[CustomPropertyDrawer(typeof(NoFoldoutAttribute), true)]
 	public class NoFoldoutAttributeDrawer: FoCsPropertyDrawerWithAttribute<NoFoldoutAttribute>

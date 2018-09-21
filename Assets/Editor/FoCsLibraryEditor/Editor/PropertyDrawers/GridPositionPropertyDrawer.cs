@@ -1,9 +1,9 @@
-﻿using ForestOfChaosLibrary.Grid;
-using ForestOfChaosLibraryEditor.PropertyDrawers;
+﻿using ForestOfChaosLibrary.Editor.PropertyDrawers;
+using ForestOfChaosLibrary.Grid;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	[CustomPropertyDrawer(typeof(GridPosition))]
 	internal class GridPositionPropertyDrawer: FoCsPropertyDrawer

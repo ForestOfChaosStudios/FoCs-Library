@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Utilities
+namespace ForestOfChaosLibrary.Editor.Utilities
 {
 	public struct EditorColour
 	{

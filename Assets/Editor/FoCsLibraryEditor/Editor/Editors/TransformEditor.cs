@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using ForestOfChaosLibrary.Editor.Utilities;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Types;
-using ForestOfChaosLibraryEditor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	[CustomEditor(typeof(Transform))]
 	internal class TransformEditor: FoCsEditor<Transform>

@@ -1,8 +1,8 @@
-﻿using ForestOfChaosLibraryEditor.Utilities;
+﻿using ForestOfChaosLibrary.Editor.Utilities;
 using UnityEditor;
-using Dictionary = System.Collections.Generic.Dictionary<ForestOfChaosLibraryEditor.FoCsEditor.SortableSerializedProperty, ForestOfChaosLibraryEditor.IPropertyLayoutHandler>;
+using Dictionary = System.Collections.Generic.Dictionary<ForestOfChaosLibrary.Editor.FoCsEditor.SortableSerializedProperty, ForestOfChaosLibrary.Editor.IPropertyLayoutHandler>;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	public class HandlerController
 	{

@@ -1,11 +1,11 @@
 ﻿using System.Linq;
+using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaosLibrary.Editor.Windows;
 using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibraryEditor.Utilities;
-using ForestOfChaosLibraryEditor.Windows;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.UnitySettings
+namespace ForestOfChaosLibrary.Editor.UnitySettings
 {
 	[FoCsWindow]
 	public class AdvancedUnitySettingsWindow: TabedWindow<AdvancedUnitySettingsWindow>

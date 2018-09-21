@@ -3,7 +3,7 @@ using ForestOfChaosLibrary.Maths.Curves.Components;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Maths.Curves
+namespace ForestOfChaosLibrary.Editor.Maths.Curves
 {
 	public class V3DCurveEditor<T>: FoCsEditor<T> where T: ICurveV3DComponent
 	{

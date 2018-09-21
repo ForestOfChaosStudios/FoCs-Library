@@ -3,7 +3,7 @@ using ForestOfChaosLibrary.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Windows
+namespace ForestOfChaosLibrary.Editor.Windows
 {
 	public abstract class TabedWindow<T>: FoCsWindow<T> where T: FoCsWindow
 	{

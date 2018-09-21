@@ -2,7 +2,7 @@ using ForestOfChaosLibrary.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.PropertyDrawers.Attributes
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes
 {
 	[CustomPropertyDrawer(typeof(DisableEditingAttribute), true)]
 	public class DisableEditingAttributeDrawer: FoCsPropertyDrawerWithAttribute<DisableEditingAttribute>

@@ -9,7 +9,7 @@ using Object = UnityEngine.Object;
 using SearchCompo = UnityEngine.Component;
 using SearchAsset = UnityEngine.ScriptableObject;
 
-namespace ForestOfChaosLibraryEditor.Windows
+namespace ForestOfChaosLibrary.Editor.Windows
 {
 	[FoCsWindow]
 	public class ObjectBrowserWindow: FoCsWindow<ObjectBrowserWindow>

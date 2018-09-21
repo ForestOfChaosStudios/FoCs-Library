@@ -1,10 +1,10 @@
 ﻿using ForestOfChaosAdvVar;
-using ForestOfChaosLibraryEditor;
-using ForestOfChaosLibraryEditor.Animation;
+using ForestOfChaosLibrary.Editor;
+using ForestOfChaosLibrary.Editor.Animation;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosAdvVarEditor
+namespace ForestOfChaosAdvVar.Editor
 {
 	[CustomEditor(typeof(AnimatorKeyReference))]
 	[CanEditMultipleObjects]

@@ -2,7 +2,7 @@ using ForestOfChaosLibrary.FoCsUI.Button;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.FoCsUI
+namespace ForestOfChaosLibrary.Editor.FoCsUI
 {
 	[CustomEditor(typeof(FoCsButton), true, isFallback = true)]
 	[CanEditMultipleObjects]

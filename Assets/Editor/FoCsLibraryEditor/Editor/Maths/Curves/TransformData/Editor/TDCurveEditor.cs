@@ -4,7 +4,7 @@ using ForestOfChaosLibrary.Types;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Maths.Curves
+namespace ForestOfChaosLibrary.Editor.Maths.Curves
 {
 	public class TDCurveEditor<T>: FoCsEditor<T> where T: ICurveTDComponent
 	{

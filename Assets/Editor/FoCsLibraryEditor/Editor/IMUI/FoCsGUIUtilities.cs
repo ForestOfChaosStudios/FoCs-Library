@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	// ReSharper disable once MismatchedFileName
 	public static partial class FoCsGUI

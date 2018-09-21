@@ -2,13 +2,13 @@
 using System.IO;
 using ForestOfChaosAdvVar.Base;
 using ForestOfChaosAdvVar.InputSystem;
-using ForestOfChaosLibraryEditor;
-using ForestOfChaosLibraryEditor.UnitySettings;
+using ForestOfChaosLibrary.Editor;
+using ForestOfChaosLibrary.Editor.UnitySettings;
 using ForestOfChaosLibrary.InputManager;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosAdvVarEditor.InputSystem
+namespace ForestOfChaosAdvVar.Editor.InputSystem
 {
 	public static class AdvInputMenuItems
 	{

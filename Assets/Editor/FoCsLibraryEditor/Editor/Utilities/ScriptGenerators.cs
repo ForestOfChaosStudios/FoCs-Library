@@ -6,7 +6,7 @@ using System.Text;
 using ForestOfChaosLibrary.Types;
 using UnityEditor;
 
-namespace ForestOfChaosLibraryEditor.Utilities
+namespace ForestOfChaosLibrary.Editor.Utilities
 {
 	public static class ScriptGenerators
 	{

@@ -1,13 +1,13 @@
 ﻿using System;
-using ForestOfChaosLibraryEditor;
-using ForestOfChaosLibraryEditor.PropertyDrawers;
+using ForestOfChaosLibrary.Editor;
+using ForestOfChaosLibrary.Editor.PropertyDrawers;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosAdvVar.Base;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosAdvVarEditor
+namespace ForestOfChaosAdvVar.Editor
 {
 	[CustomPropertyDrawer(typeof(AdvVariable), true)]
 	public class AdvReferencePropertyDrawerBase: ObjectReferenceDrawer

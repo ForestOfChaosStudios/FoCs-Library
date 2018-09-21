@@ -1,9 +1,9 @@
 ﻿using ForestOfChaosAdvVar.RuntimeRef;
-using ForestOfChaosLibraryEditor.PropertyDrawers;
+using ForestOfChaosLibrary.Editor.PropertyDrawers;
 using UnityEditor;
 
 //TODO: This file
-namespace ForestOfChaosAdvVarEditor.RuntimeRef
+namespace ForestOfChaosAdvVar.Editor.RuntimeRef
 {
 	[CustomPropertyDrawer(typeof(RunTimeList), true)]
 	public class RuntimeListPropertyDrawer: ObjectReferenceDrawer

@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ForestOfChaosLibraryEditor.Utilities
+namespace ForestOfChaosLibrary.Editor.Utilities
 {
 	public static class CopyPasteUtility
 	{

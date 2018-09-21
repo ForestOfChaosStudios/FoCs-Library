@@ -1,4 +1,4 @@
-﻿namespace ForestOfChaosLibraryEditor
+﻿namespace ForestOfChaosLibrary.Editor
 {
 	public interface IRepaintable
 	{

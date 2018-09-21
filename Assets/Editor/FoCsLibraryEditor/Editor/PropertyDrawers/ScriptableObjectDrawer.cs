@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace ForestOfChaosLibraryEditor.PropertyDrawers
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers
 {
 	//[CustomPropertyDrawer(ObjectR)]
 	public class ScriptableObjectDrawer: PropertyDrawer { }

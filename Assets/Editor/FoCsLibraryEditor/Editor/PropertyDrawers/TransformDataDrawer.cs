@@ -1,12 +1,12 @@
-﻿using ForestOfChaosLibraryEditor.PropertyDrawers;
-using ForestOfChaosLibraryEditor.Utilities;
+﻿using ForestOfChaosLibrary.Editor.PropertyDrawers;
+using ForestOfChaosLibrary.Editor.Utilities;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Types;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Maths.Curves
+namespace ForestOfChaosLibrary.Editor.Maths.Curves
 {
 	[CustomPropertyDrawer(typeof(TransformData))]
 	public class TransformDataDrawer: FoCsPropertyDrawer<TransformData>

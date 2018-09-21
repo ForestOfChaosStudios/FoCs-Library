@@ -1,9 +1,9 @@
 ﻿using ForestOfChaosAdvVar.Events;
-using ForestOfChaosLibraryEditor;
+using ForestOfChaosLibrary.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosAdvVarEditor
+namespace ForestOfChaosAdvVar.Editor
 {
 	[CustomEditor(typeof(AdvEvent))]
 	public class AdvEventEditor: FoCsEditor<AdvEvent>

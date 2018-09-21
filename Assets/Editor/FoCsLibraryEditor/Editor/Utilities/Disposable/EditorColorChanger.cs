@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Utilities.Disposable
+namespace ForestOfChaosLibrary.Editor.Utilities.Disposable
 {
 	public class EditorColorChanger: IDisposable
 	{

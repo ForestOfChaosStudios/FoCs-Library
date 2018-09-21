@@ -5,7 +5,7 @@ using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Utilities
+namespace ForestOfChaosLibrary.Editor.Utilities
 {
 	public abstract class RectLayoutScope: IDisposable, IEnumerable<Rect>
 	{

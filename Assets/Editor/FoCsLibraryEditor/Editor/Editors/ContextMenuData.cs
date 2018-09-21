@@ -5,7 +5,7 @@ using System.Reflection;
 using ForestOfChaosLibrary.Attributes;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	public partial class FoCsEditor
 	{

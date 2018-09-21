@@ -1,9 +1,9 @@
+using ForestOfChaosLibrary.Editor.Windows;
 using ForestOfChaosLibrary.ScreenCap;
-using ForestOfChaosLibraryEditor.Windows;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.ScreenCap
+namespace ForestOfChaosLibrary.Editor.ScreenCap
 {
 	public class ScreenshotTab: Tab<ScreenCapWindow>
 	{

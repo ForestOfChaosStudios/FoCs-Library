@@ -1,9 +1,9 @@
 ﻿using ForestOfChaosAdvVar.RuntimeRef;
-using ForestOfChaosLibraryEditor;
+using ForestOfChaosLibrary.Editor;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosAdvVarEditor.RuntimeRef
+namespace ForestOfChaosAdvVar.Editor.RuntimeRef
 {
 	[CustomEditor(typeof(RunTimeRef), true)]
 	public class RuntimeRefEditor: FoCsEditor<RunTimeRef>

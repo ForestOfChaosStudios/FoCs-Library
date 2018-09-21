@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	// ReSharper disable once MismatchedFileName
 	public partial class FoCsControlPanel

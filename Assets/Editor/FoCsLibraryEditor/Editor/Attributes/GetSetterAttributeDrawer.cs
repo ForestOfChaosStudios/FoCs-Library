@@ -1,10 +1,10 @@
 ﻿using ForestOfChaosLibrary.Attributes;
-using ForestOfChaosLibraryEditor.PropertyDrawers;
+using ForestOfChaosLibrary.Editor.PropertyDrawers;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Attributes
+namespace ForestOfChaosLibrary.Editor.Attributes
 {
 	/// <summary>
 	///     This is based off of the Unity Post Processing version

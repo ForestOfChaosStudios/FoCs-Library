@@ -1,11 +1,11 @@
 ﻿using System;
-using ForestOfChaosLibraryEditor;
-using ForestOfChaosLibraryEditor.Windows;
+using ForestOfChaosLibrary.Editor;
+using ForestOfChaosLibrary.Editor.Windows;
 using ForestOfChaosLibrary.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosAdvVarEditor
+namespace ForestOfChaosAdvVar.Editor
 {
 	//TODO : Make this window better, GE add the ability to add extra functionality eg submit more data
 	public class SubmitStringWindow: FoCsWindow<SubmitStringWindow>

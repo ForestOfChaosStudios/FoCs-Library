@@ -1,7 +1,7 @@
 using ForestOfChaosLibrary.ScreenCap;
 using UnityEditor;
 
-namespace ForestOfChaosLibraryEditor.ScreenCap
+namespace ForestOfChaosLibrary.Editor.ScreenCap
 {
 	public class TimelapseTab: ScreenshotTab
 	{

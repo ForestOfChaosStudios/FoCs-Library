@@ -1,10 +1,10 @@
 ﻿using ForestOfChaosAdvVar;
-using ForestOfChaosLibraryEditor;
-using ForestOfChaosLibraryEditor.PropertyDrawers.Attributes;
+using ForestOfChaosLibrary.Editor;
+using ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosAdvVarEditor
+namespace ForestOfChaosAdvVar.Editor
 {
 	[InitializeOnLoad]
 	public static class AdvCustomRangeDrawer

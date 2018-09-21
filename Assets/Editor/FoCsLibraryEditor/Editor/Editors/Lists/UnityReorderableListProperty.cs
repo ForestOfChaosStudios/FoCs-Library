@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
+using ForestOfChaosLibrary.Editor.PropertyDrawers;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
-using ForestOfChaosLibraryEditor.PropertyDrawers;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using ORD = ForestOfChaosLibraryEditor.PropertyDrawers.ObjectReferenceDrawer;
+using ORD = ForestOfChaosLibrary.Editor.PropertyDrawers.ObjectReferenceDrawer;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	public class UnityReorderableListProperty
 	{

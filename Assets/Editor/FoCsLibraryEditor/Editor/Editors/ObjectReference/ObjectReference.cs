@@ -1,11 +1,11 @@
-﻿using ForestOfChaosLibraryEditor.Utilities;
+﻿using ForestOfChaosLibrary.Editor.Utilities;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	/// <summary>
 	///     A class that manages the Object Reference drawing, used by FoCsEditor

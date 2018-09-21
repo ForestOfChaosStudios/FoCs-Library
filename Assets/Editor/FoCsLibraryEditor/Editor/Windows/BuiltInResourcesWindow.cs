@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using ForestOfChaosLibraryEditor.Utilities;
+using ForestOfChaosLibrary.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 //TODO: EDIT more to look and feel like my own window, this was just to quickly find an icon I needed for the localizion window.
 //Found at http://wiki.unity3d.com/index.php/Show_Built_In_Resources
 
-namespace ForestOfChaosLibraryEditor.Windows
+namespace ForestOfChaosLibrary.Editor.Windows
 {
 	[FoCsWindow]
 	public class BuiltInResourcesWindow: FoCsWindow<BuiltInResourcesWindow>

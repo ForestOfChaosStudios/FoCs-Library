@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEditor;
 
-namespace ForestOfChaosLibraryEditor.Utilities.Disposable
+namespace ForestOfChaosLibrary.Editor.Utilities.Disposable
 {
 	public class EditorWidth: IDisposable
 	{

@@ -1,11 +1,11 @@
 ﻿using ForestOfChaosLibrary.Attributes;
-using ForestOfChaosLibraryEditor.PropertyDrawers;
+using ForestOfChaosLibrary.Editor.PropertyDrawers;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.Attributes
+namespace ForestOfChaosLibrary.Editor.Attributes
 {
 	[CustomPropertyDrawer(typeof(EnumFlagsAttribute))]
 	public class EnumFlagsAttributeDrawer: FoCsPropertyDrawerWithAttribute<EnumFlagsAttribute>

@@ -1,21 +1,21 @@
-﻿using System;
-using ForestOfChaosLibraryEditor.PropertyDrawers;
+using System;
+using ForestOfChaosLibrary.Editor.PropertyDrawers;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEngine;
 using GUICon = UnityEngine.GUIContent;
-using eInt = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<int>;
-using eBool = ForestOfChaosLibraryEditor.FoCsGUI.GUIEventBool;
-using eFloat = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<float>;
-using eDouble = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<double>;
-using eString = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<string>;
+using eInt = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<int>;
+using eBool = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEventBool;
+using eFloat = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<float>;
+using eDouble = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<double>;
+using eString = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<string>;
 using SerProp = UnityEditor.SerializedProperty;
-using eProp = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<UnityEditor.SerializedProperty>;
-using eObject = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<UnityEngine.Object>;
+using eProp = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<UnityEditor.SerializedProperty>;
+using eObject = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<UnityEngine.Object>;
 using Object = UnityEngine.Object;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	public static partial class FoCsGUI
 	{

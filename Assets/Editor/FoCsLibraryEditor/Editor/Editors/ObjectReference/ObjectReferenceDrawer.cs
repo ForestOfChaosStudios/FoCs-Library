@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using ForestOfChaosLibraryEditor.Utilities;
+using ForestOfChaosLibrary.Editor.Utilities;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.PropertyDrawers
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers
 {
 	/// <summary>
 	///     This class is no longer used by the FoCsEditor, the new <see cref="ObjectReference" />

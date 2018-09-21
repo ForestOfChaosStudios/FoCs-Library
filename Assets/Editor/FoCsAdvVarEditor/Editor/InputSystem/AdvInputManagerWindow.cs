@@ -1,7 +1,7 @@
 ﻿using ForestOfChaosAdvVar.InputSystem;
-using ForestOfChaosLibraryEditor;
-using ForestOfChaosLibraryEditor.Utilities;
-using ForestOfChaosLibraryEditor.Windows;
+using ForestOfChaosLibrary.Editor;
+using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaosLibrary.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
 

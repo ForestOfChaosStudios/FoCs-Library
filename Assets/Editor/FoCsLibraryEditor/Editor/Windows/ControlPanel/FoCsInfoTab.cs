@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	[FoCsControlPanel.ControlPanelTabAttribute]
 	public static class FoCsInfoTab

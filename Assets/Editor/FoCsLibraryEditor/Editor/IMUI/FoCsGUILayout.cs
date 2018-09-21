@@ -1,19 +1,19 @@
-﻿using System;
-using ForestOfChaosLibraryEditor.PropertyDrawers;
+using System;
+using ForestOfChaosLibrary.Editor.PropertyDrawers;
 using UnityEditor;
 using UnityEngine;
 using GUICon = UnityEngine.GUIContent;
 using GUILayOpt = UnityEngine.GUILayoutOption;
-using eInt = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<int>;
-using eBool = ForestOfChaosLibraryEditor.FoCsGUI.GUIEventBool;
-using eFloat = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<float>;
-using eDouble = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<double>;
-using eLong = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<long>;
-using eString = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<string>;
-using eObject = ForestOfChaosLibraryEditor.FoCsGUI.GUIEvent<UnityEngine.Object>;
+using eInt = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<int>;
+using eBool = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEventBool;
+using eFloat = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<float>;
+using eDouble = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<double>;
+using eLong = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<long>;
+using eString = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<string>;
+using eObject = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<UnityEngine.Object>;
 using Object = UnityEngine.Object;
 
-namespace ForestOfChaosLibraryEditor
+namespace ForestOfChaosLibrary.Editor
 {
 	// ReSharper disable once MismatchedFileName
 	public static partial class FoCsGUI

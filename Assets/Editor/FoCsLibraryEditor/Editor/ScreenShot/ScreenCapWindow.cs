@@ -1,10 +1,10 @@
-﻿using ForestOfChaosLibrary.ScreenCap;
-using ForestOfChaosLibraryEditor.Utilities;
-using ForestOfChaosLibraryEditor.Windows;
+﻿using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaosLibrary.Editor.Windows;
+using ForestOfChaosLibrary.ScreenCap;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibraryEditor.ScreenCap
+namespace ForestOfChaosLibrary.Editor.ScreenCap
 {
 	[FoCsWindow]
 	public class ScreenCapWindow: TabedWindow<ScreenCapWindow>
