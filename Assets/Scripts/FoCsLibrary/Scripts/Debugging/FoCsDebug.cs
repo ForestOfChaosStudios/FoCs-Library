@@ -64,6 +64,17 @@ namespace ForestOfChaosLibrary.Debugging
 			}
 
 			public static implicit operator Data(string input) => Build(input);
+
+			public int Depth
+			{
+				get
+				{
+					if(previousData == null)
+						return 0;
+					return previousData.Depth + 1;
+				}
+			}
+
 		}
 	}
 }

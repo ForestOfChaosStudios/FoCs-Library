@@ -22,8 +22,10 @@ namespace ForestOfChaosLibrary.Editor
 #region Label
 		public static GUIEvent Label(Rect rect) => LabelMaster(rect,                                 GUICon.none,       LabelStyle);
 		public static GUIEvent Label(Rect rect, GUIStyle style) => LabelMaster(rect,                 GUICon.none,       style);
-		public static GUIEvent Label(Rect rect, string   label) => LabelMaster(rect,                 new GUICon(label), LabelStyle);
-		public static GUIEvent Label(Rect rect, string   label, GUIStyle style) => LabelMaster(rect, new GUICon(label), style);
+		public static GUIEvent Label(Rect rect, string label)                 => LabelMaster(rect, new GUICon(label), LabelStyle);
+		public static GUIEvent Label(Rect rect, string label, GUIStyle style) => LabelMaster(rect, new GUICon(label), style);
+		public static GUIEvent Label(Rect rect, object label)                 => LabelMaster(rect, new GUICon(label.ToString()), LabelStyle);
+		public static GUIEvent Label(Rect rect, object label, GUIStyle style) => LabelMaster(rect, new GUICon(label.ToString()), style);
 		public static GUIEvent Label(Rect rect, GUICon   guiCon) => LabelMaster(rect,                 guiCon, LabelStyle);
 		public static GUIEvent Label(Rect rect, GUICon   guiCon, GUIStyle style) => LabelMaster(rect, guiCon, style);
 		public static GUIEvent Label(Rect rect, Texture  texture) => LabelMaster(rect,                 new GUICon(texture), LabelStyle);

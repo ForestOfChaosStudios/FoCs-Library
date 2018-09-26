@@ -25,5 +25,26 @@ namespace ForestOfChaosLibrary.Components
 		{
 			OnCollExit.Trigger(collision);
 		}
+
+		public void Sub(IOnCollisionEvents eventHandler)
+		{
+			OnCollEnter += eventHandler.CollisionEnter;
+			OnCollStay  += eventHandler.CollisionStay;
+			OnCollExit  += eventHandler.CollisionExit;
+		}
+
+		public void UnSub(IOnCollisionEvents eventHandler)
+		{
+			OnCollEnter -= eventHandler.CollisionEnter;
+			OnCollStay  -= eventHandler.CollisionStay;
+			OnCollExit  -= eventHandler.CollisionExit;
+		}
+	}
+
+	public interface IOnCollisionEvents
+	{
+		void CollisionEnter(Collision collision);
+		void CollisionStay(Collision collision);
+		void CollisionExit(Collision collision);
 	}
 }

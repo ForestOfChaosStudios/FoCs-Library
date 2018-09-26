@@ -31,8 +31,10 @@ namespace ForestOfChaosLibrary.Editor
 #region Label
 			public static GUIEvent Label(params GUILayOpt[] options) => LabelMaster(GUICon.none,                                                             LabelStyle, options);
 			public static GUIEvent Label(GUIStyle           style,   params GUILayOpt[] options) => LabelMaster(GUICon.none,                                 style,      options);
-			public static GUIEvent Label(string             label,   params GUILayOpt[] options) => LabelMaster(new GUICon(label),                           LabelStyle, options);
-			public static GUIEvent Label(string             label,   GUIStyle           style, params GUILayOpt[] options) => LabelMaster(new GUICon(label), style,      options);
+			public static GUIEvent Label(string label, params GUILayOpt[] options)                           => LabelMaster(new GUICon(label), LabelStyle, options);
+			public static GUIEvent Label(string label, GUIStyle           style, params GUILayOpt[] options) => LabelMaster(new GUICon(label), style,      options);
+			public static GUIEvent Label(object label, params GUILayOpt[] options)                           => LabelMaster(new GUICon(label.ToString()), LabelStyle, options);
+			public static GUIEvent Label(object label, GUIStyle           style, params GUILayOpt[] options) => LabelMaster(new GUICon(label.ToString()), style,      options);
 			public static GUIEvent Label(GUICon             guiCon,  params GUILayOpt[] options) => LabelMaster(guiCon,                           LabelStyle, options);
 			public static GUIEvent Label(GUICon             guiCon,  GUIStyle           style, params GUILayOpt[] options) => LabelMaster(guiCon, style,      options);
 			public static GUIEvent Label(Texture            texture, params GUILayOpt[] options) => LabelMaster(new GUICon(texture),                           LabelStyle, options);
@@ -48,8 +50,10 @@ namespace ForestOfChaosLibrary.Editor
 #region LabelField
 			public static GUIEvent LabelField(params GUILayOpt[] options) => LabelFieldMaster(GUICon.none,                                                             LabelStyle, options);
 			public static GUIEvent LabelField(GUIStyle           style,   params GUILayOpt[] options) => LabelFieldMaster(GUICon.none,                                 style,      options);
-			public static GUIEvent LabelField(string             label,   params GUILayOpt[] options) => LabelFieldMaster(new GUICon(label),                           LabelStyle, options);
-			public static GUIEvent LabelField(string             label,   GUIStyle           style, params GUILayOpt[] options) => LabelFieldMaster(new GUICon(label), style,      options);
+			public static GUIEvent LabelField(string label, params GUILayOpt[] options)                           => LabelFieldMaster(new GUICon(label), LabelStyle, options);
+			public static GUIEvent LabelField(string label, GUIStyle           style, params GUILayOpt[] options) => LabelFieldMaster(new GUICon(label), style,      options);
+			public static GUIEvent LabelField(object label, params GUILayOpt[] options)                           => LabelFieldMaster(new GUICon(label.ToString()), LabelStyle, options);
+			public static GUIEvent LabelField(object label, GUIStyle           style, params GUILayOpt[] options) => LabelFieldMaster(new GUICon(label.ToString()), style,      options);
 			public static GUIEvent LabelField(GUICon             guiCon,  params GUILayOpt[] options) => LabelFieldMaster(guiCon,                           LabelStyle, options);
 			public static GUIEvent LabelField(GUICon             guiCon,  GUIStyle           style, params GUILayOpt[] options) => LabelFieldMaster(guiCon, style,      options);
 			public static GUIEvent LabelField(Texture            texture, params GUILayOpt[] options) => LabelFieldMaster(new GUICon(texture),                           LabelStyle, options);
