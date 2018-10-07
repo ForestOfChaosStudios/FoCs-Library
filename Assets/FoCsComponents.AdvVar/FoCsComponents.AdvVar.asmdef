@@ -1,7 +1,9 @@
 {
-    "name": "FoCsAdvVar",
+    "name": "FoCsComponents.AdvVar",
     "references": [
-        "FoCsLibrary"
+        "FoCsLibrary",
+        "FoCsComponents",
+        "FoCsAdvVar"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

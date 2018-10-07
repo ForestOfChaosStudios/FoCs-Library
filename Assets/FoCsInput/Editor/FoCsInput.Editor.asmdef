@@ -1,0 +1,17 @@
+{
+    "name": "FoCsInput.Editor",
+    "references": [
+        "FoCsInput",
+        "FoCsLibrary",
+        "FoCsLibrary.Editor",
+        "FoCsAdvVar",
+        "FoCsAdvVar.Editor",
+        "FoCsComponents"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
