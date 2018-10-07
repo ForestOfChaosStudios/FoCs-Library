@@ -1,0 +1,10 @@
+{
+    "name": "FoCsDebugging",
+    "references": [
+        "FoCsLibrary"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
