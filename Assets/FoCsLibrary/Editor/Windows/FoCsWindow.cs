@@ -14,7 +14,7 @@ namespace ForestOfChaosLibrary.Editor.Windows
 	public abstract class FoCsWindow<T>: FoCsWindow where T: FoCsWindow, IRepaintable
 	{
 		private static   T window;
-		protected static T Window => window ?? (window = GetWindow());
+		protected static T Window => window? window : (window = GetWindow());
 
 		protected static T GetWindow()
 		{
