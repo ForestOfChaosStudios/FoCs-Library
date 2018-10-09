@@ -36,6 +36,13 @@ namespace ForestOfChaosLibrary.Editor
 #else
 		public void HandleProperty(SerializedProperty property)
 		{
+			if(property.serializedObject.isEditingMultipleObjects)
+			{
+				FoCsGUI.Layout.PropertyField(property);
+
+				return;
+			}
+
 			var list = ListStorage.GetList(property);
 
 			using(Disposables.LabelFieldAddWidth(-31))
@@ -50,6 +57,11 @@ namespace ForestOfChaosLibrary.Editor
 
 		public float PropertyHeight(SerializedProperty property)
 		{
+			if(property.serializedObject.isEditingMultipleObjects)
+			{
+				return FoCsGUI.GetPropertyHeight(property);
+			}
+
 			var list = ListStorage.GetList(property);
 
 			return list.GetTotalHeight();

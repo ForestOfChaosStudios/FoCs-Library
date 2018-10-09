@@ -18,11 +18,11 @@ namespace ForestOfChaosLibrary.Editor
 		private static   ReorderableList.Defaults s_Defaults;
 		private static   Action                   OnLimitingChange;
 		private static   bool?                    limitingEnabled;
-		private readonly Dictionary<string, ObjectReferenceDrawer>  objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(1);
+		private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
 		public           int                      ID;
 		public           ListLimiter              Limiter;
 		private          SerializedProperty       property;
-		public           SerializedPropertyType   SerializedPropertyType;
+		public           SerializedPropertyType   SerializedPropertyType = SerializedPropertyType.Generic;
 		public static bool LimitingEnabled
 		{
 			get
@@ -94,7 +94,12 @@ namespace ForestOfChaosLibrary.Editor
 			//TODO Implement limited view of lists, eg only show index 50-100, and buttons to move limits
 			List.drawFooterCallback    = OnListDrawFooterCallback;
 			List.showDefaultBackground = true;
-			SetSerializedPropertyType();
+
+			if(!Property.serializedObject.isEditingMultipleObjects)
+			{
+				SetSerializedPropertyType();
+			}
+
 			CheckLimiter();
 		}
 
