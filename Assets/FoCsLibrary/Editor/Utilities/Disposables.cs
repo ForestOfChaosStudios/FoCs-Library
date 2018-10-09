@@ -13,6 +13,12 @@ namespace ForestOfChaosLibrary.Editor
 	public static class Disposables
 	{
 		public static ActionOnDispose Action(Action action) => new ActionOnDispose(action);
+#region Handles
+		public static Handles.DrawingScope HandleScope() => new Handles.DrawingScope();
+		public static Handles.DrawingScope HandleScope(Color color) => new Handles.DrawingScope(color);
+		public static Handles.DrawingScope HandleScope(Color color, Matrix4x4 matrix) => new Handles.DrawingScope(color, matrix);
+		public static Handles.DrawingScope HandleScope(Matrix4x4 matrix) => new Handles.DrawingScope(matrix);
+#endregion
 #region FadeGroup
 		public static EditorGUILayout.FadeGroupScope FadeGroupScope(float value) => new EditorGUILayout.FadeGroupScope(value);
 #endregion
