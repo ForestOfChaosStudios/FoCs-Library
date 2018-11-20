@@ -19,7 +19,7 @@ namespace ForestOfChaosLibrary.Editor
 		private static readonly GUIContent                  SortModeContent        = new GUIContent("Sort Mode", "Change the order of the properties");
 		private static readonly GUIContent                  SortModeContentHover   = new GUIContent("",          "Change the order of the properties");
 		private readonly        HandlerController           Handler                = new HandlerController();
-		internal                Dictionary<string, ObjectReference>  objectDrawer           = new Dictionary<string, ObjectReference>(1);
+		internal                Dictionary<string, ObjRef>  objectDrawer           = new Dictionary<string, ObjRef>(1);
 		private                 bool                        showContextMenuButtons = true;
 		private                 int                         sortingModeIndex;
 		internal                UnityReorderableListStorage URLPStorage;
@@ -27,19 +27,16 @@ namespace ForestOfChaosLibrary.Editor
 		public virtual          bool                        HideDefaultProperty       => true;
 		public virtual          bool                        ShowCopyPasteButtons      => true;
 		public virtual          bool                        AllowsSortingModeChanging => true;
-
 		public virtual bool ShowContextMenuButtons
 		{
 			get { return showContextMenuButtons; }
 			private set { EditorPrefs.SetBool("FoCsEditor.showContextMenuButtons", showContextMenuButtons = value); }
 		}
-
 		public static string Search
 		{
 			get { return search; }
 			private set { EditorPrefs.SetString("FoCsEditor.search", search = value); }
 		}
-
 		public virtual int SortingModeIndex
 		{
 			get { return sortingModeIndex; }
@@ -54,10 +51,7 @@ namespace ForestOfChaosLibrary.Editor
 			search                 = EditorPrefs.GetString("FoCsEditor.search");
 			sortingModeIndex       = EditorPrefs.GetInt("FoCsEditor.sortingMode");
 			showContextMenuButtons = EditorPrefs.GetBool("FoCsEditor.showContextMenuButtons");
-
-			if(URLPStorage == null)
-				URLPStorage = new UnityReorderableListStorage(this);
-
+			InitReorderableListStorage();
 			InitContextMenu();
 		}
 
@@ -68,27 +62,38 @@ namespace ForestOfChaosLibrary.Editor
 			serializedObject.Update();
 			List<SerializedProperty> list;
 			GUIChanged = false;
+
+			//Verify Handler has been initiated
 			VerifyHandler();
 
 			using(var changeCheckScope = Disposables.ChangeCheck())
 			{
 				using(Disposables.Indent())
 				{
+					//Add padding to the top of the editor
 					DoTopPadding();
+					//Draw all of the header buttons, eg Copy & paste, sorting modes and any specific to the type
 					DoDrawHeader();
 					var cachedGuiColor = GUI.color;
 
-					if(AllowsSortingModeChanging)
 					{
-						var sorter = Sorters[SortingModeIndex];
-						list = sorter.GetPropertyOrder(serializedObject.Properties());
-						sorter.DoExtraDraw();
-					}
-					else
-						list = NormalSorter.Instance.GetPropertyOrder(serializedObject.Properties());
+						//Check that the inheriting type allows sorting
+						if(AllowsSortingModeChanging)
+						{
+							var sorter = Sorters[SortingModeIndex];
+							list = sorter.GetPropertyOrder(serializedObject.Properties());
+							sorter.DoExtraDraw();
+						}
+						else
+						{
+							//Draw default if sorting is not enabled
+							list = NormalSorter.Instance.GetPropertyOrder(serializedObject.Properties());
+						}
 
-					foreach(var serializedProperty in list)
-						Handler.Handle(serializedProperty);
+						//Draw properties in sorted order
+						foreach(var serializedProperty in list)
+							Handler.Handle(serializedProperty);
+					}
 
 					GUI.color = cachedGuiColor;
 				}
@@ -103,12 +108,19 @@ namespace ForestOfChaosLibrary.Editor
 			DoExtraDraw();
 
 			if(ShowContextMenuButtons)
+			{
+				//Draws any Unity context menu attribute as GUI buttons
 				DrawContextMenuButtons();
+			}
 
 			foreach(var serializedProperty in list)
 				Handler.DrawAfterEditor(serializedProperty);
 		}
 
+		/// <summary>
+		///		Only repaint if an element is animated
+		/// </summary>
+		/// <returns></returns>
 		public override bool RequiresConstantRepaint()
 		{
 			foreach(var property in serializedObject.Properties())
@@ -165,6 +177,15 @@ namespace ForestOfChaosLibrary.Editor
 		}
 
 		/// <summary>
+		///		Init Reorderable List Storage
+		/// </summary>
+		private void InitReorderableListStorage()
+		{
+			if(URLPStorage == null)
+				URLPStorage = new UnityReorderableListStorage(this);
+		}
+
+		/// <summary>
 		///     Draws heading buttons based of off what gets returned by GetHeaderButtons
 		/// </summary>
 		protected virtual void DoDrawHeader()
@@ -204,6 +225,7 @@ namespace ForestOfChaosLibrary.Editor
 		{
 			//using(Disposables.HorizontalScope(GUILayout.MaxWidth(Screen.width * 0.3f)))
 			var width = EditorGUIUtility.labelWidth - 8;
+
 			using(Disposables.HorizontalScope(GUILayout.MaxWidth(width), GUILayout.MinWidth(width)))
 			{
 				using(var cc = Disposables.ChangeCheck())
@@ -234,7 +256,7 @@ namespace ForestOfChaosLibrary.Editor
 		/// <returns>The object reference drawer class</returns>
 		internal ObjectReference GetObjectDrawer(SerializedProperty property, FoCsEditor owner)
 		{
-			var    id = GetUniqueStringID(property);
+			var             id = GetUniqueStringID(property);
 			ObjectReference objDraw;
 
 			if(objectDrawer.TryGetValue(id, out objDraw))
@@ -373,9 +395,9 @@ namespace ForestOfChaosLibrary.Editor
 			}
 
 			public static implicit operator SortableSerializedProperty(SerializedProperty input) => new SortableSerializedProperty(input);
-			public override bool Equals(object                                            obj) => obj is SortableSerializedProperty && Equals((SortableSerializedProperty)obj);
-			public bool Equals(SortableSerializedProperty                                 obj) => UID == obj.UID;
-			public override int GetHashCode() => UID.GetHashCode() + 1;
+			public override                 bool Equals(object                            obj)   => obj is SortableSerializedProperty && Equals((SortableSerializedProperty)obj);
+			public                          bool Equals(SortableSerializedProperty        obj)   => UID == obj.UID;
+			public override                 int  GetHashCode()                                   => UID.GetHashCode() + 1;
 		}
 	}
 
