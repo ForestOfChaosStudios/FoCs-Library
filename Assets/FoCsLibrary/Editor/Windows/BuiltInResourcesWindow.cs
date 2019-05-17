@@ -21,7 +21,7 @@ namespace ForestOfChaosLibrary.Editor.Windows
 		private bool          _showingStyles = true;
 		private List<Drawing> Drawings;
 
-		[MenuItem(FileStrings.FORESTOFCHAOS_ + "WIP/Built-in styles and icons")]
+		[MenuItem(FileStrings.FORESTOFCHAOS_TOOLS_ + "Built-in styles and icons")]
 		internal static void Init()
 		{
 			GetWindowAndShow();

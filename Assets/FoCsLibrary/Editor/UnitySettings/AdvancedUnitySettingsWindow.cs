@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using ForestOfChaosLibrary.Editor.Utilities;
 using ForestOfChaosLibrary.Editor.Windows;
 using ForestOfChaosLibrary.Extensions;
@@ -24,7 +24,7 @@ namespace ForestOfChaosLibrary.Editor.UnitySettings
 			}
 		}
 
-		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
+		[MenuItem(FileStrings.FORESTOFCHAOS_TOOLS_ + Title)]
 		internal static void Init()
 		{
 			GetWindowAndShow();

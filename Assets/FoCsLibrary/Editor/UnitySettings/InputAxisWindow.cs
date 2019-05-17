@@ -9,7 +9,7 @@ namespace ForestOfChaosLibrary.Editor.InputManager
 	{
 		private const string Title = "InputAxisWindow";
 
-		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
+		[MenuItem(FileStrings.FORESTOFCHAOS_TOOLS_ + Title)]
 		private static void Init()
 		{
 			GetWindowAndShow();

@@ -22,7 +22,7 @@ namespace ForestOfChaosLibrary.Editor.ScreenCap
 			path        = Application.streamingAssetsPath + "/../../";
 		}
 
-		[MenuItem(FileStrings.FORESTOFCHAOS_ + Title)]
+		[MenuItem(FileStrings.FORESTOFCHAOS_TOOLS_ + Title)]
 		internal static void Init()
 		{
 			GetWindowAndOpenUtility();

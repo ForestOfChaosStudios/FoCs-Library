@@ -15,7 +15,7 @@ namespace ForestOfChaosLibrary.Editor.Windows
 		private                 string             versionNumber;
 		private static          SerializedProperty BundleVersion => SerializedObject.FindProperty("bundleVersion");
 
-		[MenuItem(FileStrings.FORESTOFCHAOS_ + TITLE)]
+		[MenuItem(FileStrings.FORESTOFCHAOS_TOOLS_ + TITLE)]
 		internal static void Init()
 		{
 			GetWindowAndShow();

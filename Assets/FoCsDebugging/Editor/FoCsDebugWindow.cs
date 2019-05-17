@@ -15,7 +15,7 @@ namespace ForestOfChaosLibrary.Editor.Debugging
 		private const int     ENTRY_WIDTH = 200;
 		private       Vector2 ScrollPos;
 
-		[MenuItem(FileStrings.FORESTOFCHAOS_ + WINDOW_NAME)]
+		[MenuItem(FileStrings.FORESTOFCHAOS_TOOLS_ + WINDOW_NAME)]
 		internal static void Init()
 		{
 			GetWindowAndShow();

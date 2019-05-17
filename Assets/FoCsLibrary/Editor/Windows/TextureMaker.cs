@@ -10,7 +10,7 @@ namespace ForestOfChaosLibrary.Editor.Windows
 		private const string TITLE = "Texture Maker";
 		private       Color  color;
 
-		[MenuItem(FileStrings.FORESTOFCHAOS_ + TITLE)]
+		[MenuItem(FileStrings.FORESTOFCHAOS_TOOLS_ + TITLE)]
 		private static void Init()
 		{
 			GetWindowAndShow();
