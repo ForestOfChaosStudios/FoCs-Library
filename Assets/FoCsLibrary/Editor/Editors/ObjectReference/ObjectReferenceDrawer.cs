@@ -19,7 +19,6 @@ namespace ForestOfChaosLibrary.Editor.PropertyDrawers
 		private                   bool                        foldout;
 		public                    AnimBool                    IsExpanded;
 		public                    SerializedObject            SerializedObject { get; protected set; }
-
 		public bool Foldout
 		{
 			get { return foldout; }
@@ -31,7 +30,6 @@ namespace ForestOfChaosLibrary.Editor.PropertyDrawers
 					IsExpanded.value = foldout;
 			}
 		}
-
 		protected virtual bool AllowFoldout => true;
 		public ObjectReferenceDrawer(): this(false) { }
 
@@ -80,7 +78,13 @@ namespace ForestOfChaosLibrary.Editor.PropertyDrawers
 
 				using(var changeCheckScope = Disposables.ChangeCheck())
 				{
-					FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(elementHeight)), property, label);
+					var prop = FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(elementHeight)), property, label);
+
+					if(prop.EventIsMouseRInRect)
+					{
+						property.DrawCreateAndAssignObjectMenu();
+						prop.Event.Use();
+					}
 
 					if(changeCheckScope.changed && (property.objectReferenceValue != null))
 					{
@@ -90,6 +94,8 @@ namespace ForestOfChaosLibrary.Editor.PropertyDrawers
 				}
 			}
 		}
+
+
 
 		public bool DoFoldoutGUI(Rect position, bool internalFoldout)
 		{
@@ -233,5 +239,6 @@ namespace ForestOfChaosLibrary.Editor.PropertyDrawers
 			return objDraw;
 		}
 #endregion
+
 	}
 }

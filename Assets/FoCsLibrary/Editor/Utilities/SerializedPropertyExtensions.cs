@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEngine;
 
 namespace ForestOfChaosLibrary.Editor.Utilities
 {
@@ -42,6 +45,72 @@ namespace ForestOfChaosLibrary.Editor.Utilities
 			var str = matches[0].Value.Replace("[", "").Replace("]", "");
 
 			return int.Parse(str);
+		}
+
+		public static object GetValue(this SerializedProperty property)
+		{
+			var parentType = property.serializedObject.targetObject.GetType();
+			var fi         = parentType.GetField(property.propertyPath);
+
+			return fi.GetValue(property.serializedObject.targetObject);
+		}
+
+		public static void SetValue(this SerializedProperty property, object value)
+		{
+			var parentType = property.serializedObject.targetObject.GetType();
+			var fi         = parentType.GetField(property.propertyPath); //this FieldInfo contains the type.
+			fi.SetValue(property.serializedObject.targetObject, value);
+		}
+
+		public static Type GetPropertyType(this SerializedProperty property)
+		{
+			var slices = property.propertyPath.Split('.');
+			var type   = property.serializedObject.targetObject.GetType();
+
+			for(var i = 0; i < slices.Length; i++)
+			{
+				if(slices[i] == "Array")
+				{
+					i++;                          //skips "data[x]"
+					type = type.GetElementType(); //gets info on array elements
+				}
+
+				//gets info on field and its type
+				else
+					type = type.GetField(slices[i], BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy | BindingFlags.Instance).FieldType;
+			}
+
+			return type;
+
+			var parentType = property.serializedObject.targetObject.GetType();
+			var fi         = parentType.GetField(property.propertyPath);
+
+			return fi.FieldType;
+		}
+
+		public static void DrawCreateAndAssignObjectMenu(this SerializedProperty property)
+		{
+			var type = property.GetPropertyType();
+
+			if(!type.IsSubclassOf(typeof(ScriptableObject)))
+				return;
+
+			var guiContent  = new GUIContent($"Create And Assign New {type.Name}");
+			var genericMenu = new GenericMenu();
+			genericMenu.AddItem(guiContent, false, property.GenerateAddAssignNewItem);
+			genericMenu.ShowAsContext();
+		}
+
+		public static void GenerateAddAssignNewItem(this SerializedProperty property)
+		{
+			var type = property.GetPropertyType();
+			var obj  = ScriptableObject.CreateInstance(type);
+			EditorHelpers.CreateAndCheckFolder("Assets",      "Data");
+			EditorHelpers.CreateAndCheckFolder("Assets/Data", type.Name);
+			var path = AssetDatabase.GenerateUniqueAssetPath($"Assets/Data/{type.Name}/New {type.Name}.Asset");
+			AssetDatabase.CreateAsset(obj, path);
+			property.objectReferenceValue = AssetDatabase.LoadAssetAtPath(path, type);
+			property.serializedObject.ApplyModifiedProperties();
 		}
 	}
 }

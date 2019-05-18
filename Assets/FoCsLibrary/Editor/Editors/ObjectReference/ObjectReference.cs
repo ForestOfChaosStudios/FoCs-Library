@@ -20,7 +20,6 @@ namespace ForestOfChaosLibrary.Editor
 		private          bool                        referenceOpen;
 		public           SerializedObject            SerializedObject;
 		private          UnityReorderableListStorage ListHandler => listHandler ?? (listHandler = new UnityReorderableListStorage(owner));
-
 		public bool ReferenceOpen
 		{
 			get { return referenceOpen; }
@@ -53,7 +52,13 @@ namespace ForestOfChaosLibrary.Editor
 		{
 			using(var cc = Disposables.ChangeCheck())
 			{
-				FoCsGUI.Layout.PropertyField(Property, false);
+				var prop = FoCsGUI.Layout.PropertyField(Property, false);
+
+				if(prop.EventIsMouseRInRect)
+				{
+					Property.DrawCreateAndAssignObjectMenu();
+					prop.Event.Use();
+				}
 
 				if(cc.changed)
 				{
@@ -84,6 +89,19 @@ namespace ForestOfChaosLibrary.Editor
 
 			if(showFoldout)
 				ReferenceOpen = FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), ReferenceOpen);
+		}
+
+		private static void DrawRightClickMenu(SerializedProperty property)
+		{
+			var type = property.GetPropertyType();
+
+			if(!type.IsSubclassOf(typeof(ScriptableObject)))
+				return;
+
+			var guiContent  = new GUIContent($"Create And Assign New {type.Name}");
+			var genericMenu = new GenericMenu();
+			genericMenu.AddItem(guiContent,false, property.GenerateAddAssignNewItem);
+			genericMenu.ShowAsContext();
 		}
 
 		/// <summary>

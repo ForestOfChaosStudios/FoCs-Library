@@ -82,12 +82,12 @@ namespace ForestOfChaosLibrary.Editor.Utilities
 
 				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
 				{
-					var PasteContent = new GUIContent("Paste", "Pastes the data.\n" + copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length));
+					var pasteContent = new GUIContent("Paste", "Pastes the data.\n" + copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length));
 
 					if(!isType)
-						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;
+						pasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + pasteContent.tooltip;
 
-					pasteEvent = FoCsGUI.Layout.Button(PasteContent, EditorStyles.toolbarButton);
+					pasteEvent = FoCsGUI.Layout.Button(pasteContent, EditorStyles.toolbarButton);
 				}
 
 				if(copyEvent)
@@ -118,12 +118,12 @@ namespace ForestOfChaosLibrary.Editor.Utilities
 
 				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
 				{
-					var PasteContent = new GUIContent("Paste (E)", string.Format("Pastes the data. (using the EditorJSONUtility)\n{0}", copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length)));
+					var pasteContent = new GUIContent("Paste (E)", string.Format("Pastes the data. (using the EditorJSONUtility)\n{0}", copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length)));
 
 					if(!isType)
-						PasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + PasteContent.tooltip;
+						pasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + pasteContent.tooltip;
 
-					pasteEvent = FoCsGUI.Layout.Button(PasteContent, EditorStyles.toolbarButton);
+					pasteEvent = FoCsGUI.Layout.Button(pasteContent, EditorStyles.toolbarButton);
 				}
 
 				if(copyEvent)

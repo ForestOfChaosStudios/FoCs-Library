@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 
 namespace ForestOfChaosLibrary.Editor.Utilities
@@ -36,6 +37,13 @@ namespace ForestOfChaosLibrary.Editor.Utilities
 			while(iterator.NextVisible(enterChildren));
 
 			return num;
+		}
+
+		public static Type GetPropertyType(this SerializedObject property)
+		{
+			var parentType = property.targetObject.GetType();
+
+			return parentType;
 		}
 	}
 }
