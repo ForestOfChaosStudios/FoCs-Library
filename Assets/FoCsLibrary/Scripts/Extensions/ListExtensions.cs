@@ -6,7 +6,7 @@ using SRandom = System.Random;
 
 namespace ForestOfChaosLibrary.Extensions
 {
-	public static class ListExtenstions
+	public static class ListExtensions
 	{
 		public static bool IsEmpty<T>(this       List<T> list) => list.Count == 0;
 		public static bool NotEmpty<T>(this      List<T> list) => list.Count > 0;
@@ -87,9 +87,9 @@ namespace ForestOfChaosLibrary.Extensions
 				list.Add(obj);
 		}
 
-		public static List<T> Create<T>(T t) => new List<T> {t};
-		public static List<T> Create<T>(T t, int capacity) => new List<T>(capacity) {t};
-		public static List<T> CreateA<T>(T[] tArray) => new List<T>(tArray);
+		public static List<T> Create<T>(T    t)               => new List<T> {t};
+		public static List<T> Create<T>(T    t, int capacity) => new List<T>(capacity) {t};
+		public static List<T> CreateA<T>(T[] tArray)               => new List<T>(tArray);
 		public static List<T> CreateA<T>(T[] tArray, int capacity) => new List<T>(tArray);
 	}
 }
