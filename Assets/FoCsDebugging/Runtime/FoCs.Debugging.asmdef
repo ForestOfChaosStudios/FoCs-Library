@@ -1,7 +1,7 @@
 {
-    "name": "FoCsAdvVar",
+    "name": "FoCs.Debugging",
     "references": [
-        "FoCsLibrary"
+        "FoCs.Library"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

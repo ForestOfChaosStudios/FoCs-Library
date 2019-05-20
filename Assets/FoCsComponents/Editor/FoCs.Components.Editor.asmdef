@@ -1,9 +1,9 @@
 {
-    "name": "FoCsComponents.Editor",
+    "name": "FoCs.Components.Editor",
     "references": [
-        "FoCsComponents",
-        "FoCsLibrary",
-        "FoCsLibrary.Editor"
+        "FoCs.Components",
+        "FoCs.Library",
+        "FoCs.Library.Editor"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

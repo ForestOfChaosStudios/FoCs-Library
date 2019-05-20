@@ -1,9 +1,9 @@
 {
-    "name": "FoCsDebugging.Editor",
+    "name": "FoCs.Debugging.Editor",
     "references": [
-        "FoCsDebugging",
-        "FoCsLibrary.Editor",
-        "FoCsLibrary"
+        "FoCs.Debugging",
+        "FoCs.Library.Editor",
+        "FoCs.Library"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

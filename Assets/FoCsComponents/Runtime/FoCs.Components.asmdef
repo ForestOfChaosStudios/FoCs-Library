@@ -1,7 +1,7 @@
 {
-    "name": "FoCsDebugging",
+    "name": "FoCs.Components",
     "references": [
-        "FoCsLibrary"
+        "FoCs.Library"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

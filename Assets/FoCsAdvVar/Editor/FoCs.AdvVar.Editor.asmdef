@@ -1,7 +1,10 @@
 {
-    "name": "FoCsLibrary.Editor",
+    "name": "FoCs.AdvVar.Editor",
     "references": [
-        "FoCsLibrary"
+        "FoCs.AdvVar",
+        "FoCs.Library",
+        "FoCs.Library.Editor",
+        "FoCs.Components"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
