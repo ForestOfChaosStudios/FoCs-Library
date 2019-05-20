@@ -7,7 +7,7 @@ using UnityEngine;
 namespace ForestOfChaosLibrary.Editor.Windows
 {
 	[FoCsWindow]
-	public class VersionNumberWindow: FoCsWindow<VersionNumberWindow>
+	public class FoCsVersionNumberWindow: FoCsWindow<FoCsVersionNumberWindow>
 	{
 		private const           string             TITLE   = "Version Number";
 		private static readonly GUIContent         Heading = new GUIContent("Bundle Version");

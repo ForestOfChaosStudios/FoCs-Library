@@ -12,7 +12,7 @@ using SearchAsset = UnityEngine.ScriptableObject;
 namespace ForestOfChaosLibrary.Editor.Windows
 {
 	[FoCsWindow]
-	public class ObjectBrowserWindow: FoCsWindow<ObjectBrowserWindow>
+	public class FoCsObjectBrowserWindow: FoCsWindow<FoCsObjectBrowserWindow>
 	{
 		private const           string            GUI_SELECTION_LABEL = "ObjectBrowserSelectItemID";
 		private const           string            TITLE               = "Object Browser";

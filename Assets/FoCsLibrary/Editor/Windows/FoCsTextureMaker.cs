@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ForestOfChaosLibrary.Editor.Windows
 {
 	[FoCsWindow]
-	public class TextureMaker: FoCsWindow<TextureMaker>
+	public class FoCsTextureMaker: FoCsWindow<FoCsTextureMaker>
 	{
 		private const string TITLE = "Texture Maker";
 		private       Color  color;

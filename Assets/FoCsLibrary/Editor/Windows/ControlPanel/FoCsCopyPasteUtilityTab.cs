@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace ForestOfChaosLibrary.Editor
 {
-	[FoCsControlPanel.ControlPanelTabAttribute]
-	public static class CopyPasteUtilityTab
+	[FoCsControlPanel.FoCsControlPanelTab]
+	public static class FoCsCopyPasteUtilityTab
 	{
 		public static void DrawGUI(FoCsControlPanel owner)
 		{

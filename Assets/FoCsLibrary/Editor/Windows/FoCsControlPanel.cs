@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Reflection;
 using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Editor.Windows;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor
+namespace ForestOfChaosLibrary.Editor.Windows
 {
 	public partial class FoCsControlPanel: FoCsWindow<FoCsControlPanel>
 	{
@@ -18,7 +17,7 @@ namespace ForestOfChaosLibrary.Editor
 		private static List<Type> windowList;
 		private static List<Type> tabList;
 		private static List<Type> WindowList => windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false));
-		private static List<Type> TabList    => tabList    ?? (tabList = ReflectionUtilities.GetTypesWith<ControlPanelTabAttribute>(false));
+		private static List<Type> TabList    => tabList    ?? (tabList = ReflectionUtilities.GetTypesWith<Editor.FoCsControlPanel.FoCsControlPanelTabAttribute>(false));
 
 		private static int ActiveTab
 		{

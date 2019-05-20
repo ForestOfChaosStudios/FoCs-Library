@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 
 namespace ForestOfChaosLibrary.Editor.Windows
 {
-	public class BetterInspector: FoCsWindow<BetterInspector>
+	public class FoCsBetterInspector: FoCsWindow<FoCsBetterInspector>
 	{
 		private                 Vector2                     scrollPos;
 		public                  List<Object>                Object           = new List<Object>();

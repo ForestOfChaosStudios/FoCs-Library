@@ -8,12 +8,12 @@ using UnityEngine;
 namespace ForestOfChaosLibrary.Editor.UnitySettings
 {
 	[FoCsWindow]
-	public class AdvancedUnitySettingsWindow: TabedWindow<AdvancedUnitySettingsWindow>
+	public class AdvancedUnitySettingsWindow: FoCsTabbedWindow<AdvancedUnitySettingsWindow>
 	{
 		private const string                             Title = "Advanced Unity Settings Window";
-		private       Tab<AdvancedUnitySettingsWindow>[] tabs;
+		private       FoCsTab<AdvancedUnitySettingsWindow>[] tabs;
 
-		public override Tab<AdvancedUnitySettingsWindow>[] Tabs
+		public override FoCsTab<AdvancedUnitySettingsWindow>[] Tabs
 		{
 			get
 			{
@@ -39,13 +39,13 @@ namespace ForestOfChaosLibrary.Editor.UnitySettings
 		private void CreatePrivateTabsArray()
 		{
 			var arry = UnitySettingsReader.RawAssets;
-			tabs = new Tab<AdvancedUnitySettingsWindow>[arry.Length];
+			tabs = new FoCsTab<AdvancedUnitySettingsWindow>[arry.Length];
 
 			for(var i = 0; i < arry.Length; i++)
 				tabs[i] = new SearchableTab(arry[i], arry[i].Assets.Select(a => new SerializedObject(a)).ToArray());
 		}
 
-		private class SearchableTab: Tab<AdvancedUnitySettingsWindow>
+		private class SearchableTab: FoCsTab<AdvancedUnitySettingsWindow>
 		{
 			//private                 HandlerController[]         handlerControllers = null;
 			//private                 UnityReorderableListStorage storage             = null;

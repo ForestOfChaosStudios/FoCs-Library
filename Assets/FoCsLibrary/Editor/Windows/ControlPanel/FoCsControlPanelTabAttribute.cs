@@ -11,6 +11,6 @@ namespace ForestOfChaosLibrary.Editor
 		///     static "Init()"
 		///     public static void DrawGUI(FoCsControlPanel owner)
 		/// </summary>
-		public class ControlPanelTabAttribute: Attribute { }
+		public class FoCsControlPanelTabAttribute: Attribute { }
 	}
 }

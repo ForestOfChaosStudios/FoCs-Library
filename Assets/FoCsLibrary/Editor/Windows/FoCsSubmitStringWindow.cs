@@ -5,10 +5,10 @@ using ForestOfChaosLibrary.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosAdvVar.Editor
+namespace ForestOfChaosAdvVar.Editor.Windows
 {
 	//TODO : Make this window better, GE add the ability to add extra functionality eg submit more data
-	public class SubmitStringWindow: FoCsWindow<SubmitStringWindow>
+	public class FoCsSubmitStringWindow: FoCsWindow<FoCsSubmitStringWindow>
 	{
 		private const  string                GUI_SELECTION_LABEL = "SubmitStringWindowDataField";
 		private static bool                  notSelectedLabel;

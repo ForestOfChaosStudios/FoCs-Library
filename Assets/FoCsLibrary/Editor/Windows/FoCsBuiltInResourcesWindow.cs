@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 namespace ForestOfChaosLibrary.Editor.Windows
 {
 	[FoCsWindow]
-	public class BuiltInResourcesWindow: FoCsWindow<BuiltInResourcesWindow>
+	public class FoCsBuiltInResourcesWindow: FoCsWindow<FoCsBuiltInResourcesWindow>
 	{
 		private float         _maxY;
 		private List<Object>  _objects;

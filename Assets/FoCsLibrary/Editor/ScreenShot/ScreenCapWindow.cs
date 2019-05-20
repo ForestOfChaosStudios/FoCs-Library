@@ -7,14 +7,14 @@ using UnityEngine;
 namespace ForestOfChaosLibrary.Editor.ScreenCap
 {
 	[FoCsWindow]
-	public class ScreenCapWindow: TabedWindow<ScreenCapWindow>
+	public class ScreenCapWindow: FoCsTabbedWindow<ScreenCapWindow>
 	{
 		private const   string                 Title = "Screen Capture Window";
 		public          string                 defaultPath;
 		public          string                 filename = "";
 		public          string                 path;
 		public          int                    scale = 1;
-		public override Tab<ScreenCapWindow>[] Tabs { get; } = {new ScreenshotTab(), new TimelapseTab()};
+		public override FoCsTab<ScreenCapWindow>[] Tabs { get; } = {new ScreenshotTab(), new TimelapseTab()};
 
 		private void OnEnable()
 		{

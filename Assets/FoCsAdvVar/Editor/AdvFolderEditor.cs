@@ -6,6 +6,7 @@ using ForestOfChaosAdvVar;
 using ForestOfChaosLibrary.Editor;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosAdvVar.Base;
+using ForestOfChaosAdvVar.Editor.Windows;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -209,7 +210,7 @@ namespace ForestOfChaosAdvVar.Editor
 
 			if(@event)
 			{
-				SubmitStringWindow.SetUpInstance(new CreateArgs
+				FoCsSubmitStringWindow.SetUpInstance(new CreateArgs
 				{
 						Title                = $"Enter Name of the new {type.Name}",
 						WindowTitle          = "Enter Name",
@@ -227,7 +228,7 @@ namespace ForestOfChaosAdvVar.Editor
 			}
 		}
 
-		private static void OnCreateSubmit(SubmitStringWindow.SubmitStringArguments obj)
+		private static void OnCreateSubmit(FoCsSubmitStringWindow.SubmitStringArguments obj)
 		{
 			var args = obj as CreateArgs;
 
@@ -241,9 +242,9 @@ namespace ForestOfChaosAdvVar.Editor
 			}
 		}
 
-		private static void OnCreateCancel(SubmitStringWindow.SubmitStringArguments obj) { }
+		private static void OnCreateCancel(FoCsSubmitStringWindow.SubmitStringArguments obj) { }
 
-		private static void OnRenameSubmit(SubmitStringWindow.SubmitStringArguments obj)
+		private static void OnRenameSubmit(FoCsSubmitStringWindow.SubmitStringArguments obj)
 		{
 			var args = obj as Args;
 
@@ -255,7 +256,7 @@ namespace ForestOfChaosAdvVar.Editor
 			}
 		}
 
-		private static void OnRenameCancel(SubmitStringWindow.SubmitStringArguments obj) { }
+		private static void OnRenameCancel(FoCsSubmitStringWindow.SubmitStringArguments obj) { }
 
 		private static void DrawDevOptions()
 		{
@@ -287,7 +288,7 @@ namespace ForestOfChaosAdvVar.Editor
 			return finalList;
 		}
 
-		private class Args: SubmitStringWindow.SubmitStringArguments
+		private class Args: FoCsSubmitStringWindow.SubmitStringArguments
 		{
 			public Object target;
 		}

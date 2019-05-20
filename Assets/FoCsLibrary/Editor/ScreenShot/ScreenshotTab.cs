@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ForestOfChaosLibrary.Editor.ScreenCap
 {
-	public class ScreenshotTab: Tab<ScreenCapWindow>
+	public class ScreenshotTab: FoCsTab<ScreenCapWindow>
 	{
 		private         ScreenShotArgs  args;
 		protected       ScreenCapWindow Owner;
