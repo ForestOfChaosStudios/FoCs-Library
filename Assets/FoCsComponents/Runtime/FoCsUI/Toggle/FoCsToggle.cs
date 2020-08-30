@@ -1,43 +1,46 @@
+#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Components
+//       File: FoCsToggle.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
 using System;
 using UnityEngine;
 using UToggle = UnityEngine.UI.Toggle;
 
-namespace ForestOfChaosLibrary.FoCsUI.Toggle
-{
-	public abstract class FoCsToggle: FoCsBehaviour
-	{
-		public          Action<bool> onValueChanged;
-		public          UToggle      Toggle;
-		public abstract string       Text   { get; set; }
-		public abstract GameObject   TextGO { get; }
+namespace ForestOfChaosLibrary.FoCsUI.Toggle {
+    public abstract class FoCsToggle: FoCsBehaviour {
+        public Action<bool> onValueChanged;
+        public UToggle      Toggle;
 
-		public bool Interactable
-		{
-			get { return Toggle.interactable; }
-			set { Toggle.interactable = value; }
-		}
+        public abstract string Text { get; set; }
 
-		public bool Toggled
-		{
-			get { return Toggle.isOn; }
-			set { Toggle.isOn = value; }
-		}
+        public abstract GameObject TextGO { get; }
 
-		private void MouseClick(bool value)
-		{
-			onValueChanged?.Invoke(value);
-		}
+        public bool Interactable {
+            get => Toggle.interactable;
+            set => Toggle.interactable = value;
+        }
 
-		public void OnEnable()
-		{
-			if(Toggle)
-				Toggle.onValueChanged.AddListener(MouseClick);
-		}
+        public bool Toggled {
+            get => Toggle.isOn;
+            set => Toggle.isOn = value;
+        }
 
-		public void OnDisable()
-		{
-			if(Toggle)
-				Toggle.onValueChanged.RemoveListener(MouseClick);
-		}
-	}
+        private void MouseClick(bool value) {
+            onValueChanged?.Invoke(value);
+        }
+
+        public void OnEnable() {
+            if (Toggle)
+                Toggle.onValueChanged.AddListener(MouseClick);
+        }
+
+        public void OnDisable() {
+            if (Toggle)
+                Toggle.onValueChanged.RemoveListener(MouseClick);
+        }
+    }
 }

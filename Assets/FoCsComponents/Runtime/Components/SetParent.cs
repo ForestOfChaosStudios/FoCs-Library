@@ -1,51 +1,51 @@
-﻿using UnityEngine;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Components
+//       File: SetParent.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
 
-namespace ForestOfChaosLibrary.Components
-{
-	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "Set Parent")]
-	public class SetParent: FoCsBehaviour
-	{
-		public enum Mode
-		{
-			OnEnable,
-			Start,
-			Awake
-		}
 
-		public Mode         CallMode = Mode.OnEnable;
-		public Transform    ChildTransform;
-		public bool DestroyComponentAfterCall = true;
-		public Transform    ParentTransform;
+using UnityEngine;
 
-		private void OnEnable()
-		{
-			if(CallMode == Mode.OnEnable)
-				DoParent();
-		}
+namespace ForestOfChaosLibrary.Components {
+    [AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "Set Parent")]
+    public class SetParent: FoCsBehaviour {
+        public enum Mode {
+            OnEnable,
+            Start,
+            Awake
+        }
 
-		private void Awake()
-		{
-			if(CallMode == Mode.Awake)
-				DoParent();
-		}
+        public Mode      CallMode = Mode.OnEnable;
+        public Transform ChildTransform;
+        public bool      DestroyComponentAfterCall = true;
+        public Transform ParentTransform;
 
-		private void Start()
-		{
-			if(CallMode == Mode.Start)
-				DoParent();
-		}
+        private void OnEnable() {
+            if (CallMode == Mode.OnEnable)
+                DoParent();
+        }
 
-		private void DoParent()
-		{
-			ChildTransform.SetParent(ParentTransform);
+        private void Awake() {
+            if (CallMode == Mode.Awake)
+                DoParent();
+        }
 
-			if(DestroyComponentAfterCall)
-				Destroy(this);
-		}
+        private void Start() {
+            if (CallMode == Mode.Start)
+                DoParent();
+        }
 
-		private void Reset()
-		{
-			ChildTransform = transform;
-		}
-	}
+        private void DoParent() {
+            ChildTransform.SetParent(ParentTransform);
+
+            if (DestroyComponentAfterCall)
+                Destroy(this);
+        }
+
+        private void Reset() {
+            ChildTransform = transform;
+        }
+    }
 }

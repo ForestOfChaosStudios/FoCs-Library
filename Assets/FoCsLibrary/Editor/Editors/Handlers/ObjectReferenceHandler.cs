@@ -1,148 +1,134 @@
-﻿using System;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: ObjectReferenceHandler.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
+using System;
 using System.Collections.Generic;
 using ForestOfChaosLibrary.Attributes;
 using ForestOfChaosLibrary.Editor.PropertyDrawers;
 using ForestOfChaosLibrary.Extensions;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor
-{
-	public class ObjectReferenceHandler: IPropertyLayoutHandler
-	{
-		public readonly  FoCsEditor                        owner;
-		private readonly Dictionary<string, EditorFoldout> ShowAfter = new Dictionary<string, EditorFoldout>();
-		private          UnityReorderableListStorage       storage;
+namespace ForestOfChaosLibrary.Editor {
+    public class ObjectReferenceHandler: IPropertyLayoutHandler {
+        public readonly  FoCsEditor                        owner;
+        private readonly Dictionary<string, EditorFoldout> ShowAfter = new Dictionary<string, EditorFoldout>();
+        private          UnityReorderableListStorage       storage;
 
-		public UnityReorderableListStorage URLStorage
-		{
-			get { return storage ?? (storage = new UnityReorderableListStorage(owner)); }
-			set { storage = value; }
-		}
+        public UnityReorderableListStorage URLStorage {
+            get => storage ?? (storage = new UnityReorderableListStorage(owner));
+            set => storage = value;
+        }
 
-		public ObjectReferenceHandler(FoCsEditor _owner)
-		{
-			owner = _owner;
-		}
+        public ObjectReferenceHandler(FoCsEditor _owner) => owner = _owner;
 
-		public ObjectReferenceHandler(UnityReorderableListStorage _URLStorage)
-		{
-			storage = _URLStorage;
-			owner   = null;
-		}
+        public ObjectReferenceHandler(UnityReorderableListStorage _URLStorage) {
+            storage = _URLStorage;
+            owner   = null;
+        }
 
-		private void NormalDraw(ObjectReference drawer)
-		{
-			using(var cc = Disposables.ChangeCheck())
-			{
-				drawer.IsReferenceOpen.target = drawer.ReferenceOpen;
-				drawer.DrawHeader();
+        private void NormalDraw(ObjectReference drawer) {
+            using (var cc = Disposables.ChangeCheck()) {
+                drawer.IsReferenceOpen.target = drawer.ReferenceOpen;
+                drawer.DrawHeader();
 
-				using(var fade = Disposables.FadeGroupScope(drawer.IsReferenceOpen.faded))
-				{
-					if(fade.visible)
-						drawer.DrawReference(URLStorage);
-				}
+                using (var fade = Disposables.FadeGroupScope(drawer.IsReferenceOpen.faded)) {
+                    if (fade.visible)
+                        drawer.DrawReference(URLStorage);
+                }
 
-				if(cc.changed)
-					URLStorage.owner.Repaint();
-			}
-		}
+                if (cc.changed)
+                    URLStorage.owner.Repaint();
+            }
+        }
 
-		public void HandleProperty(SerializedProperty property)
-		{
-			var drawer  = owner.GetObjectDrawer(property, owner);
-			var @object = property.objectReferenceValue;
+        public void HandleProperty(SerializedProperty property) {
+            var drawer  = owner.GetObjectDrawer(property, owner);
+            var @object = property.objectReferenceValue;
 
-			if(@object == null)
-			{
-				NormalDraw(drawer);
+            if (@object == null) {
+                NormalDraw(drawer);
 
-				return;
-			}
+                return;
+            }
 
-			var attribute    = property.GetSerializedPropertyAttributes<ShowAsComponentAttribute>();
-			var hasAttribute = AttributeType.None;
+            var attribute    = property.GetSerializedPropertyAttributes<ShowAsComponentAttribute>();
+            var hasAttribute = AttributeType.None;
 
-			if(attribute.IsNullOrEmpty())
-			{
-				hasAttribute = AttributeType.None;
-			}
-			else
-			{
-				foreach(var a in attribute)
-				{
-					if(a is ShowAsComponentAttribute)
-					{
-						hasAttribute = AttributeType.ShowAsComponent;
+            if (attribute.IsNullOrEmpty())
+                hasAttribute = AttributeType.None;
+            else {
+                foreach (var a in attribute) {
+                    if (a is ShowAsComponentAttribute) {
+                        hasAttribute = AttributeType.ShowAsComponent;
 
-						break;
-					}
+                        break;
+                    }
 
-					if(a is NoObjectFoldoutAttribute)
-					{
-						hasAttribute = AttributeType.NoObjectFoldout;
+                    if (a is NoObjectFoldoutAttribute) {
+                        hasAttribute = AttributeType.NoObjectFoldout;
 
-						break;
-					}
-				}
-			}
+                        break;
+                    }
+                }
+            }
 
-			if(hasAttribute == AttributeType.ShowAsComponent)
-			{
-				drawer.DrawHeader(false);
-				var id = property.GetId();
+            if (hasAttribute == AttributeType.ShowAsComponent) {
+                drawer.DrawHeader(false);
+                var id = property.GetId();
 
-				if(!ShowAfter.ContainsKey(id))
-					ShowAfter.Add(id, new EditorFoldout{Foldout = true});
-			}
-			else if(hasAttribute == AttributeType.NoObjectFoldout)
-				drawer.DrawHeader(false);
-			else
-				NormalDraw(drawer);
-		}
+                if (!ShowAfter.ContainsKey(id))
+                    ShowAfter.Add(id, new EditorFoldout {Foldout = true});
+            }
+            else if (hasAttribute == AttributeType.NoObjectFoldout)
+                drawer.DrawHeader(false);
+            else
+                NormalDraw(drawer);
+        }
 
-		public float PropertyHeight(SerializedProperty property) => FoCsGUI.SingleLine;
-		public bool IsValidProperty(SerializedProperty property) => (property.propertyType == SerializedPropertyType.ObjectReference) && !FoCsEditor.IsDefaultScriptProperty(property);
+        public float PropertyHeight(SerializedProperty property) => FoCsGUI.SingleLine;
 
-		public void DrawAfterEditor(SerializedProperty serializedProperty)
-		{
-			var id = serializedProperty.GetId();
+        public bool IsValidProperty(SerializedProperty property) =>
+                (property.propertyType == SerializedPropertyType.ObjectReference) && !FoCsEditor.IsDefaultScriptProperty(property);
 
-			if(!ShowAfter.ContainsKey(id))
-				return;
+        public void DrawAfterEditor(SerializedProperty serializedProperty) {
+            var id = serializedProperty.GetId();
 
-			var obj = serializedProperty.objectReferenceValue;
+            if (!ShowAfter.ContainsKey(id))
+                return;
 
-			if(obj == null)
-				return;
+            var obj = serializedProperty.objectReferenceValue;
 
-			var editorFoldout = ShowAfter[id];
-			editorFoldout.Foldout = EditorGUILayout.InspectorTitlebar(editorFoldout.Foldout, obj);
+            if (obj == null)
+                return;
 
-			using(Disposables.IndentZeroed())
-			{
-				if(editorFoldout.Foldout)
-				{
-					UnityEditor.Editor.CreateCachedEditor(obj, null, ref editorFoldout.Editor);
-					editorFoldout.Editor.OnInspectorGUI();
-				}
-			}
+            var editorFoldout = ShowAfter[id];
+            editorFoldout.Foldout = EditorGUILayout.InspectorTitlebar(editorFoldout.Foldout, obj);
 
-			ShowAfter[id] = editorFoldout;
-		}
+            using (Disposables.IndentZeroed()) {
+                if (editorFoldout.Foldout) {
+                    UnityEditor.Editor.CreateCachedEditor(obj, null, ref editorFoldout.Editor);
+                    editorFoldout.Editor.OnInspectorGUI();
+                }
+            }
 
-		[Flags]
-		private enum AttributeType
-		{
-			None            = 0,
-			ShowAsComponent = 1,
-			NoObjectFoldout = 2
-		}
+            ShowAfter[id] = editorFoldout;
+        }
 
-		private struct EditorFoldout
-		{
-			public bool               Foldout;
-			public UnityEditor.Editor Editor;
-		}
-	}
+        [Flags]
+        private enum AttributeType {
+            None            = 0,
+            ShowAsComponent = 1,
+            NoObjectFoldout = 2
+        }
+
+        private struct EditorFoldout {
+            public bool               Foldout;
+            public UnityEditor.Editor Editor;
+        }
+    }
 }

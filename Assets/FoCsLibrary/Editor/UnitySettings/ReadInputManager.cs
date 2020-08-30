@@ -1,56 +1,59 @@
-﻿using UnityEditor;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: ReadInputManager.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:49 AM
+#endregion
+
+
+using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.UnitySettings
-{
-	//From https://answers.unity.com/questions/951770/get-array-of-all-input-manager-axes.html
-	//And https://answers.unity.com/questions/566736/get-list-of-axes.html
-	//The same Unity User "Sarkahn"
-	public class ReadInputManager
-	{
-		private static Object InputManagerAsset => UnitySettingsReader.InputManager;
-		public static SerializedObject GetInputAxisSerializedObject() => new SerializedObject(InputManagerAsset);
+namespace ForestOfChaosLibrary.Editor.UnitySettings {
+    //From https://answers.unity.com/questions/951770/get-array-of-all-input-manager-axes.html
+    //And https://answers.unity.com/questions/566736/get-list-of-axes.html
+    //The same Unity User "Sarkahn"
+    public class ReadInputManager {
+        private static Object InputManagerAsset => UnitySettingsReader.InputManager;
 
-		public static SerializedProperty GetAxisArrayProperty()
-		{
-			var obj = GetInputAxisSerializedObject();
+        public static SerializedObject GetInputAxisSerializedObject() => new SerializedObject(InputManagerAsset);
 
-			return obj.FindProperty("m_Axes");
-		}
+        public static SerializedProperty GetAxisArrayProperty() {
+            var obj = GetInputAxisSerializedObject();
 
-		public static SerializedProperty[] GetAxisProperties()
-		{
-			var obj       = GetInputAxisSerializedObject();
-			var axisArray = obj.FindProperty("m_Axes");
+            return obj.FindProperty("m_Axes");
+        }
 
-			if(axisArray.arraySize == 0)
-				return new SerializedProperty[0];
+        public static SerializedProperty[] GetAxisProperties() {
+            var obj       = GetInputAxisSerializedObject();
+            var axisArray = obj.FindProperty("m_Axes");
 
-			var returnVal = new SerializedProperty[axisArray.arraySize];
+            if (axisArray.arraySize == 0)
+                return new SerializedProperty[0];
 
-			for(var i = 0; i < axisArray.arraySize; ++i)
-				returnVal[i] = axisArray.GetArrayElementAtIndex(i).Copy();
+            var returnVal = new SerializedProperty[axisArray.arraySize];
 
-			return returnVal;
-		}
+            for (var i = 0; i < axisArray.arraySize; ++i)
+                returnVal[i] = axisArray.GetArrayElementAtIndex(i).Copy();
 
-		public static string[] GetAxisNames()
-		{
-			var axisArray = GetAxisArrayProperty();
+            return returnVal;
+        }
 
-			if(axisArray.arraySize == 0)
-				return new string[0];
+        public static string[] GetAxisNames() {
+            var axisArray = GetAxisArrayProperty();
 
-			var returnVal = new string[axisArray.arraySize];
+            if (axisArray.arraySize == 0)
+                return new string[0];
 
-			for(var i = 0; i < axisArray.arraySize; ++i)
-			{
-				var axis = axisArray.GetArrayElementAtIndex(i);
-				var name = axis.FindPropertyRelative("m_Name").stringValue;
-				returnVal[i] = name;
-			}
+            var returnVal = new string[axisArray.arraySize];
 
-			return returnVal;
-		}
-	}
+            for (var i = 0; i < axisArray.arraySize; ++i) {
+                var axis = axisArray.GetArrayElementAtIndex(i);
+                var name = axis.FindPropertyRelative("m_Name").stringValue;
+                returnVal[i] = name;
+            }
+
+            return returnVal;
+        }
+    }
 }

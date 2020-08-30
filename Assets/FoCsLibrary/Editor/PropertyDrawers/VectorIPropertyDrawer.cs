@@ -1,11 +1,21 @@
-﻿using ForestOfChaosLibrary.Types;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: VectorIPropertyDrawer.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
+using ForestOfChaosLibrary.Types;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers
-{
-	[CustomPropertyDrawer(typeof(Vector2I))] public class Vector2IPropEditor: Vector2PropEditor { }
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers {
+    [CustomPropertyDrawer(typeof(Vector2I))]
+    public class Vector2IPropEditor: Vector2PropEditor { }
 
-	[CustomPropertyDrawer(typeof(Vector3I))] public class Vector3IPropEditor: Vector3PropEditor { }
+    [CustomPropertyDrawer(typeof(Vector3I))]
+    public class Vector3IPropEditor: Vector3PropEditor { }
 
-	[CustomPropertyDrawer(typeof(Vector4I))] public class Vector4IPropEditor: Vector4PropEditor { }
+    [CustomPropertyDrawer(typeof(Vector4I))]
+    public class Vector4IPropEditor: Vector4PropEditor { }
 }

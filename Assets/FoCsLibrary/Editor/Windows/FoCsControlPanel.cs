@@ -1,4 +1,12 @@
-﻿using System;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: FoCsControlPanel.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:49 AM
+#endregion
+
+
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using ForestOfChaosLibrary.Editor.Utilities;
@@ -7,100 +15,86 @@ using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Windows
-{
-	public partial class FoCsControlPanel: FoCsWindow<FoCsControlPanel>
-	{
-		private const  string     SHORT_TITLE = "Control Panel";
-		private const  string     TITLE       = "FoCs " + SHORT_TITLE;
-		public static  GUISkin    skin;
-		private static List<Type> windowList;
-		private static List<Type> tabList;
-		private static List<Type> WindowList => windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false));
-		private static List<Type> TabList    => tabList    ?? (tabList = ReflectionUtilities.GetTypesWith<Editor.FoCsControlPanel.FoCsControlPanelTabAttribute>(false));
+namespace ForestOfChaosLibrary.Editor.Windows {
+    public class FoCsControlPanel: FoCsWindow<FoCsControlPanel> {
+        private const  string     SHORT_TITLE = "Control Panel";
+        private const  string     TITLE       = "FoCs " + SHORT_TITLE;
+        public static  GUISkin    skin;
+        private static List<Type> windowList;
+        private static List<Type> tabList;
 
-		private static int ActiveTab
-		{
-			get { return EditorPrefs.GetInt("FoCsCP.ActiveIndex"); }
-			set { EditorPrefs.SetInt("FoCsCP.ActiveIndex", value); }
-		}
+        private static List<Type> WindowList => windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false));
 
-		[MenuItem(FileStrings.FORESTOFCHAOS_ + SHORT_TITLE)]
-		private static void Init()
-		{
-			GetWindowAndShow();
-			Window.titleContent = new GUIContent(TITLE);
-		}
+        private static List<Type> TabList => tabList ?? (tabList = ReflectionUtilities.GetTypesWith<Editor.FoCsControlPanel.FoCsControlPanelTabAttribute>(false));
 
-		protected override void OnGUI()
-		{
-			FoCsGUI.Layout.Label(TITLE, FoCsGUI.Styles.Unity.BoldLabel);
+        private static int ActiveTab {
+            get => EditorPrefs.GetInt("FoCsCP.ActiveIndex");
+            set => EditorPrefs.SetInt("FoCsCP.ActiveIndex", value);
+        }
 
-			using(Disposables.HorizontalScope())
-			{
-				using(Disposables.VerticalScope(GUILayout.Width(200)))
-					DrawWindowButtons();
+        [MenuItem(FileStrings.FORESTOFCHAOS_ + SHORT_TITLE)]
+        private static void Init() {
+            GetWindowAndShow();
+            Window.titleContent = new GUIContent(TITLE);
+        }
 
-				using(Disposables.VerticalScope())
-				{
-					using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-						DrawTabButtons();
+        protected override void OnGUI() {
+            FoCsGUI.Layout.Label(TITLE, FoCsGUI.Styles.Unity.BoldLabel);
 
-					if(TabList.InRange(ActiveTab))
-					{
-						var meth = TabList[ActiveTab].GetMethod("DrawGUI");
+            using (Disposables.HorizontalScope()) {
+                using (Disposables.VerticalScope(GUILayout.Width(200)))
+                    DrawWindowButtons();
 
-						if(meth != null)
-							meth.Invoke(null, new object[] {this});
-					}
-				}
-			}
-		}
+                using (Disposables.VerticalScope()) {
+                    using (Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+                        DrawTabButtons();
 
-		private void Update()
-		{
-			if(mouseOverWindow)
-				Repaint();
-		}
+                    if (TabList.InRange(ActiveTab)) {
+                        var meth = TabList[ActiveTab].GetMethod("DrawGUI");
 
-		private static void DrawWindowButtons()
-		{
-			foreach(var key in WindowList)
-			{
-				using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-				{
-					var @event = FoCsGUI.Layout.Button(key.Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
+                        if (meth != null)
+                            meth.Invoke(null, new object[] {this});
+                    }
+                }
+            }
+        }
 
-					if(@event.Value)
-					{
-						//Window.ShowNotification(new GUIContent($"Clicked: {key.Name.SplitCamelCase()}"));
-						var meth = key.GetMethod("Init", BindingFlags.NonPublic | BindingFlags.Static);
+        private void Update() {
+            if (mouseOverWindow)
+                Repaint();
+        }
 
-						if(meth != null)
-							meth.Invoke(null, null);
+        private static void DrawWindowButtons() {
+            foreach (var key in WindowList) {
+                using (Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar)) {
+                    var @event = FoCsGUI.Layout.Button(key.Name.SplitCamelCase(), FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
 
-						//var otherWin = GetWindow(key);
-					}
-				}
-			}
-		}
+                    if (@event.Value) {
+                        //Window.ShowNotification(new GUIContent($"Clicked: {key.Name.SplitCamelCase()}"));
+                        var meth = key.GetMethod("Init", BindingFlags.NonPublic | BindingFlags.Static);
 
-		private static void DrawTabButtons()
-		{
-			var index = 0;
+                        if (meth != null)
+                            meth.Invoke(null, null);
 
-			foreach(var key in TabList)
-			{
-				using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-				{
-					var @event = FoCsGUI.Layout.Toggle(key.Name.SplitCamelCase(), ActiveTab == index, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
+                        //var otherWin = GetWindow(key);
+                    }
+                }
+            }
+        }
 
-					if(@event)
-						ActiveTab = index;
-				}
+        private static void DrawTabButtons() {
+            var index = 0;
 
-				++index;
-			}
-		}
-	}
+            foreach (var key in TabList) {
+                using (Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar)) {
+                    var @event = FoCsGUI.Layout.Toggle(key.Name.SplitCamelCase(), ActiveTab == index, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(32));
+
+                    if (@event)
+                        ActiveTab = index;
+                }
+
+                ++index;
+            }
+        }
+    }
 }

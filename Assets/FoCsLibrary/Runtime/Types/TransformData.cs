@@ -1,156 +1,149 @@
-﻿using System;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library
+//       File: TransformData.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
+using System;
 using ForestOfChaosLibrary.Maths.Lerp;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Types
-{
-	[Serializable]
-	public struct TransformData
-	{
-		public        Vector3       Position;
-		public        Quaternion    Rotation;
-		public        Vector3       Scale;
-		public static TransformData Empty => new TransformData(Vector3.zero, Quaternion.identity, Vector3.one);
+namespace ForestOfChaosLibrary.Types {
+    [Serializable]
+    public struct TransformData {
+        public Vector3    Position;
+        public Quaternion Rotation;
+        public Vector3    Scale;
 
-		public TransformData(Component component)
-		{
-			Rotation = component.transform.rotation;
-			Scale    = component.transform.localScale;
-			Position = component.transform.position;
-		}
+        public static TransformData Empty => new TransformData(Vector3.zero, Quaternion.identity, Vector3.one);
 
-		public TransformData(GameObject gameObject)
-		{
-			Rotation = gameObject.transform.rotation;
-			Scale    = gameObject.transform.localScale;
-			Position = gameObject.transform.position;
-		}
+        public TransformData(Component component) {
+            Rotation = component.transform.rotation;
+            Scale    = component.transform.localScale;
+            Position = component.transform.position;
+        }
 
-		public TransformData(Transform transform)
-		{
-			Rotation = transform.rotation;
-			Scale    = transform.localScale;
-			Position = transform.position;
-		}
+        public TransformData(GameObject gameObject) {
+            Rotation = gameObject.transform.rotation;
+            Scale    = gameObject.transform.localScale;
+            Position = gameObject.transform.position;
+        }
 
-		public TransformData(TransformData transform)
-		{
-			Rotation = transform.Rotation;
-			Scale    = transform.Scale;
-			Position = transform.Position;
-		}
+        public TransformData(Transform transform) {
+            Rotation = transform.rotation;
+            Scale    = transform.localScale;
+            Position = transform.position;
+        }
 
-		public TransformData(Vector3 position)
-		{
-			Rotation = Quaternion.identity;
-			Scale    = Vector3.one;
-			Position = position;
-		}
+        public TransformData(TransformData transform) {
+            Rotation = transform.Rotation;
+            Scale    = transform.Scale;
+            Position = transform.Position;
+        }
 
-		public TransformData(Vector3 position, Quaternion rotation)
-		{
-			Rotation = rotation;
-			Scale    = Vector3.one;
-			Position = position;
-		}
+        public TransformData(Vector3 position) {
+            Rotation = Quaternion.identity;
+            Scale    = Vector3.one;
+            Position = position;
+        }
 
-		public TransformData(Vector3 position, Quaternion rotation, Vector3 scale)
-		{
-			Rotation = rotation;
-			Scale    = scale;
-			Position = position;
-		}
+        public TransformData(Vector3 position, Quaternion rotation) {
+            Rotation = rotation;
+            Scale    = Vector3.one;
+            Position = position;
+        }
 
-		public void SetData(Transform transform)
-		{
-			Rotation = transform.rotation;
-			Scale    = transform.localScale;
-			Position = transform.position;
-		}
+        public TransformData(Vector3 position, Quaternion rotation, Vector3 scale) {
+            Rotation = rotation;
+            Scale    = scale;
+            Position = position;
+        }
 
-		public void SetData(TransformData transform)
-		{
-			Rotation = transform.Rotation;
-			Scale    = transform.Scale;
-			Position = transform.Position;
-		}
+        public void SetData(Transform transform) {
+            Rotation = transform.rotation;
+            Scale    = transform.localScale;
+            Position = transform.position;
+        }
 
-		public void SetData(Vector3 position)
-		{
-			Rotation = Quaternion.identity;
-			Scale    = Vector3.one;
-			Position = position;
-		}
+        public void SetData(TransformData transform) {
+            Rotation = transform.Rotation;
+            Scale    = transform.Scale;
+            Position = transform.Position;
+        }
 
-		public void SetData(Vector3 position, Quaternion rotation)
-		{
-			Rotation = rotation;
-			Scale    = Vector3.one;
-			Position = position;
-		}
+        public void SetData(Vector3 position) {
+            Rotation = Quaternion.identity;
+            Scale    = Vector3.one;
+            Position = position;
+        }
 
-		public void SetData(Vector3 position, Quaternion rotation, Vector3 scale)
-		{
-			Rotation = rotation;
-			Scale    = scale;
-			Position = position;
-		}
+        public void SetData(Vector3 position, Quaternion rotation) {
+            Rotation = rotation;
+            Scale    = Vector3.one;
+            Position = position;
+        }
 
-		public void UpdateData(Transform transform)
-		{
-			Rotation = transform.rotation;
-			Scale    = transform.localScale;
-			Position = transform.position;
-		}
+        public void SetData(Vector3 position, Quaternion rotation, Vector3 scale) {
+            Rotation = rotation;
+            Scale    = scale;
+            Position = position;
+        }
 
-		public void UpdateData(TransformData transform)
-		{
-			Rotation = transform.Rotation;
-			Scale    = transform.Scale;
-			Position = transform.Position;
-		}
+        public void UpdateData(Transform transform) {
+            Rotation = transform.rotation;
+            Scale    = transform.localScale;
+            Position = transform.position;
+        }
 
-		public void UpdateData(Vector3 position)
-		{
-			Position = position;
-		}
+        public void UpdateData(TransformData transform) {
+            Rotation = transform.Rotation;
+            Scale    = transform.Scale;
+            Position = transform.Position;
+        }
 
-		public void UpdateData(Vector3 position, Quaternion rotation)
-		{
-			Rotation = rotation;
-			Position = position;
-		}
+        public void UpdateData(Vector3 position) {
+            Position = position;
+        }
 
-		public void UpdateData(Vector3 position, Quaternion rotation, Vector3 scale)
-		{
-			Rotation = rotation;
-			Scale    = scale;
-			Position = position;
-		}
+        public void UpdateData(Vector3 position, Quaternion rotation) {
+            Rotation = rotation;
+            Position = position;
+        }
 
-		public void ApplyData(Transform transform)
-		{
-			transform.rotation   = Rotation;
-			transform.localScale = Scale;
-			transform.position   = Position;
-		}
+        public void UpdateData(Vector3 position, Quaternion rotation, Vector3 scale) {
+            Rotation = rotation;
+            Scale    = scale;
+            Position = position;
+        }
 
-		public TransformData Lerp(TransformData        other, float         time) => TransformDataLerp.Lerp(this,       other, time);
-		public static TransformData Lerp(TransformData a,     TransformData b, float time) => TransformDataLerp.Lerp(a, b,     time);
-		public TransformData Copy() => new TransformData(this);
-		public static implicit operator TransformData(Transform  input) => new TransformData(input);
-		public static implicit operator TransformData(Component  input) => new TransformData(input.transform);
-		public static implicit operator TransformData(GameObject input) => new TransformData(input.transform);
-		public static TransformData Create(Transform             transform) => new TransformData(transform);
-	}
+        public void ApplyData(Transform transform) {
+            transform.rotation   = Rotation;
+            transform.localScale = Scale;
+            transform.position   = Position;
+        }
 
-	public static class TransformDataExtn
-	{
-		public static void SetFromTD(this Transform transform, TransformData data)
-		{
-			data.ApplyData(transform);
-		}
+        public TransformData Lerp(TransformData other, float time) => TransformDataLerp.Lerp(this, other, time);
 
-		public static TransformData GetTD(this Transform transform) => transform;
-	}
+        public static TransformData Lerp(TransformData a, TransformData b, float time) => TransformDataLerp.Lerp(a, b, time);
+
+        public TransformData Copy() => new TransformData(this);
+
+        public static implicit operator TransformData(Transform input) => new TransformData(input);
+
+        public static implicit operator TransformData(Component input) => new TransformData(input.transform);
+
+        public static implicit operator TransformData(GameObject input) => new TransformData(input.transform);
+
+        public static TransformData Create(Transform transform) => new TransformData(transform);
+    }
+
+    public static class TransformDataExtn {
+        public static void SetFromTD(this Transform transform, TransformData data) {
+            data.ApplyData(transform);
+        }
+
+        public static TransformData GetTD(this Transform transform) => transform;
+    }
 }

@@ -1,0 +1,17 @@
+{
+    "name": "FoCs.Unity.Library.Editor",
+    "references": [
+        "FoCs.Unity.Library"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

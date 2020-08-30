@@ -1,140 +1,126 @@
+#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: ScreenshotTab.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:49 AM
+#endregion
+
+
 using ForestOfChaosLibrary.Editor.Windows;
 using ForestOfChaosLibrary.ScreenCap;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.ScreenCap
-{
-	public class ScreenshotTab: FoCsTab<ScreenCapWindow>
-	{
-		private         ScreenShotArgs  args;
-		protected       ScreenCapWindow Owner;
-		public override string          TabName => "Screenshot";
+namespace ForestOfChaosLibrary.Editor.ScreenCap {
+    public class ScreenshotTab: FoCsTab<ScreenCapWindow> {
+        private   ScreenShotArgs  args;
+        protected ScreenCapWindow Owner;
 
-		public override void DrawTab(FoCsWindow<ScreenCapWindow> owner)
-		{
-			Owner = owner as ScreenCapWindow;
+        public override string TabName => "Screenshot";
 
-			using(Disposables.HorizontalScope())
-			{
-				using(Disposables.VerticalScope())
-				{
-					DrawVariables();
+        public override void DrawTab(FoCsWindow<ScreenCapWindow> owner) {
+            Owner = owner as ScreenCapWindow;
 
-					using(Disposables.HorizontalScope())
-						DrawTakeImageGUI();
-				}
-			}
-		}
+            using (Disposables.HorizontalScope()) {
+                using (Disposables.VerticalScope()) {
+                    DrawVariables();
 
-		private void DrawVariables()
-		{
-			DrawScale();
+                    using (Disposables.HorizontalScope())
+                        DrawTakeImageGUI();
+                }
+            }
+        }
 
-			//DrawFilePathGUI();
-			DrawPathUI();
-			DrawFileUI();
-			DrawOtherVars();
-			UpdateArgs();
-			DrawPathAndFileUI();
-		}
+        private void DrawVariables() {
+            DrawScale();
 
-		public virtual void DrawOtherVars() { }
+            //DrawFilePathGUI();
+            DrawPathUI();
+            DrawFileUI();
+            DrawOtherVars();
+            UpdateArgs();
+            DrawPathAndFileUI();
+        }
 
-		private void DrawPathAndFileUI()
-		{
-			EditorGUILayout.LabelField($"File will be saved as \"{args.GetFileNameAndPath()}\"");
-		}
+        public virtual void DrawOtherVars() { }
 
-		private void DrawPathUI()
-		{
-			using(Disposables.VerticalScope(GUI.skin.box))
-			{
-				EditorGUILayout.LabelField("Path");
-				Owner.path = EditorGUILayout.TextField(Owner.path, GUILayout.ExpandWidth(true));
-			}
+        private void DrawPathAndFileUI() {
+            EditorGUILayout.LabelField($"File will be saved as \"{args.GetFileNameAndPath()}\"");
+        }
 
-			PathButtons();
-		}
+        private void DrawPathUI() {
+            using (Disposables.VerticalScope(GUI.skin.box)) {
+                EditorGUILayout.LabelField("Path");
+                Owner.path = EditorGUILayout.TextField(Owner.path, GUILayout.ExpandWidth(true));
+            }
 
-		private void DrawFileUI()
-		{
-			using(Disposables.VerticalScope(GUI.skin.box))
-			{
-				EditorGUILayout.LabelField("File Name (Leave blank for name to be the date/time)");
-				Owner.filename = EditorGUILayout.TextField(Owner.filename, GUILayout.ExpandWidth(true));
-			}
-		}
+            PathButtons();
+        }
 
-		private void DrawFilePathGUI()
-		{
-			using(Disposables.HorizontalScope())
-				GUILayout.Label("Save Path", EditorStyles.boldLabel);
+        private void DrawFileUI() {
+            using (Disposables.VerticalScope(GUI.skin.box)) {
+                EditorGUILayout.LabelField("File Name (Leave blank for name to be the date/time)");
+                Owner.filename = EditorGUILayout.TextField(Owner.filename, GUILayout.ExpandWidth(true));
+            }
+        }
 
-			EditorGUILayout.TextField(Owner.path, GUILayout.ExpandWidth(true));
-			PathButtons();
-		}
+        private void DrawFilePathGUI() {
+            using (Disposables.HorizontalScope())
+                GUILayout.Label("Save Path", EditorStyles.boldLabel);
 
-		private void PathButtons()
-		{
-			using(Disposables.HorizontalScope())
-			{
-				if(GUILayout.Button("Browse"))
-					Owner.path = EditorUtility.SaveFolderPanel("Path to Save Images", Owner.path, Application.dataPath);
+            EditorGUILayout.TextField(Owner.path, GUILayout.ExpandWidth(true));
+            PathButtons();
+        }
 
-				if(GUILayout.Button("Default", GUILayout.Width(120)))
-					Owner.path = Owner.defaultPath;
-			}
-		}
+        private void PathButtons() {
+            using (Disposables.HorizontalScope()) {
+                if (GUILayout.Button("Browse"))
+                    Owner.path = EditorUtility.SaveFolderPanel("Path to Save Images", Owner.path, Application.dataPath);
 
-		private void DrawScale()
-		{
-			Owner.scale = EditorGUILayout.IntSlider("Scale", Owner.scale, 0, 8);
-		}
+                if (GUILayout.Button("Default", GUILayout.Width(120)))
+                    Owner.path = Owner.defaultPath;
+            }
+        }
 
-		private void DrawTakeImageGUI()
-		{
-			using(Disposables.DisabledScope(!Application.isPlaying))
-			{
-				if(GUILayout.Button("Take Screenshot", GUILayout.MinHeight(40)))
-				{
-					if(Owner.path == "")
-					{
-						Owner.path = EditorUtility.SaveFolderPanel("Path to Save Images", Owner.path, Application.persistentDataPath);
-						Debug.Log("Path Set");
-						TakeScreenShot();
-					}
-					else
-						TakeScreenShot();
-				}
-			}
+        private void DrawScale() {
+            Owner.scale = EditorGUILayout.IntSlider("Scale", Owner.scale, 0, 8);
+        }
 
-			if(GUILayout.Button("Open Folder", GUILayout.MaxWidth(100), GUILayout.MinHeight(40)))
-			{
-				//Application.OpenURL("file://" + Owner.path);
-				Application.OpenURL("file://" + Owner.path);
-			}
-		}
+        private void DrawTakeImageGUI() {
+            using (Disposables.DisabledScope(!Application.isPlaying)) {
+                if (GUILayout.Button("Take Screenshot", GUILayout.MinHeight(40))) {
+                    if (Owner.path == "") {
+                        Owner.path = EditorUtility.SaveFolderPanel("Path to Save Images", Owner.path, Application.persistentDataPath);
+                        Debug.Log("Path Set");
+                        TakeScreenShot();
+                    }
+                    else
+                        TakeScreenShot();
+                }
+            }
 
-		protected virtual void TakeScreenShot()
-		{
-			BuildArgs();
-			ForestOfChaosLibrary.ScreenCap.ScreenCap.TakeScreenShot(args);
-		}
+            if (GUILayout.Button("Open Folder", GUILayout.MaxWidth(100), GUILayout.MinHeight(40))) {
+                //Application.OpenURL("file://" + Owner.path);
+                Application.OpenURL("file://" + Owner.path);
+            }
+        }
 
-		private void BuildArgs()
-		{
-			args = new ScreenShotArgs {fileName = Owner.filename, Path = Owner.path, ResolutionMultiplier = Owner.scale};
-		}
+        protected virtual void TakeScreenShot() {
+            BuildArgs();
+            ForestOfChaosLibrary.ScreenCap.ScreenCap.TakeScreenShot(args);
+        }
 
-		private void UpdateArgs()
-		{
-			if(args == null)
-				BuildArgs();
+        private void BuildArgs() {
+            args = new ScreenShotArgs {fileName = Owner.filename, Path = Owner.path, ResolutionMultiplier = Owner.scale};
+        }
 
-			args.fileName             = Owner.filename;
-			args.Path                 = Owner.path;
-			args.ResolutionMultiplier = Owner.scale;
-		}
-	}
+        private void UpdateArgs() {
+            if (args == null)
+                BuildArgs();
+
+            args.fileName             = Owner.filename;
+            args.Path                 = Owner.path;
+            args.ResolutionMultiplier = Owner.scale;
+        }
+    }
 }

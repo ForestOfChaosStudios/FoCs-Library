@@ -1,0 +1,17 @@
+{
+    "name": "FoCs.Unity.Debugging.Editor",
+    "references": [
+        "FoCs.Unity.Debugging",
+        "FoCs.Unity.Library.Editor",
+        "FoCs.Unity.Library"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

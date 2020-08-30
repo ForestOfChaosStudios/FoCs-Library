@@ -1,28 +1,31 @@
-﻿using ForestOfChaosLibrary;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.AdvVar
+//       File: AdvEventListener.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:47 AM
+#endregion
+
+
+using ForestOfChaosLibrary;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace ForestOfChaosAdvVar.Events
-{
-	[AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER + "/AdvVar/" + "Adv Event Listener")]
-	public class AdvEventListener: FoCsBehaviour
-	{
-		public AdvEvent   Event;
-		public UnityEvent Response;
+namespace ForestOfChaos.Unity.AdvVar.Events {
+    [AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER + "/AdvVar/" + "Adv Event Listener")]
+    public class AdvEventListener: FoCsBehaviour {
+        public AdvEvent   Event;
+        public UnityEvent Response;
 
-		public void OnEnable()
-		{
-			Event.RegisterListener(this);
-		}
+        public void OnEnable() {
+            Event.RegisterListener(this);
+        }
 
-		public void OnDisable()
-		{
-			Event.UnRegisterListener(this);
-		}
+        public void OnDisable() {
+            Event.UnRegisterListener(this);
+        }
 
-		public void OnEventTriggered()
-		{
-			Response.Invoke();
-		}
-	}
+        public void OnEventTriggered() {
+            Response.Invoke();
+        }
+    }
 }

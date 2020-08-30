@@ -1,3 +1,11 @@
+#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: CopyPasteUtility.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,317 +13,268 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ForestOfChaosLibrary.Editor.Utilities
-{
-	public static class CopyPasteUtility
-	{
-		private const   string                     COPY_SPLIT   = ">||>";
-		private const   string                     COPY_SPLIT_S = COPY_SPLIT + "\n";
-		private const   string                     NEEDLE       = "\".*\":";
-		internal static Dictionary<Type, CopyMode> TypeCopyData;
+namespace ForestOfChaosLibrary.Editor.Utilities {
+    public static class CopyPasteUtility {
+        private const   string                     COPY_SPLIT   = ">||>";
+        private const   string                     COPY_SPLIT_S = COPY_SPLIT + "\n";
+        private const   string                     NEEDLE       = "\".*\":";
+        internal static Dictionary<Type, CopyMode> TypeCopyData;
 
-		[Flags]
-		public enum CopyMode
-		{
-			Unknown = 0,
-			None    = 1,
-			Normal  = 2,
-			Editor  = 4
-		}
+        [Flags]
+        public enum CopyMode {
+            Unknown = 0,
+            None    = 1,
+            Normal  = 2,
+            Editor  = 4
+        }
 
-		public static string CopyBuffer
-		{
-			get { return EditorGUIUtility.systemCopyBuffer; }
-			set { EditorGUIUtility.systemCopyBuffer = value; }
-		}
+        public static string CopyBuffer {
+            get => EditorGUIUtility.systemCopyBuffer;
+            set => EditorGUIUtility.systemCopyBuffer = value;
+        }
 
-		static CopyPasteUtility()
-		{
-			TypeCopyData = new Dictionary<Type, CopyMode>
-			{
-					{typeof(FlareLayer), CopyMode.None},
-					{typeof(AudioListener), CopyMode.None},
-					{typeof(Transform), CopyMode.Editor},
-					{typeof(Object), CopyMode.Unknown},
-#pragma warning disable 618
-					{typeof(GUILayer), CopyMode.None}
-#pragma warning restore 618
-			};
-		}
+        static CopyPasteUtility() =>
+                TypeCopyData = new Dictionary<Type, CopyMode> {
+                        {typeof(FlareLayer), CopyMode.None},
+                        {typeof(AudioListener), CopyMode.None},
+                        {typeof(Transform), CopyMode.Editor},
+                        {typeof(Object), CopyMode.Unknown}
+                };
 
-		private static CopyMode DoAddToDictionary<T>(T value)
-		{
-			var type = value == null? typeof(T) : value.GetType();
+        private static CopyMode DoAddToDictionary<T>(T value) {
+            var type = value == null? typeof(T) : value.GetType();
 
-			if(TypeCopyData.ContainsKey(type))
-			{
-				if(TypeCopyData[type] != CopyMode.Unknown)
-					return TypeCopyData[type];
-			}
-			else
-				TypeCopyData.Add(type, CopyMode.Unknown);
+            if (TypeCopyData.ContainsKey(type)) {
+                if (TypeCopyData[type] != CopyMode.Unknown)
+                    return TypeCopyData[type];
+            }
+            else
+                TypeCopyData.Add(type, CopyMode.Unknown);
 
-			var copy = InternalCanCopy(value);
+            var copy = InternalCanCopy(value);
 
-			if(copy)
-				return TypeCopyData[type] = CopyMode.Normal;
+            if (copy)
+                return TypeCopyData[type] = CopyMode.Normal;
 
-			var editorCopy = InternalCanEditorCopy(value);
+            var editorCopy = InternalCanEditorCopy(value);
 
-			if(editorCopy)
-				return TypeCopyData[type] = CopyMode.Editor;
+            if (editorCopy)
+                return TypeCopyData[type] = CopyMode.Editor;
 
-			return TypeCopyData[type] = CopyMode.None;
-		}
+            return TypeCopyData[type] = CopyMode.None;
+        }
 
-		private static CopyMode GetCopyTypeFromDictionary(Type type)
-		{
-			if(TypeCopyData.ContainsKey(type))
-				return TypeCopyData[type];
+        private static CopyMode GetCopyTypeFromDictionary(Type type) {
+            if (TypeCopyData.ContainsKey(type))
+                return TypeCopyData[type];
 
-			TypeCopyData.Add(type, CopyMode.Unknown);
+            TypeCopyData.Add(type, CopyMode.Unknown);
 
-			return CopyMode.Unknown;
-		}
+            return CopyMode.Unknown;
+        }
 
-		public static CopyMode GetCopyMode<T>(T value)
-		{
-			var val = GetCopyTypeFromDictionary(typeof(T));
+        public static CopyMode GetCopyMode<T>(T value) {
+            var val = GetCopyTypeFromDictionary(typeof(T));
 
-			if(val == CopyMode.Unknown)
-				val = DoAddToDictionary(value);
+            if (val == CopyMode.Unknown)
+                val = DoAddToDictionary(value);
 
-			return val;
-		}
+            return val;
+        }
 
-		public static bool CanCopy<T>(T value)
-		{
-			var val = GetCopyTypeFromDictionary(typeof(T));
+        public static bool CanCopy<T>(T value) {
+            var val = GetCopyTypeFromDictionary(typeof(T));
 
-			if(val == CopyMode.Unknown)
-				val = DoAddToDictionary(value);
+            if (val == CopyMode.Unknown)
+                val = DoAddToDictionary(value);
 
-			return val == CopyMode.Normal;
-		}
+            return val == CopyMode.Normal;
+        }
 
-		private static bool InternalCanCopy<T>(T value)
-		{
-			string s;
+        private static bool InternalCanCopy<T>(T value) {
+            string s;
 
-			try
-			{
-				s = JsonUtility.ToJson(value, true);
-			}
-			catch(ArgumentException)
-			{
-				return false;
-			}
+            try {
+                s = JsonUtility.ToJson(value, true);
+            }
+            catch (ArgumentException) {
+                return false;
+            }
 
-			return s != "{}";
-		}
+            return s != "{}";
+        }
 
-		public static bool CanEditorCopy<T>(T value)
-		{
-			var val = GetCopyTypeFromDictionary(typeof(T));
+        public static bool CanEditorCopy<T>(T value) {
+            var val = GetCopyTypeFromDictionary(typeof(T));
 
-			if(val == CopyMode.Unknown)
-				val = DoAddToDictionary(value);
+            if (val == CopyMode.Unknown)
+                val = DoAddToDictionary(value);
 
-			return val == CopyMode.Editor;
-		}
+            return val == CopyMode.Editor;
+        }
 
-		public static bool InternalCanEditorCopy<T>(T value)
-		{
-			string s;
+        public static bool InternalCanEditorCopy<T>(T value) {
+            string s;
 
-			try
-			{
-				s = EditorJsonUtility.ToJson(value, true);
-			}
-			catch(ArgumentException)
-			{
-				return false;
-			}
+            try {
+                s = EditorJsonUtility.ToJson(value, true);
+            }
+            catch (ArgumentException) {
+                return false;
+            }
 
-			return (s != "") || (s != "{}");
-		}
+            return (s != "") || (s != "{}");
+        }
 
-		public static bool EditorCopy<T>(T value)
-		{
-			try
-			{
-				CopyBuffer = value.GetType() + COPY_SPLIT_S + EditorJsonUtility.ToJson(value, true);
-			}
-			catch(ArgumentException)
-			{
-				return false;
-			}
+        public static bool EditorCopy<T>(T value) {
+            try {
+                CopyBuffer = value.GetType() + COPY_SPLIT_S + EditorJsonUtility.ToJson(value, true);
+            }
+            catch (ArgumentException) {
+                return false;
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		public static bool Copy<T>(T value)
-		{
-			try
-			{
-				CopyBuffer = value.GetType() + COPY_SPLIT_S + JsonUtility.ToJson(value, true);
-			}
-			catch(ArgumentException)
-			{
-				return false;
-			}
+        public static bool Copy<T>(T value) {
+            try {
+                CopyBuffer = value.GetType() + COPY_SPLIT_S + JsonUtility.ToJson(value, true);
+            }
+            catch (ArgumentException) {
+                return false;
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		public static T Paste<T>() => Paste<T>(RemoveTypeFromCopyBuffer());
+        public static T Paste<T>() => Paste<T>(RemoveTypeFromCopyBuffer());
 
-		private static T Paste<T>(string buffer)
-		{
-			var value = JsonUtility.FromJson<T>(buffer);
+        private static T Paste<T>(string buffer) {
+            var value = JsonUtility.FromJson<T>(buffer);
 
-			return value;
-		}
+            return value;
+        }
 
-		public static T Paste<T>(string buffer, bool checkForTypeDetails)
-		{
-			T value;
+        public static T Paste<T>(string buffer, bool checkForTypeDetails) {
+            T value;
 
-			if(checkForTypeDetails)
-			{
-				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
-				value = JsonUtility.FromJson<T>(checkedBuffer);
-			}
-			else
-				value = JsonUtility.FromJson<T>(buffer);
+            if (checkForTypeDetails) {
+                var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+                value = JsonUtility.FromJson<T>(checkedBuffer);
+            }
+            else
+                value = JsonUtility.FromJson<T>(buffer);
 
-			return value;
-		}
+            return value;
+        }
 
-		public static void Paste<T>(ref T obj)
-		{
-			Paste(ref obj, RemoveTypeFromCopyBuffer());
-		}
+        public static void Paste<T>(ref T obj) {
+            Paste(ref obj, RemoveTypeFromCopyBuffer());
+        }
 
-		private static void Paste<T>(ref T obj, string buffer)
-		{
-			JsonUtility.FromJsonOverwrite(buffer, obj);
-		}
+        private static void Paste<T>(ref T obj, string buffer) {
+            JsonUtility.FromJsonOverwrite(buffer, obj);
+        }
 
-		public static void Paste<T>(ref T obj, string buffer, bool checkForTypeDetails)
-		{
-			if(checkForTypeDetails)
-			{
-				if(IsTypeInBuffer(obj, buffer))
-				{
-					var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
-					JsonUtility.FromJsonOverwrite(checkedBuffer, obj);
-				}
-				else if(IsValidObjectInBuffer(buffer))
-				{
-					var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
-					JsonUtility.FromJsonOverwrite(checkedBuffer, obj);
-				}
-				else
-					JsonUtility.FromJsonOverwrite(buffer, obj);
-			}
-			else
-				JsonUtility.FromJsonOverwrite(buffer, obj);
-		}
+        public static void Paste<T>(ref T obj, string buffer, bool checkForTypeDetails) {
+            if (checkForTypeDetails) {
+                if (IsTypeInBuffer(obj, buffer)) {
+                    var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+                    JsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+                }
+                else if (IsValidObjectInBuffer(buffer)) {
+                    var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+                    JsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+                }
+                else
+                    JsonUtility.FromJsonOverwrite(buffer, obj);
+            }
+            else
+                JsonUtility.FromJsonOverwrite(buffer, obj);
+        }
 
-		public static void EditorPaste<T>(ref T obj)
-		{
-			EditorPaste(obj, RemoveTypeFromCopyBuffer());
-		}
+        public static void EditorPaste<T>(ref T obj) {
+            EditorPaste(obj, RemoveTypeFromCopyBuffer());
+        }
 
-		private static void EditorPaste<T>(ref T obj, string buffer)
-		{
-			EditorJsonUtility.FromJsonOverwrite(buffer, obj);
-		}
+        private static void EditorPaste<T>(ref T obj, string buffer) {
+            EditorJsonUtility.FromJsonOverwrite(buffer, obj);
+        }
 
-		public static void EditorPaste<T>(ref T obj, string buffer, bool checkForTypeDetails)
-		{
-			if(checkForTypeDetails)
-			{
-				if(IsTypeInBuffer(obj, buffer))
-				{
-					var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
-					EditorJsonUtility.FromJsonOverwrite(checkedBuffer, obj);
-				}
-				else
-					EditorJsonUtility.FromJsonOverwrite(buffer, obj);
-			}
-			else
-				EditorJsonUtility.FromJsonOverwrite(buffer, obj);
-		}
+        public static void EditorPaste<T>(ref T obj, string buffer, bool checkForTypeDetails) {
+            if (checkForTypeDetails) {
+                if (IsTypeInBuffer(obj, buffer)) {
+                    var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+                    EditorJsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+                }
+                else
+                    EditorJsonUtility.FromJsonOverwrite(buffer, obj);
+            }
+            else
+                EditorJsonUtility.FromJsonOverwrite(buffer, obj);
+        }
 
-		public static void EditorPaste<T>(T obj)
-		{
-			EditorPaste(obj, RemoveTypeFromCopyBuffer());
-		}
+        public static void EditorPaste<T>(T obj) {
+            EditorPaste(obj, RemoveTypeFromCopyBuffer());
+        }
 
-		private static void EditorPaste<T>(T obj, string buffer)
-		{
-			EditorJsonUtility.FromJsonOverwrite(buffer, obj);
-		}
+        private static void EditorPaste<T>(T obj, string buffer) {
+            EditorJsonUtility.FromJsonOverwrite(buffer, obj);
+        }
 
-		public static void EditorPaste<T>(T obj, string buffer, bool checkForTypeDetails)
-		{
-			if(checkForTypeDetails)
-			{
-				var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
-				EditorJsonUtility.FromJsonOverwrite(checkedBuffer, obj);
-			}
-			else
-				EditorJsonUtility.FromJsonOverwrite(buffer, obj);
-		}
+        public static void EditorPaste<T>(T obj, string buffer, bool checkForTypeDetails) {
+            if (checkForTypeDetails) {
+                var checkedBuffer = RemoveTypeFromCopyBuffer(buffer);
+                EditorJsonUtility.FromJsonOverwrite(checkedBuffer, obj);
+            }
+            else
+                EditorJsonUtility.FromJsonOverwrite(buffer, obj);
+        }
 
-		private static bool IsValidObjectInBuffer() => IsValidObjectInBuffer(CopyBuffer);
-		private static bool IsValidObjectInBuffer(string buffer) => buffer.Contains(COPY_SPLIT);
-		public static bool IsTypeInBuffer(object         obj) => IsTypeInBuffer(obj, CopyBuffer);
+        private static bool IsValidObjectInBuffer() => IsValidObjectInBuffer(CopyBuffer);
 
-		public static bool IsTypeInBuffer(object obj, string buffer)
-		{
-			if(obj == null)
-				return false;
+        private static bool IsValidObjectInBuffer(string buffer) => buffer.Contains(COPY_SPLIT);
 
-			var bufferContainsAType = IsValidObjectInBuffer();
+        public static bool IsTypeInBuffer(object obj) => IsTypeInBuffer(obj, CopyBuffer);
 
-			if(!bufferContainsAType)
-				return false;
+        public static bool IsTypeInBuffer(object obj, string buffer) {
+            if (obj == null)
+                return false;
 
-			var t = obj.GetType();
+            var bufferContainsAType = IsValidObjectInBuffer();
 
-			return t.ToString() == GetJSONStoredType(buffer);
-		}
+            if (!bufferContainsAType)
+                return false;
 
-		private static string RemoveTypeFromCopyBuffer() => RemoveTypeFromCopyBuffer(CopyBuffer);
+            var t = obj.GetType();
 
-		public static string RemoveTypeFromCopyBuffer(string buffer)
-		{
-			var copyBufferSplit = buffer.Split(new[] {COPY_SPLIT}, StringSplitOptions.None);
+            return t.ToString() == GetJSONStoredType(buffer);
+        }
 
-			if(copyBufferSplit.Length > 1)
-			{
-				var list = copyBufferSplit.ToList();
-				list.RemoveAt(0);
+        private static string RemoveTypeFromCopyBuffer() => RemoveTypeFromCopyBuffer(CopyBuffer);
 
-				return string.Join(string.Empty, list.ToArray());
-			}
+        public static string RemoveTypeFromCopyBuffer(string buffer) {
+            var copyBufferSplit = buffer.Split(new[] {COPY_SPLIT}, StringSplitOptions.None);
 
-			return buffer;
-		}
+            if (copyBufferSplit.Length > 1) {
+                var list = copyBufferSplit.ToList();
+                list.RemoveAt(0);
 
-		public static string GetJSONStoredType(string json)
-		{
-			if(json.Contains(COPY_SPLIT))
-			{
-				var copyBufferSplit = json.Split(new[] {COPY_SPLIT}, StringSplitOptions.None);
+                return string.Join(string.Empty, list.ToArray());
+            }
 
-				return copyBufferSplit[0];
-			}
+            return buffer;
+        }
 
-			return "";
-		}
-	}
+        public static string GetJSONStoredType(string json) {
+            if (json.Contains(COPY_SPLIT)) {
+                var copyBufferSplit = json.Split(new[] {COPY_SPLIT}, StringSplitOptions.None);
+
+                return copyBufferSplit[0];
+            }
+
+            return "";
+        }
+    }
 }

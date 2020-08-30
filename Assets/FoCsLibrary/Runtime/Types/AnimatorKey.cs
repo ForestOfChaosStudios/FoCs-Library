@@ -1,72 +1,76 @@
-﻿using System;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library
+//       File: AnimatorKey.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
+using System;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Animation
-{
-	[Serializable]
-	public class AnimatorKey
-	{
-		public enum AnimType
-		{
-			Int,
-			Float,
-			Bool,
-			Trigger
-		}
+namespace ForestOfChaosLibrary.Animation {
+    [Serializable]
+    public class AnimatorKey {
+        public enum AnimType {
+            Int,
+            Float,
+            Bool,
+            Trigger
+        }
 
-		public bool     BoolData;
-		public float    FloatData;
-		public int      IntData;
-		public string   Key;
-		public AnimType KeyType;
-		public bool     TriggerData;
+        public bool     BoolData;
+        public float    FloatData;
+        public int      IntData;
+        public string   Key;
+        public AnimType KeyType;
+        public bool     TriggerData;
 
-		private AnimatorKey(string key, AnimType keyType, int intData, float floatData, bool boolData, bool triggerData)
-		{
-			Key         = key;
-			KeyType     = keyType;
-			IntData     = intData;
-			FloatData   = floatData;
-			BoolData    = boolData;
-			TriggerData = triggerData;
-		}
+        private AnimatorKey(string key, AnimType keyType, int intData, float floatData, bool boolData, bool triggerData) {
+            Key         = key;
+            KeyType     = keyType;
+            IntData     = intData;
+            FloatData   = floatData;
+            BoolData    = boolData;
+            TriggerData = triggerData;
+        }
 
-		public AnimatorKey(int    intData,   string key = ""): this(key, AnimType.Int, intData, 0, false, false) { }
-		public AnimatorKey(float  floatData, string key = ""): this(key, AnimType.Float, 0, floatData, false, false) { }
-		public AnimatorKey(bool   boolData,  string key = ""): this(key, AnimType.Bool, 0, 0, boolData, false) { }
-		public AnimatorKey(string key = ""): this(key, AnimType.Trigger, 0, 0, false, true) { }
+        public AnimatorKey(int intData, string key = ""): this(key, AnimType.Int, intData, 0, false, false) { }
 
-		public AnimatorKey CalculateAnimator(Animator animator)
-		{
-			if(animator == null)
-				return this;
+        public AnimatorKey(float floatData, string key = ""): this(key, AnimType.Float, 0, floatData, false, false) { }
 
-			switch(KeyType)
-			{
-				case AnimType.Int:
-					animator.SetInteger(Key, IntData);
+        public AnimatorKey(bool boolData, string key = ""): this(key, AnimType.Bool, 0, 0, boolData, false) { }
 
-					break;
-				case AnimType.Float:
-					animator.SetFloat(Key, FloatData);
+        public AnimatorKey(string key = ""): this(key, AnimType.Trigger, 0, 0, false, true) { }
 
-					break;
-				case AnimType.Bool:
-					animator.SetBool(Key, BoolData);
+        public AnimatorKey CalculateAnimator(Animator animator) {
+            if (animator == null)
+                return this;
 
-					break;
-				case AnimType.Trigger:
+            switch (KeyType) {
+                case AnimType.Int:
+                    animator.SetInteger(Key, IntData);
 
-					if(TriggerData)
-					{
-						TriggerData = false;
-						animator.SetTrigger(Key);
-					}
+                    break;
+                case AnimType.Float:
+                    animator.SetFloat(Key, FloatData);
 
-					break;
-			}
+                    break;
+                case AnimType.Bool:
+                    animator.SetBool(Key, BoolData);
 
-			return this;
-		}
-	}
+                    break;
+                case AnimType.Trigger:
+
+                    if (TriggerData) {
+                        TriggerData = false;
+                        animator.SetTrigger(Key);
+                    }
+
+                    break;
+            }
+
+            return this;
+        }
+    }
 }

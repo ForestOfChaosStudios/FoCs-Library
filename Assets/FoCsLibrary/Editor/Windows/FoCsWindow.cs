@@ -1,68 +1,68 @@
-﻿using UnityEditor;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: FoCsWindow.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:49 AM
+#endregion
+
+
+using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Windows
-{
-	/// <inheritdoc />
-	/// <summary>
-	///     [MenuItem("Tools/Forest Of Chaos/Example Window")]
-	///     private static void Init(){
-	///     GetWindowAndOpenTab();
-	///     }
-	/// </summary>
-	/// <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
-	public abstract class FoCsWindow<T>: FoCsWindow where T: FoCsWindow, IRepaintable
-	{
-		private static   T window;
-		protected static T Window => window? window : (window = GetWindow());
+namespace ForestOfChaosLibrary.Editor.Windows {
+    /// <inheritdoc />
+    /// <summary>
+    ///     [MenuItem("Tools/Forest Of Chaos/Example Window")]
+    ///     private static void Init(){
+    ///     GetWindowAndOpenTab();
+    ///     }
+    /// </summary>
+    /// <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
+    public abstract class FoCsWindow<T>: FoCsWindow where T: FoCsWindow, IRepaintable {
+        private static T window;
 
-		protected static T GetWindow()
-		{
-			if(window != null)
-				return window;
+        protected static T Window => window? window : window = GetWindow();
 
-			window = FindObjectOfType<T>() ?? CreateInstance<T>();
+        protected static T GetWindow() {
+            if (window != null)
+                return window;
 
-			return window;
-		}
+            window = FindObjectOfType<T>() ?? CreateInstance<T>();
 
-		protected static T GetWindowAndShow()
-		{
-			GetWindow();
-			window.Show();
-			window.Focus();
+            return window;
+        }
 
-			return window;
-		}
+        protected static T GetWindowAndShow() {
+            GetWindow();
+            window.Show();
+            window.Focus();
 
-		protected static T GetWindowAndOpenUtility()
-		{
-			GetWindow();
-			window.ShowUtility();
-			window.Focus();
+            return window;
+        }
 
-			return window;
-		}
-	}
+        protected static T GetWindowAndOpenUtility() {
+            GetWindow();
+            window.ShowUtility();
+            window.Focus();
 
-	public abstract class FoCsWindow: EditorWindow, IRepaintable
-	{
-		protected abstract void OnGUI();
+            return window;
+        }
+    }
 
-		public static void DrawSpace()
-		{
-			EditorGUILayout.Space();
-		}
+    public abstract class FoCsWindow: EditorWindow, IRepaintable {
+        protected abstract void OnGUI();
 
-		public static void DrawSpace(int count)
-		{
-			for(var i = 0; i < count; i++)
-				EditorGUILayout.Space();
-		}
+        public static void DrawSpace() {
+            EditorGUILayout.Space();
+        }
 
-		public static void DrawSpace(float size)
-		{
-			GUILayout.Space(size);
-		}
-	}
+        public static void DrawSpace(int count) {
+            for (var i = 0; i < count; i++)
+                EditorGUILayout.Space();
+        }
+
+        public static void DrawSpace(float size) {
+            GUILayout.Space(size);
+        }
+    }
 }

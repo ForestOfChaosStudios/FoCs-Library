@@ -1,139 +1,131 @@
-﻿using ForestOfChaosLibrary.Editor.Utilities;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: ObjectReference.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:49 AM
+#endregion
+
+
+using ForestOfChaosLibrary.Editor.Utilities;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor
-{
-	/// <summary>
-	///     A class that manages the Object Reference drawing, used by FoCsEditor
-	/// </summary>
-	public class ObjectReference
-	{
-		private readonly HandlerController           Handler = new HandlerController();
-		public           AnimBool                    IsReferenceOpen;
-		private          UnityReorderableListStorage listHandler;
-		public           FoCsEditor                  owner;
-		public           SerializedProperty          Property;
-		private          bool                        referenceOpen;
-		public           SerializedObject            SerializedObject;
-		private          UnityReorderableListStorage ListHandler => listHandler ?? (listHandler = new UnityReorderableListStorage(owner));
-		public bool ReferenceOpen
-		{
-			get { return referenceOpen; }
-			set
-			{
-				referenceOpen          = value;
-				IsReferenceOpen.target = value;
-			}
-		}
+namespace ForestOfChaosLibrary.Editor {
+    /// <summary>
+    ///     A class that manages the Object Reference drawing, used by FoCsEditor
+    /// </summary>
+    public class ObjectReference {
+        private readonly HandlerController           Handler = new HandlerController();
+        public           AnimBool                    IsReferenceOpen;
+        private          UnityReorderableListStorage listHandler;
+        public           FoCsEditor                  owner;
+        public           SerializedProperty          Property;
+        private          bool                        referenceOpen;
+        public           SerializedObject            SerializedObject;
 
-		public ObjectReference(SerializedProperty _property, FoCsEditor _owner)
-		{
-			Property        = _property;
-			owner           = _owner;
-			IsReferenceOpen = new AnimBool(false) {speed = 0.7f};
-		}
+        private UnityReorderableListStorage ListHandler => listHandler ?? (listHandler = new UnityReorderableListStorage(owner));
 
-		/// <summary>
-		///     Draws the Object Reference field, and foldout GUI
-		/// </summary>
-		public void DrawHeader()
-		{
-			DrawHeader(true);
-		}
+        public bool ReferenceOpen {
+            get => referenceOpen;
+            set {
+                referenceOpen          = value;
+                IsReferenceOpen.target = value;
+            }
+        }
 
-		/// <summary>
-		///     Draws the Object Reference field, and foldout GUI
-		/// </summary>
-		public void DrawHeader(bool showFoldout)
-		{
-			using(var cc = Disposables.ChangeCheck())
-			{
-				var prop = FoCsGUI.Layout.PropertyField(Property, false);
+        public ObjectReference(SerializedProperty _property, FoCsEditor _owner) {
+            Property        = _property;
+            owner           = _owner;
+            IsReferenceOpen = new AnimBool(false) {speed = 0.7f};
+        }
 
-				if(prop.EventIsMouseRInRect)
-				{
-					Property.DrawCreateAndAssignObjectMenu();
-					prop.Event.Use();
-				}
+        /// <summary>
+        ///     Draws the Object Reference field, and foldout GUI
+        /// </summary>
+        public void DrawHeader() {
+            DrawHeader(true);
+        }
 
-				if(cc.changed)
-				{
-					if(Property.objectReferenceValue == null)
-					{
-						SerializedObject      = null;
-						ReferenceOpen         = false;
-						IsReferenceOpen.value = false;
-					}
-					else
-					{
-						SerializedObject = new SerializedObject(Property.objectReferenceValue);
-						Handler.ClearHandlingDictionary();
-					}
-				}
-			}
+        /// <summary>
+        ///     Draws the Object Reference field, and foldout GUI
+        /// </summary>
+        public void DrawHeader(bool showFoldout) {
+            using (var cc = Disposables.ChangeCheck()) {
+                var prop = FoCsGUI.Layout.PropertyField(Property, false);
 
-			if(!Property.objectReferenceValue)
-				return;
+                if (prop.EventIsMouseRInRect) {
+                    Property.DrawCreateAndAssignObjectMenu();
+                    prop.Event.Use();
+                }
 
-			if(SerializedObject == null)
-			{
-				Handler.ClearHandlingDictionary();
-				SerializedObject = new SerializedObject(Property.objectReferenceValue);
-			}
+                if (cc.changed) {
+                    if (Property.objectReferenceValue == null) {
+                        SerializedObject      = null;
+                        ReferenceOpen         = false;
+                        IsReferenceOpen.value = false;
+                    }
+                    else {
+                        SerializedObject = new SerializedObject(Property.objectReferenceValue);
+                        Handler.ClearHandlingDictionary();
+                    }
+                }
+            }
 
-			VerifyHandler();
+            if (!Property.objectReferenceValue)
+                return;
 
-			if(showFoldout)
-				ReferenceOpen = FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), ReferenceOpen);
-		}
+            if (SerializedObject == null) {
+                Handler.ClearHandlingDictionary();
+                SerializedObject = new SerializedObject(Property.objectReferenceValue);
+            }
 
-		private static void DrawRightClickMenu(SerializedProperty property)
-		{
-			var type = property.GetPropertyType();
+            VerifyHandler();
 
-			if(!type.IsSubclassOf(typeof(ScriptableObject)))
-				return;
+            if (showFoldout)
+                ReferenceOpen = FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), ReferenceOpen);
+        }
 
-			var guiContent  = new GUIContent($"Create And Assign New {type.Name}");
-			var genericMenu = new GenericMenu();
-			genericMenu.AddItem(guiContent,false, property.GenerateAddAssignNewItem);
-			genericMenu.ShowAsContext();
-		}
+        private static void DrawRightClickMenu(SerializedProperty property) {
+            var type = property.GetPropertyType();
 
-		/// <summary>
-		///     Draws the Object references referenced Object...
-		/// </summary>
-		/// <param name="URLStorage"></param>
-		public void DrawReference(UnityReorderableListStorage URLStorage)
-		{
-			if(!ReferenceOpen)
-				return;
+            if (!type.IsSubclassOf(typeof(ScriptableObject)))
+                return;
 
-			SerializedObject.Update();
+            var guiContent  = new GUIContent($"Create And Assign New {type.Name}");
+            var genericMenu = new GenericMenu();
+            genericMenu.AddItem(guiContent, false, property.GenerateAddAssignNewItem);
+            genericMenu.ShowAsContext();
+        }
 
-			using(Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box))
-			{
-				using(Disposables.Indent())
-				{
-					foreach(var property in SerializedObject.Properties())
-						Handler.Handle(property);
-				}
-			}
+        /// <summary>
+        ///     Draws the Object references referenced Object...
+        /// </summary>
+        /// <param name="URLStorage"></param>
+        public void DrawReference(UnityReorderableListStorage URLStorage) {
+            if (!ReferenceOpen)
+                return;
 
-			SerializedObject.ApplyModifiedProperties();
-		}
+            SerializedObject.Update();
 
-		/// <summary>
-		///     Verify the internal data of the HandlerController
-		/// </summary>
-		public void VerifyHandler()
-		{
-			Handler.VerifyIPropertyLayoutHandlerArray(owner);
-			Handler.VerifyHandlingDictionary(SerializedObject);
-		}
-	}
+            using (Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box)) {
+                using (Disposables.Indent()) {
+                    foreach (var property in SerializedObject.Properties())
+                        Handler.Handle(property);
+                }
+            }
+
+            SerializedObject.ApplyModifiedProperties();
+        }
+
+        /// <summary>
+        ///     Verify the internal data of the HandlerController
+        /// </summary>
+        public void VerifyHandler() {
+            Handler.VerifyIPropertyLayoutHandlerArray(owner);
+            Handler.VerifyHandlingDictionary(SerializedObject);
+        }
+    }
 }

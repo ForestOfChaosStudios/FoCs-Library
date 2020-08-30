@@ -1,103 +1,99 @@
-﻿using ForestOfChaosLibrary.Editor.Utilities;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: HandlerController.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
+using ForestOfChaosLibrary.Editor.Utilities;
 using UnityEditor;
 using Dictionary = System.Collections.Generic.Dictionary<ForestOfChaosLibrary.Editor.FoCsEditor.SortableSerializedProperty, ForestOfChaosLibrary.Editor.IPropertyLayoutHandler>;
 
-namespace ForestOfChaosLibrary.Editor
-{
-	public class HandlerController
-	{
-		public  PropertyHandler            fallbackHandler;
-		public  IPropertyLayoutHandler[]   Handlers;
-		private Dictionary                 PropertyHandlingDictionary;
-		public  Dictionary.ValueCollection Values => PropertyHandlingDictionary.Values;
-		public  Dictionary.KeyCollection   Keys   => PropertyHandlingDictionary.Keys;
+namespace ForestOfChaosLibrary.Editor {
+    public class HandlerController {
+        public  PropertyHandler          fallbackHandler;
+        public  IPropertyLayoutHandler[] Handlers;
+        private Dictionary               PropertyHandlingDictionary;
 
-		public IPropertyLayoutHandler this[FoCsEditor.SortableSerializedProperty key]
-		{
-			get
-			{
-				if(PropertyHandlingDictionary.ContainsKey(key))
-					return PropertyHandlingDictionary[key];
-				return null;
-			}
-			set { PropertyHandlingDictionary[key] = value; }
-		}
+        public Dictionary.ValueCollection Values => PropertyHandlingDictionary.Values;
 
-		public IPropertyLayoutHandler GetHandler(SerializedProperty property)
-		{
-			foreach(var handler in Handlers)
-			{
-				if(handler.IsValidProperty(property))
-					return handler;
-			}
+        public Dictionary.KeyCollection Keys => PropertyHandlingDictionary.Keys;
 
-			return fallbackHandler;
-		}
+        public IPropertyLayoutHandler this[FoCsEditor.SortableSerializedProperty key] {
+            get {
+                if (PropertyHandlingDictionary.ContainsKey(key))
+                    return PropertyHandlingDictionary[key];
 
-		public void Handle(SerializedProperty property)
-		{
-			this[property]?.HandleProperty(property);
-		}
+                return null;
+            }
+            set => PropertyHandlingDictionary[key] = value;
+        }
 
-		public void DrawAfterEditor(SerializedProperty property)
-		{
-			this[property]?.DrawAfterEditor(property);
-		}
+        public IPropertyLayoutHandler GetHandler(SerializedProperty property) {
+            foreach (var handler in Handlers) {
+                if (handler.IsValidProperty(property))
+                    return handler;
+            }
 
-		public void ClearHandlingDictionary()
-		{
-			if(PropertyHandlingDictionary != null)
-			{
-				PropertyHandlingDictionary.Clear();
-				PropertyHandlingDictionary = null;
-			}
-		}
+            return fallbackHandler;
+        }
 
-		public void VerifyHandlingDictionary(SerializedObject serializedObject)
-		{
-			if(PropertyHandlingDictionary != null)
-				return;
+        public void Handle(SerializedProperty property) {
+            this[property]?.HandleProperty(property);
+        }
 
-			PropertyHandlingDictionary = new Dictionary(serializedObject.VisibleProperties());
+        public void DrawAfterEditor(SerializedProperty property) {
+            this[property]?.DrawAfterEditor(property);
+        }
 
-			foreach(var property in serializedObject.Properties())
-				PropertyHandlingDictionary.Add(property, GetHandler(property));
-		}
+        public void ClearHandlingDictionary() {
+            if (PropertyHandlingDictionary != null) {
+                PropertyHandlingDictionary.Clear();
+                PropertyHandlingDictionary = null;
+            }
+        }
 
-		public void VerifyIPropertyLayoutHandlerArray(FoCsEditor owner)
-		{
-			if(Handlers == null)
-				Handlers = new IPropertyLayoutHandler[] {new ObjectReferenceHandler(owner), new ListHandler(owner), new DefaultScriptPropertyHandler(owner)};
+        public void VerifyHandlingDictionary(SerializedObject serializedObject) {
+            if (PropertyHandlingDictionary != null)
+                return;
 
-			if(fallbackHandler == null)
-				fallbackHandler = new PropertyHandler();
-		}
+            PropertyHandlingDictionary = new Dictionary(serializedObject.VisibleProperties());
 
-		public void VerifyIPropertyLayoutHandlerArray(ObjectReferenceHandler owner)
-		{
-			if(Handlers == null)
-				Handlers = new IPropertyLayoutHandler[] {new ListHandler(owner.owner), new DefaultScriptPropertyHandler(owner.owner)};
+            foreach (var property in serializedObject.Properties())
+                PropertyHandlingDictionary.Add(property, GetHandler(property));
+        }
 
-			if(fallbackHandler == null)
-				fallbackHandler = new PropertyHandler();
-		}
+        public void VerifyIPropertyLayoutHandlerArray(FoCsEditor owner) {
+            if (Handlers == null)
+                Handlers = new IPropertyLayoutHandler[] {new ObjectReferenceHandler(owner), new ListHandler(owner), new DefaultScriptPropertyHandler(owner)};
 
-		public void VerifyIPropertyLayoutHandlerArrayNoObject(FoCsEditor owner)
-		{
-			if(Handlers == null)
-				Handlers = new IPropertyLayoutHandler[] {new ListHandler(owner), new DefaultScriptPropertyHandler(owner)};
+            if (fallbackHandler == null)
+                fallbackHandler = new PropertyHandler();
+        }
 
-			if(fallbackHandler == null)
-				fallbackHandler = new PropertyHandler();
-		}
+        public void VerifyIPropertyLayoutHandlerArray(ObjectReferenceHandler owner) {
+            if (Handlers == null)
+                Handlers = new IPropertyLayoutHandler[] {new ListHandler(owner.owner), new DefaultScriptPropertyHandler(owner.owner)};
 
-		public void VerifyIPropertyLayoutHandlerArrayNoObject(UnityReorderableListStorage storage)
-		{
-			if(Handlers == null)
-				Handlers = new IPropertyLayoutHandler[] {new ListHandler(storage), new DefaultScriptPropertyHandler()};
+            if (fallbackHandler == null)
+                fallbackHandler = new PropertyHandler();
+        }
 
-			if(fallbackHandler == null)
-				fallbackHandler = new PropertyHandler();
-		}
-	}
+        public void VerifyIPropertyLayoutHandlerArrayNoObject(FoCsEditor owner) {
+            if (Handlers == null)
+                Handlers = new IPropertyLayoutHandler[] {new ListHandler(owner), new DefaultScriptPropertyHandler(owner)};
+
+            if (fallbackHandler == null)
+                fallbackHandler = new PropertyHandler();
+        }
+
+        public void VerifyIPropertyLayoutHandlerArrayNoObject(UnityReorderableListStorage storage) {
+            if (Handlers == null)
+                Handlers = new IPropertyLayoutHandler[] {new ListHandler(storage), new DefaultScriptPropertyHandler()};
+
+            if (fallbackHandler == null)
+                fallbackHandler = new PropertyHandler();
+        }
+    }
 }

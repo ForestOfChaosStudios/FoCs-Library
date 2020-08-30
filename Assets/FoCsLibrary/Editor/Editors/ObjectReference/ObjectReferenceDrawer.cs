@@ -1,4 +1,12 @@
-﻿using System.Collections.Generic;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: ObjectReferenceDrawer.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:49 AM
+#endregion
+
+
+using System.Collections.Generic;
 using ForestOfChaosLibrary.Editor.Utilities;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
@@ -6,239 +14,216 @@ using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers
-{
-	/// <summary>
-	///     This class is no longer used by the FoCsEditor, the new <see cref="ObjectReference" />
-	///     However it can't currently be removed as AdvRef uses it.
-	/// </summary>
-	public class ObjectReferenceDrawer: FoCsPropertyDrawer
-	{
-		private static readonly   UnityReorderableListStorage URLPStorage       = new UnityReorderableListStorage();
-		protected static readonly GUIContent                  foldoutGUIContent = new GUIContent("", "Open up the References Data");
-		private                   bool                        foldout;
-		public                    AnimBool                    IsExpanded;
-		public                    SerializedObject            SerializedObject { get; protected set; }
-		public bool Foldout
-		{
-			get { return foldout; }
-			set
-			{
-				foldout = value;
+namespace ForestOfChaosLibrary.Editor.PropertyDrawers {
+    /// <summary>
+    ///     This class is no longer used by the FoCsEditor, the new <see cref="ObjectReference" />
+    ///     However it can't currently be removed as AdvRef uses it.
+    /// </summary>
+    public class ObjectReferenceDrawer: FoCsPropertyDrawer {
+        private static readonly   UnityReorderableListStorage URLPStorage       = new UnityReorderableListStorage();
+        protected static readonly GUIContent                  foldoutGUIContent = new GUIContent("", "Open up the References Data");
+        private                   bool                        foldout;
+        public                    AnimBool                    IsExpanded;
 
-				if(IsExpanded != null)
-					IsExpanded.value = foldout;
-			}
-		}
-		protected virtual bool AllowFoldout => true;
-		public ObjectReferenceDrawer(): this(false) { }
+        public SerializedObject SerializedObject { get; protected set; }
 
-		public ObjectReferenceDrawer(bool _foldout)
-		{
-			Foldout = _foldout;
-		}
+        public bool Foldout {
+            get => foldout;
+            set {
+                foldout = value;
 
-		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-		{
-			CheckAnimBool(property);
-			DoMainRefGUI(position, property, ref label);
-			var elementHeight = FoCsGUI.GetPropertyHeight(property, FoCsGUI.AttributeCheck.DoCheck);
+                if (IsExpanded != null)
+                    IsExpanded.value = foldout;
+            }
+        }
 
-			if((property.objectReferenceValue == null) || !AllowFoldout)
-			{
-				SerializedObject = null;
+        protected virtual bool AllowFoldout => true;
 
-				return;
-			}
+        public ObjectReferenceDrawer(): this(false) { }
 
-			if(SerializedObject == null)
-				SerializedObject = new SerializedObject(property.objectReferenceValue);
-			else
-				SerializedObject.Update();
+        public ObjectReferenceDrawer(bool _foldout) => Foldout = _foldout;
 
-			Foldout = DoFoldoutGUI(position, Foldout);
-			DrawReference(position.Edit(RectEdit.ChangeY(elementHeight - SingleLine)), SerializedObject, Foldout);
-		}
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
+            CheckAnimBool(property);
+            DoMainRefGUI(position, property, ref label);
+            var elementHeight = FoCsGUI.GetPropertyHeight(property, FoCsGUI.AttributeCheck.DoCheck);
 
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			CheckAnimBool(property);
+            if ((property.objectReferenceValue == null) || !AllowFoldout) {
+                SerializedObject = null;
 
-			return PropertyHeight(property, SerializedObject, Foldout);
-		}
+                return;
+            }
 
-		public void DoMainRefGUI(Rect position, SerializedProperty property, ref GUIContent label)
-		{
-			CheckAnimBool(property);
-			var elementHeight = FoCsGUI.GetPropertyHeight(property, FoCsGUI.AttributeCheck.DoCheck);
+            if (SerializedObject == null)
+                SerializedObject = new SerializedObject(property.objectReferenceValue);
+            else
+                SerializedObject.Update();
 
-			using(var propScope = Disposables.PropertyScope(position, label, property))
-			{
-				label = propScope.content;
+            Foldout = DoFoldoutGUI(position, Foldout);
+            DrawReference(position.Edit(RectEdit.ChangeY(elementHeight - SingleLine)), SerializedObject, Foldout);
+        }
 
-				using(var changeCheckScope = Disposables.ChangeCheck())
-				{
-					var prop = FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(elementHeight)), property, label);
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
+            CheckAnimBool(property);
 
-					if(prop.EventIsMouseRInRect)
-					{
-						property.DrawCreateAndAssignObjectMenu();
-						prop.Event.Use();
-					}
+            return PropertyHeight(property, SerializedObject, Foldout);
+        }
 
-					if(changeCheckScope.changed && (property.objectReferenceValue != null))
-					{
-						property.serializedObject.ApplyModifiedProperties();
-						SerializedObject = new SerializedObject(property.objectReferenceValue);
-					}
-				}
-			}
-		}
+        public void DoMainRefGUI(Rect position, SerializedProperty property, ref GUIContent label) {
+            CheckAnimBool(property);
+            var elementHeight = FoCsGUI.GetPropertyHeight(property, FoCsGUI.AttributeCheck.DoCheck);
 
+            using (var propScope = Disposables.PropertyScope(position, label, property)) {
+                label = propScope.content;
 
+                using (var changeCheckScope = Disposables.ChangeCheck()) {
+                    var prop = FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(elementHeight)), property, label);
 
-		public bool DoFoldoutGUI(Rect position, bool internalFoldout)
-		{
-			internalFoldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(1)), internalFoldout, foldoutGUIContent);
+                    if (prop.EventIsMouseRInRect) {
+                        property.DrawCreateAndAssignObjectMenu();
+                        prop.Event.Use();
+                    }
 
-			return internalFoldout;
-		}
+                    if (changeCheckScope.changed && (property.objectReferenceValue != null)) {
+                        property.serializedObject.ApplyModifiedProperties();
+                        SerializedObject = new SerializedObject(property.objectReferenceValue);
+                    }
+                }
+            }
+        }
 
-		private void CheckAnimBool(SerializedProperty property)
-		{
-			if(IsExpanded == null)
-			{
-				IsExpanded       = new AnimBool(property.isExpanded);
-				IsExpanded.speed = 1;
-			}
+        public bool DoFoldoutGUI(Rect position, bool internalFoldout) {
+            internalFoldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(1)),
+                                                internalFoldout,
+                                                foldoutGUIContent);
 
-			IsExpanded.value = property.isExpanded;
-		}
+            return internalFoldout;
+        }
 
-		public static void DrawReference(Rect position, SerializedObject serializedObject, bool foldout)
-		{
-			if(serializedObject.VisibleProperties() == 0)
-				return;
+        private void CheckAnimBool(SerializedProperty property) {
+            if (IsExpanded == null) {
+                IsExpanded       = new AnimBool(property.isExpanded);
+                IsExpanded.speed = 1;
+            }
 
-			serializedObject.Update();
-			var iterator = serializedObject.GetIterator();
-			iterator.Next(true);
+            IsExpanded.value = property.isExpanded;
+        }
 
-			if(!foldout)
-				return;
+        public static void DrawReference(Rect position, SerializedObject serializedObject, bool foldout) {
+            if (serializedObject.VisibleProperties() == 0)
+                return;
 
-			DrawSurroundingBox(position);
+            serializedObject.Update();
+            var iterator = serializedObject.GetIterator();
+            iterator.Next(true);
 
-			using(var changeCheckScope = Disposables.ChangeCheck())
-			{
-				using(Disposables.Indent())
-				{
-					var drawPos = position.Edit(RectEdit.AddY(SingleLine), RectEdit.SubtractHeight(SingleLine), RectEdit.ChangeY(1));
+            if (!foldout)
+                return;
 
-					do
-					{
-						if(!FoCsEditor.IsPropertyHidden(iterator))
-							drawPos = DrawSubProp(iterator, drawPos);
-					}
-					while(iterator.NextVisible(false));
+            DrawSurroundingBox(position);
 
-					if(changeCheckScope.changed)
-						serializedObject.ApplyModifiedProperties();
-				}
-			}
-		}
+            using (var changeCheckScope = Disposables.ChangeCheck()) {
+                using (Disposables.Indent()) {
+                    var drawPos = position.Edit(RectEdit.AddY(SingleLine), RectEdit.SubtractHeight(SingleLine), RectEdit.ChangeY(1));
 
-		protected static void DrawSurroundingBox(Rect position)
-		{
-			if(Event.current.type == EventType.Repaint)
-				GUI.skin.box.Draw(position.Edit(RectEdit.ChangeY(SingleLine - 1), RectEdit.SubtractWidth(SingleLine + 7), RectEdit.AddX(SingleLine + 9)), false, false, false, false);
-		}
+                    do {
+                        if (!FoCsEditor.IsPropertyHidden(iterator))
+                            drawPos = DrawSubProp(iterator, drawPos);
+                    }
+                    while (iterator.NextVisible(false));
 
-		protected static Rect DrawSubProp(SerializedProperty prop, Rect drawPos)
-		{
-			if(prop.isArray && (prop.propertyType != SerializedPropertyType.String))
-			{
-				var list   = URLPStorage.GetList(prop);
-				var height = list.GetTotalHeight();
-				drawPos.height = height;
+                    if (changeCheckScope.changed)
+                        serializedObject.ApplyModifiedProperties();
+                }
+            }
+        }
 
-				using(Disposables.SetIndent(0))
-				{
-					if(prop.isExpanded)
-						list.HandleDrawing(drawPos.Edit(RectEdit.ChangeX(16)));
-					else
-						list.DrawHeader(drawPos.Edit(RectEdit.ChangeX(16)));
-				}
+        protected static void DrawSurroundingBox(Rect position) {
+            if (Event.current.type == EventType.Repaint) {
+                GUI.skin.box.Draw(position.Edit(RectEdit.ChangeY(SingleLine - 1), RectEdit.SubtractWidth(SingleLine + 7), RectEdit.AddX(SingleLine + 9)),
+                                  false,
+                                  false,
+                                  false,
+                                  false);
+            }
+        }
 
-				drawPos.y += height + Padding;
-			}
-			else
-			{
-				var height = FoCsGUI.GetPropertyHeight(prop, FoCsGUI.AttributeCheck.DoCheck);
-				drawPos.height = height;
-				FoCsGUI.PropertyField(drawPos, prop, prop.isExpanded, FoCsGUI.AttributeCheck.DoCheck);
-				drawPos.y += height + Padding;
-			}
+        protected static Rect DrawSubProp(SerializedProperty prop, Rect drawPos) {
+            if (prop.isArray && (prop.propertyType != SerializedPropertyType.String)) {
+                var list   = URLPStorage.GetList(prop);
+                var height = list.GetTotalHeight();
+                drawPos.height = height;
 
-			return drawPos;
-		}
+                using (Disposables.SetIndent(0)) {
+                    if (prop.isExpanded)
+                        list.HandleDrawing(drawPos.Edit(RectEdit.ChangeX(16)));
+                    else
+                        list.DrawHeader(drawPos.Edit(RectEdit.ChangeX(16)));
+                }
 
-		protected static float SubPropHeight(SerializedProperty prop, bool padding = true)
-		{
-			if(prop.isArray && (prop.propertyType != SerializedPropertyType.String))
-			{
-				var list   = URLPStorage.GetList(prop);
-				var height = list.GetTotalHeight();
+                drawPos.y += height + Padding;
+            }
+            else {
+                var height = FoCsGUI.GetPropertyHeight(prop, FoCsGUI.AttributeCheck.DoCheck);
+                drawPos.height = height;
+                FoCsGUI.PropertyField(drawPos, prop, prop.isExpanded, FoCsGUI.AttributeCheck.DoCheck);
+                drawPos.y += height + Padding;
+            }
 
-				return height + (padding? Padding : 0);
-			}
-			else
-			{
-				var height = FoCsGUI.GetPropertyHeight(prop, FoCsGUI.AttributeCheck.DoCheck);
+            return drawPos;
+        }
 
-				return height + (padding? Padding : 0);
-			}
-		}
+        protected static float SubPropHeight(SerializedProperty prop, bool padding = true) {
+            if (prop.isArray && (prop.propertyType != SerializedPropertyType.String)) {
+                var list   = URLPStorage.GetList(prop);
+                var height = list.GetTotalHeight();
 
-		public static float PropertyHeight(SerializedProperty property, SerializedObject serializedObject, bool foldout)
-		{
-			if((serializedObject == null) || !foldout || (serializedObject.VisibleProperties() == 0))
-				return Mathf.Max(FoCsGUI.GetPropertyHeight(property), SingleLine);
+                return height + (padding? Padding : 0);
+            }
+            else {
+                var height = FoCsGUI.GetPropertyHeight(prop, FoCsGUI.AttributeCheck.DoCheck);
 
-			var iterator = serializedObject.GetIterator();
-			iterator.Next(true);
-			var height = SingleLine + Padding;
+                return height + (padding? Padding : 0);
+            }
+        }
 
-			using(Disposables.Indent())
-			{
-				do
-				{
-					if(!FoCsEditor.IsPropertyHidden(iterator))
-						height += SubPropHeight(iterator);
-				}
-				while(iterator.NextVisible(false));
-			}
+        public static float PropertyHeight(SerializedProperty property, SerializedObject serializedObject, bool foldout) {
+            if ((serializedObject == null) || !foldout || (serializedObject.VisibleProperties() == 0))
+                return Mathf.Max(FoCsGUI.GetPropertyHeight(property), SingleLine);
 
-			return height;
-		}
+            var iterator = serializedObject.GetIterator();
+            iterator.Next(true);
+            var height = SingleLine + Padding;
+
+            using (Disposables.Indent()) {
+                do {
+                    if (!FoCsEditor.IsPropertyHidden(iterator))
+                        height += SubPropHeight(iterator);
+                }
+                while (iterator.NextVisible(false));
+            }
+
+            return height;
+        }
+
 
 #region Storage
-		private static readonly Dictionary<string, ObjectReferenceDrawer> objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(10);
+        private static readonly Dictionary<string, ObjectReferenceDrawer> objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(10);
 
-		public static ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property)
-		{
-			var                   id = string.Format("{0}:{1}-{2}", property.serializedObject.targetObject.name, property.propertyPath, property.name);
-			ObjectReferenceDrawer objDraw;
+        public static ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property) {
+            var                   id = string.Format("{0}:{1}-{2}", property.serializedObject.targetObject.name, property.propertyPath, property.name);
+            ObjectReferenceDrawer objDraw;
 
-			if(objectDrawers.TryGetValue(id, out objDraw))
-				return objDraw;
+            if (objectDrawers.TryGetValue(id, out objDraw))
+                return objDraw;
 
-			objDraw = new ObjectReferenceDrawer();
-			objectDrawers.Add(id, objDraw);
+            objDraw = new ObjectReferenceDrawer();
+            objectDrawers.Add(id, objDraw);
 
-			return objDraw;
-		}
+            return objDraw;
+        }
 #endregion
 
-	}
+
+    }
 }

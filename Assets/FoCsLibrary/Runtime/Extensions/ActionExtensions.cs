@@ -1,37 +1,38 @@
-﻿using System;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library
+//       File: ActionExtensions.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
 
-namespace ForestOfChaosLibrary.Extensions
-{
-	public static class ActionExtensions
-	{
-		public static void Trigger(this Action action)
-		{
-			if(action != null)
-				action();
-		}
 
-		public static void Trigger<TA>(this Action<TA> action, TA valueA)
-		{
-			if(action != null)
-				action(valueA);
-		}
+using System;
 
-		public static void Trigger<TA, TB>(this Action<TA, TB> action, TA valueA, TB valueB)
-		{
-			if(action != null)
-				action(valueA, valueB);
-		}
+namespace ForestOfChaosLibrary.Extensions {
+    public static class ActionExtensions {
+        public static void Trigger(this Action action) {
+            if (action != null)
+                action();
+        }
 
-		public static void Trigger<TA, TB, TC>(this Action<TA, TB, TC> action, TA valueA, TB valueB, TC valueC)
-		{
-			if(action != null)
-				action(valueA, valueB, valueC);
-		}
+        public static void Trigger<TA>(this Action<TA> action, TA valueA) {
+            if (action != null)
+                action(valueA);
+        }
 
-		public static void Trigger<TA, TB, TC, TD>(this Action<TA, TB, TC, TD> action, TA valueA, TB valueB, TC valueC, TD valueD)
-		{
-			if(action != null)
-				action(valueA, valueB, valueC, valueD);
-		}
-	}
+        public static void Trigger<TA, TB>(this Action<TA, TB> action, TA valueA, TB valueB) {
+            if (action != null)
+                action(valueA, valueB);
+        }
+
+        public static void Trigger<TA, TB, TC>(this Action<TA, TB, TC> action, TA valueA, TB valueB, TC valueC) {
+            if (action != null)
+                action(valueA, valueB, valueC);
+        }
+
+        public static void Trigger<TA, TB, TC, TD>(this Action<TA, TB, TC, TD> action, TA valueA, TB valueB, TC valueC, TD valueD) {
+            if (action != null)
+                action(valueA, valueB, valueC, valueD);
+        }
+    }
 }

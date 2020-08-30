@@ -1,0 +1,15 @@
+{
+    "name": "FoCs.Unity.Components",
+    "references": [
+        "FoCs.Unity.Library"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

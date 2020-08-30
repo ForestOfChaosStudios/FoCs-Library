@@ -1,0 +1,17 @@
+{
+    "name": "FoCs.Unity.Components.AdvVar",
+    "references": [
+        "FoCs.Unity.Library",
+        "FoCs.Unity.Components",
+        "FoCs.Unity.AdvVar"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

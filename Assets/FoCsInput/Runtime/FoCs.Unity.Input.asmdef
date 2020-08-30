@@ -1,0 +1,17 @@
+{
+    "name": "FoCs.Unity.Input",
+    "references": [
+        "FoCs.Unity.Library",
+        "FoCs.Unity.AdvVar",
+        "FoCs.Unity.Components"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

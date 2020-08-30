@@ -1,19 +1,26 @@
-﻿using System;
-using ForestOfChaosAdvVar.Base;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.AdvVar
+//       File: Vector4Reference.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:47 AM
+#endregion
+
+
+using System;
+using ForestOfChaos.Unity.AdvVar.Base;
 using UnityEngine;
 
-namespace ForestOfChaosAdvVar
-{
-	[Serializable] [AdvFolderNameUnity] public class Vector4Reference: AdvReference<Vector4> { }
+namespace ForestOfChaos.Unity.AdvVar {
+    [Serializable]
+    [AdvFolderNameUnity]
+    public class Vector4Reference: AdvReference<Vector4> { }
 
-	[Serializable]
-	public class Vector4Variable: AdvVariable<Vector4, Vector4Reference>
-	{
-		public static implicit operator Vector4Variable(Vector4 input)
-		{
-			var fR = new Vector4Variable {UseLocal = true, Value = input};
+    [Serializable]
+    public class Vector4Variable: AdvVariable<Vector4, Vector4Reference> {
+        public static implicit operator Vector4Variable(Vector4 input) {
+            var fR = new Vector4Variable {UseLocal = true, Value = input};
 
-			return fR;
-		}
-	}
+            return fR;
+        }
+    }
 }

@@ -1,31 +1,33 @@
-﻿using ForestOfChaosAdvVar;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.AdvVar.Editor
+//       File: AnimatorKeyEditor.cs
+//    Created: 2020/04/25 | 5:51 AM
+// LastEdited: 2020/08/31 | 7:49 AM
+#endregion
+
+
 using ForestOfChaosLibrary.Editor;
 using ForestOfChaosLibrary.Editor.Animation;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosAdvVar.Editor
-{
-	[CustomEditor(typeof(AnimatorKeyReference))]
-	[CanEditMultipleObjects]
-	public class AnimatorKeyEditor: FoCsEditor
-	{
-		private static readonly GUIContent ValueContent = new GUIContent("Value");
+namespace ForestOfChaos.Unity.AdvVar.Editor {
+    [CustomEditor(typeof(AnimatorKeyReference))]
+    [CanEditMultipleObjects]
+    public class AnimatorKeyEditor: FoCsEditor {
+        private static readonly GUIContent ValueContent = new GUIContent("Value");
 
-		public override void OnInspectorGUI()
-		{
-			serializedObject.Update();
+        public override void OnInspectorGUI() {
+            serializedObject.Update();
 
-			using(Disposables.Indent())
-			{
-				using(var cc = Disposables.ChangeCheck())
-				{
-					AnimatorKeyDrawer.DoDraw(EditorGUILayout.GetControlRect(true, FoCsGUI.SingleLine), serializedObject.FindProperty("storedValue"), ValueContent);
+            using (Disposables.Indent()) {
+                using (var cc = Disposables.ChangeCheck()) {
+                    AnimatorKeyDrawer.DoDraw(EditorGUILayout.GetControlRect(true, FoCsGUI.SingleLine), serializedObject.FindProperty("storedValue"), ValueContent);
 
-					if(cc.changed)
-						serializedObject.ApplyModifiedProperties();
-				}
-			}
-		}
-	}
+                    if (cc.changed)
+                        serializedObject.ApplyModifiedProperties();
+                }
+            }
+        }
+    }
 }

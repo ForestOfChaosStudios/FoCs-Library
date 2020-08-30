@@ -1,36 +1,39 @@
-﻿using System;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: EditorIndent.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
+using System;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.Utilities.Disposable
-{
-	public class EditorIndent: IDisposable
-	{
-		private readonly int  _amount;
-		private readonly bool _set;
-		public EditorIndent(): this(1) { }
+namespace ForestOfChaosLibrary.Editor.Utilities.Disposable {
+    public class EditorIndent: IDisposable {
+        private readonly int  _amount;
+        private readonly bool _set;
 
-		public EditorIndent(int indentLevel, bool set = false)
-		{
-			_set = set;
+        public EditorIndent(): this(1) { }
 
-			if(_set)
-			{
-				_amount               = EditorGUI.indentLevel;
-				EditorGUI.indentLevel = indentLevel;
-			}
-			else
-			{
-				EditorGUI.indentLevel += indentLevel;
-				_amount               =  indentLevel;
-			}
-		}
+        public EditorIndent(int indentLevel, bool set = false) {
+            _set = set;
 
-		public void Dispose()
-		{
-			if(_set)
-				EditorGUI.indentLevel = _amount;
-			else
-				EditorGUI.indentLevel -= _amount;
-		}
-	}
+            if (_set) {
+                _amount               = EditorGUI.indentLevel;
+                EditorGUI.indentLevel = indentLevel;
+            }
+            else {
+                EditorGUI.indentLevel += indentLevel;
+                _amount               =  indentLevel;
+            }
+        }
+
+        public void Dispose() {
+            if (_set)
+                EditorGUI.indentLevel = _amount;
+            else
+                EditorGUI.indentLevel -= _amount;
+        }
+    }
 }

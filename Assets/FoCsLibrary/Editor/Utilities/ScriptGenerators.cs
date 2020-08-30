@@ -1,3 +1,11 @@
+#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: ScriptGenerators.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,357 +14,350 @@ using System.Text;
 using ForestOfChaosLibrary.Types;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.Utilities
-{
-	public static class ScriptGenerators
-	{
-		public static Dictionary<Type, System.Type> TypeToString = new Dictionary<Type, System.Type>
-		{
-				{Type.String, typeof(TypeWithNameAndData.StringType)},
-				{Type.Int, typeof(TypeWithNameAndData.IntType)},
-				{Type.Int32, typeof(TypeWithNameAndData.Int32Type)},
-				{Type.Int64, typeof(TypeWithNameAndData.Int64Type)},
-				{Type.Float, typeof(TypeWithNameAndData.FloatType)},
-				{Type.Byte, typeof(TypeWithNameAndData.ByteType)},
-				{Type.Bool, typeof(TypeWithNameAndData.BoolType)}
-		};
+namespace ForestOfChaosLibrary.Editor.Utilities {
+    public static class ScriptGenerators {
+        public static Dictionary<Type, System.Type> TypeToString = new Dictionary<Type, System.Type> {
+                {Type.String, typeof(TypeWithNameAndData.StringType)},
+                {Type.Int, typeof(TypeWithNameAndData.IntType)},
+                {Type.Int32, typeof(TypeWithNameAndData.Int32Type)},
+                {Type.Int64, typeof(TypeWithNameAndData.Int64Type)},
+                {Type.Float, typeof(TypeWithNameAndData.FloatType)},
+                {Type.Byte, typeof(TypeWithNameAndData.ByteType)},
+                {Type.Bool, typeof(TypeWithNameAndData.BoolType)}
+        };
 
-		public static Dictionary<Type, object> TypeToData = new Dictionary<Type, object>
-		{
-				{Type.String, "\"\""},
-				{Type.Int, 0},
-				{Type.Int32, 0},
-				{Type.Int64, 0},
-				{Type.Float, 0},
-				{Type.Byte, 0},
-				{Type.Bool, false}
-		};
+        public static Dictionary<Type, object> TypeToData = new Dictionary<Type, object> {
+                {Type.String, "\"\""},
+                {Type.Int, 0},
+                {Type.Int32, 0},
+                {Type.Int64, 0},
+                {Type.Float, 0},
+                {Type.Byte, 0},
+                {Type.Bool, false}
+        };
 
-		[Serializable]
-		public enum Type
-		{
-			String,
-			Int,
-			Int32,
-			Int64,
-			Float,
-			Byte,
-			Bool
-		}
+        [Serializable]
+        public enum Type {
+            String,
+            Int,
+            Int32,
+            Int64,
+            Float,
+            Byte,
+            Bool
+        }
+
 
 #region StaticClass
-		public static void CreateStaticClass(string className, IEnumerable<StaticDataType> entries, string filepath = "", bool allowOverride = true)
-		{
-			var entriesList = entries.ToList();
-			var path        = FileStrings.ASSETS_GENERATED_STATICCLASS + (filepath == ""? FileStrings.S : FileStrings.S + filepath + FileStrings.S) + className + FileStrings.SCRIPTS_FILE_EXTENSION;
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.STATICCLASS);
+        public static void CreateStaticClass(string className, IEnumerable<StaticDataType> entries, string filepath = "", bool allowOverride = true) {
+            var entriesList = entries.ToList();
 
-			if(filepath != "")
-				EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED_STATICCLASS, filepath);
+            var path = FileStrings.ASSETS_GENERATED_STATICCLASS                                   +
+                       (filepath == ""? FileStrings.S : FileStrings.S + filepath + FileStrings.S) +
+                       className                                                                  +
+                       FileStrings.SCRIPTS_FILE_EXTENSION;
 
-			if(!allowOverride)
-			{
-				if(File.Exists(path))
-					return;
-			}
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.STATICCLASS);
 
-			using(var outfile = new StreamWriter(path))
-			{
-				outfile.WriteLine("//");
-				outfile.WriteLine("//It is not recommended to edit this file, as there are no checks on if the user has changed it.");
-				outfile.WriteLine("//THIS FILE IS OVER WRITTEN WITH NO CHECKS");
-				outfile.WriteLine("//");
-				outfile.WriteLine("namespace Generated{");
-				outfile.WriteLine("\t/// <summary>");
-				outfile.WriteLine("\t///This is an auto generated static class, created in the Unity editor, please don't edit.");
-				outfile.WriteLine("\t///It will be overwritten on next change in the editor.");
-				outfile.WriteLine("\t///</summary>");
-				outfile.WriteLine("\tpublic static class " + className + " {");
+            if (filepath != "")
+                EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED_STATICCLASS, filepath);
 
-				foreach(var str in entriesList)
-				{
-					if(!string.IsNullOrEmpty(str.Name))
-						outfile.WriteLine("\t\t public static {0} {1};", TypeToString[str.Type], str);
-				}
+            if (!allowOverride) {
+                if (File.Exists(path))
+                    return;
+            }
 
-				outfile.WriteLine("\t}");
-				outfile.WriteLine("}");
-			} //File written
+            using (var outfile = new StreamWriter(path)) {
+                outfile.WriteLine("//");
+                outfile.WriteLine("//It is not recommended to edit this file, as there are no checks on if the user has changed it.");
+                outfile.WriteLine("//THIS FILE IS OVER WRITTEN WITH NO CHECKS");
+                outfile.WriteLine("//");
+                outfile.WriteLine("namespace Generated{");
+                outfile.WriteLine("\t/// <summary>");
+                outfile.WriteLine("\t///This is an auto generated static class, created in the Unity editor, please don't edit.");
+                outfile.WriteLine("\t///It will be overwritten on next change in the editor.");
+                outfile.WriteLine("\t///</summary>");
+                outfile.WriteLine("\tpublic static class " + className + " {");
 
-			//DefineManager.AddDefine(className + "_DEFINE");
-			AssetDatabase.Refresh();
-		}
+                foreach (var str in entriesList) {
+                    if (!string.IsNullOrEmpty(str.Name))
+                        outfile.WriteLine("\t\t public static {0} {1};", TypeToString[str.Type], str);
+                }
+
+                outfile.WriteLine("\t}");
+                outfile.WriteLine("}");
+            } //File written
+
+            //DefineManager.AddDefine(className + "_DEFINE");
+            AssetDatabase.Refresh();
+        }
 #endregion
 
-		public static void WriteFile(string path, string entries)
-		{
-			CheckAndCreateFoldersToPathFromAssetsFolder(path);
 
-			using(var outfile = new StreamWriter(path))
-				outfile.WriteLine(entries);
-		}
+        public static void WriteFile(string path, string entries) {
+            CheckAndCreateFoldersToPathFromAssetsFolder(path);
 
-		public static void WriteFile(string path, IEnumerable<string> entries)
-		{
-			using(var outfile = new StreamWriter(path))
-			{
-				foreach(var str in entries)
-					outfile.WriteLine(str);
-			}
-		}
+            using (var outfile = new StreamWriter(path))
+                outfile.WriteLine(entries);
+        }
 
-		public static void CheckAndCreateFoldersToPathFromAssetsFolder(string path)
-		{
-			var dir = new DirectoryInfo(path.Substring(0, path.LastIndexOf('/')));
-			dir.Create();
-		}
+        public static void WriteFile(string path, IEnumerable<string> entries) {
+            using (var outfile = new StreamWriter(path)) {
+                foreach (var str in entries)
+                    outfile.WriteLine(str);
+            }
+        }
 
-		[Serializable]
-		public struct StaticDataType
-		{
-			public string Name;
-			public Type   Type;
+        public static void CheckAndCreateFoldersToPathFromAssetsFolder(string path) {
+            var dir = new DirectoryInfo(path.Substring(0, path.LastIndexOf('/')));
+            dir.Create();
+        }
 
-			public StaticDataType(string name = "", Type type = Type.String)
-			{
-				Name = name;
-				Type = type;
-			}
-		}
+        [Serializable]
+        public struct StaticDataType {
+            public string Name;
+            public Type   Type;
+
+            public StaticDataType(string name = "", Type type = Type.String) {
+                Name = name;
+                Type = type;
+            }
+        }
+
 
 #region Enums
-		public static string CreateEnumString(string enumName, IEnumerable<string> entries)
-		{
-			var entriesList = entries.ToList();
+        public static string CreateEnumString(string enumName, IEnumerable<string> entries) {
+            var entriesList = entries.ToList();
 
-			if(entriesList.Count == 0)
-				return "";
+            if (entriesList.Count == 0)
+                return "";
 
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.ENUM);
-			var sb = new StringBuilder();
-			sb.Append("\tpublic enum " + enumName + " {\n");
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.ENUM);
+            var sb = new StringBuilder();
+            sb.Append("\tpublic enum " + enumName + " {\n");
 
-			foreach(var str in entriesList)
-			{
-				if(!string.IsNullOrEmpty(str))
-					sb.AppendFormat("\t\t{0},\n", str);
-			}
+            foreach (var str in entriesList) {
+                if (!string.IsNullOrEmpty(str))
+                    sb.AppendFormat("\t\t{0},\n", str);
+            }
 
-			sb.AppendLine();
-			sb.Append("\t}");
+            sb.AppendLine();
+            sb.Append("\t}");
 
-			return sb.ToString();
-		}
+            return sb.ToString();
+        }
 
-		public static void CreateEnum(string enumName, IEnumerable<string> entries, string filepath = "", bool allowOverride = true)
-		{
-			var entriesList = entries.ToList();
+        public static void CreateEnum(string enumName, IEnumerable<string> entries, string filepath = "", bool allowOverride = true) {
+            var entriesList = entries.ToList();
 
-			if(entriesList.Count == 0)
-				return;
+            if (entriesList.Count == 0)
+                return;
 
-			var path = FileStrings.ASSETS_GENERATED_ENUM + (filepath == ""? FileStrings.S : FileStrings.S + filepath + FileStrings.S) + enumName + FileStrings.SCRIPTS_FILE_EXTENSION;
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.ENUM);
+            var path = FileStrings.ASSETS_GENERATED_ENUM                                          +
+                       (filepath == ""? FileStrings.S : FileStrings.S + filepath + FileStrings.S) +
+                       enumName                                                                   +
+                       FileStrings.SCRIPTS_FILE_EXTENSION;
 
-			if(filepath != "")
-				EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED_ENUM, filepath);
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.ENUM);
 
-			if(!allowOverride)
-			{
-				if(File.Exists(path))
-					return;
-			}
+            if (filepath != "")
+                EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED_ENUM, filepath);
 
-			using(var outfile = new StreamWriter(path))
-			{
-				outfile.WriteLine("#if {0}_DEFINE", enumName);
-				outfile.WriteLine("//");
-				outfile.WriteLine("//It is not recommended to edit this file, as there are no checks on if the user has changed it.");
-				outfile.WriteLine("//THIS FILE IS OVER WITTEN REGUADLESS OF CHANGES, EDIT THIS IN THE EDITOR IT WAS GENERATED FROM");
-				outfile.WriteLine("//");
-				outfile.WriteLine("namespace Generated{");
-				outfile.WriteLine("\t/// <summary>");
-				outfile.WriteLine("\t///This is an auto generated enum, created in the Unity editor, please don't edit.");
-				outfile.WriteLine("\t///It will be overwritten on next change in the editor.");
-				outfile.WriteLine("\t///</summary>");
-				outfile.WriteLine("\tpublic enum " + enumName + " {");
+            if (!allowOverride) {
+                if (File.Exists(path))
+                    return;
+            }
 
-				foreach(var str in entriesList)
-				{
-					if(!string.IsNullOrEmpty(str))
-						outfile.WriteLine("\t\t{0},", str);
-				}
+            using (var outfile = new StreamWriter(path)) {
+                outfile.WriteLine("#if {0}_DEFINE", enumName);
+                outfile.WriteLine("//");
+                outfile.WriteLine("//It is not recommended to edit this file, as there are no checks on if the user has changed it.");
+                outfile.WriteLine("//THIS FILE IS OVER WITTEN REGUADLESS OF CHANGES, EDIT THIS IN THE EDITOR IT WAS GENERATED FROM");
+                outfile.WriteLine("//");
+                outfile.WriteLine("namespace Generated{");
+                outfile.WriteLine("\t/// <summary>");
+                outfile.WriteLine("\t///This is an auto generated enum, created in the Unity editor, please don't edit.");
+                outfile.WriteLine("\t///It will be overwritten on next change in the editor.");
+                outfile.WriteLine("\t///</summary>");
+                outfile.WriteLine("\tpublic enum " + enumName + " {");
 
-				outfile.WriteLine("\t}");
-				outfile.WriteLine("}");
-				outfile.WriteLine("#endif");
-			} //File written
+                foreach (var str in entriesList) {
+                    if (!string.IsNullOrEmpty(str))
+                        outfile.WriteLine("\t\t{0},", str);
+                }
 
-			//DefineManager.AddDefine(enumName + "_DEFINE");
-			AssetDatabase.Refresh();
-		}
+                outfile.WriteLine("\t}");
+                outfile.WriteLine("}");
+                outfile.WriteLine("#endif");
+            } //File written
 
-		public static void CreateEnum(string enumName, string nameSpace, IEnumerable<string> entries, string filepath = "", bool allowOverride = true)
-		{
-			var entriesList = entries.ToList();
+            //DefineManager.AddDefine(enumName + "_DEFINE");
+            AssetDatabase.Refresh();
+        }
 
-			if(entriesList.Count == 0)
-				return;
+        public static void CreateEnum(string enumName, string nameSpace, IEnumerable<string> entries, string filepath = "", bool allowOverride = true) {
+            var entriesList = entries.ToList();
 
-			var path = FileStrings.ASSETS_GENERATED_ENUM + (filepath == ""? FileStrings.S : FileStrings.S + filepath + FileStrings.S) + enumName + FileStrings.SCRIPTS_FILE_EXTENSION;
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.ENUM);
+            if (entriesList.Count == 0)
+                return;
 
-			if(filepath != "")
-				EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED_ENUM, filepath);
+            var path = FileStrings.ASSETS_GENERATED_ENUM                                          +
+                       (filepath == ""? FileStrings.S : FileStrings.S + filepath + FileStrings.S) +
+                       enumName                                                                   +
+                       FileStrings.SCRIPTS_FILE_EXTENSION;
 
-			if(!allowOverride)
-			{
-				if(File.Exists(path))
-					return;
-			}
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.ENUM);
 
-			using(var outfile = new StreamWriter(path))
-			{
-				outfile.WriteLine("#if {0}_DEFINE", enumName);
-				outfile.WriteLine("//");
-				outfile.WriteLine("//It is not recommende to edit this file, as there are no checks on if the user has changed it.");
-				outfile.WriteLine("//THIS FILE IS OVER WITTEN REGUADLESS OF CHANGES, EDIT THIS IN THE EDITOR IT WAS GENERATED FROM");
-				outfile.WriteLine("//");
-				outfile.WriteLine("namespace Generated.{0}{1}", nameSpace, " {");
-				outfile.WriteLine("\t/// <summary>");
-				outfile.WriteLine("\t///This is an auto generated enum, created in the Unity editor, please don't edit.");
-				outfile.WriteLine("\t///It will be overwritten on next change in the editor.");
-				outfile.WriteLine("\t///</summary>");
-				outfile.WriteLine("\tpublic enum " + enumName + " {");
+            if (filepath != "")
+                EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED_ENUM, filepath);
 
-				foreach(var str in entriesList)
-				{
-					if(!string.IsNullOrEmpty(str))
-						outfile.WriteLine("\t\t{0},", str);
-				}
+            if (!allowOverride) {
+                if (File.Exists(path))
+                    return;
+            }
 
-				outfile.WriteLine("\t}");
-				outfile.WriteLine("}");
-				outfile.WriteLine("#endif");
-			} //File written
+            using (var outfile = new StreamWriter(path)) {
+                outfile.WriteLine("#if {0}_DEFINE", enumName);
+                outfile.WriteLine("//");
+                outfile.WriteLine("//It is not recommende to edit this file, as there are no checks on if the user has changed it.");
+                outfile.WriteLine("//THIS FILE IS OVER WITTEN REGUADLESS OF CHANGES, EDIT THIS IN THE EDITOR IT WAS GENERATED FROM");
+                outfile.WriteLine("//");
+                outfile.WriteLine("namespace Generated.{0}{1}", nameSpace, " {");
+                outfile.WriteLine("\t/// <summary>");
+                outfile.WriteLine("\t///This is an auto generated enum, created in the Unity editor, please don't edit.");
+                outfile.WriteLine("\t///It will be overwritten on next change in the editor.");
+                outfile.WriteLine("\t///</summary>");
+                outfile.WriteLine("\tpublic enum " + enumName + " {");
 
-			//DefineManager.AddDefine(enumName + "_DEFINE");
-			AssetDatabase.Refresh();
-		}
+                foreach (var str in entriesList) {
+                    if (!string.IsNullOrEmpty(str))
+                        outfile.WriteLine("\t\t{0},", str);
+                }
 
-		public static void CreateCountEnum(string enumName, IEnumerable<string> entries, string filepath = "", bool allowOverride = true)
-		{
-			var entriesList = entries.ToList();
+                outfile.WriteLine("\t}");
+                outfile.WriteLine("}");
+                outfile.WriteLine("#endif");
+            } //File written
 
-			if(entriesList.Count == 0)
-				return;
+            //DefineManager.AddDefine(enumName + "_DEFINE");
+            AssetDatabase.Refresh();
+        }
 
-			var path = FileStrings.ASSETS_GENERATED_ENUM + (filepath == ""? FileStrings.S : FileStrings.S + filepath + FileStrings.S) + enumName + FileStrings.SCRIPTS_FILE_EXTENSION;
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.ENUM);
+        public static void CreateCountEnum(string enumName, IEnumerable<string> entries, string filepath = "", bool allowOverride = true) {
+            var entriesList = entries.ToList();
 
-			if(filepath != "")
-				EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED_ENUM, filepath);
+            if (entriesList.Count == 0)
+                return;
 
-			if(!allowOverride)
-			{
-				if(File.Exists(path))
-					return;
-			}
+            var path = FileStrings.ASSETS_GENERATED_ENUM                                          +
+                       (filepath == ""? FileStrings.S : FileStrings.S + filepath + FileStrings.S) +
+                       enumName                                                                   +
+                       FileStrings.SCRIPTS_FILE_EXTENSION;
 
-			using(var outfile = new StreamWriter(path))
-			{
-				outfile.WriteLine("#if {0}_DEFINE", enumName);
-				outfile.WriteLine("//");
-				outfile.WriteLine("//It is not recommended to edit this file, as there are no checks on if the user has changed it.");
-				outfile.WriteLine("//THIS FILE IS OVER WITTEN REGUADLESS OF CHANGES, EDIT THIS IN THE EDITOR IT WAS GENERATED FROM");
-				outfile.WriteLine("//");
-				outfile.WriteLine("namespace Generated{");
-				outfile.WriteLine("\t/// <summary>");
-				outfile.WriteLine("\t///This is an auto generated enum, created in the Unity editor, please don't edit.");
-				outfile.WriteLine("\t///It will be overwritten on next change in the editor.");
-				outfile.WriteLine("\t///</summary>");
-				outfile.WriteLine("\tpublic enum " + enumName + "{");
-				outfile.WriteLine("\t\tSTART = 0,");
-				outfile.WriteLine("\t\t{0} = START,", entriesList[0]);
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.ENUM);
 
-				for(var i = 1; i < entriesList.Count; i++)
-				{
-					if(string.IsNullOrEmpty(entriesList[i]))
-						continue;
+            if (filepath != "")
+                EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED_ENUM, filepath);
 
-					outfile.WriteLine("\t\t{0},", entriesList[i]);
-				}
+            if (!allowOverride) {
+                if (File.Exists(path))
+                    return;
+            }
 
-				outfile.WriteLine("\t\tEND = {0},", entriesList[entriesList.Count - 1]);
-				outfile.WriteLine("\t\tCOUNT = END - START + 1,");
-				outfile.WriteLine("\t}");
-				outfile.WriteLine("}");
-				outfile.WriteLine("#endif");
-			} //File written
+            using (var outfile = new StreamWriter(path)) {
+                outfile.WriteLine("#if {0}_DEFINE", enumName);
+                outfile.WriteLine("//");
+                outfile.WriteLine("//It is not recommended to edit this file, as there are no checks on if the user has changed it.");
+                outfile.WriteLine("//THIS FILE IS OVER WITTEN REGUADLESS OF CHANGES, EDIT THIS IN THE EDITOR IT WAS GENERATED FROM");
+                outfile.WriteLine("//");
+                outfile.WriteLine("namespace Generated{");
+                outfile.WriteLine("\t/// <summary>");
+                outfile.WriteLine("\t///This is an auto generated enum, created in the Unity editor, please don't edit.");
+                outfile.WriteLine("\t///It will be overwritten on next change in the editor.");
+                outfile.WriteLine("\t///</summary>");
+                outfile.WriteLine("\tpublic enum " + enumName + "{");
+                outfile.WriteLine("\t\tSTART = 0,");
+                outfile.WriteLine("\t\t{0} = START,", entriesList[0]);
 
-			//DefineManager.AddDefine(enumName + "_DEFINE");
-			AssetDatabase.Refresh();
-		}
+                for (var i = 1; i < entriesList.Count; i++) {
+                    if (string.IsNullOrEmpty(entriesList[i]))
+                        continue;
 
-		public static void CreateCountEnum(string enumName, string nameSpace, IEnumerable<string> entries, string filepath = "", bool allowOverride = true)
-		{
-			var entriesList = entries.ToList();
+                    outfile.WriteLine("\t\t{0},", entriesList[i]);
+                }
 
-			if(entriesList.Count == 0)
-				return;
+                outfile.WriteLine("\t\tEND = {0},", entriesList[entriesList.Count - 1]);
+                outfile.WriteLine("\t\tCOUNT = END - START + 1,");
+                outfile.WriteLine("\t}");
+                outfile.WriteLine("}");
+                outfile.WriteLine("#endif");
+            } //File written
 
-			var path = FileStrings.ASSETS_GENERATED_ENUM + (filepath == ""? FileStrings.S : FileStrings.S + filepath + FileStrings.S) + enumName + FileStrings.SCRIPTS_FILE_EXTENSION;
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
-			EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.ENUM);
+            //DefineManager.AddDefine(enumName + "_DEFINE");
+            AssetDatabase.Refresh();
+        }
 
-			if(filepath != "")
-				EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED_ENUM, filepath);
+        public static void CreateCountEnum(string enumName, string nameSpace, IEnumerable<string> entries, string filepath = "", bool allowOverride = true) {
+            var entriesList = entries.ToList();
 
-			if(!allowOverride)
-			{
-				if(File.Exists(path))
-					return;
-			}
+            if (entriesList.Count == 0)
+                return;
 
-			using(var outfile = new StreamWriter(path))
-			{
-				outfile.WriteLine("#if {0}_DEFINE", enumName);
-				outfile.WriteLine("//");
-				outfile.WriteLine("//It is not recommended to edit this file, as there are no checks on if the user has changed it.");
-				outfile.WriteLine("//THIS FILE IS OVER WITTEN REGUADLESS OF CHANGES, EDIT THIS IN THE EDITOR IT WAS GENERATED FROM");
-				outfile.WriteLine("//");
-				outfile.WriteLine("namespace Generated.{0}{1}", nameSpace, " {");
-				outfile.WriteLine("\t/// <summary>");
-				outfile.WriteLine("\t///This is an auto generated enum, created in the Unity editor, please don't edit.");
-				outfile.WriteLine("\t///It will be overwritten on next change in the editor.");
-				outfile.WriteLine("\t///</summary>");
-				outfile.WriteLine("\tpublic enum " + enumName + "{");
-				outfile.WriteLine("\t\tSTART = 0,");
-				outfile.WriteLine("\t\t{0} = START,", entriesList[0]);
+            var path = FileStrings.ASSETS_GENERATED_ENUM                                          +
+                       (filepath == ""? FileStrings.S : FileStrings.S + filepath + FileStrings.S) +
+                       enumName                                                                   +
+                       FileStrings.SCRIPTS_FILE_EXTENSION;
 
-				for(var i = 1; i < entriesList.Count; i++)
-				{
-					if(string.IsNullOrEmpty(entriesList[i]))
-						continue;
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS,           FileStrings.GENERATED);
+            EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED, FileStrings.ENUM);
 
-					outfile.WriteLine("\t\t{0},", entriesList[i]);
-				}
+            if (filepath != "")
+                EditorHelpers.CreateAndCheckFolder(FileStrings.ASSETS_GENERATED_ENUM, filepath);
 
-				outfile.WriteLine("\t\tEND = {0},", entriesList[entriesList.Count - 1]);
-				outfile.WriteLine("\t\tCOUNT = END - START + 1,");
-				outfile.WriteLine("\t}");
-				outfile.WriteLine("}");
-				outfile.WriteLine("#endif");
-			} //File written
+            if (!allowOverride) {
+                if (File.Exists(path))
+                    return;
+            }
 
-			//DefineManager.AddDefine(enumName + "_DEFINE");
-			AssetDatabase.Refresh();
-		}
+            using (var outfile = new StreamWriter(path)) {
+                outfile.WriteLine("#if {0}_DEFINE", enumName);
+                outfile.WriteLine("//");
+                outfile.WriteLine("//It is not recommended to edit this file, as there are no checks on if the user has changed it.");
+                outfile.WriteLine("//THIS FILE IS OVER WITTEN REGUADLESS OF CHANGES, EDIT THIS IN THE EDITOR IT WAS GENERATED FROM");
+                outfile.WriteLine("//");
+                outfile.WriteLine("namespace Generated.{0}{1}", nameSpace, " {");
+                outfile.WriteLine("\t/// <summary>");
+                outfile.WriteLine("\t///This is an auto generated enum, created in the Unity editor, please don't edit.");
+                outfile.WriteLine("\t///It will be overwritten on next change in the editor.");
+                outfile.WriteLine("\t///</summary>");
+                outfile.WriteLine("\tpublic enum " + enumName + "{");
+                outfile.WriteLine("\t\tSTART = 0,");
+                outfile.WriteLine("\t\t{0} = START,", entriesList[0]);
+
+                for (var i = 1; i < entriesList.Count; i++) {
+                    if (string.IsNullOrEmpty(entriesList[i]))
+                        continue;
+
+                    outfile.WriteLine("\t\t{0},", entriesList[i]);
+                }
+
+                outfile.WriteLine("\t\tEND = {0},", entriesList[entriesList.Count - 1]);
+                outfile.WriteLine("\t\tCOUNT = END - START + 1,");
+                outfile.WriteLine("\t}");
+                outfile.WriteLine("}");
+                outfile.WriteLine("#endif");
+            } //File written
+
+            //DefineManager.AddDefine(enumName + "_DEFINE");
+            AssetDatabase.Refresh();
+        }
 #endregion
-	}
+
+
+    }
 }

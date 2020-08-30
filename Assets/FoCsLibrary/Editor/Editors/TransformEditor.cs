@@ -1,3 +1,11 @@
+#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: TransformEditor.cs
+//    Created: 2020/04/25 | 5:51 AM
+// LastEdited: 2020/08/31 | 7:49 AM
+#endregion
+
+
 using System;
 using System.Collections.Generic;
 using ForestOfChaosLibrary.Editor.Utilities;
@@ -6,285 +14,258 @@ using ForestOfChaosLibrary.Types;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor
-{
-	[CustomEditor(typeof(Transform))]
-	internal class TransformEditor: FoCsEditor<Transform>
-	{
-		private static          float                                    scaleAmount = 1;
-		private static          int                                      tabNum;
-		private static readonly GUIContent                               ResetContent      = new GUIContent("Reset Global",         "Reset Transforms in global space");
-		private static readonly GUIContent                               ResetLocalContent = new GUIContent("Reset Local",          "Reset Transforms in local space");
-		private static readonly GUIContent                               CopyContent       = new GUIContent("Copy Transform Data",  "Copies a new TransformData");
-		private static readonly GUIContent                               PasteContent      = new GUIContent("Paste Transform Data", "Pastes the TransformData");
-		private static readonly GUIContent                               SetContent        = new GUIContent("Set:  ");
-		private static readonly GUIContent                               TimesContent      = new GUIContent("Times:");
-		private readonly        KeyValuePair<Func<bool, bool>, Action>[] TabName;
-		public override         bool                                     ShowCopyPasteButtons      => true;
-		public override         bool                                     AllowsSortingModeChanging => false;
+namespace ForestOfChaosLibrary.Editor {
+    [CustomEditor(typeof(Transform))]
+    internal class TransformEditor: FoCsEditor<Transform> {
+        private static          float                                    scaleAmount = 1;
+        private static          int                                      tabNum;
+        private static readonly GUIContent                               ResetContent      = new GUIContent("Reset Global",         "Reset Transforms in global space");
+        private static readonly GUIContent                               ResetLocalContent = new GUIContent("Reset Local",          "Reset Transforms in local space");
+        private static readonly GUIContent                               CopyContent       = new GUIContent("Copy Transform Data",  "Copies a new TransformData");
+        private static readonly GUIContent                               PasteContent      = new GUIContent("Paste Transform Data", "Pastes the TransformData");
+        private static readonly GUIContent                               SetContent        = new GUIContent("Set:  ");
+        private static readonly GUIContent                               TimesContent      = new GUIContent("Times:");
+        private readonly        KeyValuePair<Func<bool, bool>, Action>[] TabName;
 
-		private static int TabNum
-		{
-			get { return tabNum; }
-			set { EditorPrefs.SetInt("FoCsTE.TabNum", tabNum = value); }
-		}
+        private static int TabNum {
+            get => tabNum;
+            set => EditorPrefs.SetInt("FoCsTE.TabNum", tabNum = value);
+        }
 
-		private static GUILayoutOption[] SCALE_LABEL_OPTIONS => new[] {GUILayout.Width(60), SCALE_BUTTON_HEIGHT};
-		private static GUILayoutOption   SCALE_BUTTON_HEIGHT => GUILayout.Height(16);
+        private static GUILayoutOption[] SCALE_LABEL_OPTIONS => new[] {GUILayout.Width(60), SCALE_BUTTON_HEIGHT};
 
-		public TransformEditor()
-		{
-			TabName = new[]
-			{
-					Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("Nothing",       "Hides Any Extra Options")),                null),
-					Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("Scale Options", "Scale Preset Options")),                   ScaleButtonsEnabled),
-					Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("Global Values", "Force Display of Global Transform Data")), DrawGlobalTransformOptions),
-					Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("T Data",        "Transform Data Copy Paste")),              DrawTDCopyPaste),
-					Pair.Create<Func<bool, bool>, Action>(PingObject,                                                                                             null)
-			};
-		}
+        private static GUILayoutOption SCALE_BUTTON_HEIGHT => GUILayout.Height(16);
 
-		protected override void OnEnable()
-		{
-			base.OnEnable();
-			tabNum = EditorPrefs.GetInt("FoCsTE.TabNum");
-		}
+        public override bool ShowCopyPasteButtons => true;
 
-		public override void OnInspectorGUI()
-		{
-			serializedObject.Update();
-			DoDrawHeader();
+        public override bool AllowsSortingModeChanging => false;
 
-			using(Disposables.Indent())
-			{
-				DrawTransformOptions();
+        public TransformEditor() {
+            TabName = new[] {
+                    Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("Nothing",       "Hides Any Extra Options")), null),
+                    Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("Scale Options", "Scale Preset Options")),    ScaleButtonsEnabled),
+                    Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("Global Values", "Force Display of Global Transform Data")),
+                                                          DrawGlobalTransformOptions),
+                    Pair.Create<Func<bool, bool>, Action>(a => NormalToolbarButton(a, new GUIContent("T Data", "Transform Data Copy Paste")), DrawTDCopyPaste),
+                    Pair.Create<Func<bool, bool>, Action>(PingObject,                                                                         null)
+            };
+        }
 
-				using(Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-				{
-					for(var i = 0; i < TabName.Length; i++)
-					{
-						if(TabName[i].Key.Invoke(i == TabNum))
-							TabNum = i;
-					}
-				}
+        protected override void OnEnable() {
+            base.OnEnable();
+            tabNum = EditorPrefs.GetInt("FoCsTE.TabNum");
+        }
 
-				TabName[TabNum].Value.Trigger();
-				serializedObject.ApplyModifiedProperties();
-			}
-		}
+        public override void OnInspectorGUI() {
+            serializedObject.Update();
+            DoDrawHeader();
 
-		private static bool NormalToolbarButton(bool active, GUIContent con) => FoCsGUI.Layout.Toggle(con, active, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
+            using (Disposables.Indent()) {
+                DrawTransformOptions();
 
-		private void DrawTransformOptions()
-		{
-			if(Target.parent == null)
-				DrawGlobalTransformOptions();
-			else
-				DrawLocalTransformOptions();
-		}
+                using (Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar)) {
+                    for (var i = 0; i < TabName.Length; i++) {
+                        if (TabName[i].Key.Invoke(i == TabNum))
+                            TabNum = i;
+                    }
+                }
 
-		private void DrawGlobalTransformOptions()
-		{
-			bool guiChanged;
-			var  position = EditorHelpers.DrawVector3("Position", Target.position, Vector3.zero, Target, out guiChanged);
+                TabName[TabNum].Value.Trigger();
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
 
-			if(guiChanged)
-			{
-				Undo.RecordObject(Target, "position Changed");
-				Target.position = position;
-			}
+        private static bool NormalToolbarButton(bool active, GUIContent con) => FoCsGUI.Layout.Toggle(con, active, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16));
 
-			var eulerAngles = EditorHelpers.DrawVector3("Rotation", Target.eulerAngles, Vector3.zero, Target, out guiChanged);
+        private void DrawTransformOptions() {
+            if (Target.parent == null)
+                DrawGlobalTransformOptions();
+            else
+                DrawLocalTransformOptions();
+        }
 
-			if(guiChanged)
-			{
-				Undo.RecordObject(Target, "eulerAngles Changed");
-				Target.eulerAngles = eulerAngles;
-			}
+        private void DrawGlobalTransformOptions() {
+            bool guiChanged;
+            var  position = EditorHelpers.DrawVector3("Position", Target.position, Vector3.zero, Target, out guiChanged);
 
-			var scale = EditorHelpers.DrawVector3("Scale", Target.localScale, Vector3.one, Target, out guiChanged);
+            if (guiChanged) {
+                Undo.RecordObject(Target, "position Changed");
+                Target.position = position;
+            }
 
-			if(guiChanged)
-			{
-				Undo.RecordObject(Target, "scale Changed");
-				Target.localScale = scale;
-			}
-		}
+            var eulerAngles = EditorHelpers.DrawVector3("Rotation", Target.eulerAngles, Vector3.zero, Target, out guiChanged);
 
-		private bool PingObject(bool val)
-		{
-			if(FoCsGUI.Layout.Toggle("Ping Object", val, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16)))
-				EditorGUIUtility.PingObject(Target);
+            if (guiChanged) {
+                Undo.RecordObject(Target, "eulerAngles Changed");
+                Target.eulerAngles = eulerAngles;
+            }
 
-			return false;
-		}
+            var scale = EditorHelpers.DrawVector3("Scale", Target.localScale, Vector3.one, Target, out guiChanged);
 
-		private void DrawTDCopyPaste()
-		{
-			var cachedGuiColor = GUI.color;
+            if (guiChanged) {
+                Undo.RecordObject(Target, "scale Changed");
+                Target.localScale = scale;
+            }
+        }
 
-			using(Disposables.HorizontalScope(EditorStyles.toolbar))
-			{
-				var                  copyBuff = CopyPasteUtility.CopyBuffer;
-				var                  td       = new TransformData();
-				var                  isType   = CopyPasteUtility.IsTypeInBuffer(td, copyBuff);
-				var                  copyBtn  = FoCsGUI.Layout.Button(CopyContent, EditorStyles.toolbarButton);
-				FoCsGUI.GUIEventBool pasteBtn;
-				PasteContent.tooltip = "Pastes: " + copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length);
+        private bool PingObject(bool val) {
+            if (FoCsGUI.Layout.Toggle("Ping Object", val, FoCsGUI.Styles.ToolbarButton, GUILayout.Height(16)))
+                EditorGUIUtility.PingObject(Target);
 
-				using(Disposables.ColorChanger(isType? GUI.color : Color.red))
-					pasteBtn = FoCsGUI.Layout.Button(PasteContent, EditorStyles.toolbarButton);
+            return false;
+        }
 
-				if(copyBtn)
-					CopyPasteUtility.Copy(new TransformData(Target));
-				else if(pasteBtn)
-				{
-					Undo.RecordObject(target, "TransformData Paste");
-					Target.SetFromTD(CopyPasteUtility.Paste<TransformData>(copyBuff, true));
-				}
-			}
+        private void DrawTDCopyPaste() {
+            var cachedGuiColor = GUI.color;
 
-			GUI.color = cachedGuiColor;
-		}
+            using (Disposables.HorizontalScope(EditorStyles.toolbar)) {
+                var                  copyBuff = CopyPasteUtility.CopyBuffer;
+                var                  td       = new TransformData();
+                var                  isType   = CopyPasteUtility.IsTypeInBuffer(td, copyBuff);
+                var                  copyBtn  = FoCsGUI.Layout.Button(CopyContent, EditorStyles.toolbarButton);
+                FoCsGUI.GUIEventBool pasteBtn;
+                PasteContent.tooltip = "Pastes: " + copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length);
 
-		private void DrawLocalTransformOptions()
-		{
-			bool guiChanged;
-			var  position = EditorHelpers.DrawVector3("Local Position", Target.localPosition, Vector3.zero, Target, out guiChanged);
+                using (Disposables.ColorChanger(isType? GUI.color : Color.red))
+                    pasteBtn = FoCsGUI.Layout.Button(PasteContent, EditorStyles.toolbarButton);
 
-			if(guiChanged)
-			{
-				Undo.RecordObject(Target, "position Changed");
-				Target.localPosition = position;
-			}
+                if (copyBtn)
+                    CopyPasteUtility.Copy(new TransformData(Target));
+                else if (pasteBtn) {
+                    Undo.RecordObject(target, "TransformData Paste");
+                    Target.SetFromTD(CopyPasteUtility.Paste<TransformData>(copyBuff, true));
+                }
+            }
 
-			var eulerAngles = EditorHelpers.DrawVector3("Local Rotation", Target.localEulerAngles, Vector3.zero, Target, out guiChanged);
+            GUI.color = cachedGuiColor;
+        }
 
-			if(guiChanged)
-			{
-				Undo.RecordObject(Target, "eulerAngles Changed");
-				Target.localEulerAngles = eulerAngles;
-			}
+        private void DrawLocalTransformOptions() {
+            bool guiChanged;
+            var  position = EditorHelpers.DrawVector3("Local Position", Target.localPosition, Vector3.zero, Target, out guiChanged);
 
-			var scale = EditorHelpers.DrawVector3("Local Scale", Target.localScale, Vector3.one, Target, out guiChanged);
+            if (guiChanged) {
+                Undo.RecordObject(Target, "position Changed");
+                Target.localPosition = position;
+            }
 
-			if(guiChanged)
-			{
-				Undo.RecordObject(Target, "scale Changed");
-				Target.localScale = scale;
-			}
-		}
+            var eulerAngles = EditorHelpers.DrawVector3("Local Rotation", Target.localEulerAngles, Vector3.zero, Target, out guiChanged);
 
-		protected override void GetHeaderButtons(List<Action> headerButtons)
-		{
-			headerButtons.Add(ExtraHeader);
-			base.GetHeaderButtons(headerButtons);
-		}
+            if (guiChanged) {
+                Undo.RecordObject(Target, "eulerAngles Changed");
+                Target.localEulerAngles = eulerAngles;
+            }
 
-		protected void ExtraHeader()
-		{
-			var transform = Target;
-			var resetBtn  = FoCsGUI.Layout.Button(ResetContent, EditorStyles.toolbarButton);
+            var scale = EditorHelpers.DrawVector3("Local Scale", Target.localScale, Vector3.one, Target, out guiChanged);
 
-			if(transform.parent)
-			{
-				var resetLocalBtn = FoCsGUI.Layout.Button(ResetLocalContent, EditorStyles.toolbarButton);
+            if (guiChanged) {
+                Undo.RecordObject(Target, "scale Changed");
+                Target.localScale = scale;
+            }
+        }
 
-				if(resetLocalBtn)
-				{
-					Undo.RecordObject(transform, "ResetLocalPosRotScale");
-					transform.ResetLocalPosRotScale();
-				}
-			}
+        protected override void GetHeaderButtons(List<Action> headerButtons) {
+            headerButtons.Add(ExtraHeader);
+            base.GetHeaderButtons(headerButtons);
+        }
 
-			if(resetBtn)
-			{
-				Undo.RecordObject(transform, "ResetPosRotScale");
-				transform.ResetPosRotScale();
-			}
-		}
+        protected void ExtraHeader() {
+            var transform = Target;
+            var resetBtn  = FoCsGUI.Layout.Button(ResetContent, EditorStyles.toolbarButton);
 
-		private void ScaleButtonsEnabled()
-		{
-			ScaleArea();
+            if (transform.parent) {
+                var resetLocalBtn = FoCsGUI.Layout.Button(ResetLocalContent, EditorStyles.toolbarButton);
 
-			using(Disposables.HorizontalScope())
-			{
-				FoCsGUI.Layout.Label(SetContent, SCALE_LABEL_OPTIONS);
-				SetScaleBtn(0.5f);
-				SetScaleBtn(1);
-				SetScaleBtn(2);
-				SetScaleBtn(5);
-				SetScaleBtn(10);
-				SetScaleBtn(20);
-				SetScaleBtn(50);
-				SetScaleBtn(100);
-			}
+                if (resetLocalBtn) {
+                    Undo.RecordObject(transform, "ResetLocalPosRotScale");
+                    transform.ResetLocalPosRotScale();
+                }
+            }
 
-			using(Disposables.HorizontalScope())
-			{
-				FoCsGUI.Layout.LabelField(TimesContent, SCALE_LABEL_OPTIONS);
-				TimesScaleBtn(0.5f);
-				TimesScaleBtn(1);
-				TimesScaleBtn(2);
-				TimesScaleBtn(5);
-				TimesScaleBtn(10);
-				TimesScaleBtn(20);
-				TimesScaleBtn(50);
-				TimesScaleBtn(100);
-			}
-		}
+            if (resetBtn) {
+                Undo.RecordObject(transform, "ResetPosRotScale");
+                transform.ResetPosRotScale();
+            }
+        }
 
-		private void SetScaleBtn(float multi)
-		{
-			var resetContent = new GUIContent(string.Format("{0}x", multi), string.Format("Sets the Scale to ({0}, {1}, {2})", multi, multi, multi));
+        private void ScaleButtonsEnabled() {
+            ScaleArea();
 
-			if(FoCsGUI.Layout.Button(resetContent, SCALE_BUTTON_HEIGHT))
-			{
-				var transform = Target;
-				Undo.RecordObject(transform, "Scale reset");
-				transform.localScale = Vector3.one * multi;
-				scaleAmount          = transform.localScale.x;
-			}
-		}
+            using (Disposables.HorizontalScope()) {
+                FoCsGUI.Layout.Label(SetContent, SCALE_LABEL_OPTIONS);
+                SetScaleBtn(0.5f);
+                SetScaleBtn(1);
+                SetScaleBtn(2);
+                SetScaleBtn(5);
+                SetScaleBtn(10);
+                SetScaleBtn(20);
+                SetScaleBtn(50);
+                SetScaleBtn(100);
+            }
 
-		private void TimesScaleBtn(float multi)
-		{
-			var resetContent = new GUIContent(string.Format("{0}x", multi), string.Format("Multiplies the Scale to ({0}, {1}, {2})", Target.localScale.x * multi, Target.localScale.y * multi, Target.localScale.z * multi));
+            using (Disposables.HorizontalScope()) {
+                FoCsGUI.Layout.LabelField(TimesContent, SCALE_LABEL_OPTIONS);
+                TimesScaleBtn(0.5f);
+                TimesScaleBtn(1);
+                TimesScaleBtn(2);
+                TimesScaleBtn(5);
+                TimesScaleBtn(10);
+                TimesScaleBtn(20);
+                TimesScaleBtn(50);
+                TimesScaleBtn(100);
+            }
+        }
 
-			if(FoCsGUI.Layout.Button(resetContent, SCALE_BUTTON_HEIGHT))
-			{
-				var transform = Target;
-				Undo.RecordObject(transform, "Scale reset");
-				transform.localScale = transform.localScale * multi;
-				scaleAmount          = transform.localScale.x;
-			}
-		}
+        private void SetScaleBtn(float multi) {
+            var resetContent = new GUIContent(string.Format("{0}x", multi), string.Format("Sets the Scale to ({0}, {1}, {2})", multi, multi, multi));
 
-		private void ScaleArea()
-		{
-			var transform = Target;
+            if (FoCsGUI.Layout.Button(resetContent, SCALE_BUTTON_HEIGHT)) {
+                var transform = Target;
+                Undo.RecordObject(transform, "Scale reset");
+                transform.localScale = Vector3.one * multi;
+                scaleAmount          = transform.localScale.x;
+            }
+        }
 
-			using(Disposables.HorizontalScope())
-			{
-				var content = new GUIContent("Scale amount", "Set amount to uniformly scale the object");
-				scaleAmount = FoCsGUI.Layout.FloatField(content, scaleAmount, SCALE_BUTTON_HEIGHT);
-				var scaleContent = new GUIContent("Set Scale", string.Format("Sets the scale ({0},{1},{2})", scaleAmount, scaleAmount, scaleAmount));
+        private void TimesScaleBtn(float multi) {
+            var resetContent = new GUIContent(string.Format("{0}x", multi),
+                                              string.Format("Multiplies the Scale to ({0}, {1}, {2})",
+                                                            Target.localScale.x * multi,
+                                                            Target.localScale.y * multi,
+                                                            Target.localScale.z * multi));
 
-				if(GUILayout.Button(scaleContent, SCALE_BUTTON_HEIGHT))
-				{
-					Undo.RecordObject(transform, "Scale set");
-					transform.localScale = Vector3.one * scaleAmount;
-				}
+            if (FoCsGUI.Layout.Button(resetContent, SCALE_BUTTON_HEIGHT)) {
+                var transform = Target;
+                Undo.RecordObject(transform, "Scale reset");
+                transform.localScale = transform.localScale * multi;
+                scaleAmount          = transform.localScale.x;
+            }
+        }
 
-				var scaleTimesContent = new GUIContent("Times Scale", string.Format("Sets the scale ({0},{1},{2})", transform.position.x * scaleAmount, transform.position.y * scaleAmount, transform.position.z * scaleAmount));
+        private void ScaleArea() {
+            var transform = Target;
 
-				if(GUILayout.Button(scaleTimesContent, SCALE_BUTTON_HEIGHT))
-				{
-					Undo.RecordObject(transform, "Scale set");
-					transform.localScale *= scaleAmount;
-				}
-			}
-		}
-	}
+            using (Disposables.HorizontalScope()) {
+                var content = new GUIContent("Scale amount", "Set amount to uniformly scale the object");
+                scaleAmount = FoCsGUI.Layout.FloatField(content, scaleAmount, SCALE_BUTTON_HEIGHT);
+                var scaleContent = new GUIContent("Set Scale", string.Format("Sets the scale ({0},{1},{2})", scaleAmount, scaleAmount, scaleAmount));
+
+                if (GUILayout.Button(scaleContent, SCALE_BUTTON_HEIGHT)) {
+                    Undo.RecordObject(transform, "Scale set");
+                    transform.localScale = Vector3.one * scaleAmount;
+                }
+
+                var scaleTimesContent = new GUIContent("Times Scale",
+                                                       string.Format("Sets the scale ({0},{1},{2})",
+                                                                     transform.position.x * scaleAmount,
+                                                                     transform.position.y * scaleAmount,
+                                                                     transform.position.z * scaleAmount));
+
+                if (GUILayout.Button(scaleTimesContent, SCALE_BUTTON_HEIGHT)) {
+                    Undo.RecordObject(transform, "Scale set");
+                    transform.localScale *= scaleAmount;
+                }
+            }
+        }
+    }
 }

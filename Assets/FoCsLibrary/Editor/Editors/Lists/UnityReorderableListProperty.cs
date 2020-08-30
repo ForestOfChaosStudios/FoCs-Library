@@ -1,6 +1,13 @@
+#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: UnityReorderableListProperty.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:49 AM
+#endregion
+
+
 using System;
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Editor.PropertyDrawers;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
 using UnityEditor;
@@ -10,900 +17,809 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 using ORD = ForestOfChaosLibrary.Editor.PropertyDrawers.ObjectReferenceDrawer;
 
-namespace ForestOfChaosLibrary.Editor
-{
-	public class UnityReorderableListProperty
-	{
-		public static    int                      GLOBAL_CURRENT_ID;
-		private static   ReorderableList.Defaults s_Defaults;
-		private static   Action                   OnLimitingChange;
-		private static   bool?                    limitingEnabled;
-		private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
-		public           int                      ID;
-		public           ListLimiter              Limiter;
-		private          SerializedProperty       property;
-		public           SerializedPropertyType   SerializedPropertyType = SerializedPropertyType.Generic;
-		public static bool LimitingEnabled
-		{
-			get
-			{
-				if(!limitingEnabled.HasValue)
-					limitingEnabled = EditorPrefs.GetBool("FoCsRLP.LimitingEnabled");
+namespace ForestOfChaosLibrary.Editor {
+    public class UnityReorderableListProperty {
+        public static    int                      GLOBAL_CURRENT_ID;
+        private static   ReorderableList.Defaults s_Defaults;
+        private static   Action                   OnLimitingChange;
+        private static   bool?                    limitingEnabled;
+        private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
+        public           int                      ID;
+        public           ListLimiter              Limiter;
+        private          SerializedProperty       property;
+        public           SerializedPropertyType   SerializedPropertyType = SerializedPropertyType.Generic;
 
-				return limitingEnabled.Value;
-			}
-			set
-			{
-				limitingEnabled = value;
-				EditorPrefs.SetBool("FoCsRLP.LimitingEnabled", value);
-				OnLimitingChange.Trigger();
-			}
-		}
-		public        ReorderableList          List       { get; private set; }
-		public        AnimBool                 IsExpanded { get; set; }
-		public static ReorderableList.Defaults Defaults   => s_Defaults ?? (s_Defaults = new ReorderableList.Defaults());
-		public SerializedProperty Property
-		{
-			get { return property; }
-			set
-			{
-				property                = value;
-				List.serializedProperty = property;
-			}
-		}
+        public static bool LimitingEnabled {
+            get {
+                if (!limitingEnabled.HasValue)
+                    limitingEnabled = EditorPrefs.GetBool("FoCsRLP.LimitingEnabled");
 
-		private UnityReorderableListProperty()
-		{
-			ID = GLOBAL_CURRENT_ID;
-			++GLOBAL_CURRENT_ID;
-		}
+                return limitingEnabled.Value;
+            }
+            set {
+                limitingEnabled = value;
+                EditorPrefs.SetBool("FoCsRLP.LimitingEnabled", value);
+                OnLimitingChange.Trigger();
+            }
+        }
 
-		public UnityReorderableListProperty(SerializedProperty property): this()
-		{
-			this.property = property;
-			InitList();
-		}
+        public static ReorderableList.Defaults Defaults => s_Defaults ?? (s_Defaults = new ReorderableList.Defaults());
 
-		public UnityReorderableListProperty(SerializedProperty property, bool dragable, bool displayHeader = false, bool displayAdd = true, bool displayRemove = true): this()
-		{
-			this.property = property;
-			InitList(dragable, displayHeader, displayAdd, displayRemove);
-		}
+        public ReorderableList List { get; private set; }
 
-		~UnityReorderableListProperty()
-		{
-			property         =  null;
-			List             =  null;
-			OnLimitingChange -= ChangeLimiting;
-		}
+        public AnimBool IsExpanded { get; set; }
 
-		private void ChangeLimiting()
-		{
-			Limiter = null;
-		}
+        public SerializedProperty Property {
+            get => property;
+            set {
+                property                = value;
+                List.serializedProperty = property;
+            }
+        }
 
-		private void InitList(bool dragable = true, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true)
-		{
-			IsExpanded                 =  new AnimBool(property.isExpanded) {speed = 0.7f};
-			OnLimitingChange           += ChangeLimiting;
-			List                       =  new ReorderableList(Property.serializedObject, Property, dragable, displayHeader, displayAdd, displayRemove);
-			List.drawHeaderCallback    =  OnListDrawHeaderCallback;
-			List.onCanRemoveCallback   =  OnListOnCanRemoveCallback;
-			List.drawElementCallback   =  DrawElement;
-			List.elementHeightCallback =  OnListElementHeightCallback;
-			//TODO Implement limited view of lists, eg only show index 50-100, and buttons to move limits
-			List.drawFooterCallback    = OnListDrawFooterCallback;
-			List.showDefaultBackground = true;
+        private UnityReorderableListProperty() {
+            ID = GLOBAL_CURRENT_ID;
+            ++GLOBAL_CURRENT_ID;
+        }
 
-			if(!Property.serializedObject.isEditingMultipleObjects)
-			{
-				SetSerializedPropertyType();
-			}
+        public UnityReorderableListProperty(SerializedProperty property): this() {
+            this.property = property;
+            InitList();
+        }
 
-			CheckLimiter();
-		}
+        public UnityReorderableListProperty(SerializedProperty property, bool dragable, bool displayHeader = false, bool displayAdd = true, bool displayRemove = true): this() {
+            this.property = property;
+            InitList(dragable, displayHeader, displayAdd, displayRemove);
+        }
 
-		public void DrawHeader()
-		{
-			DrawHeader(GUILayoutUtility.GetRect(0.0f, List.headerHeight, GUILayout.ExpandWidth(true)));
-		}
+        ~UnityReorderableListProperty() {
+            property         =  null;
+            List             =  null;
+            OnLimitingChange -= ChangeLimiting;
+        }
 
-		public void DrawHeader(Rect headerRect)
-		{
-			Defaults.DrawHeaderBackground(headerRect);
-			headerRect.xMin   += 6f;
-			headerRect.xMax   -= 6f;
-			headerRect.height -= 2f;
-			++headerRect.y;
+        public static implicit operator UnityReorderableListProperty(SerializedProperty input) => new UnityReorderableListProperty(input);
 
-			if(List.drawHeaderCallback != null)
-				List.drawHeaderCallback(headerRect);
+        public static implicit operator SerializedProperty(UnityReorderableListProperty input) => input.Property;
 
-			if(SerializedPropertyType != SerializedPropertyType.ObjectReference)
-				return;
+        private void ChangeLimiting() {
+            Limiter = null;
+        }
 
-			if(property.arrayElementType.Contains("PPtr<"))
-			{
-				var @event = Event.current;
+        private void InitList(bool dragable = true, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true) {
+            IsExpanded                 =  new AnimBool(property.isExpanded) {speed = 0.7f};
+            OnLimitingChange           += ChangeLimiting;
+            List                       =  new ReorderableList(Property.serializedObject, Property, dragable, displayHeader, displayAdd, displayRemove);
+            List.drawHeaderCallback    =  OnListDrawHeaderCallback;
+            List.onCanRemoveCallback   =  OnListOnCanRemoveCallback;
+            List.drawElementCallback   =  DrawElement;
+            List.elementHeightCallback =  OnListElementHeightCallback;
+            //TODO Implement limited view of lists, eg only show index 50-100, and buttons to move limits
+            List.drawFooterCallback    = OnListDrawFooterCallback;
+            List.showDefaultBackground = true;
 
-				if(headerRect.Contains(@event.mousePosition))
-				{
-					if((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform))
-					{
-						DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+            if (!Property.serializedObject.isEditingMultipleObjects)
+                SetSerializedPropertyType();
 
-						if(@event.type == EventType.DragPerform)
-						{
-							DoDropAdd();
-							DragAndDrop.AcceptDrag();
-						}
+            CheckLimiter();
+        }
 
-						@event.Use();
-					}
-				}
-			}
-		}
+        public void DrawHeader() {
+            DrawHeader(GUILayoutUtility.GetRect(0.0f, List.headerHeight, GUILayout.ExpandWidth(true)));
+        }
 
-		public void HandleDrawing()
-		{
-			using(Disposables.VerticalScope())
-			{
-				CheckLimiter();
-				IsExpanded.target = Property.isExpanded;
-				var headerHeight = List.headerHeight;
-				var totalHeight = GetTotalHeight();
-				var fadeOutOfHeader = Mathf.Lerp(0, totalHeight + totalHeight, IsExpanded.faded) > headerHeight;
+        public void DrawHeader(Rect headerRect) {
+            Defaults.DrawHeaderBackground(headerRect);
+            headerRect.xMin   += 6f;
+            headerRect.xMax   -= 6f;
+            headerRect.height -= 2f;
+            ++headerRect.y;
 
-				if(fadeOutOfHeader)
-				{
-					using(var fade = Disposables.FadeGroupScope(IsExpanded.faded))
-					{
-						if(fade.visible)
-							List.DoLayoutList();
-					}
-				}
-				else
-					DrawHeader();
+            if (List.drawHeaderCallback != null)
+                List.drawHeaderCallback(headerRect);
 
-			}
-		}
+            if (SerializedPropertyType != SerializedPropertyType.ObjectReference)
+                return;
 
-		private bool OnlyShowHeader() => (!IsExpanded.value && !IsExpanded.isAnimating) || (!IsExpanded.value && IsExpanded.isAnimating);
+            if (property.arrayElementType.Contains("PPtr<")) {
+                var @event = Event.current;
 
-		public void HandleDrawing(Rect rect)
-		{
-			CheckLimiter();
-			IsExpanded.target = Property.isExpanded;
+                if (headerRect.Contains(@event.mousePosition)) {
+                    if ((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform)) {
+                        DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
-			if(Property.isExpanded)
-				List.DoList(rect.Edit(RectEdit.SetHeight(Mathf.Lerp(0, rect.height, IsExpanded.faded))));
-			else
-				DrawHeader(rect);
-		}
+                        if (@event.type == EventType.DragPerform) {
+                            DoDropAdd();
+                            DragAndDrop.AcceptDrag();
+                        }
 
-		private void SetSerializedPropertyType()
-		{
-			if(property.arraySize == 0)
-			{
-				property.InsertArrayElementAtIndex(0);
-				SerializedPropertyType = property.GetArrayElementAtIndex(0).propertyType;
-				property.DeleteArrayElementAtIndex(0);
-			}
-			else
-				SerializedPropertyType = property.GetArrayElementAtIndex(0).propertyType;
-		}
+                        @event.Use();
+                    }
+                }
+            }
+        }
 
-		private void CheckLimiter()
-		{
-			if(LimitingEnabled)
-			{
-				if(Limiter == null)
-					Limiter = ListLimiter.GetLimiter(this);
-				else
-					Limiter.UpdateRange();
-			}
-		}
+        public void HandleDrawing() {
+            using (Disposables.VerticalScope()) {
+                CheckLimiter();
+                IsExpanded.target = Property.isExpanded;
+                var headerHeight    = List.headerHeight;
+                var totalHeight     = GetTotalHeight();
+                var fadeOutOfHeader = Mathf.Lerp(0, totalHeight + totalHeight, IsExpanded.faded) > headerHeight;
 
-		private void DrawElement(Rect rect, int index, bool active, bool focused)
-		{
-			if(Limiter == null)
-				DoDrawElement(rect, index);
-			else if(Limiter.ShowElement(index))
-				DoDrawElement(rect, index);
-			else
-				List.elementHeight = 0;
-		}
+                if (fadeOutOfHeader) {
+                    using (var fade = Disposables.FadeGroupScope(IsExpanded.faded)) {
+                        if (fade.visible)
+                            List.DoLayoutList();
+                    }
+                }
+                else
+                    DrawHeader();
+            }
+        }
 
-		private void DoDrawElement(Rect rect, int index)
-		{
-			var element     = List.serializedProperty.GetArrayElementAtIndex(index);
-			var indentLevel = -1;
+        private bool OnlyShowHeader() => (!IsExpanded.value && !IsExpanded.isAnimating) || (!IsExpanded.value && IsExpanded.isAnimating);
 
-			if(element.propertyType == SerializedPropertyType.ObjectReference)
-				indentLevel = 0;
+        public void HandleDrawing(Rect rect) {
+            CheckLimiter();
+            IsExpanded.target = Property.isExpanded;
 
-			using(Disposables.Indent(indentLevel))
-			{
-				if(element.propertyType == SerializedPropertyType.ObjectReference)
-					HandleObjectReference(rect, List.serializedProperty.GetArrayElementAtIndex(index));
-				else
-				{
-					List.elementHeight =  rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(element, element.isExpanded));
-					rect.y             += 1;
-					FoCsGUI.PropertyField(rect, element, new GUIContent(element.displayName), true);
-				}
-			}
-		}
+            if (Property.isExpanded)
+                List.DoList(rect.Edit(RectEdit.SetHeight(Mathf.Lerp(0, rect.height, IsExpanded.faded))));
+            else
+                DrawHeader(rect);
+        }
 
-		private void HandleObjectReference(Rect rect, SerializedProperty property)
-		{
-			var drawer                       = GetObjectDrawer(property);
-			var GuiCont                      = new GUIContent(property.displayName);
-			List.elementHeight = rect.height = ObjectReferenceElementHeight(property, GuiCont);
-			drawer.OnGUI(rect, property, GuiCont);
-		}
+        private void SetSerializedPropertyType() {
+            if (property.arraySize == 0) {
+                property.InsertArrayElementAtIndex(0);
+                SerializedPropertyType = property.GetArrayElementAtIndex(0).propertyType;
+                property.DeleteArrayElementAtIndex(0);
+            }
+            else
+                SerializedPropertyType = property.GetArrayElementAtIndex(0).propertyType;
+        }
 
-		private float ObjectReferenceElementHeight(SerializedProperty property) => ObjectReferenceElementHeight(property, new GUIContent(property.displayName));
+        private void CheckLimiter() {
+            if (LimitingEnabled) {
+                if (Limiter == null)
+                    Limiter = ListLimiter.GetLimiter(this);
+                else
+                    Limiter.UpdateRange();
+            }
+        }
 
-		private float ObjectReferenceElementHeight(SerializedProperty property, GUIContent content)
-		{
-			var drawer = GetObjectDrawer(property);
+        private void DrawElement(Rect rect, int index, bool active, bool focused) {
+            if (Limiter == null)
+                DoDrawElement(rect, index);
+            else if (Limiter.ShowElement(index))
+                DoDrawElement(rect, index);
+            else
+                List.elementHeight = 0;
+        }
 
-			return drawer.GetPropertyHeight(property, content);
-		}
+        private void DoDrawElement(Rect rect, int index) {
+            var element     = List.serializedProperty.GetArrayElementAtIndex(index);
+            var indentLevel = -1;
 
-		public static Object[] DropZone(Rect rect)
-		{
-			var eventType  = Event.current.type;
-			var isAccepted = false;
+            if (element.propertyType == SerializedPropertyType.ObjectReference)
+                indentLevel = 0;
 
-			if(rect.Contains(Event.current.mousePosition))
-			{
-				if((eventType == EventType.DragUpdated) || (eventType == EventType.DragPerform))
-				{
-					DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+            using (Disposables.Indent(indentLevel)) {
+                if (element.propertyType == SerializedPropertyType.ObjectReference)
+                    HandleObjectReference(rect, List.serializedProperty.GetArrayElementAtIndex(index));
+                else {
+                    List.elementHeight =  rect.height = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(element, element.isExpanded));
+                    rect.y             += 1;
+                    FoCsGUI.PropertyField(rect, element, new GUIContent(element.displayName), true);
+                }
+            }
+        }
 
-					if(eventType == EventType.DragPerform)
-					{
-						DragAndDrop.AcceptDrag();
-						isAccepted = true;
-					}
+        private void HandleObjectReference(Rect rect, SerializedProperty property) {
+            var drawer                       = GetObjectDrawer(property);
+            var GuiCont                      = new GUIContent(property.displayName);
+            List.elementHeight = rect.height = ObjectReferenceElementHeight(property, GuiCont);
+            drawer.OnGUI(rect, property, GuiCont);
+        }
 
-					Event.current.Use();
-				}
-			}
+        private float ObjectReferenceElementHeight(SerializedProperty property) => ObjectReferenceElementHeight(property, new GUIContent(property.displayName));
 
-			return isAccepted? DragAndDrop.objectReferences : null;
-		}
+        private float ObjectReferenceElementHeight(SerializedProperty property, GUIContent content) {
+            var drawer = GetObjectDrawer(property);
 
-		private void DoDropAdd()
-		{
-			for(var i = 0; i < DragAndDrop.objectReferences.Length; i++)
-			{
-				var obj      = DragAndDrop.objectReferences[i];
-				var typeName = obj.GetType().Name;
-				var length   = property.arraySize;
-				property.InsertArrayElementAtIndex(length);
-				var prop = property.GetArrayElementAtIndex(length);
-				prop.objectReferenceValue = obj;
+            return drawer.GetPropertyHeight(property, content);
+        }
 
-				if(prop.objectReferenceValue != null)
-					continue;
+        public static Object[] DropZone(Rect rect) {
+            var eventType  = Event.current.type;
+            var isAccepted = false;
 
-				if(prop.type.Contains(typeName))
-				{
-					prop.objectReferenceValue = obj;
+            if (rect.Contains(Event.current.mousePosition)) {
+                if ((eventType == EventType.DragUpdated) || (eventType == EventType.DragPerform)) {
+                    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
-					if(prop.objectReferenceValue != null)
-						continue;
-				}
+                    if (eventType == EventType.DragPerform) {
+                        DragAndDrop.AcceptDrag();
+                        isAccepted = true;
+                    }
 
-				var transform  = obj as Transform;
-				var gameObject = obj as GameObject;
+                    Event.current.Use();
+                }
+            }
 
-				if(transform)
-				{
-					switch(typeName)
-					{
-						case "Transform":
-							prop.objectReferenceValue = transform;
+            return isAccepted? DragAndDrop.objectReferences : null;
+        }
 
-							if(prop.objectReferenceValue != null)
-								continue;
-							else
-								break;
-						case "GameObject":
-							prop.objectReferenceValue = transform.gameObject;
+        private void DoDropAdd() {
+            for (var i = 0; i < DragAndDrop.objectReferences.Length; i++) {
+                var obj      = DragAndDrop.objectReferences[i];
+                var typeName = obj.GetType().Name;
+                var length   = property.arraySize;
+                property.InsertArrayElementAtIndex(length);
+                var prop = property.GetArrayElementAtIndex(length);
+                prop.objectReferenceValue = obj;
 
-							if(prop.objectReferenceValue != null)
-								continue;
-							else
-								break;
-					}
+                if (prop.objectReferenceValue != null)
+                    continue;
 
-					gameObject = transform.gameObject;
-				}
-				else if(gameObject)
-				{
-					switch(typeName)
-					{
-						case "Transform":
-							prop.objectReferenceValue = gameObject.transform;
+                if (prop.type.Contains(typeName)) {
+                    prop.objectReferenceValue = obj;
 
-							if(prop.objectReferenceValue != null)
-								continue;
-							else
-								break;
-						case "GameObject":
-							prop.objectReferenceValue = gameObject;
+                    if (prop.objectReferenceValue != null)
+                        continue;
+                }
 
-							if(prop.objectReferenceValue != null)
-								continue;
-							else
-								break;
-					}
-				}
+                var transform  = obj as Transform;
+                var gameObject = obj as GameObject;
 
-				if(gameObject)
-				{
-					foreach(var component in gameObject.GetComponents<Component>())
-					{
-						if(!prop.type.Contains(component.GetType().Name))
-						{
-							if(prop.objectReferenceValue != null)
-								continue;
-						}
+                if (transform) {
+                    switch (typeName) {
+                        case "Transform":
+                            prop.objectReferenceValue = transform;
 
-						prop.objectReferenceValue = component;
+                            if (prop.objectReferenceValue != null)
+                                continue;
+                            else
+                                break;
+                        case "GameObject":
+                            prop.objectReferenceValue = transform.gameObject;
 
-						break;
-					}
-				}
+                            if (prop.objectReferenceValue != null)
+                                continue;
+                            else
+                                break;
+                    }
 
-				if(prop.objectReferenceValue == null)
-					property.DeleteArrayElementAtIndex(property.arraySize - 1);
-			}
+                    gameObject = transform.gameObject;
+                }
+                else if (gameObject) {
+                    switch (typeName) {
+                        case "Transform":
+                            prop.objectReferenceValue = gameObject.transform;
 
-			GUI.changed = true;
-		}
+                            if (prop.objectReferenceValue != null)
+                                continue;
+                            else
+                                break;
+                        case "GameObject":
+                            prop.objectReferenceValue = gameObject;
 
-		public float GetTotalHeight()
-		{
-			if(!Property.isExpanded)
-				return List.headerHeight + FoCsGUI.Padding;
+                            if (prop.objectReferenceValue != null)
+                                continue;
+                            else
+                                break;
+                    }
+                }
 
-			var height = List.headerHeight + List.footerHeight + 4 + FoCsGUI.Padding;
+                if (gameObject) {
+                    foreach (var component in gameObject.GetComponents<Component>()) {
+                        if (!prop.type.Contains(component.GetType().Name)) {
+                            if (prop.objectReferenceValue != null)
+                                continue;
+                        }
 
-			if(Property.isExpanded && (List.serializedProperty.arraySize == 0))
-				return List.elementHeight + height;
+                        prop.objectReferenceValue = component;
 
-			CheckLimiter();
+                        break;
+                    }
+                }
 
-			if(Limiter == null)
-			{
-				for(var i = 0; i < List.serializedProperty.arraySize; i++)
-					height += OnListElementHeightCallback(i);
-			}
-			else
-			{
-				for(var i = 0; i < List.serializedProperty.arraySize; i++)
-				{
-					if(Limiter.ShowElement(i))
-						height += OnListElementHeightCallback(i);
-				}
-			}
+                if (prop.objectReferenceValue == null)
+                    property.DeleteArrayElementAtIndex(property.arraySize - 1);
+            }
 
-			return height;
-		}
+            GUI.changed = true;
+        }
 
-		public static implicit operator UnityReorderableListProperty(SerializedProperty input) => new UnityReorderableListProperty(input);
-		public static implicit operator SerializedProperty(UnityReorderableListProperty input) => input.Property;
+        public float GetTotalHeight() {
+            if (!Property.isExpanded)
+                return List.headerHeight + FoCsGUI.Padding;
+
+            var height = List.headerHeight + List.footerHeight + 4 + FoCsGUI.Padding;
+
+            if (Property.isExpanded && (List.serializedProperty.arraySize == 0))
+                return List.elementHeight + height;
+
+            CheckLimiter();
+
+            if (Limiter == null) {
+                for (var i = 0; i < List.serializedProperty.arraySize; i++)
+                    height += OnListElementHeightCallback(i);
+            }
+            else {
+                for (var i = 0; i < List.serializedProperty.arraySize; i++) {
+                    if (Limiter.ShowElement(i))
+                        height += OnListElementHeightCallback(i);
+                }
+            }
+
+            return height;
+        }
+
 
 #region Storage
-		private ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property)
-		{
-			var id = string.Format("{0}-{1}", property.propertyPath, property.name);
-			ObjectReferenceDrawer objDraw;
+        private ORD GetObjectDrawer(SerializedProperty property) {
+            var id = string.Format("{0}-{1}", property.propertyPath, property.name);
+            ORD objDraw;
 
-			if(objectDrawers.TryGetValue(id, out objDraw))
-				return objDraw;
+            if (objectDrawers.TryGetValue(id, out objDraw))
+                return objDraw;
 
-			objDraw = new ObjectReferenceDrawer();
-			objectDrawers.Add(id, objDraw);
+            objDraw = new ORD();
+            objectDrawers.Add(id, objDraw);
 
-			return objDraw;
-		}
+            return objDraw;
+        }
 #endregion
 
-		public static class ListStyles
-		{
-			public static readonly GUIContent IconToolbarPlus     = EditorGUIUtility.IconContent("Toolbar Plus",      "|Add to list");
-			public static readonly GUIContent IconToolbar         = EditorGUIUtility.IconContent("Toolbar Plus",      "|Add to list");
-			public static readonly GUIContent IconToolbarPlusMore = EditorGUIUtility.IconContent("Toolbar Plus More", "Choose to add to list");
-			public static readonly GUIContent IconToolbarMinus    = EditorGUIUtility.IconContent("Toolbar Minus",     "Remove selection from list");
-			private static         GUIStyle   miniLabel;
-			public static readonly GUIStyle   DraggingHandle    = new GUIStyle("RL DragHandle");
-			public static readonly GUIStyle   HeaderBackground  = new GUIStyle("RL Header");
-			public static readonly GUIStyle   FooterBackground  = new GUIStyle("RL Footer");
-			public static readonly GUIStyle   BoxBackground     = new GUIStyle("RL Background");
-			public static readonly GUIStyle   PreButton         = new GUIStyle("RL FooterButton");
-			public static readonly GUIStyle   ElementBackground = new GUIStyle("RL Element");
-			public static GUIStyle MiniLabel
-			{
-				get
-				{
-					if(miniLabel != null)
-						return miniLabel;
 
-					miniLabel           = new GUIStyle(EditorStyles.miniLabel);
-					miniLabel.alignment = TextAnchor.UpperCenter;
+        public static class ListStyles {
+            public static readonly GUIContent IconToolbarPlus     = EditorGUIUtility.IconContent("Toolbar Plus",      "|Add to list");
+            public static readonly GUIContent IconToolbar         = EditorGUIUtility.IconContent("Toolbar Plus",      "|Add to list");
+            public static readonly GUIContent IconToolbarPlusMore = EditorGUIUtility.IconContent("Toolbar Plus More", "Choose to add to list");
+            public static readonly GUIContent IconToolbarMinus    = EditorGUIUtility.IconContent("Toolbar Minus",     "Remove selection from list");
+            private static         GUIStyle   miniLabel;
+            public static readonly GUIStyle   DraggingHandle    = new GUIStyle("RL DragHandle");
+            public static readonly GUIStyle   HeaderBackground  = new GUIStyle("RL Header");
+            public static readonly GUIStyle   FooterBackground  = new GUIStyle("RL Footer");
+            public static readonly GUIStyle   BoxBackground     = new GUIStyle("RL Background");
+            public static readonly GUIStyle   PreButton         = new GUIStyle("RL FooterButton");
+            public static readonly GUIStyle   ElementBackground = new GUIStyle("RL Element");
 
-					return miniLabel;
-				}
-			}
-		}
+            public static GUIStyle MiniLabel {
+                get {
+                    if (miniLabel != null)
+                        return miniLabel;
 
-		public class ListLimiter
-		{
-			private static Action                       ChangeCount;
-			private        int                          _max;
-			private        int                          _min;
-			public         UnityReorderableListProperty MyListProperty;
-			private        bool                         Update;
-			private static int _TOTAL_VISIBLE_COUNT
-			{
-				get
-				{
-					var num = Mathf.Clamp(EditorPrefs.GetInt("FoCsRLP._TOTAL_VISIBLE_COUNT"), 0, int.MaxValue);
+                    miniLabel           = new GUIStyle(EditorStyles.miniLabel);
+                    miniLabel.alignment = TextAnchor.UpperCenter;
 
-					if(num == 0)
-						return _TOTAL_VISIBLE_COUNT = 25;
+                    return miniLabel;
+                }
+            }
+        }
 
-					return num;
-				}
-				set { EditorPrefs.SetInt("FoCsRLP._TOTAL_VISIBLE_COUNT", Mathf.Clamp(value, 0, int.MaxValue)); }
-			}
-			public static int TOTAL_VISIBLE_COUNT
-			{
-				get { return _TOTAL_VISIBLE_COUNT; }
-				set
-				{
-					_TOTAL_VISIBLE_COUNT = value;
-					ChangeCount.Trigger();
-				}
-			}
-			private int Count => MyListProperty.Property.arraySize;
-			public int Min
-			{
-				get { return _min; }
-				set { _min = Math.Max(0, value); }
-			}
-			public int Max
-			{
-				get { return _max; }
-				set { _max = Math.Min(Count, value); }
-			}
-			public bool ShowElement(int index) => (index >= Min) && (index < Max);
+        public class ListLimiter {
+            private static Action                       ChangeCount;
+            private        int                          _max;
+            private        int                          _min;
+            public         UnityReorderableListProperty MyListProperty;
+            private        bool                         Update;
 
-			public static ListLimiter GetLimiter(UnityReorderableListProperty listProperty)
-			{
-				if(listProperty.Property.arraySize < TOTAL_VISIBLE_COUNT)
-					return null;
+            private static int _TOTAL_VISIBLE_COUNT {
+                get {
+                    var num = Mathf.Clamp(EditorPrefs.GetInt("FoCsRLP._TOTAL_VISIBLE_COUNT"), 0, int.MaxValue);
 
-				var limiter = new ListLimiter {MyListProperty = listProperty, Min = 0, Max = TOTAL_VISIBLE_COUNT, Update = true};
-				ChangeCount += limiter.UpdateRange;
+                    if (num == 0)
+                        return _TOTAL_VISIBLE_COUNT = 25;
 
-				return limiter;
-			}
+                    return num;
+                }
+                set => EditorPrefs.SetInt("FoCsRLP._TOTAL_VISIBLE_COUNT", Mathf.Clamp(value, 0, int.MaxValue));
+            }
 
-			public bool CanDecrease()
-			{
-				CheckUpdate();
+            public static int TOTAL_VISIBLE_COUNT {
+                get => _TOTAL_VISIBLE_COUNT;
+                set {
+                    _TOTAL_VISIBLE_COUNT = value;
+                    ChangeCount.Trigger();
+                }
+            }
 
-				return _min > 0;
-			}
+            private int Count => MyListProperty.Property.arraySize;
 
-			public bool CanIncrease()
-			{
-				CheckUpdate();
+            public int Min {
+                get => _min;
+                set => _min = Math.Max(0, value);
+            }
 
-				return _max < Count;
-			}
+            public int Max {
+                get => _max;
+                set => _max = Math.Min(Count, value);
+            }
 
-			public void ChangeRange(int amount)
-			{
-				if(amount != 0)
-					CheckUpdate();
+            ~ListLimiter() {
+                ChangeCount -= UpdateRange;
+            }
 
-				var newMin = Min    + amount;
-				var newMax = newMin + TOTAL_VISIBLE_COUNT;
+            public bool ShowElement(int index) => (index >= Min) && (index < Max);
 
-				if((newMax < Count) && (newMin >= 0))
-				{
-					Min = Min + amount;
-					Max = Min + TOTAL_VISIBLE_COUNT;
+            public static ListLimiter GetLimiter(UnityReorderableListProperty listProperty) {
+                if (listProperty.Property.arraySize < TOTAL_VISIBLE_COUNT)
+                    return null;
 
-					return;
-				}
+                var limiter = new ListLimiter {MyListProperty = listProperty, Min = 0, Max = TOTAL_VISIBLE_COUNT, Update = true};
+                ChangeCount += limiter.UpdateRange;
 
-				if(newMax >= Count)
-				{
-					newMax = Count;
-					Min    = newMax - TOTAL_VISIBLE_COUNT;
-					Max    = newMax;
+                return limiter;
+            }
 
-					return;
-				}
+            public bool CanDecrease() {
+                CheckUpdate();
 
-				Min = Min + amount;
-				Max = Min + TOTAL_VISIBLE_COUNT;
-			}
+                return _min > 0;
+            }
 
-			public void ChangeStart()
-			{
-				Min = 0;
-				Max = Min + TOTAL_VISIBLE_COUNT;
-			}
+            public bool CanIncrease() {
+                CheckUpdate();
 
-			public void ChangeEnd()
-			{
-				Max = Count;
-				Min = Max - TOTAL_VISIBLE_COUNT;
-			}
+                return _max < Count;
+            }
 
-			public void UpdateRange()
-			{
-				Update = true;
-			}
+            public void ChangeRange(int amount) {
+                if (amount != 0)
+                    CheckUpdate();
 
-			private void CheckUpdate()
-			{
-				if(Update)
-					ChangeRange(0);
-			}
+                var newMin = Min    + amount;
+                var newMax = newMin + TOTAL_VISIBLE_COUNT;
 
-			~ListLimiter()
-			{
-				ChangeCount -= UpdateRange;
-			}
+                if ((newMax < Count) && (newMin >= 0)) {
+                    Min = Min + amount;
+                    Max = Min + TOTAL_VISIBLE_COUNT;
 
-			/// <inheritdoc />
-			public override string ToString() => string.Format("Min: {0}. Max: {1}", Min, Max);
-		}
+                    return;
+                }
+
+                if (newMax >= Count) {
+                    newMax = Count;
+                    Min    = newMax - TOTAL_VISIBLE_COUNT;
+                    Max    = newMax;
+
+                    return;
+                }
+
+                Min = Min + amount;
+                Max = Min + TOTAL_VISIBLE_COUNT;
+            }
+
+            public void ChangeStart() {
+                Min = 0;
+                Max = Min + TOTAL_VISIBLE_COUNT;
+            }
+
+            public void ChangeEnd() {
+                Max = Count;
+                Min = Max - TOTAL_VISIBLE_COUNT;
+            }
+
+            public void UpdateRange() {
+                Update = true;
+            }
+
+            private void CheckUpdate() {
+                if (Update)
+                    ChangeRange(0);
+            }
+
+            /// <inheritdoc />
+            public override string ToString() => string.Format("Min: {0}. Max: {1}", Min, Max);
+        }
+
 
 #region Delegate Methods
-		private float OnListElementHeightCallback(int index)
-		{
-			var prop = List.serializedProperty.GetArrayElementAtIndex(index);
+        private float OnListElementHeightCallback(int index) {
+            var prop = List.serializedProperty.GetArrayElementAtIndex(index);
 
-			if(Limiter == null)
-			{
-				if(List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
-					return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, ObjectReferenceElementHeight(prop)) + 4.0f;
+            if (Limiter == null) {
+                if (List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
+                    return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, ObjectReferenceElementHeight(prop)) + 4.0f;
 
-				return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
-			}
+                return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
+            }
 
-			if(Limiter.ShowElement(index))
-			{
-				if(List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
-					return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, ObjectReferenceElementHeight(prop)) + 4.0f;
+            if (Limiter.ShowElement(index)) {
+                if (List.serializedProperty.GetArrayElementAtIndex(index).propertyType == SerializedPropertyType.ObjectReference)
+                    return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, ObjectReferenceElementHeight(prop)) + 4.0f;
 
-				return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
-			}
+                return List.elementHeight = Mathf.Max(EditorGUIUtility.singleLineHeight, EditorGUI.GetPropertyHeight(prop, prop.isExpanded)) + 4.0f;
+            }
 
-			return 0;
-		}
+            return 0;
+        }
 
-		private bool OnListOnCanRemoveCallback(ReorderableList list) => List.count > 0;
+        private bool OnListOnCanRemoveCallback(ReorderableList list) => List.count > 0;
 
-		private void OnListDrawHeaderCallback(Rect rect)
-		{
-			var xMax = rect.xMax;
-			var x    = xMax - 8f;
+        private void OnListDrawHeaderCallback(Rect rect) {
+            var xMax = rect.xMax;
+            var x    = xMax - 8f;
 
-			if(List.displayAdd)
-				x -= 25f;
+            if (List.displayAdd)
+                x -= 25f;
 
-			if(List.displayRemove)
-				x -= 25f;
+            if (List.displayRemove)
+                x -= 25f;
 
-			using(Disposables.IndentSet(0))
-			{
-				var style = property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none;
-				FoCsGUI.Label(rect, string.Format("{0} [{1}]", property.displayName, property.arraySize), style);
-				property.isExpanded = FoCsGUI.Foldout(rect.Edit(RectEdit.SubtractWidth(64)), property.isExpanded);
-			}
+            using (Disposables.IndentSet(0)) {
+                var style = property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none;
+                FoCsGUI.Label(rect, string.Format("{0} [{1}]", property.displayName, property.arraySize), style);
+                property.isExpanded = FoCsGUI.Foldout(rect.Edit(RectEdit.SubtractWidth(64)), property.isExpanded);
+            }
 
-			using(Disposables.DisabledScope(!property.isExpanded))
-			{
-				var rect2            = new Rect(x, rect.y, xMax - x,   rect.height);
-				var addButtonRect    = new Rect(xMax - 29f      - 25f, rect2.y - 3f, 25f, 13f);
-				var removeButtonRect = new Rect(xMax            - 29f, rect2.y - 3f, 25f, 13f);
+            using (Disposables.DisabledScope(!property.isExpanded)) {
+                var rect2            = new Rect(x, rect.y, xMax - x,   rect.height);
+                var addButtonRect    = new Rect(xMax - 29f      - 25f, rect2.y - 3f, 25f, 13f);
+                var removeButtonRect = new Rect(xMax            - 29f, rect2.y - 3f, 25f, 13f);
 
-				if(List.displayAdd)
-					AddButtonsGUI(addButtonRect.Edit(RectEdit.AddY(3)));
+                if (List.displayAdd)
+                    AddButtonsGUI(addButtonRect.Edit(RectEdit.AddY(3)));
 
-				if(List.displayRemove)
-					RemoveButtonsGUI(removeButtonRect.Edit(RectEdit.AddY(3)));
-			}
-		}
+                if (List.displayRemove)
+                    RemoveButtonsGUI(removeButtonRect.Edit(RectEdit.AddY(3)));
+            }
+        }
 
-		private void OnListDrawFooterCallback(Rect rowRect)
-		{
-			var xMax = rowRect.xMax;
-			var x    = xMax - 8f;
+        private void OnListDrawFooterCallback(Rect rowRect) {
+            var xMax = rowRect.xMax;
+            var x    = xMax - 8f;
 
-			if(List.displayAdd)
-				x -= 25f;
+            if (List.displayAdd)
+                x -= 25f;
 
-			if(List.displayRemove)
-				x -= 25f;
+            if (List.displayRemove)
+                x -= 25f;
 
-			if(Limiter != null)
-				x -= 25f * 6;
+            if (Limiter != null)
+                x -= 25f * 6;
 
-			var rect             = new Rect(x, rowRect.y, xMax - x,   rowRect.height);
-			var addButtonRect    = new Rect(xMax - 29f         - 25f, rect.y - 3f, 25f, 13f);
-			var removeButtonRect = new Rect(xMax               - 29f, rect.y - 3f, 25f, 13f);
+            var rect             = new Rect(x, rowRect.y, xMax - x,   rowRect.height);
+            var addButtonRect    = new Rect(xMax - 29f         - 25f, rect.y - 3f, 25f, 13f);
+            var removeButtonRect = new Rect(xMax               - 29f, rect.y - 3f, 25f, 13f);
 
-			if(Event.current.type == EventType.Repaint)
-				ListStyles.FooterBackground.Draw(rect, false, false, false, false);
+            if (Event.current.type == EventType.Repaint)
+                ListStyles.FooterBackground.Draw(rect, false, false, false, false);
 
-			if(Limiter != null)
-				FooterLimiterGUI(rect);
+            if (Limiter != null)
+                FooterLimiterGUI(rect);
 
-			if(List.displayAdd)
-				AddButtonsGUI(addButtonRect);
+            if (List.displayAdd)
+                AddButtonsGUI(addButtonRect);
 
-			if(List.displayRemove)
-				RemoveButtonsGUI(removeButtonRect);
-		}
+            if (List.displayRemove)
+                RemoveButtonsGUI(removeButtonRect);
+        }
 
-		private void FooterLimiterGUI(Rect rect)
-		{
-			using(Disposables.IndentZeroed())
-			{
-				var minAmount  = 1;
-				var maxAmount  = 5;
-				var upArrow    = new GUIContent("", string.Format("Increase Displayed Index {0}", minAmount));
-				var up2Arrow   = new GUIContent("", string.Format("Increase Displayed Index {0}", maxAmount));
-				var downArrow  = new GUIContent("", string.Format("Decrease Displayed Index {0}", minAmount));
-				var down2Arrow = new GUIContent("", string.Format("Decrease Displayed Index {0}", maxAmount));
-				var horScope   = Disposables.RectHorizontalScope(11, rect.Edit(RectEdit.ChangeX(5), RectEdit.AddWidth(-16)));
+        private void FooterLimiterGUI(Rect rect) {
+            using (Disposables.IndentZeroed()) {
+                var minAmount  = 1;
+                var maxAmount  = 5;
+                var upArrow    = new GUIContent("", string.Format("Increase Displayed Index {0}", minAmount));
+                var up2Arrow   = new GUIContent("", string.Format("Increase Displayed Index {0}", maxAmount));
+                var downArrow  = new GUIContent("", string.Format("Decrease Displayed Index {0}", minAmount));
+                var down2Arrow = new GUIContent("", string.Format("Decrease Displayed Index {0}", maxAmount));
+                var horScope   = Disposables.RectHorizontalScope(11, rect.Edit(RectEdit.ChangeX(5), RectEdit.AddWidth(-16)));
 
-				using(Disposables.DisabledScope(!Limiter.CanDecrease()))
-				{
-					if(FoCsGUI.Button(horScope.GetNext(), upArrow, FoCsGUI.Styles.UpArrow))
-						Limiter.ChangeRange(-minAmount);
+                using (Disposables.DisabledScope(!Limiter.CanDecrease())) {
+                    if (FoCsGUI.Button(horScope.GetNext(), upArrow, FoCsGUI.Styles.UpArrow))
+                        Limiter.ChangeRange(-minAmount);
 
-					if(FoCsGUI.Button(horScope.GetNext(), up2Arrow, FoCsGUI.Styles.Up2Arrow))
-						Limiter.ChangeRange(-maxAmount);
-				}
+                    if (FoCsGUI.Button(horScope.GetNext(), up2Arrow, FoCsGUI.Styles.Up2Arrow))
+                        Limiter.ChangeRange(-maxAmount);
+                }
 
-				var minString  = (Limiter.Min + 1).ToString();
-				var maxString  = Limiter.Max.ToString();
-				var shortLabel = string.Format("{0}: {1}-{2}",                      minString.Length + maxString.Length < 5? "Index" : "I", minString, maxString);
-				var toolTip    = string.Format("Viewable Indices: Min:{0} Max:{1}", minString,                                              maxString);
-				FoCsGUI.Label(horScope.GetNext(5, RectEdit.ChangeY(-3)), new GUIContent(shortLabel, toolTip));
+                var minString  = (Limiter.Min + 1).ToString();
+                var maxString  = Limiter.Max.ToString();
+                var shortLabel = string.Format("{0}: {1}-{2}",                      minString.Length + maxString.Length < 5? "Index" : "I", minString, maxString);
+                var toolTip    = string.Format("Viewable Indices: Min:{0} Max:{1}", minString,                                              maxString);
+                FoCsGUI.Label(horScope.GetNext(5, RectEdit.ChangeY(-3)), new GUIContent(shortLabel, toolTip));
 
-				using(Disposables.DisabledScope(!Limiter.CanIncrease()))
-				{
-					if(FoCsGUI.Button(horScope.GetNext(), downArrow, FoCsGUI.Styles.DownArrow))
-						Limiter.ChangeRange(minAmount);
+                using (Disposables.DisabledScope(!Limiter.CanIncrease())) {
+                    if (FoCsGUI.Button(horScope.GetNext(), downArrow, FoCsGUI.Styles.DownArrow))
+                        Limiter.ChangeRange(minAmount);
 
-					if(FoCsGUI.Button(horScope.GetNext(), down2Arrow, FoCsGUI.Styles.Down2Arrow))
-						Limiter.ChangeRange(maxAmount);
-				}
-			}
-		}
+                    if (FoCsGUI.Button(horScope.GetNext(), down2Arrow, FoCsGUI.Styles.Down2Arrow))
+                        Limiter.ChangeRange(maxAmount);
+                }
+            }
+        }
 
-		private void AddButtonsGUI(Rect addButtonRect)
-		{
-			using(Disposables.DisabledScope((List.onCanAddCallback != null) && !List.onCanAddCallback(List)))
-			{
-				var @event = Event.current;
+        private void AddButtonsGUI(Rect addButtonRect) {
+            using (Disposables.DisabledScope((List.onCanAddCallback != null) && !List.onCanAddCallback(List))) {
+                var @event = Event.current;
 
-				if(SerializedPropertyType == SerializedPropertyType.ObjectReference)
-				{
-					if(@event.type == EventType.Repaint)
-					{
-						if(!DragAndDrop.objectReferences.IsNullOrEmpty())
-						{
-							using(Disposables.ColorChanger(Color.green))
-								FoCsGUI.Styles.Unity.Box.Draw(addButtonRect, false, false, false, false);
-						}
-					}
+                if (SerializedPropertyType == SerializedPropertyType.ObjectReference) {
+                    if (@event.type == EventType.Repaint) {
+                        if (!DragAndDrop.objectReferences.IsNullOrEmpty()) {
+                            using (Disposables.ColorChanger(Color.green))
+                                FoCsGUI.Styles.Unity.Box.Draw(addButtonRect, false, false, false, false);
+                        }
+                    }
 
-					if(addButtonRect.Contains(@event.mousePosition))
-					{
-						if((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform))
-						{
-							DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                    if (addButtonRect.Contains(@event.mousePosition)) {
+                        if ((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform)) {
+                            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
-							if(@event.type == EventType.DragPerform)
-							{
-								DoDropAdd();
-								DragAndDrop.AcceptDrag();
-							}
+                            if (@event.type == EventType.DragPerform) {
+                                DoDropAdd();
+                                DragAndDrop.AcceptDrag();
+                            }
 
-							@event.Use();
-						}
-					}
-				}
+                            @event.Use();
+                        }
+                    }
+                }
 
-				if(!FoCsGUI.Button(addButtonRect, List.onAddDropdownCallback == null? ListStyles.IconToolbarPlus : ListStyles.IconToolbarPlusMore, ListStyles.PreButton))
-					return;
+                if (!FoCsGUI.Button(addButtonRect, List.onAddDropdownCallback == null? ListStyles.IconToolbarPlus : ListStyles.IconToolbarPlusMore, ListStyles.PreButton))
+                    return;
 
-				if(List.onAddDropdownCallback != null)
-					List.onAddDropdownCallback(addButtonRect, List);
-				else if(List.onAddCallback != null)
-					List.onAddCallback(List);
-				else
-					Defaults.DoAddButton(List);
+                if (List.onAddDropdownCallback != null)
+                    List.onAddDropdownCallback(addButtonRect, List);
+                else if (List.onAddCallback != null)
+                    List.onAddCallback(List);
+                else
+                    Defaults.DoAddButton(List);
 
-				if(List.onChangedCallback != null)
-					List.onChangedCallback(List);
+                if (List.onChangedCallback != null)
+                    List.onChangedCallback(List);
 
-				if(Limiter != null)
-					Limiter.ChangeEnd();
-			}
-		}
+                if (Limiter != null)
+                    Limiter.ChangeEnd();
+            }
+        }
 
-		private void RemoveButtonsGUI(Rect removeButtonRect)
-		{
-			using(Disposables.DisabledScope((List.index < 0) || (List.index >= List.count) || ((List.onCanRemoveCallback != null) && !List.onCanRemoveCallback(List))))
-			{
-				if(!FoCsGUI.Button(removeButtonRect, ListStyles.IconToolbarMinus, ListStyles.PreButton))
-					return;
+        private void RemoveButtonsGUI(Rect removeButtonRect) {
+            using (Disposables.DisabledScope((List.index < 0) || (List.index >= List.count) || ((List.onCanRemoveCallback != null) && !List.onCanRemoveCallback(List)))) {
+                if (!FoCsGUI.Button(removeButtonRect, ListStyles.IconToolbarMinus, ListStyles.PreButton))
+                    return;
 
-				if(List.onRemoveCallback == null)
-					Defaults.DoRemoveButton(List);
-				else
-					List.onRemoveCallback(List);
+                if (List.onRemoveCallback == null)
+                    Defaults.DoRemoveButton(List);
+                else
+                    List.onRemoveCallback(List);
 
-				if(List.onChangedCallback != null)
-					List.onChangedCallback(List);
+                if (List.onChangedCallback != null)
+                    List.onChangedCallback(List);
 
-				if(Limiter != null)
-					Limiter.ChangeRange(-1);
-			}
-		}
+                if (Limiter != null)
+                    Limiter.ChangeRange(-1);
+            }
+        }
 #endregion
+
 
 #region Delegate Setters
-		/// <summary>
-		///     SetAddCallBack
-		/// </summary>
-		/// <param name="a">The callback to be used instead of default</param>
-		/// <returns>This</returns>
-		public UnityReorderableListProperty SetAddCallBack(ReorderableList.AddCallbackDelegate a)
-		{
-			List.onAddCallback = a;
+        /// <summary>
+        ///     SetAddCallBack
+        /// </summary>
+        /// <param name="a">The callback to be used instead of default</param>
+        /// <returns>This</returns>
+        public UnityReorderableListProperty SetAddCallBack(ReorderableList.AddCallbackDelegate a) {
+            List.onAddCallback = a;
 
-			return this;
-		}
+            return this;
+        }
 
-		/// <summary>
-		///     SetAddDropdownCallback
-		/// </summary>
-		/// <param name="a">The callback to be used instead of default</param>
-		/// <returns>This</returns>
-		public UnityReorderableListProperty SetAddDropdownCallback(ReorderableList.AddDropdownCallbackDelegate a)
-		{
-			List.onAddDropdownCallback = a;
+        /// <summary>
+        ///     SetAddDropdownCallback
+        /// </summary>
+        /// <param name="a">The callback to be used instead of default</param>
+        /// <returns>This</returns>
+        public UnityReorderableListProperty SetAddDropdownCallback(ReorderableList.AddDropdownCallbackDelegate a) {
+            List.onAddDropdownCallback = a;
 
-			return this;
-		}
+            return this;
+        }
 
-		/// <summary>
-		///     SetCanAddCallback
-		/// </summary>
-		/// <param name="a">The callback to be used instead of default</param>
-		/// <returns>This</returns>
-		public UnityReorderableListProperty SetCanAddCallback(ReorderableList.CanAddCallbackDelegate a)
-		{
-			List.onCanAddCallback = a;
+        /// <summary>
+        ///     SetCanAddCallback
+        /// </summary>
+        /// <param name="a">The callback to be used instead of default</param>
+        /// <returns>This</returns>
+        public UnityReorderableListProperty SetCanAddCallback(ReorderableList.CanAddCallbackDelegate a) {
+            List.onCanAddCallback = a;
 
-			return this;
-		}
+            return this;
+        }
 
-		/// <summary>
-		///     SetCanRemoveCallback
-		/// </summary>
-		/// <param name="a">The callback to be used instead of default</param>
-		/// <returns>This</returns>
-		public UnityReorderableListProperty SetCanRemoveCallback(ReorderableList.CanRemoveCallbackDelegate a)
-		{
-			List.onCanRemoveCallback = a;
+        /// <summary>
+        ///     SetCanRemoveCallback
+        /// </summary>
+        /// <param name="a">The callback to be used instead of default</param>
+        /// <returns>This</returns>
+        public UnityReorderableListProperty SetCanRemoveCallback(ReorderableList.CanRemoveCallbackDelegate a) {
+            List.onCanRemoveCallback = a;
 
-			return this;
-		}
+            return this;
+        }
 
-		/// <summary>
-		///     SetReorderCallback
-		/// </summary>
-		/// <param name="a">The callback to be used instead of default</param>
-		/// <returns>This</returns>
-		public UnityReorderableListProperty SetReorderCallback(ReorderableList.ReorderCallbackDelegate a)
-		{
-			List.onReorderCallback = a;
+        /// <summary>
+        ///     SetReorderCallback
+        /// </summary>
+        /// <param name="a">The callback to be used instead of default</param>
+        /// <returns>This</returns>
+        public UnityReorderableListProperty SetReorderCallback(ReorderableList.ReorderCallbackDelegate a) {
+            List.onReorderCallback = a;
 
-			return this;
-		}
+            return this;
+        }
 
-		/// <summary>
-		///     SetDrawElementBackgroundCallback
-		/// </summary>
-		/// <param name="a">The callback to be used instead of default</param>
-		/// <returns>This</returns>
-		public UnityReorderableListProperty SetDrawElementBackgroundCallback(ReorderableList.ElementCallbackDelegate a)
-		{
-			List.drawElementBackgroundCallback = a;
+        /// <summary>
+        ///     SetDrawElementBackgroundCallback
+        /// </summary>
+        /// <param name="a">The callback to be used instead of default</param>
+        /// <returns>This</returns>
+        public UnityReorderableListProperty SetDrawElementBackgroundCallback(ReorderableList.ElementCallbackDelegate a) {
+            List.drawElementBackgroundCallback = a;
 
-			return this;
-		}
+            return this;
+        }
 
-		/// <summary>
-		///     SetDrawElementCallback
-		/// </summary>
-		/// <param name="a">The callback to be used instead of default</param>
-		/// <returns>This</returns>
-		public UnityReorderableListProperty SetDrawElementCallback(ReorderableList.ElementCallbackDelegate a)
-		{
-			List.drawElementCallback = a;
+        /// <summary>
+        ///     SetDrawElementCallback
+        /// </summary>
+        /// <param name="a">The callback to be used instead of default</param>
+        /// <returns>This</returns>
+        public UnityReorderableListProperty SetDrawElementCallback(ReorderableList.ElementCallbackDelegate a) {
+            List.drawElementCallback = a;
 
-			return this;
-		}
+            return this;
+        }
 
-		/// <summary>
-		///     SetDrawFooterCallback
-		/// </summary>
-		/// <param name="a">The callback to be used instead of default</param>
-		/// <returns>This</returns>
-		public UnityReorderableListProperty SetDrawFooterCallback(ReorderableList.FooterCallbackDelegate a)
-		{
-			List.drawFooterCallback = a;
+        /// <summary>
+        ///     SetDrawFooterCallback
+        /// </summary>
+        /// <param name="a">The callback to be used instead of default</param>
+        /// <returns>This</returns>
+        public UnityReorderableListProperty SetDrawFooterCallback(ReorderableList.FooterCallbackDelegate a) {
+            List.drawFooterCallback = a;
 
-			return this;
-		}
+            return this;
+        }
 
-		/// <summary>
-		///     SetDrawHeaderCallback
-		/// </summary>
-		/// <param name="a">The callback to be used instead of default</param>
-		/// <returns>This</returns>
-		public UnityReorderableListProperty SetDrawHeaderCallback(ReorderableList.HeaderCallbackDelegate a)
-		{
-			List.drawHeaderCallback = a;
+        /// <summary>
+        ///     SetDrawHeaderCallback
+        /// </summary>
+        /// <param name="a">The callback to be used instead of default</param>
+        /// <returns>This</returns>
+        public UnityReorderableListProperty SetDrawHeaderCallback(ReorderableList.HeaderCallbackDelegate a) {
+            List.drawHeaderCallback = a;
 
-			return this;
-		}
+            return this;
+        }
 
-		/// <summary>
-		///     SetElementHeightCallback
-		/// </summary>
-		/// <param name="a">The callback to be used instead of default</param>
-		/// <returns>This</returns>
-		public UnityReorderableListProperty SetElementHeightCallback(ReorderableList.ElementHeightCallbackDelegate a)
-		{
-			List.elementHeightCallback = a;
+        /// <summary>
+        ///     SetElementHeightCallback
+        /// </summary>
+        /// <param name="a">The callback to be used instead of default</param>
+        /// <returns>This</returns>
+        public UnityReorderableListProperty SetElementHeightCallback(ReorderableList.ElementHeightCallbackDelegate a) {
+            List.elementHeightCallback = a;
 
-			return this;
-		}
+            return this;
+        }
 
-		/// <summary>
-		///     SetSelectCallback
-		/// </summary>
-		/// <param name="a">The callback to be used instead of default</param>
-		/// <returns>This</returns>
-		public UnityReorderableListProperty SetSelectCallback(ReorderableList.SelectCallbackDelegate a)
-		{
-			List.onSelectCallback = a;
+        /// <summary>
+        ///     SetSelectCallback
+        /// </summary>
+        /// <param name="a">The callback to be used instead of default</param>
+        /// <returns>This</returns>
+        public UnityReorderableListProperty SetSelectCallback(ReorderableList.SelectCallbackDelegate a) {
+            List.onSelectCallback = a;
 
-			return this;
-		}
+            return this;
+        }
 #endregion
 
-	}
+
+    }
 }

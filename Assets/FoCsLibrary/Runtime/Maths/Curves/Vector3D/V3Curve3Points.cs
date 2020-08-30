@@ -1,93 +1,96 @@
+#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library
+//       File: V3Curve3Points.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
 using System;
 using System.Collections.Generic;
 using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Maths.Lerp;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths.Curves
-{
-	[Serializable]
-	public class V3Curve3Points: IV3Curve
-	{
-		public const             int           TOTAL_COUNT    = 3;
-		[SerializeField] private List<Vector3> Positions      = new List<Vector3>(TOTAL_COUNT);
-		[SerializeField] private bool          useGlobalSpace = true;
+namespace ForestOfChaosLibrary.Maths.Curves {
+    [Serializable]
+    public class V3Curve3Points: IV3Curve {
+        public const int TOTAL_COUNT = 3;
 
-		public Vector3 StartPos
-		{
-			get { return Positions[0]; }
-			set { Positions[0] = value; }
-		}
+        [SerializeField]
+        private List<Vector3> Positions = new List<Vector3>(TOTAL_COUNT);
 
-		public Vector3 MidPos
-		{
-			get { return Positions[1]; }
-			set { Positions[1] = value; }
-		}
+        [SerializeField]
+        private bool useGlobalSpace = true;
 
-		public Vector3 EndPos
-		{
-			get { return Positions[2]; }
-			set { Positions[2] = value; }
-		}
+        public Vector3 StartPos {
+            get => Positions[0];
+            set => Positions[0] = value;
+        }
 
-		private void PosNullCheck()
-		{
-			if(Positions == null)
-				Positions = new List<Vector3>(TOTAL_COUNT);
-		}
+        public Vector3 MidPos {
+            get => Positions[1];
+            set => Positions[1] = value;
+        }
 
-		public bool UseGlobalSpace
-		{
-			get { return useGlobalSpace; }
-			set { useGlobalSpace = value; }
-		}
+        public Vector3 EndPos {
+            get => Positions[2];
+            set => Positions[2] = value;
+        }
 
-		public List<Vector3> CurvePositions
-		{
-			get
-			{
-				PosNullCheck();
+        private void PosNullCheck() {
+            if (Positions == null)
+                Positions = new List<Vector3>(TOTAL_COUNT);
+        }
 
-				return Positions;
-			}
-			set
-			{
-				PosNullCheck();
+        public bool UseGlobalSpace {
+            get => useGlobalSpace;
+            set => useGlobalSpace = value;
+        }
 
-				if(value.IsNullOrEmpty())
-					return;
+        public List<Vector3> CurvePositions {
+            get {
+                PosNullCheck();
 
-				switch(value.Count)
-				{
-					case 0: return;
-					case 1:
-						StartPos = value[0];
+                return Positions;
+            }
+            set {
+                PosNullCheck();
 
-						return;
-					case 2:
-						StartPos = value[0];
-						MidPos   = value[1];
+                if (value.IsNullOrEmpty())
+                    return;
 
-						return;
-					case 3:
-						StartPos = value[0];
-						MidPos   = value[1];
-						EndPos   = value[2];
+                switch (value.Count) {
+                    case 0: return;
+                    case 1:
+                        StartPos = value[0];
 
-						return;
-					default:
-						StartPos = value[0];
-						MidPos   = value[1];
-						EndPos   = value[2];
+                        return;
+                    case 2:
+                        StartPos = value[0];
+                        MidPos   = value[1];
 
-						break;
-				}
-			}
-		}
+                        return;
+                    case 3:
+                        StartPos = value[0];
+                        MidPos   = value[1];
+                        EndPos   = value[2];
 
-		public bool IsFixedLength => true;
-		public int  Length        => TOTAL_COUNT;
-		public Vector3 Lerp(float time) => Vector3Lerp.Lerp(Positions, time);
-	}
+                        return;
+                    default:
+                        StartPos = value[0];
+                        MidPos   = value[1];
+                        EndPos   = value[2];
+
+                        break;
+                }
+            }
+        }
+
+        public bool IsFixedLength => true;
+
+        public int Length => TOTAL_COUNT;
+
+        public Vector3 Lerp(float time) => Vector3Lerp.Lerp(Positions, time);
+    }
 }

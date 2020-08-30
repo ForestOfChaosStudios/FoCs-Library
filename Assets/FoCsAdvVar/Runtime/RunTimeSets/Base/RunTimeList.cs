@@ -1,28 +1,33 @@
-﻿using System;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.AdvVar
+//       File: RunTimeList.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:47 AM
+#endregion
+
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ForestOfChaosAdvVar.RuntimeRef
-{
-	public abstract class RunTimeList<T>: RunTimeList
-	{
-		[NonSerialized] public List<T> Items = new List<T>();
-		public override        int     Count => Items.Count;
+namespace ForestOfChaos.Unity.AdvVar.RuntimeRef {
+    public abstract class RunTimeList<T>: RunTimeList {
+        [NonSerialized]
+        public List<T> Items = new List<T>();
 
-		public void Add(T t)
-		{
-			if(!Items.Contains(t) && (t != null))
-				Items.Add(t);
-		}
+        public override int Count => Items.Count;
 
-		public void Remove(T t)
-		{
-			Items.Remove(t);
-		}
-	}
+        public void Add(T t) {
+            if (!Items.Contains(t) && (t != null))
+                Items.Add(t);
+        }
 
-	public abstract class RunTimeList: ScriptableObject
-	{
-		public abstract int Count { get; }
-	}
+        public void Remove(T t) {
+            Items.Remove(t);
+        }
+    }
+
+    public abstract class RunTimeList: ScriptableObject {
+        public abstract int Count { get; }
+    }
 }

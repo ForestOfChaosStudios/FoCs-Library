@@ -1,25 +1,29 @@
-﻿using System.IO;
+﻿#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library
+//       File: FileAndPathHelpers.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
+using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace ForestOfChaosLibrary.Utilities
-{
-	public static class FileAndPathHelpers
-	{
-		public static string GetStreamingAssetsPathFileData(string name)
-		{
-			var filePath = Application.streamingAssetsPath + "/" + name;
+namespace ForestOfChaosLibrary.Utilities {
+    public static class FileAndPathHelpers {
+        public static string GetStreamingAssetsPathFileData(string name) {
+            var filePath = Application.streamingAssetsPath + "/" + name;
 
-			if(filePath.Contains("://"))
-			{
-				var www = UnityWebRequest.Get(filePath);
+            if (filePath.Contains("://")) {
+                var www = UnityWebRequest.Get(filePath);
 
-				return www.downloadHandler.text;
-			}
+                return www.downloadHandler.text;
+            }
 
-			return File.ReadAllText(filePath);
-		}
+            return File.ReadAllText(filePath);
+        }
 
-		public static string GetStreamingAssetsPath(string name) => Application.streamingAssetsPath + "/" + name;
-	}
+        public static string GetStreamingAssetsPath(string name) => Application.streamingAssetsPath + "/" + name;
+    }
 }

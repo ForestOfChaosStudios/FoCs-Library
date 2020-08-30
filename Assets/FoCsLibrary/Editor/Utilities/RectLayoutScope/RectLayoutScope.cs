@@ -1,3 +1,11 @@
+#region © Forest Of Chaos Studios 2019 - 2020
+//    Project: FoCs.Unity.Library.Editor
+//       File: RectLayoutScope.cs
+//    Created: 2019/05/21 | 12:00 AM
+// LastEdited: 2020/08/31 | 7:48 AM
+#endregion
+
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,142 +13,136 @@ using ForestOfChaosLibrary.Extensions;
 using ForestOfChaosLibrary.Utilities;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Utilities
-{
-	public abstract class RectLayoutScope: IDisposable, IEnumerable<Rect>
-	{
-		protected int   CurrentIndex;
-		public    int   Count     { get; }
-		public    Rect  Rect      { get; }
-		public    Rect? LastRect  { get; protected set; }
-		public    Rect  FirstRect { get; protected set; }
-		protected Rect  NextRect  { get; set; }
+namespace ForestOfChaosLibrary.Editor.Utilities {
+    public abstract class RectLayoutScope: IDisposable, IEnumerable<Rect> {
+        protected int CurrentIndex;
 
-		protected RectLayoutScope(int count, Rect rect)
-		{
-			Count        = count;
-			Rect         = rect;
-			LastRect     = null;
-			CurrentIndex = 0;
-			FirstRect    = NextRect = InitNextRect();
-		}
+        public int Count { get; }
 
-		protected abstract Rect InitNextRect();
-		protected abstract void DoNextRect();
+        public Rect Rect { get; }
 
-		/// <summary>
-		///     Gets the next rect in the layout
-		/// </summary>
-		/// <returns>Next rect</returns>
-		public Rect GetNext()
-		{
-			if(CurrentIndex > Count)
-				throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
+        public Rect? LastRect { get; protected set; }
 
-			LastRect = NextRect;
-			var retVal = NextRect;
-			DoNextRect();
+        public Rect FirstRect { get; protected set; }
 
-			return retVal;
-		}
+        protected Rect NextRect { get; set; }
 
-		/// <summary>
-		///     Gets the next rect in the layout with a size of "amount" elements
-		/// </summary>
-		/// <param name="amount">How many spaces should this take</param>
-		/// <returns>Returns the Next rect, size of "amount" elements</returns>
-		public Rect GetNext(int amount)
-		{
-			if((CurrentIndex == Count) || (CurrentIndex + amount > Count))
-				throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
+        protected RectLayoutScope(int count, Rect rect) {
+            Count        = count;
+            Rect         = rect;
+            LastRect     = null;
+            CurrentIndex = 0;
+            FirstRect    = NextRect = InitNextRect();
+        }
 
-			LastRect = NextRect;
-			var retVal = NextRect;
-			retVal = DoGetNextAmount(amount, retVal);
+        protected abstract Rect InitNextRect();
 
-			for(var i = 0; i < amount; i++)
-				DoNextRect();
+        protected abstract void DoNextRect();
 
-			return retVal;
-		}
+        /// <summary>
+        ///     Gets the next rect in the layout
+        /// </summary>
+        /// <returns>Next rect</returns>
+        public Rect GetNext() {
+            if (CurrentIndex > Count)
+                throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
 
-		protected virtual Rect DoGetNextAmount(int amount, Rect retVal)
-		{
-			retVal = retVal.Edit(RectEdit.SetWidth(retVal.width * amount));
+            LastRect = NextRect;
+            var retVal = NextRect;
+            DoNextRect();
 
-			return retVal;
-		}
+            return retVal;
+        }
 
-		/// <summary>
-		///     Gets the next rect in the layout
-		/// </summary>
-		/// <returns>Next rect</returns>
-		public Rect GetNext(RectEdit rectEdit)
-		{
-			if(CurrentIndex > Count)
-				throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
+        /// <summary>
+        ///     Gets the next rect in the layout with a size of "amount" elements
+        /// </summary>
+        /// <param name="amount">How many spaces should this take</param>
+        /// <returns>Returns the Next rect, size of "amount" elements</returns>
+        public Rect GetNext(int amount) {
+            if ((CurrentIndex == Count) || (CurrentIndex + amount > Count))
+                throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
 
-			LastRect = NextRect;
-			var retVal = NextRect;
-			DoNextRect();
+            LastRect = NextRect;
+            var retVal = NextRect;
+            retVal = DoGetNextAmount(amount, retVal);
 
-			return retVal.Edit(rectEdit);
-		}
+            for (var i = 0; i < amount; i++)
+                DoNextRect();
 
-		/// <summary>
-		///     Gets the next rect in the layout with a size of "amount" elements
-		/// </summary>
-		/// <param name="amount">How many spaces should this take</param>
-		/// <returns>Returns the Next rect, size of "amount" elements</returns>
-		public Rect GetNext(int amount, RectEdit rectEdit)
-		{
-			if((CurrentIndex == Count) || (CurrentIndex + amount > Count))
-				throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
+            return retVal;
+        }
 
-			return GetNext(amount).Edit(rectEdit);
-		}
+        protected virtual Rect DoGetNextAmount(int amount, Rect retVal) {
+            retVal = retVal.Edit(RectEdit.SetWidth(retVal.width * amount));
 
-		/// <summary>
-		///     Gets the next rect in the layout
-		/// </summary>
-		/// <returns>Next rect</returns>
-		public Rect GetNext(params RectEdit[] edits)
-		{
-			if(CurrentIndex > Count)
-				throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
+            return retVal;
+        }
 
-			LastRect = NextRect;
-			var retVal = NextRect;
-			DoNextRect();
+        /// <summary>
+        ///     Gets the next rect in the layout
+        /// </summary>
+        /// <returns>Next rect</returns>
+        public Rect GetNext(RectEdit rectEdit) {
+            if (CurrentIndex > Count)
+                throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
 
-			return retVal.Edit(edits);
-		}
+            LastRect = NextRect;
+            var retVal = NextRect;
+            DoNextRect();
 
-		/// <summary>
-		///     Gets the next rect in the layout with a size of "amount" elements
-		/// </summary>
-		/// <param name="amount">How many spaces should this take</param>
-		/// <returns>Returns the Next rect, size of "amount" elements</returns>
-		public Rect GetNext(int amount, params RectEdit[] edits)
-		{
-			if((CurrentIndex == Count) || (CurrentIndex + amount > Count))
-				throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
+            return retVal.Edit(rectEdit);
+        }
 
-			return GetNext(amount).Edit(edits);
-		}
+        /// <summary>
+        ///     Gets the next rect in the layout with a size of "amount" elements
+        /// </summary>
+        /// <param name="amount">How many spaces should this take</param>
+        /// <returns>Returns the Next rect, size of "amount" elements</returns>
+        public Rect GetNext(int amount, RectEdit rectEdit) {
+            if ((CurrentIndex == Count) || (CurrentIndex + amount > Count))
+                throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
 
-		public void Dispose()
-		{
-			//if(CurrentIndex != Count)
-			//	Debug.LogWarning("You have not used all of the available Rects");
-		}
+            return GetNext(amount).Edit(rectEdit);
+        }
 
-		public IEnumerator<Rect> GetEnumerator()
-		{
-			while(CurrentIndex < Count)
-				yield return GetNext();
-		}
+        /// <summary>
+        ///     Gets the next rect in the layout
+        /// </summary>
+        /// <returns>Next rect</returns>
+        public Rect GetNext(params RectEdit[] edits) {
+            if (CurrentIndex > Count)
+                throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-	}
+            LastRect = NextRect;
+            var retVal = NextRect;
+            DoNextRect();
+
+            return retVal.Edit(edits);
+        }
+
+        /// <summary>
+        ///     Gets the next rect in the layout with a size of "amount" elements
+        /// </summary>
+        /// <param name="amount">How many spaces should this take</param>
+        /// <returns>Returns the Next rect, size of "amount" elements</returns>
+        public Rect GetNext(int amount, params RectEdit[] edits) {
+            if ((CurrentIndex == Count) || (CurrentIndex + amount > Count))
+                throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
+
+            return GetNext(amount).Edit(edits);
+        }
+
+        public void Dispose() {
+            //if(CurrentIndex != Count)
+            //	Debug.LogWarning("You have not used all of the available Rects");
+        }
+
+        public IEnumerator<Rect> GetEnumerator() {
+            while (CurrentIndex < Count)
+                yield return GetNext();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
 }
