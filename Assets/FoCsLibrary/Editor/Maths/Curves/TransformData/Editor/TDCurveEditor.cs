@@ -1,8 +1,9 @@
 ﻿#region © Forest Of Chaos Studios 2019 - 2020
+//   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: TDCurveEditor.cs
 //    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/08/31 | 7:49 AM
+// LastEdited: 2020/09/12 | 12:04 AM
 #endregion
 
 

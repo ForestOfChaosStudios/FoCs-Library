@@ -1,8 +1,9 @@
 ﻿#region © Forest Of Chaos Studios 2019 - 2020
+//   Solution: FoCs-Library
 //    Project: FoCs.Unity.AdvVar.Editor
 //       File: AdvReferencePropertyDrawerBase.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/08/31 | 7:50 AM
+// LastEdited: 2020/09/12 | 12:04 AM
 #endregion
 
 
