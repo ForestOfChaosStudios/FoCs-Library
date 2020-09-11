@@ -12,7 +12,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     [InitializeOnLoad]
     internal class NormalSorter: FoCsEditor.FoCsEditorSorter {
         public static          NormalSorter Instance;

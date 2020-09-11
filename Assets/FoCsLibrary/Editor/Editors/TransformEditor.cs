@@ -9,13 +9,13 @@
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Types;
+using ForestOfChaos.Unity.Types;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     [CustomEditor(typeof(Transform))]
     internal class TransformEditor: FoCsEditor<Transform> {
         private static          float                                    scaleAmount = 1;

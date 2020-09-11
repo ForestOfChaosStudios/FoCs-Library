@@ -8,12 +8,12 @@
 
 
 using System.Linq;
-using ForestOfChaosLibrary.Editor.UnitySettings;
-using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaos.Unity.Editor.UnitySettings;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Windows {
+namespace ForestOfChaos.Unity.Editor.Windows {
     [FoCsWindow]
     public class FoCsVersionNumberWindow: FoCsWindow<FoCsVersionNumberWindow> {
         private const           string           TITLE   = "Version Number";

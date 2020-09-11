@@ -9,22 +9,23 @@
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.PropertyDrawers;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using ORD = ForestOfChaosLibrary.Editor.PropertyDrawers.ObjectReferenceDrawer;
+using ORD = ForestOfChaos.Unity.Editor.PropertyDrawers.ObjectReferenceDrawer;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     public class UnityReorderableListProperty {
         public static    int                      GLOBAL_CURRENT_ID;
         private static   ReorderableList.Defaults s_Defaults;
         private static   Action                   OnLimitingChange;
         private static   bool?                    limitingEnabled;
-        private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>(1);
+        private readonly Dictionary<string, ObjectReferenceDrawer>  objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(1);
         public           int                      ID;
         public           ListLimiter              Limiter;
         private          SerializedProperty       property;
@@ -360,14 +361,14 @@ namespace ForestOfChaosLibrary.Editor {
 
 
 #region Storage
-        private ORD GetObjectDrawer(SerializedProperty property) {
+        private ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property) {
             var id = string.Format("{0}-{1}", property.propertyPath, property.name);
-            ORD objDraw;
+            ObjectReferenceDrawer objDraw;
 
             if (objectDrawers.TryGetValue(id, out objDraw))
                 return objDraw;
 
-            objDraw = new ORD();
+            objDraw = new ObjectReferenceDrawer();
             objectDrawers.Add(id, objDraw);
 
             return objDraw;

@@ -8,10 +8,10 @@
 
 
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths.Lerp {
+namespace ForestOfChaos.Unity.Maths.Lerp {
     public static class Vector3Lerp {
         public static Vector3 Lerp(Vector3 value1, Vector3 value2, float time, bool clamp = false) {
             if (clamp)

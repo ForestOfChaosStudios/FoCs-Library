@@ -7,10 +7,10 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Types;
+using ForestOfChaos.Unity.Types;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
     [CustomPropertyDrawer(typeof(Vector2I))]
     public class Vector2IPropEditor: Vector2PropEditor { }
 

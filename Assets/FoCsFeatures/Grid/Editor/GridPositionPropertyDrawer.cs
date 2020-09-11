@@ -7,12 +7,12 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Editor.PropertyDrawers;
-using ForestOfChaosLibrary.Grid;
+using ForestOfChaos.Unity.Editor.PropertyDrawers;
+using ForestOfChaos.Unity.Features.Grid;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     [CustomPropertyDrawer(typeof(GridPosition))]
     internal class GridPositionPropertyDrawer: FoCsPropertyDrawer {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) =>

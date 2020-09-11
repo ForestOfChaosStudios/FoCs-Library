@@ -12,7 +12,7 @@ using System.Collections;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ForestOfChaosLibrary.ScreenCap {
+namespace ForestOfChaos.Unity.ScreenCap {
     public class Timelapse {
         private static   GameObject    obj;
         private static   FoCsBehaviour com;

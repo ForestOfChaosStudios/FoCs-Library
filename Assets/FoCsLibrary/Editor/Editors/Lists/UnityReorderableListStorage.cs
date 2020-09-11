@@ -10,7 +10,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     public class UnityReorderableListStorage {
         internal static List<UnityReorderableListStorage>                storages = new List<UnityReorderableListStorage>();
         public          IRepaintable                                     owner;

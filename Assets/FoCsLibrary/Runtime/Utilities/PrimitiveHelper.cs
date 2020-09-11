@@ -10,7 +10,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Utilities {
+namespace ForestOfChaos.Unity.Utilities {
     public static class PrimitiveHelper {
         private static readonly Dictionary<PrimitiveType, Mesh> primitiveMeshes = new Dictionary<PrimitiveType, Mesh>();
 

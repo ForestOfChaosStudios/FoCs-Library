@@ -12,10 +12,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ForestOfChaosLibrary.Types;
+using ForestOfChaos.Unity.Types;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.Utilities {
+namespace ForestOfChaos.Unity.Editor.Utilities {
     public static class ScriptGenerators {
         public static Dictionary<Type, System.Type> TypeToString = new Dictionary<Type, System.Type> {
                 {Type.String, typeof(TypeWithNameAndData.StringType)},

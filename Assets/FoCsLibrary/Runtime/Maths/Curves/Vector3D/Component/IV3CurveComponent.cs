@@ -10,7 +10,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths.Curves.Components {
+namespace ForestOfChaos.Unity.Maths.Curves.Components {
     public class IV3CurveComponent<T>: ICurveV3DComponent, IV3Curve where T: IV3Curve {
         public T Curve;
 

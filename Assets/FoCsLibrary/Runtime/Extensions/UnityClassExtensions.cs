@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class UnityClassExtensions {
         public static void SetParent(this GameObject gO, Transform parent) {
             gO.transform.SetParent(parent);

@@ -8,11 +8,11 @@
 
 
 using System;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Utilities;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class RectExtensions {
         public static Vector2 GetRandomPosInRect(this Rect rect) {
             var pos = new Vector2(Random.Range(rect.min.x, rect.max.x), Random.Range(rect.min.y, rect.max.y));

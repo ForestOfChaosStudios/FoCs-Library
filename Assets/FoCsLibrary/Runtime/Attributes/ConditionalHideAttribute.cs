@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Attributes {
+namespace ForestOfChaos.Unity.Attributes {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct)]
     public class ConditionalHideAttribute: PropertyAttribute {
         //The name of the bool field that will be in control

@@ -11,10 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using ForestOfChaosLibrary.Attributes;
+using ForestOfChaos.Unity.Attributes;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     public partial class FoCsEditor {
         private static readonly Type                                ContextMenuType       = typeof(ContextMenu);
         private static readonly Type                                ContextMenuLayoutType = typeof(ContextMenuLayoutAttribute);

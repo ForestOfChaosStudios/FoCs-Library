@@ -9,7 +9,7 @@
 
 using System;
 
-namespace ForestOfChaosLibrary.ScreenCap {
+namespace ForestOfChaos.Unity.ScreenCap {
     public class TimelapseArgs: ScreenShotArgs {
         private readonly DateTime Start;
         public           int      LoopCount = 0;

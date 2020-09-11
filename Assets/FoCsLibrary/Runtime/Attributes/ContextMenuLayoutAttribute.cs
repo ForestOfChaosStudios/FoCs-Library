@@ -9,7 +9,7 @@
 
 using System;
 
-namespace ForestOfChaosLibrary.Attributes {
+namespace ForestOfChaos.Unity.Attributes {
     public class ContextMenuLayoutAttribute: Attribute {
         public int AmountPerLine;
         public int Column;

@@ -11,7 +11,7 @@ using UnityEditor;
 using UnityEngine;
 using Obj = UnityEngine.Object;
 
-namespace ForestOfChaosLibrary.Editor.Utilities {
+namespace ForestOfChaos.Unity.Editor.Utilities {
     public class EditorHelpers: FoCsEditor {
         private static readonly GUIContent CP_CopyContent       = new GUIContent("Copy",     "Copies the data.");
         private static readonly GUIContent CP_EditorCopyContent = new GUIContent("Copy (E)", "Copies the data. (using the EditorJSONUtility)");

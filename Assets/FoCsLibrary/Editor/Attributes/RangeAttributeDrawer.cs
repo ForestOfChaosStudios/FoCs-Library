@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
     [CustomPropertyDrawer(typeof(RangeAttribute))]
     public class RangeAttributeDrawer: FoCsPropertyDrawerWithAttribute<RangeAttribute> {
 

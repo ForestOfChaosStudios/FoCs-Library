@@ -8,15 +8,15 @@
 
 
 using System.Linq;
-using ForestOfChaosLibrary.Editor.UnitySettings;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.InputManager;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.InputManager;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.UnitySettings;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
     [CustomPropertyDrawer(typeof(InputAxis))]
     public class InputAxisPropertyDrawer: FoCsPropertyDrawer {
         internal const           float        LABEL_SIZE                     = 0.5f;

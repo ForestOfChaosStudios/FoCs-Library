@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Utilities {
+namespace ForestOfChaos.Unity.Editor.Utilities {
     public static class SerializedPropertyExtensions {
         private const string INDEX_NEEDLE = @"\[[\d]\]";
 

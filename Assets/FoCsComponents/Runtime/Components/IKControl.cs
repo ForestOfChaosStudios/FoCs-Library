@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Animation {
+namespace ForestOfChaos.Unity.Animation {
     [AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "IKControl")]
     public class IKControl: FoCsBehaviour {
         [SerializeField]

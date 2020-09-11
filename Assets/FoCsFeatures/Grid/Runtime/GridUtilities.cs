@@ -7,12 +7,12 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Types;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Types;
+using ForestOfChaos.Unity.Utilities;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Grid {
+namespace ForestOfChaos.Unity.Features.Grid {
     public static class GridUtilities {
         public static GridPosition GetGridPosition(this Ray ray) => GetGridPosition(ray.GetPosOnY());
 

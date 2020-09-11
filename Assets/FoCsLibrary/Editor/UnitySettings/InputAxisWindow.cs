@@ -7,12 +7,12 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Editor.UnitySettings;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Editor.Windows;
+using ForestOfChaos.Unity.Editor.UnitySettings;
+using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Editor.Windows;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.InputManager {
+namespace ForestOfChaos.Unity.Editor.InputManager {
     public class InputAxisWindow: FoCsWindow<InputAxisWindow> {
         private const string Title = "InputAxisWindow";
 

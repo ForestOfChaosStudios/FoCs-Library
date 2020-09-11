@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.FoCsUI.Text {
+namespace ForestOfChaos.Unity.FoCsUI.Text {
     [AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Toggle/Events (Unity Text)")]
     public class FoCsTextEvent: FoCsText {
         public UnityEngine.UI.Text TextObj;

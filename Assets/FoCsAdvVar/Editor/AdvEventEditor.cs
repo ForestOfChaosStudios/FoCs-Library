@@ -8,7 +8,7 @@
 
 
 using ForestOfChaos.Unity.AdvVar.Events;
-using ForestOfChaosLibrary.Editor;
+using ForestOfChaos.Unity.Editor;
 using UnityEditor;
 using UnityEngine;
 

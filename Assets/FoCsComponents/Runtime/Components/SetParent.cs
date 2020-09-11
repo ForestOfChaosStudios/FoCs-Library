@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Components {
+namespace ForestOfChaos.Unity.Components {
     [AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "Set Parent")]
     public class SetParent: FoCsBehaviour {
         public enum Mode {

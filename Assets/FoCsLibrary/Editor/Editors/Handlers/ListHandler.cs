@@ -12,7 +12,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     internal class ListHandler: IPropertyLayoutHandler {
         private readonly UnityReorderableListStorage ListStorage;
 

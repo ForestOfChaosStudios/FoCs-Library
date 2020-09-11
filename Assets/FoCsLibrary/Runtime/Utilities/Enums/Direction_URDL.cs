@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Utilities.Enums {
+namespace ForestOfChaos.Unity.Utilities.Enums {
     public enum URDL {
         Up,
         Right,

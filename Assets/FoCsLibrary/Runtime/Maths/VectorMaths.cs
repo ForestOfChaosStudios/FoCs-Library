@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths {
+namespace ForestOfChaos.Unity.Maths {
     public static class VectorMaths {
         public const float ROTATION_MAX = 360f;
 

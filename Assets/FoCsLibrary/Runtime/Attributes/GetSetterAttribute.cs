@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Attributes {
+namespace ForestOfChaos.Unity.Attributes {
     public class GetSetterAttribute: PropertyAttribute {
         public readonly string name;
         public          bool   CallSetter = true;

@@ -10,7 +10,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     public class DefaultScriptPropertyHandler: IPropertyLayoutHandler {
         private readonly FoCsEditor owner;
 

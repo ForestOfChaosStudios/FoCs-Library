@@ -8,9 +8,9 @@
 
 
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Types;
+using ForestOfChaos.Unity.Types;
 
-namespace ForestOfChaosLibrary.Maths.Curves {
+namespace ForestOfChaos.Unity.Maths.Curves {
     public interface ITDCurve {
         List<TransformData> CurvePositions { get; set; }
 

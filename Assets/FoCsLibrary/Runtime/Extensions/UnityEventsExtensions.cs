@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class UnityEventsExtensions {
         public static bool LeftClick(this Event @event) => @event.LeftUp();
 

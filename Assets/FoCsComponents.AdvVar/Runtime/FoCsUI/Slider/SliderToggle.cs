@@ -8,12 +8,12 @@
 
 
 using System;
-using ForestOfChaosLibrary.Attributes;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Attributes;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace ForestOfChaosLibrary.FoCsUI.Slider {
+namespace ForestOfChaos.Unity.FoCsUI.Slider {
     [AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Slider/Toggle")]
     public class SliderToggle: FoCsSlider, IPointerClickHandler {
         public Action<bool> OnToggle;

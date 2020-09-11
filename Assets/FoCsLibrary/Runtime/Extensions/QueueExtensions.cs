@@ -9,7 +9,7 @@
 
 using System.Collections.Generic;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class QueueExtensions {
         public static T GetNextItemAndReAddItToTheEnd<T>(this Queue<T> queue) {
             //Get first

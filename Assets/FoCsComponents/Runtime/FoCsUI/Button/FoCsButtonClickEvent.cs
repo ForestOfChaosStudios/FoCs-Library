@@ -11,7 +11,7 @@ using UnityEngine;
 using UText = UnityEngine.UI.Text;
 using UButton = UnityEngine.UI.Button;
 
-namespace ForestOfChaosLibrary.FoCsUI.Button {
+namespace ForestOfChaos.Unity.FoCsUI.Button {
     [AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Button/Button (Unity Text)")]
     public class FoCsButtonClickEvent: FoCsButton {
         public UText TextObj;

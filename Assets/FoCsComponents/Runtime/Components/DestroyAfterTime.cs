@@ -10,7 +10,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Components {
+namespace ForestOfChaos.Unity.Components {
     [AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "Destroy After Time")]
     public class DestroyAfterTime: FoCsBehaviour {
         public float lifeTime = 10f; //My lifetime

@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 using Rnd = UnityEngine.Random;
 
-namespace ForestOfChaosLibrary.Types {
+namespace ForestOfChaos.Unity.Types {
     [Serializable]
     public class Colour {
         public byte A;

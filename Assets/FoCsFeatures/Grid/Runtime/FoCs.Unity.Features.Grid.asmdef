@@ -1,0 +1,15 @@
+{
+    "name": "FoCs.Unity.Features.Grid",
+    "references": [
+        "GUID:78737dd7c8334db419b5689cdc2c1e73"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

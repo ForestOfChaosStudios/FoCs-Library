@@ -7,13 +7,13 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Attributes;
-using ForestOfChaosLibrary.Editor.PropertyDrawers;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Attributes;
+using ForestOfChaos.Unity.Editor.PropertyDrawers;
+using ForestOfChaos.Unity.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Attributes {
+namespace ForestOfChaos.Unity.Editor.Attributes {
     /// <summary>
     ///     This is based off of the Unity Post Processing version
     /// </summary>

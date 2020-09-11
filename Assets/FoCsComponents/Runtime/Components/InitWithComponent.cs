@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Components {
+namespace ForestOfChaos.Unity.Components {
     public class InitWithComponent<T> where T: Component {
         public GameObject gameObject;
         public T          ScriptComponent;

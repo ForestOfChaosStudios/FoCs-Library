@@ -10,7 +10,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
     public class FoCsPropertyDrawer: PropertyDrawer {
         public static float SingleLine => FoCsGUI.SingleLine;
 

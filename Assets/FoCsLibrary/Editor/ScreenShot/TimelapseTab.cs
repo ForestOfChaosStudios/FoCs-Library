@@ -7,10 +7,10 @@
 #endregion
 
 
-using ForestOfChaosLibrary.ScreenCap;
+using ForestOfChaos.Unity.ScreenCap;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.ScreenCap {
+namespace ForestOfChaos.Unity.Editor.ScreenCap {
     public class TimelapseTab: ScreenshotTab {
         private Timelapse Timelapse;
         public  int       times    = 20;

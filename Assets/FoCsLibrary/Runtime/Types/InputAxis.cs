@@ -8,11 +8,11 @@
 
 
 using System;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace ForestOfChaosLibrary.InputManager {
+namespace ForestOfChaos.Unity.InputManager {
     [Serializable]
     public class InputAxis {
         /// <summary>

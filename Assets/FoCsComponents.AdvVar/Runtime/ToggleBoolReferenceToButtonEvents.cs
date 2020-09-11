@@ -7,8 +7,8 @@
 #endregion
 
 
-using ForestOfChaosLibrary;
-using ForestOfChaosLibrary.FoCsUI.Button;
+using ForestOfChaos;
+using ForestOfChaos.Unity.FoCsUI.Button;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.Components {

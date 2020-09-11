@@ -8,9 +8,9 @@
 
 
 using System;
-using ForestOfChaosLibrary.Editor;
-using ForestOfChaosLibrary.Editor.Windows;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Editor;
+using ForestOfChaos.Unity.Editor.Windows;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEngine;
 

@@ -1,4 +1,4 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region ï¿½ Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsGUI.cs
@@ -8,23 +8,23 @@
 
 
 using System;
-using ForestOfChaosLibrary.Editor.PropertyDrawers;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.PropertyDrawers;
 using UnityEditor;
 using UnityEngine;
 using GUICon = UnityEngine.GUIContent;
-using eInt = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<int>;
-using eBool = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEventBool;
-using eFloat = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<float>;
-using eDouble = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<double>;
-using eString = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<string>;
+using eInt = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<int>;
+using eBool = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEventBool;
+using eFloat = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<float>;
+using eDouble = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<double>;
+using eString = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<string>;
 using SerProp = UnityEditor.SerializedProperty;
-using eProp = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<UnityEditor.SerializedProperty>;
-using eObject = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<UnityEngine.Object>;
+using eProp = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<UnityEditor.SerializedProperty>;
+using eObject = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<UnityEngine.Object>;
 using Object = UnityEngine.Object;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     public static partial class FoCsGUI {
 
 

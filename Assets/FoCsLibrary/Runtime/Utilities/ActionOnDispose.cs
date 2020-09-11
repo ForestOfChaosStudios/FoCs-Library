@@ -8,9 +8,9 @@
 
 
 using System;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 
-namespace ForestOfChaosLibrary.Utilities {
+namespace ForestOfChaos.Unity.Utilities {
     public class ActionOnDispose: IDisposable {
         private readonly Action action;
 

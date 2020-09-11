@@ -10,7 +10,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Utilities {
+namespace ForestOfChaos.Unity.Editor.Utilities {
     public class EditorEntry {
         public readonly string             LabelName;
         public          SerializedProperty Property;

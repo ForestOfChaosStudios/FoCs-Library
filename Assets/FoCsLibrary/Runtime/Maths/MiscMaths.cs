@@ -7,7 +7,7 @@
 #endregion
 
 
-namespace ForestOfChaosLibrary.Maths {
+namespace ForestOfChaos.Unity.Maths {
     public class MiscMaths {
         public static bool IsOdd(int value) => (value % 2) != 0;
 

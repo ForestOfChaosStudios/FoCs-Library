@@ -9,11 +9,11 @@
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Maths.Lerp;
-using ForestOfChaosLibrary.Types;
+using ForestOfChaos.Unity.Maths.Lerp;
+using ForestOfChaos.Unity.Types;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths.Curves {
+namespace ForestOfChaos.Unity.Maths.Curves {
     [Serializable]
     public class TDCurve: ITDCurve {
         [SerializeField]

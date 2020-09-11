@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths {
+namespace ForestOfChaos.Unity.Maths {
     public static class VectorAngles {
         public static Vector3 ClampAngle(Vector3 angle, float min, float max) =>
                 new Vector3(ClampAngle(angle.x, min, max), ClampAngle(angle.y, min, max), ClampAngle(angle.z, min, max));

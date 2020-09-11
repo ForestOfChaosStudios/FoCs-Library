@@ -7,11 +7,11 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Attributes;
+using ForestOfChaos.Unity.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
     [CustomPropertyDrawer(typeof(DisableEditingAttribute), true)]
     public class DisableEditingAttributeDrawer: FoCsPropertyDrawerWithAttribute<DisableEditingAttribute> {
         private const            float        WIDTH         = 16f;

@@ -10,7 +10,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Utilities {
+namespace ForestOfChaos.Unity.Editor.Utilities {
     public struct EditorColour {
         public Color Color;
         public Color lightColor;

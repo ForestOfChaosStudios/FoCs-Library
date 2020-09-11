@@ -9,7 +9,7 @@
 
 using System;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     // ReSharper disable once MismatchedFileName
     public class FoCsControlPanel {
         /// <summary>

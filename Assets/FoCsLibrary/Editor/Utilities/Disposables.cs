@@ -8,13 +8,13 @@
 
 
 using System;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Editor.Utilities.Disposable;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Editor.Utilities.Disposable;
+using ForestOfChaos.Unity.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     /// <summary>
     ///     Every public method returns a IDisposable implementing object, most of them are for editor layout formatting
     /// </summary>

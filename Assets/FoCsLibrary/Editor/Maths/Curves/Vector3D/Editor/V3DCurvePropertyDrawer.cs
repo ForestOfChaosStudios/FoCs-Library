@@ -7,15 +7,15 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Editor.PropertyDrawers;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Maths.Curves;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Maths.Curves;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.PropertyDrawers;
 using UnityEditor;
 using UnityEngine;
-using URLP = ForestOfChaosLibrary.Editor.UnityReorderableListProperty;
+using URLP = ForestOfChaos.Unity.Editor.UnityReorderableListProperty;
 
-namespace ForestOfChaosLibrary.Editor.Maths.Curves {
+namespace ForestOfChaos.Unity.Editor.Maths.Curves {
     public class V3DCurvePropertyDrawer: FoCsPropertyDrawer {
         private UnityReorderableListProperty list;
 

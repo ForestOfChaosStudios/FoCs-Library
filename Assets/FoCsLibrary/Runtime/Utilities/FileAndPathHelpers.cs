@@ -11,7 +11,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace ForestOfChaosLibrary.Utilities {
+namespace ForestOfChaos.Unity.Utilities {
     public static class FileAndPathHelpers {
         public static string GetStreamingAssetsPathFileData(string name) {
             var filePath = Application.streamingAssetsPath + "/" + name;

@@ -7,14 +7,14 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Animation;
-using ForestOfChaosLibrary.Editor.PropertyDrawers;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Animation;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.PropertyDrawers;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Animation {
+namespace ForestOfChaos.Unity.Editor.Animation {
     [CustomPropertyDrawer(typeof(AnimatorKey))]
     public class AnimatorKeyDrawer: FoCsPropertyDrawer<AnimatorKey> {
         private const string KEY            = "Key";

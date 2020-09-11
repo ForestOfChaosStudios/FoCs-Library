@@ -9,7 +9,7 @@
 
 using System;
 
-namespace ForestOfChaosLibrary.Types {
+namespace ForestOfChaos.Unity.Types {
     [Serializable]
     public struct TransformDataLerpSettings {
         public ModeSetting UsePosition;

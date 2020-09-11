@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.FoCsUI.Text {
+namespace ForestOfChaos.Unity.FoCsUI.Text {
     public abstract class FoCsText: FoCs2DBehavior {
         public abstract string Text { get; set; }
 

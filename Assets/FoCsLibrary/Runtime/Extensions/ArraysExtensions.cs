@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class ArraysExtensions {
         public static T[] ShuffleArray<T>(T[] array, int seed) {
             var prng = new Random(seed);

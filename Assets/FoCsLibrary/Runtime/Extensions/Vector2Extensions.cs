@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class Vector2Extensions {
         public static Vector2 Randomize(this Vector2 vec, float min = -100, float max = 100) => new Vector2(Random.Range(min, max) + vec.x, Random.Range(min, max) + vec.y);
 

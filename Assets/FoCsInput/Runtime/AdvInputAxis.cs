@@ -9,8 +9,8 @@
 
 using System;
 using ForestOfChaos.Unity.AdvVar.Base;
-using ForestOfChaosLibrary.InputManager;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.InputManager;
+using ForestOfChaos.Unity.Utilities;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.InputSystem {

@@ -7,7 +7,7 @@
 #endregion
 
 
-using ForestOfChaosLibrary;
+using ForestOfChaos;
 
 namespace ForestOfChaos.Unity.AdvVar.RuntimeRef.Components {
     public abstract class BaseAddToRunTimeSet<T, RT_T>: FoCsBehaviour where RT_T: RunTimeList<T> {

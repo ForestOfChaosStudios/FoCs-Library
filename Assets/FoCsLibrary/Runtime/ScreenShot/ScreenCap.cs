@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.ScreenCap {
+namespace ForestOfChaos.Unity.ScreenCap {
     public static class ScreenCap {
         public static void TakeScreenShot() {
             TakeScreenShot(ScreenShotArgs.GetUnityCap());

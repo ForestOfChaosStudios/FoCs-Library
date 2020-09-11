@@ -7,7 +7,7 @@
 #endregion
 
 
-namespace ForestOfChaosLibrary.Maths.Random {
+namespace ForestOfChaos.Unity.Maths.Random {
     public static class RandomArray {
         public static T[] ShuffleArray<T>(this T[] array) => ShuffleArray(array, RandomMaster.Random);
 

@@ -11,7 +11,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     public partial class FoCsEditor {
         public static DefaultPropertyType GetDefaultPropertyType(SerializedProperty property) {
             if (property.displayName.Equals("Object Hide Flags"))

@@ -9,7 +9,7 @@
 
 using System.Collections.Generic;
 
-namespace ForestOfChaosLibrary.Debugging {
+namespace ForestOfChaos.Unity.Debugging {
     public static class FoCsDebug {
         public static Dictionary<string, Data> DataDictionary;
 

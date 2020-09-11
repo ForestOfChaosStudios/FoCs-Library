@@ -8,8 +8,8 @@
 
 
 using System;
-using ForestOfChaosLibrary.Editor;
-using ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes;
+using ForestOfChaos.Unity.Editor;
+using ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes;
 using UnityEditor;
 using UnityEngine;
 

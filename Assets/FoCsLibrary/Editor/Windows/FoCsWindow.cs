@@ -10,7 +10,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Windows {
+namespace ForestOfChaos.Unity.Editor.Windows {
     /// <inheritdoc />
     /// <summary>
     ///     [MenuItem("Tools/Forest Of Chaos/Example Window")]

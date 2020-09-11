@@ -8,8 +8,9 @@
 
 
 using System;
+using ForestOfChaos.Unity.Maths;
 
-namespace ForestOfChaosLibrary.Maths.Random {
+namespace ForestOfChaos.Unity.Maths.Random {
     public static class RandomStrings {
         public const string ALPHA           = "abcdefghijklmnopqrstuvwxyz";
         public const string NUMERIC         = "1234567890";

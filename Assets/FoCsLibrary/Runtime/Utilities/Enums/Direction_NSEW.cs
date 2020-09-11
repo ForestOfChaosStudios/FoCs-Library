@@ -7,7 +7,7 @@
 #endregion
 
 
-namespace ForestOfChaosLibrary.Utilities.Enums {
+namespace ForestOfChaos.Unity.Utilities.Enums {
     public enum Direction_NSEW {
         North,
         South,

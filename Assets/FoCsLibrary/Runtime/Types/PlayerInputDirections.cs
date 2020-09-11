@@ -7,7 +7,7 @@
 #endregion
 
 
-namespace ForestOfChaosLibrary.InputManager {
+namespace ForestOfChaos.Unity.InputManager {
     public enum PlayerInputDirections {
         Down,
         Up,

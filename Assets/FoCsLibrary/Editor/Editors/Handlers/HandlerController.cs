@@ -7,11 +7,11 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
-using Dictionary = System.Collections.Generic.Dictionary<ForestOfChaosLibrary.Editor.FoCsEditor.SortableSerializedProperty, ForestOfChaosLibrary.Editor.IPropertyLayoutHandler>;
+using Dictionary = System.Collections.Generic.Dictionary<ForestOfChaos.Unity.Editor.FoCsEditor.SortableSerializedProperty, ForestOfChaos.Unity.Editor.IPropertyLayoutHandler>;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     public class HandlerController {
         public  PropertyHandler          fallbackHandler;
         public  IPropertyLayoutHandler[] Handlers;

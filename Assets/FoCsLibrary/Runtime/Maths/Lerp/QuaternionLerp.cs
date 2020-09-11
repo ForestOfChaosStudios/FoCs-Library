@@ -8,10 +8,10 @@
 
 
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths.Lerp {
+namespace ForestOfChaos.Unity.Maths.Lerp {
     public static class QuaternionLerp {
         public static Quaternion Lerp(Quaternion value1, Quaternion value2, float time, bool clamp = false) {
             if (clamp)

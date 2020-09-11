@@ -9,7 +9,7 @@
 
 using System;
 
-namespace ForestOfChaosLibrary.Utilities.Enums {
+namespace ForestOfChaos.Unity.Utilities.Enums {
     [Flags]
     public enum UnityTriggerTimes {
         Start    = 1 << 0,

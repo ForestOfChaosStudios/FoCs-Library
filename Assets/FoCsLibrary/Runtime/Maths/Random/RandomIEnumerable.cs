@@ -10,7 +10,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ForestOfChaosLibrary.Maths.Random {
+namespace ForestOfChaos.Unity.Maths.Random {
     public static class RandomIEnumerable {
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> iEnumerable) => Shuffle(iEnumerable, RandomMaster.Random);
 

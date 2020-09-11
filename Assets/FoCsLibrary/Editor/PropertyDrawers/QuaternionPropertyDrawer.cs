@@ -7,12 +7,12 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
     [CustomPropertyDrawer(typeof(Quaternion))]
     public class QuaternionPropertyDrawer: VectorPropEditor {
         public static readonly GUIContent[] Options = {new GUIContent("Euler Angles"), new GUIContent("Quaternion")};

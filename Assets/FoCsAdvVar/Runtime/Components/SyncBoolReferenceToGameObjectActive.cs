@@ -7,7 +7,7 @@
 #endregion
 
 
-using ForestOfChaosLibrary;
+using ForestOfChaos;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.Components {

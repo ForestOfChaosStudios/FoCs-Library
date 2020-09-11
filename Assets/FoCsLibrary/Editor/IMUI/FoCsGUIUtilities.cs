@@ -9,7 +9,7 @@
 
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     // ReSharper disable once MismatchedFileName
     public static partial class FoCsGUI {
         public static float SingleLine => EditorGUIUtility.singleLineHeight;

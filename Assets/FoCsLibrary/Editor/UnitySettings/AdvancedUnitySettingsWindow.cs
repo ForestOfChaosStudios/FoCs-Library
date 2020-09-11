@@ -8,13 +8,13 @@
 
 
 using System.Linq;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Editor.Windows;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.UnitySettings {
+namespace ForestOfChaos.Unity.Editor.UnitySettings {
     [FoCsWindow]
     public class AdvancedUnitySettingsWindow: FoCsTabbedWindow<AdvancedUnitySettingsWindow> {
         private const string                                 Title = "Advanced Unity Settings Window";

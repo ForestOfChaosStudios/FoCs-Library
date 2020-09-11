@@ -9,12 +9,12 @@
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Maths.Lerp;
-using ForestOfChaosLibrary.Types;
+using ForestOfChaos.Unity.Types;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Maths.Lerp;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths.Curves {
+namespace ForestOfChaos.Unity.Maths.Curves {
     [Serializable]
     public class TDCurve4Points: ITDCurve {
         public const int TOTAL_COUNT = 4;

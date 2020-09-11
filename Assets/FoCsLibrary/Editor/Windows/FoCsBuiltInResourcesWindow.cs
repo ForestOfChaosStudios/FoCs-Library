@@ -9,7 +9,7 @@
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -17,7 +17,7 @@ using Object = UnityEngine.Object;
 //TODO: EDIT more to look and feel like my own window, this was just to quickly find an icon I needed for the localizion window.
 //Found at http://wiki.unity3d.com/index.php/Show_Built_In_Resources
 
-namespace ForestOfChaosLibrary.Editor.Windows {
+namespace ForestOfChaos.Unity.Editor.Windows {
     [FoCsWindow]
     public class FoCsBuiltInResourcesWindow: FoCsWindow<FoCsBuiltInResourcesWindow> {
         private float         _maxY;

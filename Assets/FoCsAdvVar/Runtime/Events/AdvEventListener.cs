@@ -7,7 +7,7 @@
 #endregion
 
 
-using ForestOfChaosLibrary;
+using ForestOfChaos;
 using UnityEngine;
 using UnityEngine.Events;
 

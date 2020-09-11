@@ -9,7 +9,7 @@
 
 using System.Text.RegularExpressions;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class StringExtensions {
         private const string INVALID_CHARS            = "([=+{}[]\"'?.<>,\\|()*&^%$#@!;:-])+";
         private const string WHITESPACE               = "\t\n\v\f\r ";

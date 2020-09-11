@@ -10,13 +10,13 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Windows {
+namespace ForestOfChaos.Unity.Editor.Windows {
     public class FoCsControlPanel: FoCsWindow<FoCsControlPanel> {
         private const  string     SHORT_TITLE = "Control Panel";
         private const  string     TITLE       = "FoCs " + SHORT_TITLE;

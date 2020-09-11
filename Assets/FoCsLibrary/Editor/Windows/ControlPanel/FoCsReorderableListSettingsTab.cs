@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     [FoCsControlPanel.FoCsControlPanelTabAttribute]
     public static class FoCsReorderableListSettingsTab {
         private static readonly GUIContent Enabled  = new GUIContent("List Limiter Enabled");

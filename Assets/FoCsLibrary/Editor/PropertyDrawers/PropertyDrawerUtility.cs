@@ -13,7 +13,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
     public static class PropertyDrawerUtility {
         public static T GetActualObject<T>(FieldInfo fieldInfo, SerializedProperty property) where T: class {
             var obj = fieldInfo.GetValue(property.serializedObject.targetObject);

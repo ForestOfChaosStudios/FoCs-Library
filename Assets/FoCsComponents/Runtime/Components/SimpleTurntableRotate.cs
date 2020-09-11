@@ -7,10 +7,10 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Attributes;
+using ForestOfChaos.Unity.Attributes;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Components {
+namespace ForestOfChaos.Unity.Components {
     [AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "Simple Turntable Rotate")]
     public class SimpleTurntableRotate: FoCsBehaviour {
         public Vector3 RotateAngle;

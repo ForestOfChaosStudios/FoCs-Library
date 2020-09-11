@@ -7,12 +7,12 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
     public class VectorPropEditor: FoCsPropertyDrawer {
         protected const        float      LABEL_WIDTH = 16;
         public static readonly GUIContent X_Content   = new GUIContent("X", "The X Value Of this Vector");

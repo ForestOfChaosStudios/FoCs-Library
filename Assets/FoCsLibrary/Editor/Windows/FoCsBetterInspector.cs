@@ -8,13 +8,13 @@
 
 
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 using UEditor = UnityEditor.Editor;
 
-namespace ForestOfChaosLibrary.Editor.Windows {
+namespace ForestOfChaos.Unity.Editor.Windows {
     public class FoCsBetterInspector: FoCsWindow<FoCsBetterInspector> {
         private const           string                      Title = "Better Inspector";
         private static readonly GUIContent                  Label = new GUIContent("Add Object to window");

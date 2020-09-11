@@ -11,7 +11,7 @@ using UnityEngine;
 using UText = UnityEngine.UI.Text;
 using UToggle = UnityEngine.UI.Toggle;
 
-namespace ForestOfChaosLibrary.FoCsUI.Toggle {
+namespace ForestOfChaos.Unity.FoCsUI.Toggle {
     [AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Toggle/Events (Unity Text)")]
     public class FoCsToggleClickEvent: FoCsToggle {
         public UText TextObj;

@@ -9,10 +9,10 @@
 
 using System;
 using ForestOfChaos.Unity.AdvVar.Base;
-using ForestOfChaosLibrary.Editor;
-using ForestOfChaosLibrary.Editor.PropertyDrawers;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Editor;
+using ForestOfChaos.Unity.Editor.PropertyDrawers;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Utilities;
 using UnityEditor;
 using UnityEngine;
 

@@ -7,14 +7,14 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Attributes;
-using ForestOfChaosLibrary.Editor.PropertyDrawers;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Attributes;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.PropertyDrawers;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Attributes {
+namespace ForestOfChaos.Unity.Editor.Attributes {
     [CustomPropertyDrawer(typeof(EnumFlagsAttribute))]
     public class EnumFlagsAttributeDrawer: FoCsPropertyDrawerWithAttribute<EnumFlagsAttribute> {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {

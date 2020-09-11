@@ -8,10 +8,10 @@
 
 
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Utilities.Enums;
+using ForestOfChaos.Unity.Utilities.Enums;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.FoCsUI.Slider {
+namespace ForestOfChaos.Unity.FoCsUI.Slider {
     [AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Slider/Toggle GameObjects")]
     public class SliderToggleGameObjectsActive: FoCsBehaviour {
         public List<GameObject>  GameObjects2Toggle = new List<GameObject>();

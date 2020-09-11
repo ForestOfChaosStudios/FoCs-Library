@@ -13,7 +13,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     internal class AlphaSorter: FoCsEditor.FoCsEditorSorter {
         public static          AlphaSorter Instance;
         public static readonly GUIContent  modeName = new GUIContent("A-Z");

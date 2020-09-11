@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Utilities {
+namespace ForestOfChaos.Unity.Utilities {
     public class RectEdit {
         public enum RectAxis {
             X,

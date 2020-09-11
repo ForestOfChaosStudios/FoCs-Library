@@ -9,11 +9,11 @@
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Maths.Lerp;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Maths.Lerp;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths.Curves {
+namespace ForestOfChaos.Unity.Maths.Curves {
     [Serializable]
     public class V3Curve4Points: IV3Curve {
         public const int TOTAL_COUNT = 4;

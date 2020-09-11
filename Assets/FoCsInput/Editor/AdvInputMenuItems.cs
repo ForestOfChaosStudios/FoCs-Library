@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using System.IO;
 using ForestOfChaos.Unity.AdvVar.Base;
 using ForestOfChaos.Unity.AdvVar.InputSystem;
-using ForestOfChaosLibrary.Editor;
-using ForestOfChaosLibrary.Editor.UnitySettings;
-using ForestOfChaosLibrary.InputManager;
+using ForestOfChaos.Unity.Editor;
+using ForestOfChaos.Unity.Editor.UnitySettings;
+using ForestOfChaos.Unity.InputManager;
 using UnityEditor;
 using UnityEngine;
 

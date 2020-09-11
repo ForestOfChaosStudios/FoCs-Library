@@ -7,11 +7,11 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Attributes;
+using ForestOfChaos.Unity.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
     [CustomPropertyDrawer(typeof(ConditionalHideAttribute))]
     public class ConditionalHideDrawer: FoCsPropertyDrawerWithAttribute<ConditionalHideAttribute> {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {

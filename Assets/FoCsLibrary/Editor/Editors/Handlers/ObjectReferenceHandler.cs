@@ -9,12 +9,12 @@
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Attributes;
-using ForestOfChaosLibrary.Editor.PropertyDrawers;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Attributes;
+using ForestOfChaos.Unity.Editor.PropertyDrawers;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     public class ObjectReferenceHandler: IPropertyLayoutHandler {
         public readonly  FoCsEditor                        owner;
         private readonly Dictionary<string, EditorFoldout> ShowAfter = new Dictionary<string, EditorFoldout>();

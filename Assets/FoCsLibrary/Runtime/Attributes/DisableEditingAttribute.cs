@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Attributes {
+namespace ForestOfChaos.Unity.Attributes {
     public class DisableEditingAttribute: PropertyAttribute {
         public bool AllowConfirmedEdit;
         public bool CurrentlyEditable;

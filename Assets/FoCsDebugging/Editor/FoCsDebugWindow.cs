@@ -7,15 +7,15 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Debugging;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Editor.Windows;
+using ForestOfChaos.Unity.Debugging;
+using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
-using KeyValue = System.Collections.Generic.KeyValuePair<string, ForestOfChaosLibrary.Debugging.FoCsDebug.Data>;
+using KeyValue = System.Collections.Generic.KeyValuePair<string, ForestOfChaos.Unity.Debugging.FoCsDebug.Data>;
 
-namespace ForestOfChaosLibrary.Editor.Debugging {
-    [FoCsWindowAttribute]
+namespace ForestOfChaos.Unity.Editor.Debugging {
+    [FoCsWindow]
     public class FoCsDebugWindow: FoCsWindow<FoCsDebugWindow> {
         private const string  WINDOW_NAME = "FoCsDebugWindow";
         private const int     LABEL_WIDTH = 64;

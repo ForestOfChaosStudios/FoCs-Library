@@ -9,7 +9,7 @@
 
 using System;
 using ForestOfChaos.Unity.AdvVar.Base;
-using ForestOfChaosLibrary.Animation;
+using ForestOfChaos.Unity.Animation;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar {

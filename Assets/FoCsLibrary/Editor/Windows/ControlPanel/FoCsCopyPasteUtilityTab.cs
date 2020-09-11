@@ -7,10 +7,10 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     [FoCsControlPanel.FoCsControlPanelTabAttribute]
     public static class FoCsCopyPasteUtilityTab {
         public static void DrawGUI(FoCsControlPanel owner) {

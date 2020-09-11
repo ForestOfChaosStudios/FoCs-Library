@@ -8,9 +8,9 @@
 
 
 using System;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 
-namespace ForestOfChaosLibrary.Types {
+namespace ForestOfChaos.Unity.Types {
     [Serializable]
     public static class TypeWithNameAndData {
         [Serializable]

@@ -10,7 +10,7 @@
 using System;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.Utilities.Disposable {
+namespace ForestOfChaos.Unity.Editor.Utilities.Disposable {
     public class EditorIndent: IDisposable {
         private readonly int  _amount;
         private readonly bool _set;

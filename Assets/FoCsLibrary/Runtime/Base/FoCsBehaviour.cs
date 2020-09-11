@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary {
+namespace ForestOfChaos.Unity {
     public abstract class FoCsBehaviour: MonoBehaviour {
         private Transform m_Transform;
 

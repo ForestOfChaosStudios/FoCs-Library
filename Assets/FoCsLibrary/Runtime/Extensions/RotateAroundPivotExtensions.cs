@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths {
+namespace ForestOfChaos.Unity.Maths {
     public static class RotateAroundPivotExtensions {
         //Returns the rotated Vector3 using a Quaternion
         public static Vector3 RotateAroundPivot(this Vector3 Point, Vector3 Pivot, Quaternion Angle) => (Angle * (Point - Pivot)) + Pivot;

@@ -9,7 +9,7 @@
 
 using System.Collections.Generic;
 
-namespace ForestOfChaosLibrary.Maths.Random {
+namespace ForestOfChaos.Unity.Maths.Random {
     public static class RandomList {
         public static void ShuffleList<T>(this IList<T> list) {
             ShuffleList(list, RandomMaster.Random);

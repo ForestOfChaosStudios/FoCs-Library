@@ -12,7 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Grid {
+namespace ForestOfChaos.Unity.Features.Grid {
     [Serializable]
     public class Neighbours: IEnumerable<GridPosition> {
         [SerializeField]

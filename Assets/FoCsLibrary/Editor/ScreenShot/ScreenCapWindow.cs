@@ -7,12 +7,12 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Editor.Windows;
+using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.ScreenCap {
+namespace ForestOfChaos.Unity.Editor.ScreenCap {
     [FoCsWindow]
     public class ScreenCapWindow: FoCsTabbedWindow<ScreenCapWindow> {
         private const string Title = "Screen Capture Window";

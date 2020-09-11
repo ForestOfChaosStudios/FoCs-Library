@@ -10,7 +10,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class TransformExtensions {
         public static void ResetLocalPosRotScale(this Transform tF) {
             tF.localPosition    = Vector3.zero;

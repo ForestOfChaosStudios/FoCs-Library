@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.JSON {
+namespace ForestOfChaos.Unity.JSON {
     public interface IJson {
         string ToJson();
 

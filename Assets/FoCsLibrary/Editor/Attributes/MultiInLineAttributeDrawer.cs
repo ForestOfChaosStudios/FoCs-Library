@@ -7,12 +7,12 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Attributes;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Attributes;
+using ForestOfChaos.Unity.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
     [CustomPropertyDrawer(typeof(MultiInLineAttribute), true)]
     public class MultiInLineAttributeDrawer: FoCsPropertyDrawerWithAttribute<MultiInLineAttribute> {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {

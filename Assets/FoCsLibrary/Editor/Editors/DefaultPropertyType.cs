@@ -7,7 +7,7 @@
 #endregion
 
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     public enum DefaultPropertyType {
         NotDefault,
         Disabled,

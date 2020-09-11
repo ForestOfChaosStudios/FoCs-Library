@@ -7,11 +7,11 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Utilities {
+namespace ForestOfChaos.Unity.Editor.Utilities {
     public sealed class RectVerticalScope: RectLayoutScope {
         public RectVerticalScope(int count, Rect rect): base(count, rect) { }
 

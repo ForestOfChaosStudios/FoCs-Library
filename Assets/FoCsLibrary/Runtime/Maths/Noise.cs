@@ -7,10 +7,10 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Maths.Random;
+using ForestOfChaos.Unity.Maths.Random;
 using RAND = UnityEngine.Random;
 
-namespace ForestOfChaosLibrary.Maths {
+namespace ForestOfChaos.Unity.Maths {
 
 
 #region Noise

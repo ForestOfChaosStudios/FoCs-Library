@@ -8,10 +8,10 @@
 
 
 using System;
-using ForestOfChaosLibrary.Maths.Lerp;
+using ForestOfChaos.Unity.Maths.Lerp;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Types {
+namespace ForestOfChaos.Unity.Types {
     [Serializable]
     public struct TransformData {
         public Vector3    Position;

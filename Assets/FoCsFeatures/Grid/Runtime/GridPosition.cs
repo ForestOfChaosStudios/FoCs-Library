@@ -8,10 +8,10 @@
 
 
 using System;
-using ForestOfChaosLibrary.Types;
+using ForestOfChaos.Unity.Types;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Grid {
+namespace ForestOfChaos.Unity.Features.Grid {
     [Serializable]
     public struct GridPosition {
         public Vector2I Position;

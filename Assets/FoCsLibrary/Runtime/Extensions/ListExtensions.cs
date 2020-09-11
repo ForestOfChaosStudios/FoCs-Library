@@ -13,7 +13,7 @@ using System.Linq;
 using URandom = UnityEngine.Random;
 using SRandom = System.Random;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class ListExtensions {
         public static bool IsEmpty<T>(this List<T> list) => list.Count == 0;
 

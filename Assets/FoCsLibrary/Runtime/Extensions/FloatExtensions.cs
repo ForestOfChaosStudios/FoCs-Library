@@ -8,9 +8,9 @@
 
 
 using System;
-using ForestOfChaosLibrary.Maths.Lerp;
+using ForestOfChaos.Unity.Maths.Lerp;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class FloatExtensions {
         public static bool IsZero(this float f) => f == 0;
 

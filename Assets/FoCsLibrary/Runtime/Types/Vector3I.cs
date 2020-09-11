@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Types {
+namespace ForestOfChaos.Unity.Types {
     [Serializable]
     public struct Vector3I: IEquatable<Vector3I>, IComparable<Vector3I>, IEquatable<int>, IComparable<int> {
         public int x;

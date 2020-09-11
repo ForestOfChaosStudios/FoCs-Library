@@ -11,7 +11,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Utilities.Disposable {
+namespace ForestOfChaos.Unity.Editor.Utilities.Disposable {
     public class EditorColorChanger: IDisposable {
         private readonly EditorColourType _editorColourType;
         private readonly Color            color;

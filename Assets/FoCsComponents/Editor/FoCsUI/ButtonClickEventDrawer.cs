@@ -7,11 +7,11 @@
 #endregion
 
 
-using ForestOfChaosLibrary.FoCsUI.Button;
+using ForestOfChaos.Unity.FoCsUI.Button;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.FoCsUI {
+namespace ForestOfChaos.Unity.Editor.FoCsUI {
     [CustomEditor(typeof(FoCsButton), true, isFallback = true)]
     [CanEditMultipleObjects]
     public class ButtonClickEventBaseDrawer: FoCsEditor {

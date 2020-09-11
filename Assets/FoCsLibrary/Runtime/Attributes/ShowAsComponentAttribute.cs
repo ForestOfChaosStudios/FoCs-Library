@@ -9,7 +9,7 @@
 
 using System;
 
-namespace ForestOfChaosLibrary.Attributes {
+namespace ForestOfChaos.Unity.Attributes {
     [AttributeUsage(AttributeTargets.Field)]
     public class ShowAsComponentAttribute: Attribute { }
 }

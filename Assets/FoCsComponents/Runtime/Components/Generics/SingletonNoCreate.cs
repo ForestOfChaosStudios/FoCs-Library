@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Generics {
+namespace ForestOfChaos.Unity.Generics {
     [Serializable]
     public class SingletonNoCreate<S>: FoCsBehaviour where S: FoCsBehaviour {
         protected static S instance;

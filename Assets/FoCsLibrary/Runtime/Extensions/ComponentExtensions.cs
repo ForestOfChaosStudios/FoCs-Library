@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class ComponentExtensions {
         public static Vector3 GetPosition(this Component mB) => mB.transform.position;
 

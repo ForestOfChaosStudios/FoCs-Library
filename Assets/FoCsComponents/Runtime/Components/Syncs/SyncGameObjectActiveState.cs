@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Components.Syncs {
+namespace ForestOfChaos.Unity.Components.Syncs {
     [AddComponentMenu(FoCsStrings.COMPONENTS_SYNC_FOLDER_ + "GameObject Sync")]
     public class SyncGameObjectActiveState: FoCsBehaviour {
         private GameObject            GameObject;

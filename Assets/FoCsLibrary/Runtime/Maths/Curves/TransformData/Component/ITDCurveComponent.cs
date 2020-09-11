@@ -8,10 +8,10 @@
 
 
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Types;
+using ForestOfChaos.Unity.Types;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths.Curves.Components {
+namespace ForestOfChaos.Unity.Maths.Curves.Components {
     public class ITDCurveComponent<T>: ICurveTDComponent, ITDCurve where T: ITDCurve {
         public T Curve;
 

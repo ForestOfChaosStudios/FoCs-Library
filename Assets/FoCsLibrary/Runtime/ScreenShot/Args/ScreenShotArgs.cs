@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.ScreenCap {
+namespace ForestOfChaos.Unity.ScreenCap {
     public class ScreenShotArgs {
         public int    ResolutionMultiplier = 2;
         public string fileName             = "";

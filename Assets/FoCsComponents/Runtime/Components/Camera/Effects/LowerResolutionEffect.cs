@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Components.Camera.Effects {
+namespace ForestOfChaos.Unity.Components.Camera.Effects {
     [ExecuteInEditMode]
     [AddComponentMenu(FoCsStrings.COMPONENTS_CAMERA_FOLDER_ + "Effects/LowerResolutionEffect")]
     public class LowerResolutionEffect: CameraEffectBase {

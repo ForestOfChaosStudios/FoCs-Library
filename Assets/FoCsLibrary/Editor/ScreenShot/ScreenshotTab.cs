@@ -7,12 +7,12 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Editor.Windows;
-using ForestOfChaosLibrary.ScreenCap;
+using ForestOfChaos.Unity.ScreenCap;
+using ForestOfChaos.Unity.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.ScreenCap {
+namespace ForestOfChaos.Unity.Editor.ScreenCap {
     public class ScreenshotTab: FoCsTab<ScreenCapWindow> {
         private   ScreenShotArgs  args;
         protected ScreenCapWindow Owner;
@@ -108,7 +108,7 @@ namespace ForestOfChaosLibrary.Editor.ScreenCap {
 
         protected virtual void TakeScreenShot() {
             BuildArgs();
-            ForestOfChaosLibrary.ScreenCap.ScreenCap.TakeScreenShot(args);
+            Unity.ScreenCap.ScreenCap.TakeScreenShot(args);
         }
 
         private void BuildArgs() {

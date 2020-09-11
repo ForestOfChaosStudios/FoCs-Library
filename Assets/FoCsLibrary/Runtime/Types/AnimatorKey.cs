@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Animation {
+namespace ForestOfChaos.Unity.Animation {
     [Serializable]
     public class AnimatorKey {
         public enum AnimType {

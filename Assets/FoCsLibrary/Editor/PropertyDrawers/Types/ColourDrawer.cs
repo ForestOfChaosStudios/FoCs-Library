@@ -7,11 +7,11 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Types;
+using ForestOfChaos.Unity.Types;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Types {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Types {
     [CustomPropertyDrawer(typeof(Colour))]
     public class ColourDrawer: FoCsPropertyDrawer<Colour> {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {

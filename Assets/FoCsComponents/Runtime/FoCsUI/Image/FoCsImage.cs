@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 using UImage = UnityEngine.UI.Image;
 
-namespace ForestOfChaosLibrary.FoCsUI.Image {
+namespace ForestOfChaos.Unity.FoCsUI.Image {
     public abstract class FoCsImage: FoCs2DBehavior {
         public UImage Image;
         public Action onMouseClick;

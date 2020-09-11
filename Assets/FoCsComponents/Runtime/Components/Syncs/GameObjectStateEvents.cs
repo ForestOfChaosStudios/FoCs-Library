@@ -8,10 +8,10 @@
 
 
 using System;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Components.Syncs {
+namespace ForestOfChaos.Unity.Components.Syncs {
     [AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "GameObject State Events")]
     public class GameObjectStateEvents: FoCsBehaviour {
         public Action OnDestroyed;

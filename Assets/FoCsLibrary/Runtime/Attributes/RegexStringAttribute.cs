@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Attributes {
+namespace ForestOfChaos.Unity.Attributes {
     public class RegexStringAttribute: PropertyAttribute {
         public readonly string helpMessage;
         public readonly string pattern;

@@ -8,11 +8,11 @@
 
 
 using System.Text.RegularExpressions;
-using ForestOfChaosLibrary.Attributes;
+using ForestOfChaos.Unity.Attributes;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
     [CustomPropertyDrawer(typeof(RegexStringAttribute))]
     public class RegexStringDrawerWithAttribute: FoCsPropertyDrawerWithAttribute<RegexStringAttribute> {
         private const int helpHeight = 30;

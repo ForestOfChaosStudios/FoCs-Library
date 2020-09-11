@@ -7,12 +7,12 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Maths.Curves.Components;
+using ForestOfChaos.Unity.Maths.Curves.Components;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Maths.Curves {
+namespace ForestOfChaos.Unity.Editor.Maths.Curves {
     public class V3DCurveEditor<T>: FoCsEditor<T> where T: ICurveV3DComponent {
         private static float     resolution = 0.1f;
         private static Mode      MyMode     = Mode.Move;

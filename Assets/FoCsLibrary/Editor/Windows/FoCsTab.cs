@@ -7,7 +7,7 @@
 #endregion
 
 
-namespace ForestOfChaosLibrary.Editor.Windows {
+namespace ForestOfChaos.Unity.Editor.Windows {
     public abstract class FoCsTab<T> where T: FoCsWindow {
         public abstract string TabName { get; }
 

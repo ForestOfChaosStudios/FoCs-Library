@@ -7,15 +7,15 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Editor.PropertyDrawers;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Types;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Types;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.PropertyDrawers;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Maths.Curves {
+namespace ForestOfChaos.Unity.Editor.Maths.Curves {
     [CustomPropertyDrawer(typeof(TransformData))]
     public class TransformDataDrawer: FoCsPropertyDrawer<TransformData> {
         private static readonly GUIContent CopyContent     = new GUIContent("Copy",  "Copies a new TransformData");

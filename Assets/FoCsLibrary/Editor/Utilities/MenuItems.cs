@@ -9,7 +9,7 @@
 
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.Utilities {
+namespace ForestOfChaos.Unity.Editor.Utilities {
     public static class MenuItems {
         [MenuItem(FileStrings._FORESTOFCHAOS_ + FileStrings.FOLDERS_ + "Create All Folders")]
         public static void CreateAllFolders() {

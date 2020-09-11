@@ -10,11 +10,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Utilities {
+namespace ForestOfChaos.Unity.Editor.Utilities {
     public abstract class RectLayoutScope: IDisposable, IEnumerable<Rect> {
         protected int CurrentIndex;
 

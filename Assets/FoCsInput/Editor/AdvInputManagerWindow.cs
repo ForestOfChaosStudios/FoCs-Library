@@ -7,14 +7,14 @@
 #endregion
 
 
+using ForestOfChaos.Unity.Editor;
+using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Editor.Windows;
 using ForestOfChaos.Unity.AdvVar.InputSystem;
-using ForestOfChaosLibrary.Editor;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.InputManager.Editor {
+namespace ForestOfChaos.Unity.InputManager.Editor {
     public class AdvInputManagerWindow: FoCsWindow<AdvInputManagerWindow> {
         public const  string InputManagerEnumName = "PlayerInputManagerEnum";
         private const string Title                = "Input Manager";

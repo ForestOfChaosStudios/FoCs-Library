@@ -7,8 +7,8 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Editor;
-using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaos.Unity.Editor;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 

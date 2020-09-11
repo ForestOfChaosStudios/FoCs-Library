@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Attributes {
+namespace ForestOfChaos.Unity.Attributes {
     public class EnumFlagsAttribute: PropertyAttribute {
         public readonly bool DrawButtons;
 

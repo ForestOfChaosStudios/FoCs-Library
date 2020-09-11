@@ -10,7 +10,7 @@
 using System;
 using RAND = System.Random;
 
-namespace ForestOfChaosLibrary.Maths.Random {
+namespace ForestOfChaos.Unity.Maths.Random {
     public static class RandomMaster {
         private static RAND p_Random;
 

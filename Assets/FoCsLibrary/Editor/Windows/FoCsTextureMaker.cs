@@ -7,11 +7,11 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Windows {
+namespace ForestOfChaos.Unity.Editor.Windows {
     [FoCsWindow]
     public class FoCsTextureMaker: FoCsWindow<FoCsTextureMaker> {
         private const string TITLE = "Texture Maker";

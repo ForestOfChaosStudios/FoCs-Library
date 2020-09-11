@@ -9,7 +9,7 @@
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.Base {

@@ -10,14 +10,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using ObjRef = ForestOfChaosLibrary.Editor.ObjectReference;
+using ObjRef = ForestOfChaos.Unity.Editor.ObjectReference;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(object), true, isFallback = true)]
     public partial class FoCsEditor: UnityEditor.Editor, IRepaintable {
@@ -26,7 +26,7 @@ namespace ForestOfChaosLibrary.Editor {
         private static readonly GUIContent                  SortModeContent        = new GUIContent("Sort Mode", "Change the order of the properties");
         private static readonly GUIContent                  SortModeContentHover   = new GUIContent("",          "Change the order of the properties");
         private readonly        HandlerController           Handler                = new HandlerController();
-        internal                Dictionary<string, ObjRef>  objectDrawer           = new Dictionary<string, ObjRef>(1);
+        internal                Dictionary<string, ObjectReference>  objectDrawer           = new Dictionary<string, ObjectReference>(1);
         private                 bool                        showContextMenuButtons = true;
         private                 int                         sortingModeIndex;
         internal                UnityReorderableListStorage URLPStorage;

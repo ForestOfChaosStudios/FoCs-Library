@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Attributes {
+namespace ForestOfChaos.Unity.Attributes {
     public class NoFoldoutAttribute: PropertyAttribute {
         public readonly bool ShowVariableName;
 

@@ -14,7 +14,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ForestOfChaosLibrary.Editor.Utilities {
+namespace ForestOfChaos.Unity.Editor.Utilities {
     public static class CopyPasteUtility {
         private const   string                     COPY_SPLIT   = ">||>";
         private const   string                     COPY_SPLIT_S = COPY_SPLIT + "\n";

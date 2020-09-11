@@ -7,7 +7,7 @@
 #endregion
 
 
-namespace ForestOfChaosLibrary {
+namespace ForestOfChaos.Unity {
     public class FoCsStrings {
         public const  string STUDIO_NAME               = "Forest Of Chaos";
         public const  string LIBRARY_NAME              = "Forest Of Chaos Library";

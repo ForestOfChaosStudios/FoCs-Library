@@ -11,7 +11,7 @@ using System;
 using UnityEngine;
 using UToggle = UnityEngine.UI.Toggle;
 
-namespace ForestOfChaosLibrary.FoCsUI.Toggle {
+namespace ForestOfChaos.Unity.FoCsUI.Toggle {
     public abstract class FoCsToggle: FoCsBehaviour {
         public Action<bool> onValueChanged;
         public UToggle      Toggle;

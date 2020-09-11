@@ -9,11 +9,11 @@
 
 using System;
 using ForestOfChaos.Unity.AdvVar;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 using USlider = UnityEngine.UI.Slider;
 
-namespace ForestOfChaosLibrary.FoCsUI.Slider {
+namespace ForestOfChaos.Unity.FoCsUI.Slider {
     [AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Slider/Slider")]
     public class FoCsSlider: FoCsBehaviour {
         public Action<float>  OnValueChanged;

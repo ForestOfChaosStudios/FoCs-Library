@@ -8,11 +8,11 @@
 
 
 using System;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 using UButton = UnityEngine.UI.Button;
 
-namespace ForestOfChaosLibrary.FoCsUI.Button {
+namespace ForestOfChaos.Unity.FoCsUI.Button {
     public abstract class FoCsButton: FoCsBehaviour {
         public UButton Button;
         public Action  onMouseClick;

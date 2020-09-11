@@ -8,11 +8,11 @@
 
 
 using System;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ForestOfChaosLibrary.FoCsUI {
+namespace ForestOfChaos.Unity.FoCsUI {
     [AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "Scrollbar Events")]
     [RequireComponent(typeof(Scrollbar))]
     public class ScrollbarEvents: FoCsBehaviour {

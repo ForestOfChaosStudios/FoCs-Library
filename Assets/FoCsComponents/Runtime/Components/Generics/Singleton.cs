@@ -8,10 +8,10 @@
 
 
 using System;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Generics {
+namespace ForestOfChaos.Unity.Generics {
     [Serializable]
     public class Singleton<S>: FoCsBehaviour where S: FoCsBehaviour {
         protected static S instance;

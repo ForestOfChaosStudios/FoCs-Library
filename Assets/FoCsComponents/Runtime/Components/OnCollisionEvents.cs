@@ -8,10 +8,10 @@
 
 
 using System;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Components {
+namespace ForestOfChaos.Unity.Components {
     [AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "On Collision Events")]
     public class OnCollisionEvents: FoCsBehaviour {
         public event Action<Collision> OnCollEnter;

@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     [FoCsControlPanel.FoCsControlPanelTabAttribute]
     public static class FoCsInfoTab {
         public static void DrawGUI(FoCsControlPanel owner) {

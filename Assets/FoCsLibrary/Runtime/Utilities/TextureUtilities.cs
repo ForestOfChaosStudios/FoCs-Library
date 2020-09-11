@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Utilities {
+namespace ForestOfChaos.Unity.Utilities {
     public static class TextureUtilities {
         public static Texture2D GetSolidTexture(Color col) {
             var tex = new Texture2D(2, 2);

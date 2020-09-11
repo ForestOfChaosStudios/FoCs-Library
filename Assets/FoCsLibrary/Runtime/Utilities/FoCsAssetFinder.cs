@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -19,7 +19,7 @@ using UnityEditor;
 using UnityEngine;
 #endif
 
-namespace ForestOfChaosLibrary.Utilities {
+namespace ForestOfChaos.Unity.Utilities {
     public static class FoCsAssetFinder {
         public static T[] FindAssetsByType<T>() where T: Object => FindAssetsByType(typeof(T)).Cast<T>().ToArray();
 

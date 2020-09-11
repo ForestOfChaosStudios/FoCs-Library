@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.Utilities {
+namespace ForestOfChaos.Unity.Editor.Utilities {
     public static class SerializedObjectExtensions {
         public static IEnumerable<SerializedProperty> Properties(this SerializedObject serializedObject, bool enterChildren = false) {
             var iterator = serializedObject.GetIterator();

@@ -7,11 +7,11 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Attributes;
+using ForestOfChaos.Unity.Attributes;
 using UnityEngine;
 using UInputField = UnityEngine.UI.InputField;
 
-namespace ForestOfChaosLibrary.FoCsUI.InputField {
+namespace ForestOfChaos.Unity.FoCsUI.InputField {
     [AddComponentMenu(FoCsStrings.COMPONENTS_UI_FOLDER_ + "InputField/InputField (Unity Text)")]
     public class FoCsInputFieldEvent: FoCsInputField {
         [NoFoldout]

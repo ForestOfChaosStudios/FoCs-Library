@@ -8,9 +8,9 @@
 
 
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 
-namespace ForestOfChaosLibrary.Maths.Lerp {
+namespace ForestOfChaos.Unity.Maths.Lerp {
     public static class Lerps {
         public static float Lerp(float value1, float value2, float time, bool clamp = false) {
             if (clamp)

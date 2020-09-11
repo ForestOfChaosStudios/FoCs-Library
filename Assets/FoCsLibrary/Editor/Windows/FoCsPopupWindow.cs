@@ -8,9 +8,9 @@
 
 
 using System;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 
-namespace ForestOfChaosLibrary.Editor.Windows {
+namespace ForestOfChaos.Unity.Editor.Windows {
     public class FoCsPopupWindow: FoCsWindow<FoCsPopupWindow> {
         private FoCsPopupWindowArguments currentArguments;
 

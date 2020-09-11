@@ -7,14 +7,14 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     /// <summary>
     ///     A class that manages the Object Reference drawing, used by FoCsEditor
     /// </summary>

@@ -8,11 +8,11 @@
 
 
 using System;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.Windows {
+namespace ForestOfChaos.Unity.Editor.Windows {
     public abstract class FoCsTabbedWindow<T>: FoCsWindow<T> where T: FoCsWindow {
         public enum TitleBarPos {
             Top,

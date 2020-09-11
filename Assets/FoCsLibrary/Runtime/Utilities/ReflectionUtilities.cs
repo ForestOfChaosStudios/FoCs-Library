@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace ForestOfChaosLibrary.Utilities {
+namespace ForestOfChaos.Unity.Utilities {
     public static class ReflectionUtilities {
         public static List<Type> GetTypesWith<TAttribute>(bool inherit) where TAttribute: Attribute {
             var assembliesList = AppDomain.CurrentDomain.GetAssemblies();

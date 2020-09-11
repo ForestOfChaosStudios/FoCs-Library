@@ -9,7 +9,7 @@
 
 using System;
 using ForestOfChaos.Unity.AdvVar.Base;
-using ForestOfChaosLibrary.Types;
+using ForestOfChaos.Unity.Types;
 
 namespace ForestOfChaos.Unity.AdvVar {
     [Serializable]

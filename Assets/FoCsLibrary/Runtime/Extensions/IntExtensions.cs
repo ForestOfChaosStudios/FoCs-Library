@@ -9,7 +9,7 @@
 
 using System;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class IntExtensions {
         public static bool IsZero(this int i) => i == 0;
 

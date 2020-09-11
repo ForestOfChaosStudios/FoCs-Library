@@ -8,11 +8,11 @@
 
 
 using System.Linq;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.UnitySettings {
+namespace ForestOfChaos.Unity.Editor.UnitySettings {
     public class UnitySettingsReader {
         public static SettingsFile AudioManager         = new SettingsFile("AudioManager");
         public static SettingsFile ClusterInputManager  = new SettingsFile("ClusterInputManager");

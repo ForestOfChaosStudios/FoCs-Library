@@ -9,7 +9,7 @@
 
 using System;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class ActionExtensions {
         public static void Trigger(this Action action) {
             if (action != null)

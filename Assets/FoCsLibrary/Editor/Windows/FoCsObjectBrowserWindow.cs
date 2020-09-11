@@ -10,15 +10,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using SearchCompo = UnityEngine.Component;
 using SearchAsset = UnityEngine.ScriptableObject;
 
-namespace ForestOfChaosLibrary.Editor.Windows {
+namespace ForestOfChaos.Unity.Editor.Windows {
     [FoCsWindow]
     public class FoCsObjectBrowserWindow: FoCsWindow<FoCsObjectBrowserWindow> {
         private const           string            GUI_SELECTION_LABEL = "ObjectBrowserSelectItemID";

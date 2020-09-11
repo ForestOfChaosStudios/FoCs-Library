@@ -9,7 +9,7 @@
 
 using System.Collections.Generic;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class DictionaryExtensions {
         public static bool IsNullOrEmpty<T, T2>(this Dictionary<T, T2> dictionary) => (dictionary == null) || (dictionary.Count == 0);
 

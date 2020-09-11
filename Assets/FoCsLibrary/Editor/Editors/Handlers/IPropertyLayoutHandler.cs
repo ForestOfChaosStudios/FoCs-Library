@@ -9,7 +9,7 @@
 
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     public interface IPropertyLayoutHandler {
         void HandleProperty(SerializedProperty property);
 

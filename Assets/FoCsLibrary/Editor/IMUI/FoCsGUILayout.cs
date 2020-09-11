@@ -1,4 +1,4 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region ï¿½ Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsGUILayout.cs
@@ -8,21 +8,21 @@
 
 
 using System;
-using ForestOfChaosLibrary.Editor.PropertyDrawers;
+using ForestOfChaos.Unity.Editor.PropertyDrawers;
 using UnityEditor;
 using UnityEngine;
 using GUICon = UnityEngine.GUIContent;
 using GUILayOpt = UnityEngine.GUILayoutOption;
-using eInt = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<int>;
-using eBool = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEventBool;
-using eFloat = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<float>;
-using eDouble = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<double>;
-using eLong = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<long>;
-using eString = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<string>;
-using eObject = ForestOfChaosLibrary.Editor.FoCsGUI.GUIEvent<UnityEngine.Object>;
+using eInt = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<int>;
+using eBool = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEventBool;
+using eFloat = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<float>;
+using eDouble = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<double>;
+using eLong = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<long>;
+using eString = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<string>;
+using eObject = ForestOfChaos.Unity.Editor.FoCsGUI.GUIEvent<UnityEngine.Object>;
 using Object = UnityEngine.Object;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     // ReSharper disable once MismatchedFileName
     public static partial class FoCsGUI {
         public static class Layout {

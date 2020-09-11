@@ -8,14 +8,14 @@
 
 
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Editor.Utilities;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos.Unity.Utilities;
+using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
     /// <summary>
     ///     This class is no longer used by the FoCsEditor, the new <see cref="ObjectReference" />
     ///     However it can't currently be removed as AdvRef uses it.

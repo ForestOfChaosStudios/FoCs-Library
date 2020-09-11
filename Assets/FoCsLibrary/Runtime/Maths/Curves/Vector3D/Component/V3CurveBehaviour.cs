@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths.Curves.Components {
+namespace ForestOfChaos.Unity.Maths.Curves.Components {
     [AddComponentMenu(FoCsStrings.COMPONENTS_CURVES_FOLDER_ + "Vector 3 Curve Any Length")]
     public class V3CurveBehaviour: IV3CurveComponent<V3Curve> {
         private void Reset() {

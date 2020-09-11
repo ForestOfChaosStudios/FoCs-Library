@@ -9,11 +9,11 @@
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaosLibrary.Extensions;
-using ForestOfChaosLibrary.Types;
+using ForestOfChaos.Unity.Types;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths.Lerp {
+namespace ForestOfChaos.Unity.Maths.Lerp {
     public static class TransformDataLerp {
         public static TransformData Lerp(TransformData value1, TransformData value2, float time, bool clamp = false) =>
                 Lerp(value1, value2, time, TransformDataLerpSettings.Default, clamp);

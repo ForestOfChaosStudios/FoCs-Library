@@ -10,7 +10,7 @@
 using System;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Generics {
+namespace ForestOfChaos.Unity.Generics {
     [Serializable]
     public class Singleton2DRigidbody<S>: FoCs2DRigidbodyBehaviour where S: FoCs2DRigidbodyBehaviour {
         protected static S instance;

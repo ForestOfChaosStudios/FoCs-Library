@@ -7,12 +7,12 @@
 #endregion
 
 
-using ForestOfChaosLibrary.Attributes;
-using ForestOfChaosLibrary.Editor.Utilities;
+using ForestOfChaos.Unity.Attributes;
+using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor.PropertyDrawers.Attributes {
+namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
     [CustomPropertyDrawer(typeof(NoFoldoutAttribute), true)]
     public class NoFoldoutAttributeDrawer: FoCsPropertyDrawerWithAttribute<NoFoldoutAttribute> {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {

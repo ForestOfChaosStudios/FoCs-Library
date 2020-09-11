@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Extensions {
+namespace ForestOfChaos.Unity.Extensions {
     public static class GameObjectExtensions {
         public static void ResetLocalPosRotScale(this GameObject gO) {
             gO.transform.ResetLocalPosRotScale();

@@ -7,9 +7,9 @@
 #endregion
 
 
-using ForestOfChaosLibrary;
-using ForestOfChaosLibrary.Generics;
-using ForestOfChaosLibrary.Utilities;
+using ForestOfChaos;
+using ForestOfChaos.Unity.Generics;
+using ForestOfChaos.Unity.Utilities;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.InputSystem {

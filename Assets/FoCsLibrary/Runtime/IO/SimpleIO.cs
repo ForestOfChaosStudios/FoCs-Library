@@ -12,7 +12,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.IO {
+namespace ForestOfChaos.Unity.IO {
     public static class SimpleIO {
         public const string FILE_EXT = "FoCsdat";
 

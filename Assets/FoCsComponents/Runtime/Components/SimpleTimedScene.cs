@@ -11,7 +11,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace ForestOfChaosLibrary.Components {
+namespace ForestOfChaos.Unity.Components {
     [AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER_ + "Simple Timed Scene")]
     public class SimpleTimedScene: FoCsBehaviour {
         public int   levelNum;

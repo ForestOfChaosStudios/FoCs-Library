@@ -10,7 +10,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Maths.Curves {
+namespace ForestOfChaos.Unity.Maths.Curves {
     public interface IV3Curve {
         List<Vector3> CurvePositions { get; set; }
 

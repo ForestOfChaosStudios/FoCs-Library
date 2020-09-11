@@ -8,10 +8,10 @@
 
 
 using System;
-using ForestOfChaosLibrary.Extensions;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.FoCsUI.InputField {
+namespace ForestOfChaos.Unity.FoCsUI.InputField {
     public abstract class FoCsInputField: FoCsBehaviour {
         /// <summary>
         ///     May not be called

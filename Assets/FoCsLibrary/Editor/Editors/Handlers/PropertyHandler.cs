@@ -10,7 +10,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Editor {
+namespace ForestOfChaos.Unity.Editor {
     public class PropertyHandler: IPropertyLayoutHandler {
         public void HandleProperty(SerializedProperty property) {
             FoCsGUI.Layout.PropertyField(new GUIContent(property.displayName), property, property.isExpanded);

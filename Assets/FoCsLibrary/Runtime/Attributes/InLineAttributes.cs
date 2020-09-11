@@ -9,7 +9,7 @@
 
 using UnityEngine;
 
-namespace ForestOfChaosLibrary.Attributes {
+namespace ForestOfChaos.Unity.Attributes {
     public class MultiInLineAttribute: PropertyAttribute {
         public int index;
         public int totalAmount;

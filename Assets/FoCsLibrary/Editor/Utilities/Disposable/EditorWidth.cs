@@ -10,7 +10,7 @@
 using System;
 using UnityEditor;
 
-namespace ForestOfChaosLibrary.Editor.Utilities.Disposable {
+namespace ForestOfChaos.Unity.Editor.Utilities.Disposable {
     public class EditorWidth: IDisposable {
         public enum ChangeType {
             Add,
