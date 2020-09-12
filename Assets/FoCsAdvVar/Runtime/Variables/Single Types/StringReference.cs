@@ -16,7 +16,7 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class StringReference: AdvReference<string> { }
 
     [Serializable]
-    public class StringVariable: AdvVariable<string, StringReference> {
+    public class StringVariable: AdvVariable<string> {
         public static implicit operator StringVariable(string input) {
             var fR = new StringVariable {UseLocal = true, Value = input};
 

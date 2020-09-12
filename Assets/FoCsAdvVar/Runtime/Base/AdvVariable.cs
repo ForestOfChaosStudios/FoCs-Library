@@ -13,14 +13,14 @@ using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.Base {
     [Serializable]
-    public class AdvVariable<T, aT>: AdvVariable where aT: AdvReference<T> {
+    public class AdvVariable<T>: AdvVariable {
         private AdvVariableInternals internalData;
 
         [SerializeField]
         private T LocalValue;
 
         [SerializeField]
-        private aT Reference;
+        private AdvReference<T> Reference;
 
         public T Value {
             get {
@@ -51,23 +51,23 @@ namespace ForestOfChaos.Unity.AdvVar.Base {
             UseLocal   = true;
         }
 
-        public AdvVariable(aT reference) {
+        public AdvVariable(AdvReference<T> reference) {
             Reference = reference;
             UseLocal  = false;
         }
 
-        public AdvVariable(T localValue, aT reference, bool useLocal = false) {
+        public AdvVariable(T localValue, AdvReference<T> reference, bool useLocal = false) {
             LocalValue = localValue;
             Reference  = reference;
             UseLocal   = useLocal;
         }
 
-        public static implicit operator T(AdvVariable<T, aT> input) => input.Value;
+        public static implicit operator T(AdvVariable<T> input) => input.Value;
 
         public class AdvVariableInternals {
-            private readonly AdvVariable<T, aT> classRef;
+            private readonly AdvVariable<T> classRef;
 
-            public aT GlobalReference {
+            public AdvReference<T> GlobalReference {
                 get => classRef.Reference;
                 set => classRef.Reference = value;
             }
@@ -77,11 +77,11 @@ namespace ForestOfChaos.Unity.AdvVar.Base {
                 set => classRef.LocalValue = value;
             }
 
-            public AdvVariableInternals(AdvVariable<T, aT> _classRef) => classRef = _classRef;
+            public AdvVariableInternals(AdvVariable<T> _classRef) => classRef = _classRef;
         }
 
         public class AdvVariableReferenceMissingError: Exception {
-            public AdvVariableReferenceMissingError(): base($"Missing Reference of {typeof(aT)}, Set to Local, or add reference.") { }
+            public AdvVariableReferenceMissingError(): base($"Missing Reference of {typeof(AdvReference<T>)}, Set to Local, or add reference.") { }
         }
     }
 

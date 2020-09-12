@@ -17,7 +17,7 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class ColourReference: AdvReference<Colour> { }
 
     [Serializable]
-    public class ColourVariable: AdvVariable<Colour, ColourReference> {
+    public class ColourVariable: AdvVariable<Colour> {
         public static implicit operator ColourVariable(Colour input) {
             var fR = new ColourVariable {UseLocal = true, Value = input};
 

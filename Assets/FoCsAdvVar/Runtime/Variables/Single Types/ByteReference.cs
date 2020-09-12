@@ -16,7 +16,7 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class ByteReference: AdvReference<byte> { }
 
     [Serializable]
-    public class ByteVariable: AdvVariable<byte, ByteReference> {
+    public class ByteVariable: AdvVariable<byte> {
         public static implicit operator ByteVariable(byte input) {
             var fR = new ByteVariable {UseLocal = true, Value = input};
 

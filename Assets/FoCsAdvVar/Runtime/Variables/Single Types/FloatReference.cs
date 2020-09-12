@@ -16,7 +16,7 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class FloatReference: AdvReference<float> { }
 
     [Serializable]
-    public class FloatVariable: AdvVariable<float, FloatReference> {
+    public class FloatVariable: AdvVariable<float> {
         public static implicit operator FloatVariable(float input) {
             var fR = new FloatVariable {UseLocal = true, Value = input};
 

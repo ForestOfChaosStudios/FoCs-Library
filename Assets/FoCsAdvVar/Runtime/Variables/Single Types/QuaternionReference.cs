@@ -17,7 +17,7 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class QuaternionReference: AdvReference<Quaternion> { }
 
     [Serializable]
-    public class QuaternionVariable: AdvVariable<Quaternion, QuaternionReference> {
+    public class QuaternionVariable: AdvVariable<Quaternion> {
         public static implicit operator QuaternionVariable(Quaternion input) {
             var fR = new QuaternionVariable {UseLocal = true, Value = input};
 

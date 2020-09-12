@@ -17,7 +17,7 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class GameObjectReference: AdvReference<GameObject> { }
 
     [Serializable]
-    public class GameObjectVariable: AdvVariable<GameObject, GameObjectReference> {
+    public class GameObjectVariable: AdvVariable<GameObject> {
         public static implicit operator GameObjectVariable(GameObject input) {
             var fR = new GameObjectVariable {UseLocal = true, Value = input};
 

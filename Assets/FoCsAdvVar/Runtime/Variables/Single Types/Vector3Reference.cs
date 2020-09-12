@@ -17,7 +17,7 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class Vector3Reference: AdvReference<Vector3> { }
 
     [Serializable]
-    public class Vector3Variable: AdvVariable<Vector3, Vector3Reference> {
+    public class Vector3Variable: AdvVariable<Vector3> {
         public static implicit operator Vector3Variable(Vector3 input) {
             var fR = new Vector3Variable {UseLocal = true, Value = input};
 

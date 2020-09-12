@@ -16,7 +16,7 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class BoolReference: AdvReference<bool> { }
 
     [Serializable]
-    public class BoolVariable: AdvVariable<bool, BoolReference> {
+    public class BoolVariable: AdvVariable<bool> {
         public static implicit operator BoolVariable(bool input) {
             var fR = new BoolVariable {UseLocal = true, Value = input};
 

@@ -17,7 +17,7 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class TransformReference: AdvReference<Transform> { }
 
     [Serializable]
-    public class TransformVariable: AdvVariable<Transform, TransformReference> {
+    public class TransformVariable: AdvVariable<Transform> {
         public static implicit operator TransformVariable(Transform input) {
             var fR = new TransformVariable {UseLocal = true, Value = input};
 

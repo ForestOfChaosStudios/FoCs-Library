@@ -18,7 +18,7 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class AnimatorKeyReference: AdvReference<AnimatorKey> { }
 
     [Serializable]
-    public class AnimatorKeyVariable: AdvVariable<AnimatorKey, AnimatorKeyReference> {
+    public class AnimatorKeyVariable: AdvVariable<AnimatorKey> {
         public string Key {
             get => Value.Key;
             set => Value.Key = value;
