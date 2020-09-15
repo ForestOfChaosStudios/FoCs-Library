@@ -16,5 +16,5 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class BoolListReference: AdvListReference<bool> { }
 
     [Serializable]
-    public class BoolListVariable: AdvListVariable<bool, BoolListReference> { }
+    public class BoolListVariable: AdvListVariable<bool> { }
 }

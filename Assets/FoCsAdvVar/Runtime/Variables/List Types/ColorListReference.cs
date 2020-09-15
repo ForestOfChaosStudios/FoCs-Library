@@ -17,5 +17,5 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class ColorListReference: AdvListReference<Color> { }
 
     [Serializable]
-    public class ColorListVariable: AdvListVariable<Color, ColorListReference> { }
+    public class ColorListVariable: AdvListVariable<Color> { }
 }

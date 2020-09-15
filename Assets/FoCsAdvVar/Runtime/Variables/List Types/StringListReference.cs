@@ -16,5 +16,5 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class StringListReference: AdvListReference<string> { }
 
     [Serializable]
-    public class StringListVariable: AdvListVariable<string, StringListReference> { }
+    public class StringListVariable: AdvListVariable<string> { }
 }

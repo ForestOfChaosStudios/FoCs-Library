@@ -17,5 +17,5 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class QuaternionListReference: AdvListReference<Quaternion> { }
 
     [Serializable]
-    public class QuaternionListVariable: AdvListVariable<Quaternion, QuaternionListReference> { }
+    public class QuaternionListVariable: AdvListVariable<Quaternion> { }
 }

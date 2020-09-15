@@ -13,14 +13,14 @@ using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.Base {
     [Serializable]
-    public class AdvListVariable<T, aT>: AdvListVariable where aT: AdvListReference<T> {
+    public class AdvListVariable<T>: AdvListVariable {
         [SerializeField]
         private List<T> ConstantValue;
 
         public bool UseConstant = true;
 
         [SerializeField]
-        private aT Variable;
+        private AdvListReference<T> Variable;
 
         public List<T> Value => UseConstant? ConstantValue : Variable.Value;
     }

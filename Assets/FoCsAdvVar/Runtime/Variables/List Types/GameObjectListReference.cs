@@ -17,5 +17,5 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class GameObjectListReference: AdvListReference<GameObject> { }
 
     [Serializable]
-    public class GameObjectListVariable: AdvListVariable<GameObject, GameObjectListReference> { }
+    public class GameObjectListVariable: AdvListVariable<GameObject> { }
 }

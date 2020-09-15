@@ -17,5 +17,5 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class Vector3IntListReference: AdvListReference<Vector3Int> { }
 
     [Serializable]
-    public class Vector3IntListVariable: AdvListVariable<Vector3Int, Vector3IntListReference> { }
+    public class Vector3IntListVariable: AdvListVariable<Vector3Int> { }
 }

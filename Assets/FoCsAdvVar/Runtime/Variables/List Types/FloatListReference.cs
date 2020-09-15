@@ -16,5 +16,5 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class FloatListReference: AdvListReference<float> { }
 
     [Serializable]
-    public class FloatListVariable: AdvListVariable<float, FloatListReference> { }
+    public class FloatListVariable: AdvListVariable<float> { }
 }

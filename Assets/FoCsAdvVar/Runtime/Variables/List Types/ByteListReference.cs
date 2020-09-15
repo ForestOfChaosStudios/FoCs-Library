@@ -16,5 +16,5 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class ByteListReference: AdvListReference<byte> { }
 
     [Serializable]
-    public class ByteListVariable: AdvListVariable<byte, ByteListReference> { }
+    public class ByteListVariable: AdvListVariable<byte> { }
 }

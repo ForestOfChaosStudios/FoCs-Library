@@ -17,5 +17,5 @@ namespace ForestOfChaos.Unity.AdvVar {
     public class TransformListReference: AdvListReference<Transform> { }
 
     [Serializable]
-    public class TransformListVariable: AdvListVariable<Transform, TransformListReference> { }
+    public class TransformListVariable: AdvListVariable<Transform> { }
 }
