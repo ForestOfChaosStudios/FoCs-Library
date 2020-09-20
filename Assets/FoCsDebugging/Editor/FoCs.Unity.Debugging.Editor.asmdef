@@ -5,7 +5,9 @@
         "FoCs.Unity.Library.Editor",
         "FoCs.Unity.Library"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
