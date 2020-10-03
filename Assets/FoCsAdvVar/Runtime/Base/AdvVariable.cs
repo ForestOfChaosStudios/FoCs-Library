@@ -63,6 +63,7 @@ namespace ForestOfChaos.Unity.AdvVar.Base {
         }
 
         public static implicit operator T(AdvVariable<T> input) => input.Value;
+        public static explicit operator AdvVariable<T>(T input) => new AdvVariable<T>(input);
 
         public class AdvVariableInternals {
             private readonly AdvVariable<T> classRef;
