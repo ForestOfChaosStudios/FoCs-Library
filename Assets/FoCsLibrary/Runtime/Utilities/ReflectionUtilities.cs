@@ -3,13 +3,14 @@
 //    Project: FoCs.Unity.Library
 //       File: ReflectionUtilities.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/04 | 6:41 AM
 #endregion
 
 
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 
 namespace ForestOfChaos.Unity.Utilities {
     public static class ReflectionUtilities {
@@ -74,6 +75,34 @@ namespace ForestOfChaos.Unity.Utilities {
             obj = info.GetValue(obj);
 
             return GetParentObject(string.Join(".", fields, 1, fields.Length - 1), obj);
+        }
+
+        public static string ToGenericTypeString(this Type type, bool fullName = false) {
+            if (!type.IsGenericType)
+                return fullName? type.FullName : type.Name;
+
+            var retType = new StringBuilder();
+
+            var parentType = fullName? type.FullName.Split('`') : type.Name.Split('`');
+            // We will build the type here.
+            var arguments = type.GetGenericArguments();
+
+            var argList = new StringBuilder();
+
+            foreach (var t in arguments) {
+                // Let's make sure we get the argument list.
+                var arg = t.ToGenericTypeString(fullName);
+
+                if (argList.Length > 0)
+                    argList.AppendFormat(", {0}", arg);
+                else
+                    argList.Append(arg);
+            }
+
+            if (argList.Length > 0)
+                retType.AppendFormat("{0}<{1}>", parentType[0], argList);
+
+            return retType.ToString();
         }
     }
 }

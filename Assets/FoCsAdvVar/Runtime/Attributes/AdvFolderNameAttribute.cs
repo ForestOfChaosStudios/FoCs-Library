@@ -1,9 +1,9 @@
 ﻿#region © Forest Of Chaos Studios 2019 - 2020
-//   Solution: FoCs-Library
+//   Solution: Uju Yongbyeong
 //    Project: FoCs.Unity.AdvVar
 //       File: AdvFolderNameAttribute.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/04 | 6:40 AM
 #endregion
 
 
@@ -11,34 +11,19 @@ using System;
 
 namespace ForestOfChaos.Unity.AdvVar {
     public class AdvFolderNameAttribute: Attribute, IComparable, IComparable<AdvFolderNameAttribute> {
+        private const int USER_OFFSET = 20;
 
-        public enum InternalNames {
-            SystemTypes,
-            SystemTypeLists,
-            Unity,
-            UnityLists,
-            ForestOfChaos,
-            ForestOfChaosLists,
-            RunTime,
-            Other
-        }
-
-        private readonly InternalNames _InternalNames;
-        public           string        ToggleName;
+        private readonly int    Order;
+        public readonly  string ToggleName;
 
         public AdvFolderNameAttribute() {
-            ToggleName     = "";
-            _InternalNames = InternalNames.Other;
+            ToggleName = "Other";
+            Order      = USER_OFFSET;
         }
 
-        public AdvFolderNameAttribute(string toggleName) {
-            ToggleName     = toggleName;
-            _InternalNames = InternalNames.Other;
-        }
-
-        public AdvFolderNameAttribute(InternalNames toggleName) {
-            ToggleName     = toggleName.ToString();
-            _InternalNames = toggleName;
+        public AdvFolderNameAttribute(string toggleName, int order) {
+            ToggleName = toggleName;
+            Order      = order + USER_OFFSET;
         }
 
         public int CompareTo(object obj) {
@@ -61,41 +46,43 @@ namespace ForestOfChaos.Unity.AdvVar {
             if (ReferenceEquals(null, other))
                 return 1;
 
-            if (other._InternalNames == InternalNames.Other)
+            var order = Order.CompareTo(other.Order);
+
+            if (order == 0)
                 return string.Compare(ToggleName, other.ToggleName, StringComparison.Ordinal);
 
-            return _InternalNames.CompareTo(other._InternalNames);
+            return order;
         }
     }
 
 
 #region Internal Classes
-    public class AdvFolderNameUnityAttribute: AdvFolderNameAttribute {
-        public AdvFolderNameUnityAttribute(): base(InternalNames.Unity) { }
-    }
-
-    public class AdvFolderNameUnityListsAttribute: AdvFolderNameAttribute {
-        public AdvFolderNameUnityListsAttribute(): base(InternalNames.UnityLists) { }
-    }
-
     public class AdvFolderNameSystemAttribute: AdvFolderNameAttribute {
-        public AdvFolderNameSystemAttribute(): base(InternalNames.SystemTypes) { }
+        public AdvFolderNameSystemAttribute(): base("SystemTypes", 0 - 20) { }
     }
 
-    public class AdvFolderNameSystemTypeListsAttribute: AdvFolderNameAttribute {
-        public AdvFolderNameSystemTypeListsAttribute(): base(InternalNames.SystemTypeLists) { }
+    public class AdvFolderNameUnityAttribute: AdvFolderNameAttribute {
+        public AdvFolderNameUnityAttribute(): base("Unity", 1 - 20) { }
     }
 
     public class AdvFolderNameForestOfChaosAttribute: AdvFolderNameAttribute {
-        public AdvFolderNameForestOfChaosAttribute(): base(InternalNames.ForestOfChaos) { }
+        public AdvFolderNameForestOfChaosAttribute(): base("ForestOfChaos", 3 - 20) { }
+    }
+
+    public class AdvFolderNameUnityListsAttribute: AdvFolderNameAttribute {
+        public AdvFolderNameUnityListsAttribute(): base("UnityLists", 4 - 20) { }
+    }
+
+    public class AdvFolderNameSystemTypeListsAttribute: AdvFolderNameAttribute {
+        public AdvFolderNameSystemTypeListsAttribute(): base("SystemTypeLists", 5 - 20) { }
     }
 
     public class AdvFolderNameForestOfChaosListsAttribute: AdvFolderNameAttribute {
-        public AdvFolderNameForestOfChaosListsAttribute(): base(InternalNames.ForestOfChaosLists) { }
+        public AdvFolderNameForestOfChaosListsAttribute(): base("ForestOfChaosLists", 6 - 20) { }
     }
 
     public class AdvFolderNameRunTimeAttribute: AdvFolderNameAttribute {
-        public AdvFolderNameRunTimeAttribute(): base(InternalNames.RunTime) { }
+        public AdvFolderNameRunTimeAttribute(): base("RunTime", 7 - 20) { }
     }
 #endregion
 

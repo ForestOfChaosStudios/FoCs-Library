@@ -3,30 +3,35 @@
 //    Project: FoCs.Unity.AdvVar
 //       File: SetRunTimeRef.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/04 | 01:56 AM
 #endregion
 
 
-using ForestOfChaos;
+using ForestOfChaos.Unity.AdvVar.Base;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.RuntimeRef.Components {
     [AddComponentMenu(FoCsStrings.COMPONENTS_FOLDER + "/AdvVar/RunTime/" + "Set RunTime Ref")]
     public class SetRunTimeRef: MonoBehaviour {
-        public bool       RemoveOnDisable = true;
-        public RunTimeRef RunTimeRef;
+        public AdvVariable<bool> RemoveOnDisable = (AdvVariable<bool>)true;
+        public RunTimeRef        RunTimeRef;
 
         public void OnEnable() {
-            RunTimeRef?.FillReference(this);
+            if (RunTimeRef != null)
+                RunTimeRef.FillReference(this);
         }
 
         public void OnDisable() {
-            if (RemoveOnDisable)
-                RunTimeRef?.EmptyReference();
+            if (!RemoveOnDisable)
+                return;
+
+            if (RunTimeRef != null)
+                RunTimeRef.EmptyReference();
         }
 
         private void OnDestroy() {
-            RunTimeRef?.EmptyReference();
+            if (RunTimeRef != null)
+                RunTimeRef.EmptyReference();
         }
     }
 }

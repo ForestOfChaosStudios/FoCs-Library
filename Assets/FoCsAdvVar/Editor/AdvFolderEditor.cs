@@ -3,7 +3,7 @@
 //    Project: FoCs.Unity.AdvVar.Editor
 //       File: AdvFolderEditor.cs
 //    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/09/12 | 12:04 AM
+// LastEdited: 2020/10/04 | 04:42 AM
 #endregion
 
 
@@ -35,6 +35,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         private        int                                                  ActiveTab;
         private        AdvFolderNameAttribute                               ActiveTabName;
         private        bool                                                 showChildrenSettings = true;
+        private        bool                                                 repaintCalled        = false;
 
         protected override void OnEnable() {
             base.OnEnable();
@@ -42,18 +43,20 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         }
 
         public override void OnInspectorGUI() {
+            repaintCalled = false;
+
             if (serializedObject.isEditingMultipleObjects) {
-                EditorGUILayout.HelpBox("Editing Multiple Objects Is Not Permitted!", MessageType.Warning);
+                FoCsGUI.Layout.WarningBox("Editing Multiple Objects Is Not Permitted!");
 
                 return;
             }
 
-            EditorGUILayout.HelpBox("These options will add child assets to the current asset, this is done to help with sorting of the huge amount of Scriptable Objects this system could generate.",
-                                    MessageType.Info);
+            FoCsGUI.Layout.InfoBox("These options will add child assets to the current asset, this is done to help with sorting of the huge amount of Scriptable Objects this system could generate.");
 
             if (typeDictionary == null) {
                 Init();
                 Repaint();
+                repaintCalled = true;
 
                 return;
             }
@@ -78,8 +81,8 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
                 var assets = AssetDatabase.LoadAllAssetsAtPath(AssetPath());
 
                 if (assets.Length > 1) {
-                    using (Disposables.HorizontalScope(EditorStyles.toolbar))
-                        showChildrenSettings = EditorGUILayout.Foldout(showChildrenSettings, $"Children [{assets.Length - 1}]");
+                    using (Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+                        showChildrenSettings = FoCsGUI.Layout.Foldout(showChildrenSettings, $"Children [{assets.Length - 1}]");
 
                     if (!showChildrenSettings)
                         return;
@@ -93,6 +96,9 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
 
                             if (AssetDatabase.IsSubAsset(obj))
                                 DrawChildObject(obj, i);
+
+                            if (repaintCalled)
+                                return;
                         }
                     }
                 }
@@ -100,15 +106,37 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         }
 
         private void DrawTypeTabs() {
-            EditorGUILayout.LabelField("Type of Scriptable Object to add", EditorStyles.boldLabel);
+            FoCsGUI.Layout.LabelField("Type of Scriptable Object to add", FoCsGUI.Styles.Unity.BoldLabel);
 
-            foreach (var type in typeDictionary[ActiveTabName])
-                DrawAddTypeButton(type);
+            if (ActiveTabName is AnyAdvFolder) {
+                DrawAddTypeButton(typeDictionary.Keys.SelectMany(key => typeDictionary[key]).ToList());
+            }
+            else {
+                DrawAddTypeButton(typeDictionary[ActiveTabName]);
+            }
+        }
+
+        private void DrawAddTypeButton(List<Type> types) {
+            FoCsGUI.Layout.LabelField("Categories of Scriptable Objects that can be added", FoCsGUI.Styles.Unity.BoldLabel);
+            var width = (Screen.width / 250) + 1;
+
+            for (var i = 0; i < types.Count; i += width) {
+                using (Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar)) {
+                    for (var j = 0; j < width; j += 1) {
+                        var index = i + j;
+
+                        if (!types.InRange(index))
+                            break;
+
+                        DrawAddTypeButton(types[index]);
+                    }
+                }
+            }
         }
 
         private void DrawMenuTabs() {
-            EditorGUILayout.LabelField("Categories of Scriptable Objects that can be added", EditorStyles.boldLabel);
-            var width    = (Screen.width / 180) + 1;
+            FoCsGUI.Layout.LabelField("Categories of Scriptable Objects that can be added", FoCsGUI.Styles.Unity.BoldLabel);
+            var width    = (Screen.width / 200) + 1;
             var nameList = typeDictionary.Keys.ToList();
 
             if (!nameList.InRange(ActiveTab))
@@ -118,7 +146,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
                 if (!nameList.InRange(i))
                     break;
 
-                using (Disposables.HorizontalScope(EditorStyles.toolbar)) {
+                using (Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar)) {
                     for (var j = 0; j < width; j += 1) {
                         var index = i + j;
 
@@ -138,6 +166,9 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
                                     ActiveTab     = index;
                                     ActiveTabName = key;
                                     Repaint();
+                                    repaintCalled = true;
+
+                                    return;
                                 }
                             }
                         }
@@ -168,14 +199,15 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
                     }
                 }
 
-                var event2 = FoCsGUI.Layout.Button(FoCsGUI.Styles.CrossCircle, GUILayout.Width(FoCsGUI.Styles.CrossCircle.Style.fixedWidth));
+                var deleteEvent = FoCsGUI.Layout.Button(new GUIContent("X"), FoCsGUI.Styles.CrossCircle, GUILayout.Width(FoCsGUI.Styles.CrossCircle.Style.fixedWidth));
 
-                if (event2) {
+                if (deleteEvent) {
                     if (EditorUtility.DisplayDialog("Delete Child", $"Delete {obj.name}", "Yes Delete", "No Cancel")) {
                         DestroyImmediate(obj, true);
                         EditorUtility.SetDirty(target);
                         AssetDatabase.ImportAsset(AssetPath(target));
                         Repaint();
+                        repaintCalled = true;
 
                         return;
                     }
@@ -186,18 +218,19 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         }
 
         private void DrawAddTypeButton(Type type) {
-            var @event = FoCsGUI.Layout.Button(type.Name.SplitCamelCase());
+            var name = type.ToGenericTypeString();
+            var @event = FoCsGUI.Layout.Button(name);
 
             if (@event) {
                 FoCsSubmitStringWindow.SetUpInstance(new CreateArgs {
-                        Title                = $"Enter Name of the new {type.Name}",
+                        Title                = $"Enter Name of the new {name}",
                         WindowTitle          = "Enter Name",
                         CancelMessage        = "Cancel",
-                        Data                 = $"New {type.Name}",
-                        SubmitMessage        = $"Create new {type.Name}",
+                        Data                 = $"New {name}",
+                        SubmitMessage        = $"Create new {name}",
                         OnSubmit             = OnCreateSubmit,
                         HasAnotherButton     = true,
-                        SubmitAnotherMessage = $"Create new {type.Name} & Add Another",
+                        SubmitAnotherMessage = $"Create new {name} & Add Another",
                         OnSubmitAnother      = OnCreateSubmit,
                         OnCancel             = OnCreateCancel,
                         target               = target,
@@ -207,9 +240,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         }
 
         private static void OnCreateSubmit(FoCsSubmitStringWindow.SubmitStringArguments obj) {
-            var args = obj as CreateArgs;
-
-            if (args != null) {
+            if (obj is CreateArgs args) {
                 var sO = CreateInstance(args.type);
                 sO.name = args.Data;
                 AssetDatabase.AddObjectToAsset(sO, args.target);
@@ -221,9 +252,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         private static void OnCreateCancel(FoCsSubmitStringWindow.SubmitStringArguments obj) { }
 
         private static void OnRenameSubmit(FoCsSubmitStringWindow.SubmitStringArguments obj) {
-            var args = obj as Args;
-
-            if (args != null) {
+            if (obj is Args args) {
                 args.target.name = args.Data;
                 EditorUtility.SetDirty(args.target);
                 AssetDatabase.ImportAsset(AssetPath(args.target));
@@ -238,8 +267,11 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         }
 
         public static SortedDictionary<AdvFolderNameAttribute, List<Type>> GetDictionaryTypes() {
-            var types     = ReflectionUtilities.GetTypesWith<AdvFolderNameAttribute, ScriptableObject>(false);
-            var finalList = new SortedDictionary<AdvFolderNameAttribute, List<Type>>();
+            var types = ReflectionUtilities.GetTypesWith<AdvFolderNameAttribute, ScriptableObject>(false);
+
+            var finalList = new SortedDictionary<AdvFolderNameAttribute, List<Type>> {
+                    {new AnyAdvFolder(), new List<Type>()}
+            };
 
             foreach (var type in types) {
                 var attribute = (AdvFolderNameAttribute)type.GetCustomAttribute(typeof(AdvFolderNameAttribute), false);
@@ -248,14 +280,17 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
                     if (finalList[attribute] == null)
                         finalList[attribute] = new List<Type>();
 
-                    if (!finalList[attribute].Contains(type))
-                        finalList[attribute].Add(type);
+                    finalList[attribute].AddWithDuplicateCheck(type);
                 }
                 else
                     finalList.Add(attribute, new List<Type> {type});
             }
 
             return finalList;
+        }
+
+        private class AnyAdvFolder: AdvFolderNameAttribute {
+            public AnyAdvFolder(): base("Any", 999999) { }
         }
 
         private class Args: FoCsSubmitStringWindow.SubmitStringArguments {

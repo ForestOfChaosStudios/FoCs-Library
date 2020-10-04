@@ -3,14 +3,14 @@
 //    Project: FoCs.Unity.Library
 //       File: RectEdit.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/04 | 03:08 AM
 #endregion
 
 
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Utilities {
-    public class RectEdit {
+    public struct RectEdit {
         public enum RectAxis {
             X,
             Y,
