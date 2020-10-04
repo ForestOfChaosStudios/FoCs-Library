@@ -3,7 +3,7 @@
 //    Project: FoCs.Unity.Library
 //       File: TransformData.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/04 | 6:56 PM
 #endregion
 
 
@@ -17,72 +17,125 @@ namespace ForestOfChaos.Unity.Types {
         public Vector3    Position;
         public Quaternion Rotation;
         public Vector3    Scale;
+        public bool       Local;
 
         public static TransformData Empty => new TransformData(Vector3.zero, Quaternion.identity, Vector3.one);
 
-        public TransformData(Component component) {
-            Rotation = component.transform.rotation;
-            Scale    = component.transform.localScale;
-            Position = component.transform.position;
+        public TransformData(Component component, bool local = false) {
+            Local = local;
+            var transform = component.transform;
+
+            if (Local) {
+                Rotation = transform.localRotation;
+                Scale    = transform.localScale;
+                Position = transform.localPosition;
+            }
+            else {
+                Rotation = transform.rotation;
+                Scale    = transform.localScale;
+                Position = transform.position;
+            }
         }
 
-        public TransformData(GameObject gameObject) {
-            Rotation = gameObject.transform.rotation;
-            Scale    = gameObject.transform.localScale;
-            Position = gameObject.transform.position;
+        public TransformData(GameObject gameObject, bool local = false) {
+            Local = local;
+            var transform = gameObject.transform;
+
+            if (Local) {
+                Rotation = transform.localRotation;
+                Scale    = transform.localScale;
+                Position = transform.localPosition;
+            }
+            else {
+                Rotation = transform.rotation;
+                Scale    = transform.localScale;
+                Position = transform.position;
+            }
         }
 
-        public TransformData(Transform transform) {
-            Rotation = transform.rotation;
-            Scale    = transform.localScale;
-            Position = transform.position;
+        public TransformData(Transform transform, bool local = false) {
+            Local = local;
+
+            if (Local) {
+                Rotation = transform.localRotation;
+                Scale    = transform.localScale;
+                Position = transform.localPosition;
+            }
+            else {
+                Rotation = transform.rotation;
+                Scale    = transform.localScale;
+                Position = transform.position;
+            }
         }
 
         public TransformData(TransformData transform) {
+            Local    = transform.Local;
             Rotation = transform.Rotation;
             Scale    = transform.Scale;
             Position = transform.Position;
         }
 
-        public TransformData(Vector3 position) {
+        public TransformData(Vector3 position, bool local = false) {
+            Local    = local;
             Rotation = Quaternion.identity;
             Scale    = Vector3.one;
             Position = position;
         }
 
-        public TransformData(Vector3 position, Quaternion rotation) {
+        public TransformData(Vector3 position, Quaternion rotation, bool local = false) {
+            Local    = local;
             Rotation = rotation;
             Scale    = Vector3.one;
             Position = position;
         }
 
-        public TransformData(Vector3 position, Quaternion rotation, Vector3 scale) {
+        public TransformData(Vector3 position, Quaternion rotation, Vector3 scale, bool local = false) {
+            Local    = local;
             Rotation = rotation;
             Scale    = scale;
             Position = position;
         }
 
         public void SetData(Transform transform) {
-            Rotation = transform.rotation;
-            Scale    = transform.localScale;
-            Position = transform.position;
+            if (Local) {
+                Rotation = transform.localRotation;
+                Scale    = transform.localScale;
+                Position = transform.localPosition;
+            }
+            else {
+                Rotation = transform.rotation;
+                Scale    = transform.localScale;
+                Position = transform.position;
+            }
         }
 
         public void SetData(TransformData transform) {
-            Rotation = transform.Rotation;
-            Scale    = transform.Scale;
-            Position = transform.Position;
+            if (Local) {
+                Rotation = transform.Rotation;
+                Scale    = transform.Scale;
+                Position = transform.Position;
+            }
+            else {
+                Rotation = transform.Rotation;
+                Scale    = transform.Scale;
+                Position = transform.Position;
+            }
         }
 
-        public void SetData(Vector3 position) {
-            Rotation = Quaternion.identity;
-            Scale    = Vector3.one;
+        public void SetData(Vector3 position, bool setOtherValuesToDefault = true) {
+            if (setOtherValuesToDefault) {
+                Rotation = Quaternion.identity;
+                Scale    = Vector3.one;
+            }
+
             Position = position;
         }
 
-        public void SetData(Vector3 position, Quaternion rotation) {
+        public void SetData(Vector3 position, Quaternion rotation, bool setOtherValuesToDefault = true) {
+            if (setOtherValuesToDefault)
+                Scale = Vector3.one;
+
             Rotation = rotation;
-            Scale    = Vector3.one;
             Position = position;
         }
 
@@ -92,37 +145,30 @@ namespace ForestOfChaos.Unity.Types {
             Position = position;
         }
 
-        public void UpdateData(Transform transform) {
-            Rotation = transform.rotation;
-            Scale    = transform.localScale;
-            Position = transform.position;
-        }
-
-        public void UpdateData(TransformData transform) {
-            Rotation = transform.Rotation;
-            Scale    = transform.Scale;
-            Position = transform.Position;
-        }
-
-        public void UpdateData(Vector3 position) {
-            Position = position;
-        }
-
-        public void UpdateData(Vector3 position, Quaternion rotation) {
-            Rotation = rotation;
-            Position = position;
-        }
-
-        public void UpdateData(Vector3 position, Quaternion rotation, Vector3 scale) {
-            Rotation = rotation;
-            Scale    = scale;
-            Position = position;
-        }
-
         public void ApplyData(Transform transform) {
-            transform.rotation   = Rotation;
-            transform.localScale = Scale;
-            transform.position   = Position;
+            if (Local) {
+                transform.localRotation = Rotation;
+                transform.localScale    = Scale;
+                transform.localPosition = Position;
+            }
+            else {
+                transform.rotation   = Rotation;
+                transform.localScale = Scale;
+                transform.position   = Position;
+            }
+        }
+
+        public void ApplyData(Transform transform, bool local) {
+            if (local) {
+                transform.localRotation = Rotation;
+                transform.localScale    = Scale;
+                transform.localPosition = Position;
+            }
+            else {
+                transform.rotation   = Rotation;
+                transform.localScale = Scale;
+                transform.position   = Position;
+            }
         }
 
         public TransformData Lerp(TransformData other, float time) => TransformDataLerp.Lerp(this, other, time);
@@ -137,7 +183,7 @@ namespace ForestOfChaos.Unity.Types {
 
         public static implicit operator TransformData(GameObject input) => new TransformData(input.transform);
 
-        public static TransformData Create(Transform transform) => new TransformData(transform);
+        public static TransformData Create(Transform transform, bool local = false) => new TransformData(transform, local);
     }
 
     public static class TransformDataExtn {
