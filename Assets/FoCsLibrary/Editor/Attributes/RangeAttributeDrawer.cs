@@ -1,17 +1,17 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region Â© Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: RangeAttributeDrawer.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:04 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
-
 
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
+    //TODO: Add to FoCs Handler system
     [CustomPropertyDrawer(typeof(RangeAttribute))]
     public class RangeAttributeDrawer: FoCsPropertyDrawerWithAttribute<RangeAttribute> {
 
@@ -106,10 +106,10 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
 
         public static void DoNamedString(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range) {
             var stringLabel = new GUIContent(label);
-            stringLabel.text += string.Format("  (Total Length:{0})", (int)range.max);
+            stringLabel.text = $"{stringLabel.text}  (Total Length:{(int)range.max})";
 
             if (string.IsNullOrEmpty(stringLabel.tooltip))
-                stringLabel.tooltip = string.Format("This string has a Total Length:{0})", (int)range.max);
+                stringLabel.tooltip = $"This string has a Total Length:{(int)range.max})";
 
             DoString(position, property, stringLabel, range);
         }

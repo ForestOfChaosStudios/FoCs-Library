@@ -1,17 +1,16 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsObjectBrowserWindow.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
 using System.Text;
-using ForestOfChaos.Unity.Utilities;
 using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Utilities;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -267,7 +266,7 @@ namespace ForestOfChaos.Unity.Editor.Windows {
             using (var scroll = Disposables.ScrollViewScope(sceneScrollPos, true, options)) {
                 using (Disposables.VerticalScope()) {
                     if (FoundSceneObjects.Count == 0)
-                        FoCsGUI.Layout.InfoBox(string.Format("No Objects of {0} In scene.", ActiveType.Name));
+                        FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name} In scene.");
                     else {
                         if (SceneSearch.IsNullOrEmpty()) {
                             foreach (var foundObject in FoundSceneObjects)
@@ -294,7 +293,7 @@ namespace ForestOfChaos.Unity.Editor.Windows {
             using (var scroll = Disposables.ScrollViewScope(assetsScrollPos, true, options)) {
                 using (Disposables.VerticalScope(GUILayout.ExpandHeight(true))) {
                     if (FoundAssetsObjects.Count == 0)
-                        FoCsGUI.Layout.InfoBox(string.Format("No Objects of {0}. Can be found in the Assets Database.", ActiveType.Name));
+                        FoCsGUI.Layout.InfoBox($"No Objects of {ActiveType.Name}. Can be found in the Assets Database.");
                     else {
                         if (AssetSearch.IsNullOrEmpty()) {
                             foreach (var foundObject in FoundAssetsObjects)
@@ -323,8 +322,8 @@ namespace ForestOfChaos.Unity.Editor.Windows {
             using (Disposables.HorizontalScope()) {
                 var eventPingButton = FoCsGUI.Layout.Button(PingContent, FoCsGUI.Styles.Find, GUILayout.Width(16));
                 FoCsGUI.Layout.Label("  ", GUILayout.Width(8));
-                FoCsGUI.Layout.Button(foundObject.name,                                                             FoCsGUI.Styles.Unity.Label, GUILayout.Width(300));
-                FoCsGUI.Layout.Button(string.Format("Full Type: {0}", foundObject.GetType().Name.SplitCamelCase()), FoCsGUI.Styles.Unity.Label);
+                FoCsGUI.Layout.Button(foundObject.name,                                            FoCsGUI.Styles.Unity.Label, GUILayout.Width(300));
+                FoCsGUI.Layout.Button($"Full Type: {foundObject.GetType().Name.SplitCamelCase()}", FoCsGUI.Styles.Unity.Label);
 
                 if (eventPingButton.Pressed)
                     EditorGUIUtility.PingObject(foundObject);
@@ -373,7 +372,7 @@ namespace ForestOfChaos.Unity.Editor.Windows {
                             }
 
                             genArg.Append('>');
-                            FoCsGUI.Layout.Label(string.Format("{0}{1}", TypeList[ActiveIndex].BaseType.Name.Replace("`1", ""), genArg));
+                            FoCsGUI.Layout.Label($"{TypeList[ActiveIndex].BaseType.Name.Replace("`1", "")}{genArg}");
                         }
                         else
                             FoCsGUI.Layout.Label(TypeList[ActiveIndex].BaseType.Name.SplitCamelCase());

@@ -1,17 +1,16 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region Â© Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: TransformEditor.cs
 //    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaos.Unity.Types;
-using ForestOfChaos.Unity.Extensions;
 using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Types;
 using UnityEditor;
 using UnityEngine;
 
@@ -218,7 +217,7 @@ namespace ForestOfChaos.Unity.Editor {
         }
 
         private void SetScaleBtn(float multi) {
-            var resetContent = new GUIContent(string.Format("{0}x", multi), string.Format("Sets the Scale to ({0}, {1}, {2})", multi, multi, multi));
+            var resetContent = new GUIContent($"{multi}x", $"Sets the Scale to ({multi}, {multi}, {multi})");
 
             if (FoCsGUI.Layout.Button(resetContent, SCALE_BUTTON_HEIGHT)) {
                 var transform = Target;
@@ -229,11 +228,8 @@ namespace ForestOfChaos.Unity.Editor {
         }
 
         private void TimesScaleBtn(float multi) {
-            var resetContent = new GUIContent(string.Format("{0}x", multi),
-                                              string.Format("Multiplies the Scale to ({0}, {1}, {2})",
-                                                            Target.localScale.x * multi,
-                                                            Target.localScale.y * multi,
-                                                            Target.localScale.z * multi));
+            var resetContent = new GUIContent($"{multi}x",
+                                              $"Multiplies the Scale to ({Target.localScale.x * multi}, {Target.localScale.y * multi}, {Target.localScale.z * multi})");
 
             if (FoCsGUI.Layout.Button(resetContent, SCALE_BUTTON_HEIGHT)) {
                 var transform = Target;
@@ -249,7 +245,7 @@ namespace ForestOfChaos.Unity.Editor {
             using (Disposables.HorizontalScope()) {
                 var content = new GUIContent("Scale amount", "Set amount to uniformly scale the object");
                 scaleAmount = FoCsGUI.Layout.FloatField(content, scaleAmount, SCALE_BUTTON_HEIGHT);
-                var scaleContent = new GUIContent("Set Scale", string.Format("Sets the scale ({0},{1},{2})", scaleAmount, scaleAmount, scaleAmount));
+                var scaleContent = new GUIContent("Set Scale", $"Sets the scale ({scaleAmount},{scaleAmount},{scaleAmount})");
 
                 if (GUILayout.Button(scaleContent, SCALE_BUTTON_HEIGHT)) {
                     Undo.RecordObject(transform, "Scale set");
@@ -257,10 +253,7 @@ namespace ForestOfChaos.Unity.Editor {
                 }
 
                 var scaleTimesContent = new GUIContent("Times Scale",
-                                                       string.Format("Sets the scale ({0},{1},{2})",
-                                                                     transform.position.x * scaleAmount,
-                                                                     transform.position.y * scaleAmount,
-                                                                     transform.position.z * scaleAmount));
+                                                       $"Sets the scale ({transform.position.x * scaleAmount},{transform.position.y * scaleAmount},{transform.position.z * scaleAmount})");
 
                 if (GUILayout.Button(scaleTimesContent, SCALE_BUTTON_HEIGHT)) {
                     Undo.RecordObject(transform, "Scale set");

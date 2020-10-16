@@ -1,17 +1,16 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region Â© Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsEditor.cs
 //    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ForestOfChaos.Unity.Extensions;
 using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -26,10 +25,10 @@ namespace ForestOfChaos.Unity.Editor {
         private static readonly GUIContent                  SortModeContent        = new GUIContent("Sort Mode", "Change the order of the properties");
         private static readonly GUIContent                  SortModeContentHover   = new GUIContent("",          "Change the order of the properties");
         private readonly        HandlerController           Handler                = new HandlerController();
-        internal                Dictionary<string, ObjectReference>  objectDrawer           = new Dictionary<string, ObjectReference>(1);
+        internal                Dictionary<string, ObjRef>  objectDrawer           = new Dictionary<string, ObjRef>(1);
         private                 bool                        showContextMenuButtons = true;
         private                 int                         sortingModeIndex;
-        internal                UnityReorderableListStorage URLPStorage;
+        internal                UnityReorderableListStorage UrlpStorage;
 
         public static string Search {
             get => search;
@@ -107,7 +106,7 @@ namespace ForestOfChaos.Unity.Editor {
 
                         //Draw properties in sorted order
                         foreach (var serializedProperty in list)
-                            Handler.Handle(serializedProperty);
+                            Handler.Handle(serializedProperty, false);
                     }
 
                     GUI.color = cachedGuiColor;
@@ -127,7 +126,6 @@ namespace ForestOfChaos.Unity.Editor {
             }
 
             foreach (var serializedProperty in list)
-
                 Handler.DrawAfterEditor(serializedProperty);
         }
 
@@ -140,7 +138,7 @@ namespace ForestOfChaos.Unity.Editor {
                 if (!property.isArray)
                     continue;
 
-                var reorderableListProperty = URLPStorage.GetList(property);
+                var reorderableListProperty = UrlpStorage.GetList(property);
 
                 if (reorderableListProperty.IsExpanded.isAnimating)
                     return true;
@@ -163,7 +161,7 @@ namespace ForestOfChaos.Unity.Editor {
         /// </summary>
         /// <param name="property">Property to draw</param>
         protected void DrawProperty(SerializedProperty property) {
-            Handler.Handle(property);
+            Handler.Handle(property, false);
         }
 
         /// <summary>
@@ -189,8 +187,8 @@ namespace ForestOfChaos.Unity.Editor {
         ///     Init Reorderable List Storage
         /// </summary>
         private void InitReorderableListStorage() {
-            if (URLPStorage == null)
-                URLPStorage = new UnityReorderableListStorage(this);
+            if (UrlpStorage == null)
+                UrlpStorage = new UnityReorderableListStorage(this);
         }
 
         /// <summary>
@@ -265,10 +263,10 @@ namespace ForestOfChaos.Unity.Editor {
         /// <param name="property">Property to be drawing, and the index of</param>
         /// <param name="owner">The editor currently drawing the list</param>
         /// <returns>The object reference drawer class</returns>
-        internal ObjectReference GetObjectDrawer(SerializedProperty property, FoCsEditor owner) {
+        internal ObjRef GetObjectDrawer(SerializedProperty property, FoCsEditor owner) {
             var id = GetUniqueStringID(property);
 
-            ObjectReference objDraw;
+            ObjRef objDraw;
 
             if (objectDrawer.TryGetValue(id, out objDraw)) {
                 objDraw.Property = property;
@@ -276,7 +274,7 @@ namespace ForestOfChaos.Unity.Editor {
                 return objDraw;
             }
 
-            objDraw = new ObjectReference(property, this);
+            objDraw = new ObjRef(property, this);
 
             objDraw.IsReferenceOpen.valueChanged.AddListener(owner.Repaint);
 
@@ -314,16 +312,7 @@ namespace ForestOfChaos.Unity.Editor {
             Sorters.AddWithDuplicateCheck(foCsEditorSorter);
         }
 
-        public List<SerializedProperty> GetDefaultProperties() {
-            var rtnVal = new List<SerializedProperty>();
-
-            foreach (var property in serializedObject.Properties()) {
-                if (IsDefaultScriptProperty(property))
-                    rtnVal.Add(property);
-            }
-
-            return rtnVal;
-        }
+        public List<SerializedProperty> GetDefaultProperties() => GetDefaultProperties(serializedObject);
 
         /// <summary>
         ///     Get a list of all Default properties
@@ -395,7 +384,7 @@ namespace ForestOfChaos.Unity.Editor {
 
             public static implicit operator SortableSerializedProperty(SerializedProperty input) => new SortableSerializedProperty(input);
 
-            public override bool Equals(object obj) => obj is SortableSerializedProperty && Equals((SortableSerializedProperty)obj);
+            public override bool Equals(object obj) => obj is SortableSerializedProperty property && Equals(property);
 
             public bool Equals(SortableSerializedProperty obj) => UID == obj.UID;
 

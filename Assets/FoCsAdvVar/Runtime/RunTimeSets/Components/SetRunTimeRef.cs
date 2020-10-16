@@ -1,11 +1,10 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.AdvVar
 //       File: SetRunTimeRef.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/04 | 01:56 AM
+// LastEdited: 2020/10/11 | 10:08 PM
 #endregion
-
 
 using ForestOfChaos.Unity.AdvVar.Base;
 using UnityEngine;

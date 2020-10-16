@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: ScriptGenerators.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
@@ -47,7 +46,6 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
             Byte,
             Bool
         }
-
 
 #region StaticClass
         public static void CreateStaticClass(string className, IEnumerable<StaticDataType> entries, string filepath = "", bool allowOverride = true) {
@@ -95,7 +93,6 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
         }
 #endregion
 
-
         public static void WriteFile(string path, string entries) {
             CheckAndCreateFoldersToPathFromAssetsFolder(path);
 
@@ -125,7 +122,6 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
                 Type = type;
             }
         }
-
 
 #region Enums
         public static string CreateEnumString(string enumName, IEnumerable<string> entries) {
@@ -358,7 +354,5 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
             AssetDatabase.Refresh();
         }
 #endregion
-
-
     }
 }

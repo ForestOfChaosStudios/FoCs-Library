@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: AlphaSorter.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
@@ -14,12 +13,18 @@ using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor {
+    [InitializeOnLoad]
     internal class AlphaSorter: FoCsEditor.FoCsEditorSorter {
         public static          AlphaSorter Instance;
         public static readonly GUIContent  modeName = new GUIContent("A-Z");
 
         ///<inheritdoc />
         public override GUIContent ModeName => modeName;
+
+        static AlphaSorter() {
+            Instance = new AlphaSorter();
+            FoCsEditor.AddSortingMode(Instance);
+        }
 
         ///<inheritdoc />
         public override List<SerializedProperty> GetPropertyOrder(IEnumerable<SerializedProperty> properties) {

@@ -1,14 +1,14 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.AdvVar
 //       File: RunTimeList.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:08 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
+using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.RuntimeRef {
@@ -19,8 +19,8 @@ namespace ForestOfChaos.Unity.AdvVar.RuntimeRef {
         public override int Count => Items.Count;
 
         public void Add(T t) {
-            if (!Items.Contains(t) && (t != null))
-                Items.Add(t);
+            if (t != null)
+                Items.AddWithDuplicateCheck(t);
         }
 
         public void Remove(T t) {

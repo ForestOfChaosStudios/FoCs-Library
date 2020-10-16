@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: ArraysExtensions.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
@@ -68,25 +67,19 @@ namespace ForestOfChaos.Unity.Extensions {
 
         public static Vector2Int GetIndexOf2DArray(int width, int index) => new Vector2Int(index % width, index / width);
 
-        public static void ForLoop2D(int xCount, int yCount, Action<int, int> loopAction, bool includeLastNum = false) {
-            ForLoop2D(xCount, yCount, 0, 0, loopAction, includeLastNum);
-        }
+        public static void ForLoop2D(int xCount, int yCount, Action<int, int> loopAction, bool includeLastNum = false) =>
+                ForLoop2D(xCount, yCount, 0, 0, loopAction, includeLastNum);
 
-        public static void ForLoop2D(int xCount, int yCount, Vector2Int start, Action<int, int> loopAction, bool includeLastNum = false) {
-            ForLoop2D(xCount, yCount, start.x, start.y, loopAction, includeLastNum);
-        }
+        public static void ForLoop2D(int xCount, int yCount, Vector2Int start, Action<int, int> loopAction, bool includeLastNum = false) =>
+                ForLoop2D(xCount, yCount, start.x, start.y, loopAction, includeLastNum);
 
-        public static void ForLoop2D(Vector2Int count, Action<int, int> loopAction, bool includeLastNum = false) {
-            ForLoop2D(count.x, count.y, 0, 0, loopAction, includeLastNum);
-        }
+        public static void ForLoop2D(Vector2Int count, Action<int, int> loopAction, bool includeLastNum = false) => ForLoop2D(count.x, count.y, 0, 0, loopAction, includeLastNum);
 
-        public static void ForLoop2D(Vector2Int count, Vector2Int start, Action<int, int> loopAction, bool includeLastNum = false) {
-            ForLoop2D(count.x, count.y, start.x, start.y, loopAction, includeLastNum);
-        }
+        public static void ForLoop2D(Vector2Int count, Vector2Int start, Action<int, int> loopAction, bool includeLastNum = false) =>
+                ForLoop2D(count.x, count.y, start.x, start.y, loopAction, includeLastNum);
 
-        public static void ForLoop2D(Vector2Int count, int yCount, int startX, int startY, Action<int, int> loopAction, bool includeLastNum = false) {
-            ForLoop2D(count.x, count.y, startX, startY, loopAction, includeLastNum);
-        }
+        public static void ForLoop2D(Vector2Int count, int yCount, int startX, int startY, Action<int, int> loopAction, bool includeLastNum = false) =>
+                ForLoop2D(count.x, count.y, startX, startY, loopAction, includeLastNum);
 
         public static void ForLoop2D(int xCount, int yCount, int startX, int startY, Action<int, int> loopAction, bool includeLastNum = false) {
             if (includeLastNum) {

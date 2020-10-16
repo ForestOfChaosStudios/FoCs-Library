@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: RandomMaster.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using RAND = System.Random;
@@ -19,9 +18,7 @@ namespace ForestOfChaos.Unity.Maths.Random {
             set => p_Random = value;
         }
 
-        static RandomMaster() {
-            GetRandomWithNewSeed();
-        }
+        static RandomMaster() => GetRandomWithNewSeed();
 
         public static RAND GetRandomWithNewSeed() => new RAND(DateTime.Now.Millisecond);
 

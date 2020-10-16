@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: Colour.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using UnityEngine;
@@ -18,6 +17,28 @@ namespace ForestOfChaos.Unity.Types {
         public byte B;
         public byte G;
         public byte R;
+
+        public static Colour Red => new Colour(255, 0, 0);
+
+        public static Colour Green => new Colour(0, 255, 0);
+
+        public static Colour Blue => new Colour(0, 0, 255);
+
+        public static Colour White => new Colour(255, 255, 255);
+
+        public static Colour Black => new Colour(0, 0, 0);
+
+        public static Colour Yellow => new Colour(255, 255, 0);
+
+        public static Colour Cyan => new Colour(0, 255, 255);
+
+        public static Colour Magenta => new Colour(255, 0, 255);
+
+        public static Colour Pink => new Colour(255, 128, 255);
+
+        public static Colour Grey => new Colour(128, 128, 128);
+
+        public static Colour Clear => new Colour(0, 0, 0, 0);
 
         public Colour() => A = R = G = B = 255;
 
@@ -108,32 +129,5 @@ namespace ForestOfChaos.Unity.Types {
             G = (byte)Rnd.Range(min, max);
             B = (byte)Rnd.Range(min, max);
         }
-
-
-#region PresetColours
-        public static Colour Red => new Colour(255, 0, 0);
-
-        public static Colour Green => new Colour(0, 255, 0);
-
-        public static Colour Blue => new Colour(0, 0, 255);
-
-        public static Colour White => new Colour(255, 255, 255);
-
-        public static Colour Black => new Colour(0, 0, 0);
-
-        public static Colour Yellow => new Colour(255, 255, 0);
-
-        public static Colour Cyan => new Colour(0, 255, 255);
-
-        public static Colour Magenta => new Colour(255, 0, 255);
-
-        public static Colour Pink => new Colour(255, 128, 255);
-
-        public static Colour Grey => new Colour(128, 128, 128);
-
-        public static Colour Clear => new Colour(0, 0, 0, 0);
     }
-#endregion
-
-
 }

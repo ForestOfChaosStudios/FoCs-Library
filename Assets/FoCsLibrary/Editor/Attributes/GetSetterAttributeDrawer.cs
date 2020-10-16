@@ -1,11 +1,10 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: GetSetterAttributeDrawer.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
-
 
 using ForestOfChaos.Unity.Attributes;
 using ForestOfChaos.Unity.Editor.PropertyDrawers;
@@ -47,7 +46,7 @@ namespace ForestOfChaos.Unity.Editor.Attributes {
             var info   = type.GetProperty(GetAttribute.name);
 
             if (info == null)
-                Debug.LogError(string.Format("Invalid property name \"{0}\"", GetAttribute.name));
+                Debug.LogError($"Invalid property name \"{GetAttribute.name}\"");
             else
                 info.SetValue(parent, fieldInfo.GetValue(parent), null);
 

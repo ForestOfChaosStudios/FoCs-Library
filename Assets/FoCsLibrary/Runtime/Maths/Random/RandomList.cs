@@ -3,17 +3,14 @@
 //    Project: FoCs.Unity.Library
 //       File: RandomList.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System.Collections.Generic;
 
 namespace ForestOfChaos.Unity.Maths.Random {
     public static class RandomList {
-        public static void ShuffleList<T>(this IList<T> list) {
-            ShuffleList(list, RandomMaster.Random);
-        }
+        public static void ShuffleList<T>(this IList<T> list) => ShuffleList(list, RandomMaster.Random);
 
         public static void ShuffleList<T>(this IList<T> list, System.Random rng) {
             var n = list.Count;

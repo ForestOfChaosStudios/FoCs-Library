@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: TypeWithNameAndData.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using ForestOfChaos.Unity.Extensions;
@@ -58,9 +57,7 @@ namespace ForestOfChaos.Unity.Types {
 
             public static implicit operator T(GenericType<T> input) => input.Data;
 
-            public override void SetData(object obj) {
-                Data = (T)obj;
-            }
+            public override void SetData(object obj) => Data = (T)obj;
 
             public virtual T GetTypeFromString(string data) => default;
 
@@ -84,9 +81,7 @@ namespace ForestOfChaos.Unity.Types {
 
             public override string GetTypeFromString(string data) => data;
 
-            public override void SetData(object obj) {
-                Data = obj.ToString();
-            }
+            public override void SetData(object obj) => Data = obj.ToString();
         }
 
         [Serializable]
@@ -96,15 +91,12 @@ namespace ForestOfChaos.Unity.Types {
             public IntType(string name, int d): base(name, d) { }
 
             public override int GetTypeFromString(string data) {
-                int num;
-                int.TryParse(data, out num);
+                int.TryParse(data, out var num);
 
                 return num;
             }
 
-            public override void SetData(object obj) {
-                Data = GetTypeFromString(obj.ToString());
-            }
+            public override void SetData(object obj) => Data = GetTypeFromString(obj.ToString());
         }
 
         [Serializable]
@@ -114,8 +106,7 @@ namespace ForestOfChaos.Unity.Types {
             public Int32Type(string name, int d): base(name, d) { }
 
             public override int GetTypeFromString(string data) {
-                int num;
-                int.TryParse(data, out num);
+                int.TryParse(data, out var num);
 
                 return num;
             }
@@ -132,8 +123,7 @@ namespace ForestOfChaos.Unity.Types {
             public Int64Type(string name, long d): base(name, d) { }
 
             public override long GetTypeFromString(string data) {
-                long num;
-                long.TryParse(data, out num);
+                long.TryParse(data, out var num);
 
                 return num;
             }
@@ -150,8 +140,7 @@ namespace ForestOfChaos.Unity.Types {
             public FloatType(string name, float d): base(name, d) { }
 
             public override float GetTypeFromString(string data) {
-                float num;
-                float.TryParse(data, out num);
+                float.TryParse(data, out var num);
 
                 return num;
             }
@@ -168,8 +157,7 @@ namespace ForestOfChaos.Unity.Types {
             public BoolType(string name, bool d): base(name, d) { }
 
             public override bool GetTypeFromString(string data) {
-                bool num;
-                bool.TryParse(data, out num);
+                bool.TryParse(data, out var num);
 
                 return num;
             }
@@ -186,8 +174,7 @@ namespace ForestOfChaos.Unity.Types {
             public ByteType(string name, byte d): base(name, d) { }
 
             public override byte GetTypeFromString(string data) {
-                byte num;
-                byte.TryParse(data, out num);
+                byte.TryParse(data, out var num);
 
                 return num;
             }

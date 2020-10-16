@@ -1,11 +1,10 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsEditorUtilities.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System.Reflection;
 using UnityEditor;
@@ -54,6 +53,6 @@ namespace ForestOfChaos.Unity.Editor {
 
         public static string AssetPath(Object target) => AssetDatabase.GetAssetPath(target);
 
-        private static string GetUniqueStringID(SerializedProperty property) => string.Format("{0}-{1}", property.propertyPath, property.name);
+        private static string GetUniqueStringID(SerializedProperty property) => $"{property.propertyPath}-{property.name}";
     }
 }

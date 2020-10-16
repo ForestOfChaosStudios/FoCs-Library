@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: Direction_URDL.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using UnityEngine;
 
@@ -58,15 +57,13 @@ namespace ForestOfChaos.Unity.Utilities.Enums {
         }
 
         public static Vector3 GetDirection(this URDL val, Transform transform) {
-            Vector3 dir;
-            GetDirection(val, transform, out dir);
+            GetDirection(val, transform, out var dir);
 
             return dir;
         }
 
         public static Vector3 GetDirection(this Transform transform, URDL val) {
-            Vector3 dir;
-            GetDirection(val, transform, out dir);
+            GetDirection(val, transform, out var dir);
 
             return dir;
         }

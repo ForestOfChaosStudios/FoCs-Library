@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsGUIEvent.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using UnityEngine;
 
@@ -33,8 +32,7 @@ namespace ForestOfChaos.Unity.Editor {
             public static implicit operator Rect(GUIEvent input) => input.Rect;
 
             public static GUIEvent Create() {
-                var data = new GUIEvent {Event = new Event(Event.current)};
-                data.Rect = GUILayoutUtility.GetLastRect();
+                var data = new GUIEvent {Event = new Event(Event.current), Rect = GUILayoutUtility.GetLastRect()};
 
                 return data;
             }
@@ -46,8 +44,7 @@ namespace ForestOfChaos.Unity.Editor {
             }
 
             public static GUIEvent<T> Create<T>(T val) {
-                var data = new GUIEvent<T> {Event = new Event(Event.current), Value = val};
-                data.Rect = GUILayoutUtility.GetLastRect();
+                var data = new GUIEvent<T> {Event = new Event(Event.current), Value = val, Rect = GUILayoutUtility.GetLastRect()};
 
                 return data;
             }
@@ -59,8 +56,7 @@ namespace ForestOfChaos.Unity.Editor {
             }
 
             public static GUIEventBool Create(bool val) {
-                var data = new GUIEventBool {Event = new Event(Event.current), Value = val};
-                data.Rect = GUILayoutUtility.GetLastRect();
+                var data = new GUIEventBool {Event = new Event(Event.current), Value = val, Rect = GUILayoutUtility.GetLastRect()};
 
                 return data;
             }

@@ -3,11 +3,9 @@
 //    Project: FoCs.Unity.Components.AdvVar
 //       File: ToggleBoolReferenceToButtonEvents.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
 
-
-using ForestOfChaos;
 using ForestOfChaos.Unity.FoCsUI.Button;
 using UnityEngine;
 

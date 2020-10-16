@@ -1,16 +1,15 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: ObjectReferenceDrawer.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
 
-
 using System.Collections.Generic;
-using ForestOfChaos.Unity.Utilities;
 using ForestOfChaos.Unity.Editor.Utilities;
 using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Utilities;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
@@ -33,7 +32,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
             set {
                 foldout = value;
 
-                if (IsExpanded != null)
+                if ((IsExpanded != null) && (IsExpanded.value != foldout))
                     IsExpanded.value = foldout;
             }
         }
@@ -101,11 +100,9 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
             return internalFoldout;
         }
 
-        private void CheckAnimBool(SerializedProperty property) {
-            if (IsExpanded == null) {
-                IsExpanded       = new AnimBool(property.isExpanded);
-                IsExpanded.speed = 1;
-            }
+        protected virtual void CheckAnimBool(SerializedProperty property) {
+            if (IsExpanded == null)
+                IsExpanded = new AnimBool(property.isExpanded) {speed = 1};
 
             IsExpanded.value = property.isExpanded;
         }
@@ -207,12 +204,11 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
             return height;
         }
 
-
 #region Storage
         private static readonly Dictionary<string, ObjectReferenceDrawer> objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(10);
 
         public static ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property) {
-            var                   id = string.Format("{0}:{1}-{2}", property.serializedObject.targetObject.name, property.propertyPath, property.name);
+            var                   id = $"{property.serializedObject.targetObject.name}:{property.propertyPath}-{property.name}";
             ObjectReferenceDrawer objDraw;
 
             if (objectDrawers.TryGetValue(id, out objDraw))
@@ -224,7 +220,5 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
             return objDraw;
         }
 #endregion
-
-
     }
 }

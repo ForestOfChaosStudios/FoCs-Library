@@ -1,16 +1,15 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: EnumFlagsAttributeDrawer.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:04 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
 
-
 using ForestOfChaos.Unity.Attributes;
-using ForestOfChaos.Unity.Utilities;
-using ForestOfChaos.Unity.Extensions;
 using ForestOfChaos.Unity.Editor.PropertyDrawers;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Utilities;
 using UnityEditor;
 using UnityEngine;
 

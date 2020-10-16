@@ -3,12 +3,10 @@
 //    Project: FoCs.Unity.Library
 //       File: RandomStrings.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
 
-
 using System;
-using ForestOfChaos.Unity.Maths;
 
 namespace ForestOfChaos.Unity.Maths.Random {
     public static class RandomStrings {

@@ -1,17 +1,16 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region Â© Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: RectLayoutScope.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using ForestOfChaos.Unity.Utilities;
 using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Utilities;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor.Utilities {

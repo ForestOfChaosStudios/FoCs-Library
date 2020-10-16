@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: EditorWidth.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using UnityEditor;
@@ -41,7 +40,7 @@ namespace ForestOfChaos.Unity.Editor.Utilities.Disposable {
             widthType = _widthType;
 
             switch (widthType) {
-                case WidthType.Label:
+                case WidthType.Label: {
                     StoredLabelSize = EditorLabelWidth;
 
                     switch (changeType) {
@@ -56,7 +55,8 @@ namespace ForestOfChaos.Unity.Editor.Utilities.Disposable {
                     }
 
                     break;
-                case WidthType.Field:
+                }
+                case WidthType.Field: {
                     StoredFieldSize = EditorFieldWidth;
 
                     switch (changeType) {
@@ -71,7 +71,8 @@ namespace ForestOfChaos.Unity.Editor.Utilities.Disposable {
                     }
 
                     break;
-                case WidthType.Both:
+                }
+                case WidthType.Both: {
                     StoredLabelSize = EditorLabelWidth;
                     StoredFieldSize = EditorFieldWidth;
 
@@ -89,6 +90,7 @@ namespace ForestOfChaos.Unity.Editor.Utilities.Disposable {
                     }
 
                     break;
+                }
             }
         }
 

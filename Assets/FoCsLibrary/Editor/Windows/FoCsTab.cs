@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsTab.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
-
 
 namespace ForestOfChaos.Unity.Editor.Windows {
     public abstract class FoCsTab<T> where T: FoCsWindow {

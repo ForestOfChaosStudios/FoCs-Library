@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: ConditionalHideAttribute.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using UnityEngine;
@@ -13,10 +12,14 @@ using UnityEngine;
 namespace ForestOfChaos.Unity.Attributes {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Class | AttributeTargets.Struct)]
     public class ConditionalHideAttribute: PropertyAttribute {
-        //The name of the bool field that will be in control
+        /// <summary>
+        ///     The name of the bool field that will be in control
+        /// </summary>
         public string ConditionalSourceField;
 
-        //TRUE = Hide in inspector / FALSE = Disable in inspector
+        /// <summary>
+        ///     TRUE = Hide in inspector / FALSE = Disable in inspector
+        /// </summary>
         public bool HideInInspector;
 
         public ConditionalHideAttribute(string conditionalSourceField) {

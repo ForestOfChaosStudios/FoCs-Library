@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: TransformData.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/04 | 6:56 PM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using ForestOfChaos.Unity.Maths.Lerp;
@@ -187,9 +186,7 @@ namespace ForestOfChaos.Unity.Types {
     }
 
     public static class TransformDataExtn {
-        public static void SetFromTD(this Transform transform, TransformData data) {
-            data.ApplyData(transform);
-        }
+        public static void SetFromTD(this Transform transform, TransformData data) => data.ApplyData(transform);
 
         public static TransformData GetTD(this Transform transform) => transform;
     }

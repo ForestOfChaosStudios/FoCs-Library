@@ -3,13 +3,11 @@
 //    Project: FoCs.Unity.Library
 //       File: ITDCurveComponent.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System.Collections.Generic;
 using ForestOfChaos.Unity.Types;
-using UnityEngine;
 
 namespace ForestOfChaos.Unity.Maths.Curves.Components {
     public class ITDCurveComponent<T>: ICurveTDComponent, ITDCurve where T: ITDCurve {
@@ -44,7 +42,7 @@ namespace ForestOfChaos.Unity.Maths.Curves.Components {
         }
     }
 
-    public abstract class ICurveTDComponent: MonoBehaviour {
+    public abstract class ICurveTDComponent: FoCsBehaviour {
         public abstract List<TransformData> CurvePositions { get; set; }
 
         public abstract bool IsFixedLength { get; }

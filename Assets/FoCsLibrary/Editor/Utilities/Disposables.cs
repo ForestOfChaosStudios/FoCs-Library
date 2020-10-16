@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: Disposables.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System;
 using ForestOfChaos.Unity.Editor.Utilities;
@@ -21,16 +20,9 @@ namespace ForestOfChaos.Unity.Editor {
     public static class Disposables {
         public static ActionOnDispose Action(Action action) => new ActionOnDispose(action);
 
-
-#region FadeGroup
         public static EditorGUILayout.FadeGroupScope FadeGroupScope(float value) => new EditorGUILayout.FadeGroupScope(value);
-#endregion
 
-
-#region PropertyScope
         public static EditorGUI.PropertyScope PropertyScope(Rect rect, GUIContent label, SerializedProperty prop) => new EditorGUI.PropertyScope(rect, label, prop);
-#endregion
-
 
 #region Handles
         public static Handles.DrawingScope HandleScope() => new Handles.DrawingScope();
@@ -41,7 +33,6 @@ namespace ForestOfChaos.Unity.Editor {
 
         public static Handles.DrawingScope HandleScope(Matrix4x4 matrix) => new Handles.DrawingScope(matrix);
 #endregion
-
 
 #region Indent
         public static EditorIndent Indent() => new EditorIndent();
@@ -64,13 +55,11 @@ namespace ForestOfChaos.Unity.Editor {
         public static EditorIndent IndentZeroed() => new EditorIndent(0, true);
 #endregion
 
-
 #region ColorChanger
         public static EditorColorChanger ColorChanger(Color col) => new EditorColorChanger(col);
 
         public static EditorColorChanger ColorChanger(Color col, EditorColourType type) => new EditorColorChanger(col, type);
 #endregion
-
 
 #region LabelField
         public static EditorWidth LabelSetWidth(float size) => new EditorWidth(size, EditorWidth.WidthType.Label, EditorWidth.ChangeType.Set);
@@ -86,14 +75,12 @@ namespace ForestOfChaos.Unity.Editor {
         public static EditorWidth LabelFieldSetWidth(float size) => new EditorWidth(size, EditorWidth.WidthType.Both, EditorWidth.ChangeType.Set);
 #endregion
 
-
 #region UnityDisposables
         public static EditorGUI.DisabledGroupScope DisabledScope(bool val = true) => new EditorGUI.DisabledGroupScope(val);
 
         public static EditorGUILayout.ToggleGroupScope ToggleGroupScope(string label, bool toggle) => new EditorGUILayout.ToggleGroupScope(label, toggle);
 
         public static EditorGUI.ChangeCheckScope ChangeCheck() => new EditorGUI.ChangeCheckScope();
-
 
 #region LayoutScopes
 #region HorizontalScope
@@ -106,7 +93,6 @@ namespace ForestOfChaos.Unity.Editor {
         public static GUILayout.HorizontalScope HorizontalScope(GUIStyle skinBox, params GUILayoutOption[] options) => new GUILayout.HorizontalScope(skinBox, options);
 #endregion
 
-
 #region VerticalScope
         public static GUILayout.VerticalScope VerticalScope() => new GUILayout.VerticalScope();
 
@@ -116,7 +102,6 @@ namespace ForestOfChaos.Unity.Editor {
 
         public static GUILayout.VerticalScope VerticalScope(GUIStyle skinBox, params GUILayoutOption[] options) => new GUILayout.VerticalScope(skinBox, options);
 #endregion
-
 
 #region AreaScope
         public static GUILayout.AreaScope AreaScope(Rect rect) => new GUILayout.AreaScope(rect);
@@ -133,7 +118,6 @@ namespace ForestOfChaos.Unity.Editor {
 
         public static GUILayout.AreaScope AreaScope(Rect rect, Texture texture, GUIStyle style) => new GUILayout.AreaScope(rect, texture, style);
 #endregion
-
 
 #region ScrollViewScope
         public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos) => new EditorGUILayout.ScrollViewScope(scrollPos);
@@ -157,13 +141,10 @@ namespace ForestOfChaos.Unity.Editor {
 #endregion
 #endregion
 
-
 #region RectLayout
         public static RectHorizontalScope RectHorizontalScope(int count, Rect rect) => new RectHorizontalScope(count, rect);
 
         public static RectVerticalScope RectVerticalScope(int count, Rect rect) => new RectVerticalScope(count, rect);
 #endregion
-
-
     }
 }

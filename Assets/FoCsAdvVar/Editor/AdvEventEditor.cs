@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.AdvVar.Editor
 //       File: AdvEventEditor.cs
 //    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/09/12 | 12:04 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
-
 
 using ForestOfChaos.Unity.AdvVar.Events;
 using ForestOfChaos.Unity.Editor;

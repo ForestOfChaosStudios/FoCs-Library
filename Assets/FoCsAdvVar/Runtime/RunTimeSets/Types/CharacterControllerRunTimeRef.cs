@@ -1,11 +1,10 @@
 ﻿#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.AdvVar
-//       File: ComponentRunTimeRef.cs
+//       File: CharacterControllerRunTimeRef.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:08 PM
 #endregion
-
 
 using System;
 using UnityEngine;
@@ -13,5 +12,8 @@ using UnityEngine;
 namespace ForestOfChaos.Unity.AdvVar.RuntimeRef {
     [Serializable]
     [AdvFolderNameRunTime]
-    public class CharacterControllerRunTimeRef : RunTimeRef<CharacterController> { }
+    [CreateAssetMenu(fileName = "New "                                      + nameof(CharacterControllerRunTimeRef),
+                     menuName = "ADV Variables/" + nameof(RunTimeRef) + "/" + nameof(CharacterControllerRunTimeRef),
+                     order    = 0)]
+    public class CharacterControllerRunTimeRef: RunTimeRef<CharacterController> { }
 }

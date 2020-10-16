@@ -3,17 +3,16 @@
 //    Project: FoCs.Unity.Components.Editor
 //       File: ButtonClickEventDrawer.cs
 //    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using ForestOfChaos.Unity.FoCsUI.Button;
 using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor.FoCsUI {
-    [CustomEditor(typeof(FoCsButton), true, isFallback = true)]
     [CanEditMultipleObjects]
+    [CustomEditor(typeof(FoCsButton), true, isFallback = true)]
     public class ButtonClickEventBaseDrawer: FoCsEditor {
         protected override void DoExtraDraw() {
             using (Disposables.HorizontalScope()) {
@@ -34,11 +33,11 @@ namespace ForestOfChaos.Unity.Editor.FoCsUI {
         }
     }
 #if TMP
-	[CustomEditor(typeof(FoCsButtonClickEventTmp), true, isFallback = true)]
 	[CanEditMultipleObjects]
+	[CustomEditor(typeof(FoCsButtonClickEventTmp), true, isFallback = true)]
 	public class ButtonClickEvent_TMPDrawer: ButtonClickEventBaseDrawer { }
 #endif
-    [CustomEditor(typeof(FoCsButtonClickEvent), true, isFallback = true)]
     [CanEditMultipleObjects]
+    [CustomEditor(typeof(FoCsButtonClickEvent), true, isFallback = true)]
     public class ButtonClickEventDrawer: ButtonClickEventBaseDrawer { }
 }

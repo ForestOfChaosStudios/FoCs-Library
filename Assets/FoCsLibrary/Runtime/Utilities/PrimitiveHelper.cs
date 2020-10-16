@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: PrimitiveHelper.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,7 +26,7 @@ namespace ForestOfChaos.Unity.Utilities {
 
         public static Mesh GetPrimitiveMesh(PrimitiveType type) {
             if (!primitiveMeshes.ContainsKey(type))
-                CreatePrimitiveMesh(type);
+                primitiveMeshes[type] = CreatePrimitiveMesh(type);
 
             return primitiveMeshes[type];
         }
@@ -35,8 +34,7 @@ namespace ForestOfChaos.Unity.Utilities {
         private static Mesh CreatePrimitiveMesh(PrimitiveType type) {
             var gameObject = GameObject.CreatePrimitive(type);
             var mesh       = gameObject.GetComponent<MeshFilter>().sharedMesh;
-            Object.Destroy(gameObject);
-            primitiveMeshes[type] = mesh;
+            Object.DestroyImmediate(gameObject);
 
             return mesh;
         }

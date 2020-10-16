@@ -3,14 +3,24 @@
 //    Project: FoCs.Unity.Library
 //       File: GameSpeed.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Utilities {
     public class GameSpeed {
+
+        public const float PAUSED       = 0f;
+        public const float HALF_SPEED   = 0.5f;
+        public const float ONExSPEED    = 1f;
+        public const float TWOxSPEED    = 2f;
+        public const float THREExSPEED  = 3f;
+        public const float FOURxSPEED   = 4f;
+        public const float FIVExTIMES   = 5f;
+        public const float TENxSPEED    = 10f;
+        public const float TWENTYxSPEED = 20f;
+
         public enum SetSpeeds {
             PAUSED,
             HALF_SPEED,
@@ -80,20 +90,5 @@ namespace ForestOfChaos.Unity.Utilities {
                     break;
             }
         }
-
-
-#region Consts
-        public const float PAUSED       = 0f;
-        public const float HALF_SPEED   = 0.5f;
-        public const float ONExSPEED    = 1f;
-        public const float TWOxSPEED    = 2f;
-        public const float THREExSPEED  = 3f;
-        public const float FOURxSPEED   = 4f;
-        public const float FIVExTIMES   = 5f;
-        public const float TENxSPEED    = 10f;
-        public const float TWENTYxSPEED = 20f;
-#endregion
-
-
     }
 }

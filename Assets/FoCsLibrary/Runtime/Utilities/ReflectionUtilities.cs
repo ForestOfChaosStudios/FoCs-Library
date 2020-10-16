@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: ReflectionUtilities.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/04 | 6:41 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
@@ -66,6 +65,7 @@ namespace ForestOfChaos.Unity.Utilities {
         }
 
         public static object GetParentObject(string path, object obj) {
+            /*
             var fields = path.Split('.');
 
             if (fields.Length == 1)
@@ -75,6 +75,19 @@ namespace ForestOfChaos.Unity.Utilities {
             obj = info.GetValue(obj);
 
             return GetParentObject(string.Join(".", fields, 1, fields.Length - 1), obj);
+             */
+            //Replaced recursive call with loop
+            while (true) {
+                var fields = path.Split('.');
+
+                if (fields.Length == 1)
+                    return obj;
+
+                var info = obj.GetType().GetField(fields[0], BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                obj = info.GetValue(obj);
+
+                path = string.Join(".", fields, 1, fields.Length - 1);
+            }
         }
 
         public static string ToGenericTypeString(this Type type, bool fullName = false) {

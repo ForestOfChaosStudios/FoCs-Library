@@ -1,11 +1,10 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
-//   Solution: Uju Yongbyeong
+#region © Forest Of Chaos Studios 2019 - 2020
+//   Solution: FoCs-Library
 //    Project: FoCs.Unity.AdvVar
 //       File: AdvFolderNameAttribute.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/04 | 6:40 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 
@@ -27,7 +26,7 @@ namespace ForestOfChaos.Unity.AdvVar {
         }
 
         public int CompareTo(object obj) {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
                 return 1;
 
             if (ReferenceEquals(this, obj))
@@ -40,23 +39,19 @@ namespace ForestOfChaos.Unity.AdvVar {
         }
 
         public int CompareTo(AdvFolderNameAttribute other) {
+            if (other is null)
+                return 1;
+
             if (ReferenceEquals(this, other))
                 return 0;
 
-            if (ReferenceEquals(null, other))
-                return 1;
-
             var order = Order.CompareTo(other.Order);
 
-            if (order == 0)
-                return string.Compare(ToggleName, other.ToggleName, StringComparison.Ordinal);
-
-            return order;
+            return order == 0? string.Compare(ToggleName, other.ToggleName, StringComparison.Ordinal) : order;
         }
     }
 
-
-#region Internal Classes
+#region Pre Built Classes
     public class AdvFolderNameSystemAttribute: AdvFolderNameAttribute {
         public AdvFolderNameSystemAttribute(): base("SystemTypes", 0 - 20) { }
     }
@@ -85,6 +80,5 @@ namespace ForestOfChaos.Unity.AdvVar {
         public AdvFolderNameRunTimeAttribute(): base("RunTime", 7 - 20) { }
     }
 #endregion
-
 
 }

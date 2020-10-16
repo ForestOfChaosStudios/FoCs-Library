@@ -1,17 +1,15 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region Â© Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: UnityReorderableListProperty.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaos.Unity.Utilities;
 using ForestOfChaos.Unity.Extensions;
-using ForestOfChaos.Unity.Editor.PropertyDrawers;
+using ForestOfChaos.Unity.Utilities;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEditorInternal;
@@ -25,7 +23,7 @@ namespace ForestOfChaos.Unity.Editor {
         private static   ReorderableList.Defaults s_Defaults;
         private static   Action                   OnLimitingChange;
         private static   bool?                    limitingEnabled;
-        private readonly Dictionary<string, ObjectReferenceDrawer>  objectDrawers = new Dictionary<string, ObjectReferenceDrawer>(1);
+        private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>();
         public           int                      ID;
         public           ListLimiter              Limiter;
         private          SerializedProperty       property;
@@ -89,16 +87,18 @@ namespace ForestOfChaos.Unity.Editor {
         }
 
         private void InitList(bool dragable = true, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true) {
-            IsExpanded                 =  new AnimBool(property.isExpanded) {speed = 0.7f};
-            OnLimitingChange           += ChangeLimiting;
-            List                       =  new ReorderableList(Property.serializedObject, Property, dragable, displayHeader, displayAdd, displayRemove);
-            List.drawHeaderCallback    =  OnListDrawHeaderCallback;
-            List.onCanRemoveCallback   =  OnListOnCanRemoveCallback;
-            List.drawElementCallback   =  DrawElement;
-            List.elementHeightCallback =  OnListElementHeightCallback;
+            IsExpanded       =  new AnimBool(property.isExpanded) {speed = 0.7f};
+            OnLimitingChange += ChangeLimiting;
+
+            List = new ReorderableList(Property.serializedObject, Property, dragable, displayHeader, displayAdd, displayRemove) {
+                    drawHeaderCallback    = OnListDrawHeaderCallback,
+                    onCanRemoveCallback   = OnListOnCanRemoveCallback,
+                    drawElementCallback   = DrawElement,
+                    elementHeightCallback = OnListElementHeightCallback,
+                    drawFooterCallback    = OnListDrawFooterCallback,
+                    showDefaultBackground = true
+            };
             //TODO Implement limited view of lists, eg only show index 50-100, and buttons to move limits
-            List.drawFooterCallback    = OnListDrawFooterCallback;
-            List.showDefaultBackground = true;
 
             if (!Property.serializedObject.isEditingMultipleObjects)
                 SetSerializedPropertyType();
@@ -117,26 +117,26 @@ namespace ForestOfChaos.Unity.Editor {
             headerRect.height -= 2f;
             ++headerRect.y;
 
-            if (List.drawHeaderCallback != null)
-                List.drawHeaderCallback(headerRect);
+            List.drawHeaderCallback?.Invoke(headerRect);
 
             if (SerializedPropertyType != SerializedPropertyType.ObjectReference)
                 return;
 
-            if (property.arrayElementType.Contains("PPtr<")) {
-                var @event = Event.current;
+            if (!property.arrayElementType.Contains("PPtr<"))
+                return;
 
-                if (headerRect.Contains(@event.mousePosition)) {
-                    if ((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform)) {
-                        DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+            var @event = Event.current;
 
-                        if (@event.type == EventType.DragPerform) {
-                            DoDropAdd();
-                            DragAndDrop.AcceptDrag();
-                        }
+            if (headerRect.Contains(@event.mousePosition)) {
+                if ((@event.type == EventType.DragUpdated) || (@event.type == EventType.DragPerform)) {
+                    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
-                        @event.Use();
+                    if (@event.type == EventType.DragPerform) {
+                        DoDropAdd();
+                        DragAndDrop.AcceptDrag();
                     }
+
+                    @event.Use();
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace ForestOfChaos.Unity.Editor {
             }
         }
 
-        private bool OnlyShowHeader() => (!IsExpanded.value && !IsExpanded.isAnimating) || (!IsExpanded.value && IsExpanded.isAnimating);
+        //private bool OnlyShowHeader() => (!IsExpanded.value && !IsExpanded.isAnimating) || (!IsExpanded.value && IsExpanded.isAnimating);
 
         public void HandleDrawing(Rect rect) {
             CheckLimiter();
@@ -183,12 +183,13 @@ namespace ForestOfChaos.Unity.Editor {
         }
 
         private void CheckLimiter() {
-            if (LimitingEnabled) {
-                if (Limiter == null)
-                    Limiter = ListLimiter.GetLimiter(this);
-                else
-                    Limiter.UpdateRange();
-            }
+            if (!LimitingEnabled)
+                return;
+
+            if (Limiter == null)
+                Limiter = ListLimiter.GetLimiter(this);
+            else
+                Limiter.UpdateRange();
         }
 
         private void DrawElement(Rect rect, int index, bool active, bool focused) {
@@ -218,19 +219,19 @@ namespace ForestOfChaos.Unity.Editor {
             }
         }
 
-        private void HandleObjectReference(Rect rect, SerializedProperty property) {
-            var drawer                       = GetObjectDrawer(property);
-            var GuiCont                      = new GUIContent(property.displayName);
-            List.elementHeight = rect.height = ObjectReferenceElementHeight(property, GuiCont);
+        private void HandleObjectReference(Rect rect, SerializedProperty prop) {
+            var drawer                       = GetObjectDrawer(prop);
+            var GuiCont                      = new GUIContent(prop.displayName);
+            List.elementHeight = rect.height = ObjectReferenceElementHeight(prop, GuiCont);
             drawer.OnGUI(rect, property, GuiCont);
         }
 
-        private float ObjectReferenceElementHeight(SerializedProperty property) => ObjectReferenceElementHeight(property, new GUIContent(property.displayName));
+        private float ObjectReferenceElementHeight(SerializedProperty prop) => ObjectReferenceElementHeight(prop, new GUIContent(prop.displayName));
 
-        private float ObjectReferenceElementHeight(SerializedProperty property, GUIContent content) {
-            var drawer = GetObjectDrawer(property);
+        private float ObjectReferenceElementHeight(SerializedProperty prop, GUIContent content) {
+            var drawer = GetObjectDrawer(prop);
 
-            return drawer.GetPropertyHeight(property, content);
+            return drawer.GetPropertyHeight(prop, content);
         }
 
         public static Object[] DropZone(Rect rect) {
@@ -254,8 +255,7 @@ namespace ForestOfChaos.Unity.Editor {
         }
 
         private void DoDropAdd() {
-            for (var i = 0; i < DragAndDrop.objectReferences.Length; i++) {
-                var obj      = DragAndDrop.objectReferences[i];
+            foreach (var obj in DragAndDrop.objectReferences) {
                 var typeName = obj.GetType().Name;
                 var length   = property.arraySize;
                 property.InsertArrayElementAtIndex(length);
@@ -359,22 +359,19 @@ namespace ForestOfChaos.Unity.Editor {
             return height;
         }
 
-
 #region Storage
-        private ObjectReferenceDrawer GetObjectDrawer(SerializedProperty property) {
-            var id = string.Format("{0}-{1}", property.propertyPath, property.name);
-            ObjectReferenceDrawer objDraw;
+        private ORD GetObjectDrawer(SerializedProperty prop) {
+            var id = $"{prop.propertyPath}-{prop.name}";
 
-            if (objectDrawers.TryGetValue(id, out objDraw))
+            if (objectDrawers.TryGetValue(id, out var objDraw))
                 return objDraw;
 
-            objDraw = new ObjectReferenceDrawer();
+            objDraw = new ORD();
             objectDrawers.Add(id, objDraw);
 
             return objDraw;
         }
 #endregion
-
 
         public static class ListStyles {
             public static readonly GUIContent IconToolbarPlus     = EditorGUIUtility.IconContent("Toolbar Plus",      "|Add to list");
@@ -394,8 +391,7 @@ namespace ForestOfChaos.Unity.Editor {
                     if (miniLabel != null)
                         return miniLabel;
 
-                    miniLabel           = new GUIStyle(EditorStyles.miniLabel);
-                    miniLabel.alignment = TextAnchor.UpperCenter;
+                    miniLabel = new GUIStyle(EditorStyles.miniLabel) {alignment = TextAnchor.UpperCenter};
 
                     return miniLabel;
                 }
@@ -515,9 +511,8 @@ namespace ForestOfChaos.Unity.Editor {
             }
 
             /// <inheritdoc />
-            public override string ToString() => string.Format("Min: {0}. Max: {1}", Min, Max);
+            public override string ToString() => $"Min: {Min}. Max: {Max}";
         }
-
 
 #region Delegate Methods
         private float OnListElementHeightCallback(int index) {
@@ -554,7 +549,7 @@ namespace ForestOfChaos.Unity.Editor {
 
             using (Disposables.IndentSet(0)) {
                 var style = property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none;
-                FoCsGUI.Label(rect, string.Format("{0} [{1}]", property.displayName, property.arraySize), style);
+                FoCsGUI.Label(rect, $"{property.displayName} [{property.arraySize}]", style);
                 property.isExpanded = FoCsGUI.Foldout(rect.Edit(RectEdit.SubtractWidth(64)), property.isExpanded);
             }
 
@@ -605,10 +600,10 @@ namespace ForestOfChaos.Unity.Editor {
             using (Disposables.IndentZeroed()) {
                 var minAmount  = 1;
                 var maxAmount  = 5;
-                var upArrow    = new GUIContent("", string.Format("Increase Displayed Index {0}", minAmount));
-                var up2Arrow   = new GUIContent("", string.Format("Increase Displayed Index {0}", maxAmount));
-                var downArrow  = new GUIContent("", string.Format("Decrease Displayed Index {0}", minAmount));
-                var down2Arrow = new GUIContent("", string.Format("Decrease Displayed Index {0}", maxAmount));
+                var upArrow    = new GUIContent("", $"Increase Displayed Index {minAmount}");
+                var up2Arrow   = new GUIContent("", $"Increase Displayed Index {maxAmount}");
+                var downArrow  = new GUIContent("", $"Decrease Displayed Index {minAmount}");
+                var down2Arrow = new GUIContent("", $"Decrease Displayed Index {maxAmount}");
                 var horScope   = Disposables.RectHorizontalScope(11, rect.Edit(RectEdit.ChangeX(5), RectEdit.AddWidth(-16)));
 
                 using (Disposables.DisabledScope(!Limiter.CanDecrease())) {
@@ -621,8 +616,8 @@ namespace ForestOfChaos.Unity.Editor {
 
                 var minString  = (Limiter.Min + 1).ToString();
                 var maxString  = Limiter.Max.ToString();
-                var shortLabel = string.Format("{0}: {1}-{2}",                      minString.Length + maxString.Length < 5? "Index" : "I", minString, maxString);
-                var toolTip    = string.Format("Viewable Indices: Min:{0} Max:{1}", minString,                                              maxString);
+                var shortLabel = $"{(minString.Length + maxString.Length < 5? "Index" : "I")}: {minString}-{maxString}";
+                var toolTip    = $"Viewable Indices: Min:{minString} Max:{maxString}";
                 FoCsGUI.Label(horScope.GetNext(5, RectEdit.ChangeY(-3)), new GUIContent(shortLabel, toolTip));
 
                 using (Disposables.DisabledScope(!Limiter.CanIncrease())) {
@@ -697,7 +692,6 @@ namespace ForestOfChaos.Unity.Editor {
             }
         }
 #endregion
-
 
 #region Delegate Setters
         /// <summary>
@@ -821,7 +815,5 @@ namespace ForestOfChaos.Unity.Editor {
             return this;
         }
 #endregion
-
-
     }
 }

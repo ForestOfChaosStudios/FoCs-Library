@@ -3,14 +3,12 @@
 //    Project: FoCs.Unity.Library
 //       File: InputAxis.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using ForestOfChaos.Unity.Extensions;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace ForestOfChaos.Unity.InputManager {
     [Serializable]
@@ -29,7 +27,6 @@ namespace ForestOfChaos.Unity.InputManager {
         public bool OnlyButtonEvents;
         public bool UseSmoothInput = true;
 
-        [FormerlySerializedAs("value")]
         [SerializeField]
         private float valueRaw;
 
@@ -37,6 +34,16 @@ namespace ForestOfChaos.Unity.InputManager {
         private float valueSmooth;
 
         public bool ValueInverted;
+
+        public Action<float> OnKey;
+        public Action        OnKeyDown;
+        public Action        OnKeyNegativeDown;
+        public Action        OnKeyNegativeUp;
+        public Action<float> OnKeyNoDeadZone;
+        public Action        OnKeyNoValue;
+        public Action        OnKeyPositiveDown;
+        public Action        OnKeyPositiveUp;
+        public Action        OnKeyUp;
 
         public float Value => ValueInverted? GetValueFloat(this) : -GetValueFloat(this);
 
@@ -79,13 +86,9 @@ namespace ForestOfChaos.Unity.InputManager {
 
         public bool InputInDeadZone(float _deadZone) => Math.Abs(Value) > _deadZone;
 
-        public void CallEvents() {
-            CallEvents(this, deadZone);
-        }
+        public void CallEvents() => CallEvents(this, deadZone);
 
-        public void CallEvents(float _deadZone) {
-            CallEvents(this, _deadZone);
-        }
+        public void CallEvents(float _deadZone) => CallEvents(this, _deadZone);
 
         public void UpdateData() {
             valueRaw    = Input.GetAxisRaw(Axis);
@@ -109,9 +112,7 @@ namespace ForestOfChaos.Unity.InputManager {
             CallEvents(this, _deadZone);
         }
 
-        public static void CallEvents(InputAxis key) {
-            CallEvents(key, key.DeadZone);
-        }
+        public static void CallEvents(InputAxis key) => CallEvents(key, key.DeadZone);
 
         public void CallEventsCustomValue(float val) {
             var tempValRaw    = ValueRaw;
@@ -188,21 +189,6 @@ namespace ForestOfChaos.Unity.InputManager {
             else if (key.Value < _deadZone)
                 key.OnKeyNegativeUp.Trigger();
         }
-
-
-#region Actions
-        public Action<float> OnKey;
-        public Action        OnKeyDown;
-        public Action        OnKeyNegativeDown;
-        public Action        OnKeyNegativeUp;
-        public Action<float> OnKeyNoDeadZone;
-        public Action        OnKeyNoValue;
-        public Action        OnKeyPositiveDown;
-        public Action        OnKeyPositiveUp;
-        public Action        OnKeyUp;
-#endregion
-
-
     }
 
     public enum KeyPosition {

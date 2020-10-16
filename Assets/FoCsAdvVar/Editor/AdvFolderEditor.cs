@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.AdvVar.Editor
 //       File: AdvFolderEditor.cs
 //    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/10/04 | 04:42 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
@@ -28,17 +27,17 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         }
     }
 
-    [CustomEditor(typeof(AdvSOFolder))]
     [CanEditMultipleObjects]
+    [CustomEditor(typeof(AdvSOFolder))]
     public class AdvFolderEditor: FoCsEditor {
         private static SortedDictionary<AdvFolderNameAttribute, List<Type>> typeDictionary;
         private        int                                                  ActiveTab;
         private        AdvFolderNameAttribute                               ActiveTabName;
         private        bool                                                 showChildrenSettings = true;
-        private        bool                                                 repaintCalled        = false;
+        private        bool                                                 repaintCalled;
 
         protected override void OnEnable() {
-            base.OnEnable();
+            //base.OnEnable();
             Init();
         }
 
@@ -80,26 +79,27 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
             using (Disposables.Indent()) {
                 var assets = AssetDatabase.LoadAllAssetsAtPath(AssetPath());
 
-                if (assets.Length > 1) {
-                    using (Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
-                        showChildrenSettings = FoCsGUI.Layout.Foldout(showChildrenSettings, $"Children [{assets.Length - 1}]");
+                if (assets.Length <= 1)
+                    return;
 
-                    if (!showChildrenSettings)
-                        return;
+                using (Disposables.HorizontalScope(FoCsGUI.Styles.Toolbar))
+                    showChildrenSettings = FoCsGUI.Layout.Foldout(showChildrenSettings, $"Children [{assets.Length - 1}]");
 
-                    using (Disposables.VerticalScope(GUI.skin.box)) {
-                        for (var i = 0; i < assets.Length; i++) {
-                            var obj = assets[i];
+                if (!showChildrenSettings)
+                    return;
 
-                            if (!obj)
-                                continue;
+                using (Disposables.VerticalScope(GUI.skin.box)) {
+                    for (var i = 0; i < assets.Length; i++) {
+                        var obj = assets[i];
 
-                            if (AssetDatabase.IsSubAsset(obj))
-                                DrawChildObject(obj, i);
+                        if (!obj)
+                            continue;
 
-                            if (repaintCalled)
-                                return;
-                        }
+                        if (AssetDatabase.IsSubAsset(obj))
+                            DrawChildObject(obj, i);
+
+                        if (repaintCalled)
+                            return;
                     }
                 }
             }
@@ -108,12 +108,10 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         private void DrawTypeTabs() {
             FoCsGUI.Layout.LabelField("Type of Scriptable Object to add", FoCsGUI.Styles.Unity.BoldLabel);
 
-            if (ActiveTabName is AnyAdvFolder) {
+            if (ActiveTabName is AnyAdvFolder)
                 DrawAddTypeButton(typeDictionary.Keys.SelectMany(key => typeDictionary[key]).ToList());
-            }
-            else {
+            else
                 DrawAddTypeButton(typeDictionary[ActiveTabName]);
-            }
         }
 
         private void DrawAddTypeButton(List<Type> types) {
@@ -162,14 +160,15 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
                             var @event = FoCsGUI.Layout.Toggle(key.ToggleName.SplitCamelCase(), ActiveTab == index, FoCsGUI.Styles.Unity.ToolbarButton);
 
                             if (cc.changed && @event) {
-                                if (ActiveTab != index) {
-                                    ActiveTab     = index;
-                                    ActiveTabName = key;
-                                    Repaint();
-                                    repaintCalled = true;
+                                if (ActiveTab == index)
+                                    continue;
 
-                                    return;
-                                }
+                                ActiveTab     = index;
+                                ActiveTabName = key;
+                                Repaint();
+                                repaintCalled = true;
+
+                                return;
                             }
                         }
                     }
@@ -218,7 +217,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         }
 
         private void DrawAddTypeButton(Type type) {
-            var name = type.ToGenericTypeString();
+            var name   = type.ToGenericTypeString();
             var @event = FoCsGUI.Layout.Button(name);
 
             if (@event) {

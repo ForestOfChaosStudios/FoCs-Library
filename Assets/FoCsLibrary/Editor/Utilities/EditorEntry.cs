@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: EditorEntry.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using UnityEditor;
 using UnityEngine;
@@ -29,12 +28,8 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
 
         public static implicit operator string(EditorEntry editorString) => editorString.LabelName;
 
-        public void Draw(Rect position) {
-            EditorGUI.PropertyField(position, Property, new GUIContent(LabelName));
-        }
+        public void Draw(Rect position) => EditorGUI.PropertyField(position, Property, new GUIContent(LabelName));
 
-        public void Draw(Rect position, string toolTip) {
-            EditorGUI.PropertyField(position, Property, new GUIContent(LabelName, toolTip));
-        }
+        public void Draw(Rect position, string toolTip) => EditorGUI.PropertyField(position, Property, new GUIContent(LabelName, toolTip));
     }
 }

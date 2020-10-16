@@ -3,11 +3,11 @@
 //    Project: FoCs.Unity.AdvVar.Editor
 //       File: AdvCustomRangeDrawer.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:04 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
 
-
 using System;
+using ForestOfChaos.Unity.AdvVar.Base;
 using ForestOfChaos.Unity.Editor;
 using ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes;
 using UnityEditor;
@@ -33,7 +33,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         }
 
         /// <inheritdoc />
-        public bool IsThisType(object obj) => obj is IntVariable;
+        public bool IsThisType(object obj) => obj is AdvVariable<int>;
 
         /// <inheritdoc />
         public bool Draw(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout) =>
@@ -56,7 +56,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         }
 
         /// <inheritdoc />
-        public bool IsThisType(object obj) => obj is FloatVariable;
+        public bool IsThisType(object obj) => obj is AdvVariable<float>;
 
         /// <inheritdoc />
         public bool Draw(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout) =>
@@ -79,7 +79,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         }
 
         /// <inheritdoc />
-        public bool IsThisType(object obj) => obj is StringVariable;
+        public bool IsThisType(object obj) => obj is AdvVariable<string>;
 
         /// <inheritdoc />
         public bool Draw(Rect position, SerializedProperty property, GUIContent label, RangeAttribute range, bool foldout) =>
@@ -90,7 +90,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
 
         /// <inheritdoc />
         public GUIContent ChangeLabel(GUIContent label, RangeAttribute range) {
-            label.text += label.text += string.Format("  (Total Length:{0})", (int)range.max);
+            label.text += $"  (Total Length:{(int)range.max})";
 
             return label;
         }

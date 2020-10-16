@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: SerializedObjectExtensions.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
@@ -43,10 +42,6 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
             return num;
         }
 
-        public static Type GetPropertyType(this SerializedObject property) {
-            var parentType = property.targetObject.GetType();
-
-            return parentType;
-        }
+        public static Type GetPropertyType(this SerializedObject property) => property.targetObject.GetType();
     }
 }

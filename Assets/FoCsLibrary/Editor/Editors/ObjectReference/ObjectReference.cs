@@ -1,15 +1,14 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: ObjectReference.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
 
-
-using ForestOfChaos.Unity.Utilities;
 using ForestOfChaos.Unity.Editor.Utilities;
 using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Utilities;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
@@ -37,6 +36,8 @@ namespace ForestOfChaos.Unity.Editor {
             }
         }
 
+        public ObjectReference() => IsReferenceOpen = new AnimBool(false) {speed = 0.7f};
+
         public ObjectReference(SerializedProperty _property, FoCsEditor _owner) {
             Property        = _property;
             owner           = _owner;
@@ -46,14 +47,14 @@ namespace ForestOfChaos.Unity.Editor {
         /// <summary>
         ///     Draws the Object Reference field, and foldout GUI
         /// </summary>
-        public void DrawHeader() {
-            DrawHeader(true);
+        public void DrawHeader(bool hasHeaderText = false) {
+            DrawHeader(true, hasHeaderText);
         }
 
         /// <summary>
         ///     Draws the Object Reference field, and foldout GUI
         /// </summary>
-        public void DrawHeader(bool showFoldout) {
+        public void DrawHeader(bool showFoldout, bool hasHeaderText) {
             using (var cc = Disposables.ChangeCheck()) {
                 var prop = FoCsGUI.Layout.PropertyField(Property, false);
 
@@ -78,15 +79,21 @@ namespace ForestOfChaos.Unity.Editor {
             if (!Property.objectReferenceValue)
                 return;
 
-            if (SerializedObject == null) {
+            if ((SerializedObject == null) && (Property.objectReferenceValue != owner.target)) {
                 Handler.ClearHandlingDictionary();
                 SerializedObject = new SerializedObject(Property.objectReferenceValue);
             }
 
             VerifyHandler();
+            var rect = GUILayoutUtility.GetLastRect();
+
+            if (hasHeaderText)
+                rect = rect.Edit(RectEdit.SetWidth(16), RectEdit.SetHeight(rect.height * 0.5f), RectEdit.AddY(rect.height * 0.5f));
+            else
+                rect = rect.Edit(RectEdit.SetWidth(16));
 
             if (showFoldout)
-                ReferenceOpen = FoCsGUI.Foldout(GUILayoutUtility.GetLastRect().Edit(RectEdit.SetWidth(16)), ReferenceOpen);
+                ReferenceOpen = FoCsGUI.Foldout(rect, ReferenceOpen);
         }
 
         private static void DrawRightClickMenu(SerializedProperty property) {
@@ -114,7 +121,7 @@ namespace ForestOfChaos.Unity.Editor {
             using (Disposables.VerticalScope(FoCsGUI.Styles.Unity.Box)) {
                 using (Disposables.Indent()) {
                     foreach (var property in SerializedObject.Properties())
-                        Handler.Handle(property);
+                        Handler.Handle(property, true);
                 }
             }
 

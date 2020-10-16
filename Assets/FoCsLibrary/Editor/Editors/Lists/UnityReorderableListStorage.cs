@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: UnityReorderableListStorage.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System.Collections.Generic;
 using UnityEditor;
@@ -35,10 +34,9 @@ namespace ForestOfChaos.Unity.Editor {
         }
 
         public UnityReorderableListProperty GetList(SerializedProperty property) {
-            var                          id = GetId(property);
-            UnityReorderableListProperty reorderableList;
+            var id = GetId(property);
 
-            if (URLPList.TryGetValue(id, out reorderableList)) {
+            if (URLPList.TryGetValue(id, out var reorderableList)) {
                 if (reorderableList.Property.serializedObject != null)
                     reorderableList.Property = property;
                 else
@@ -56,7 +54,6 @@ namespace ForestOfChaos.Unity.Editor {
             return reorderableList;
         }
 
-        public static string GetId(SerializedProperty property) =>
-                string.Format("{0}:{1}-{2}", property.serializedObject.targetObject.GetInstanceID(), property.propertyPath, property.name);
+        public static string GetId(SerializedProperty property) => $"{property.serializedObject.targetObject.GetInstanceID()}:{property.propertyPath}-{property.name}";
     }
 }

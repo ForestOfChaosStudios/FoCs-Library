@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: SearchSorter.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +12,18 @@ using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor {
+    [InitializeOnLoad]
     internal class SearchSorter: FoCsEditor.FoCsEditorSorter {
         public static          SearchSorter Instance;
         public static readonly GUIContent   modeName = new GUIContent("Search");
 
         ///<inheritdoc />
         public override GUIContent ModeName => modeName;
+
+        static SearchSorter() {
+            Instance = new SearchSorter();
+            FoCsEditor.AddSortingMode(Instance);
+        }
 
         ///<inheritdoc />
         public override List<SerializedProperty> GetPropertyOrder(IEnumerable<SerializedProperty> properties) {

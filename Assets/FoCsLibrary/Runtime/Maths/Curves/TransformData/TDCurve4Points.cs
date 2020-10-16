@@ -3,15 +3,14 @@
 //    Project: FoCs.Unity.Library
 //       File: TDCurve4Points.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
-using ForestOfChaos.Unity.Types;
 using ForestOfChaos.Unity.Extensions;
 using ForestOfChaos.Unity.Maths.Lerp;
+using ForestOfChaos.Unity.Types;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Maths.Curves {

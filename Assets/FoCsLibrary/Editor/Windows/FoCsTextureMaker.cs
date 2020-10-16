@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsTextureMaker.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
-
 
 using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEditor;
@@ -26,11 +25,11 @@ namespace ForestOfChaos.Unity.Editor.Windows {
         protected override void OnGUI() {
             color = EditorGUILayout.ColorField("Colour To Make Texture", color);
 
-            if (GUILayout.Button("Create Texture")) {
+            if (FoCsGUI.Layout.Button("Create Texture")) {
                 var tex = new Texture2D(2, 2);
                 tex.SetPixels(new[] {color, color, color, color});
                 tex.Apply();
-                AssetDatabase.CreateAsset(tex, string.Format("Assets/Solid_{0}.asset", ColorUtility.ToHtmlStringRGB(color)));
+                AssetDatabase.CreateAsset(tex, $"Assets/Solid_{ColorUtility.ToHtmlStringRGB(color)}.asset");
             }
         }
     }

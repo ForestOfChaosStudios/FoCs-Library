@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Components
 //       File: OnCollisionEvents.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using ForestOfChaos.Unity.Extensions;
@@ -31,25 +30,5 @@ namespace ForestOfChaos.Unity.Components {
         public void OnCollisionExit(Collision collision) {
             OnCollExit.Trigger(collision);
         }
-
-        public void Sub(IOnCollisionEvents eventHandler) {
-            OnCollEnter += eventHandler.CollisionEnter;
-            OnCollStay  += eventHandler.CollisionStay;
-            OnCollExit  += eventHandler.CollisionExit;
-        }
-
-        public void UnSub(IOnCollisionEvents eventHandler) {
-            OnCollEnter -= eventHandler.CollisionEnter;
-            OnCollStay  -= eventHandler.CollisionStay;
-            OnCollExit  -= eventHandler.CollisionExit;
-        }
-    }
-
-    public interface IOnCollisionEvents {
-        void CollisionEnter(Collision collision);
-
-        void CollisionStay(Collision collision);
-
-        void CollisionExit(Collision collision);
     }
 }

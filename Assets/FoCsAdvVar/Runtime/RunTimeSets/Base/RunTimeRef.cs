@@ -1,11 +1,10 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.AdvVar
 //       File: RunTimeRef.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:08 PM
 #endregion
-
 
 using System;
 using ForestOfChaos.Unity.Extensions;
@@ -13,8 +12,8 @@ using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.RuntimeRef {
     public abstract class RunTimeRef<T>: RunTimeRef where T: class {
-        public  Action OnBeforeValueChange = () => { };
-        public  Action OnValueChange       = () => { };
+        public  Action OnBeforeValueChange;
+        public  Action OnValueChange;
         private T      reference;
 
         public T Reference {

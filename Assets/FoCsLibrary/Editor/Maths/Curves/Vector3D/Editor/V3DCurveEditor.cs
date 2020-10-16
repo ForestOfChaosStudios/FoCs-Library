@@ -1,14 +1,13 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: V3DCurveEditor.cs
 //    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/09/12 | 12:04 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
 
-
-using ForestOfChaos.Unity.Maths.Curves.Components;
 using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Maths.Curves.Components;
 using UnityEditor;
 using UnityEngine;
 
@@ -74,7 +73,7 @@ namespace ForestOfChaos.Unity.Editor.Maths.Curves {
                                 pos[i] = Target.transform.TransformPoint(pos[i]);
 
                             pos[i] = Handles.DoPositionHandle(Curve.CurvePositions[i], Quaternion.identity);
-                            Handles.Label(pos[i], new GUIContent(string.Format("Index: {0}", i)));
+                            Handles.Label(pos[i], new GUIContent($"Index: {i}"));
 
                             if (!Curve.UseGlobalSpace)
                                 pos[i] = Target.transform.InverseTransformPoint(pos[i]);

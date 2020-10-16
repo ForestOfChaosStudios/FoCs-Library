@@ -1,11 +1,10 @@
 ﻿#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
-//    Project: FoCs.Unity.Library
+//    Project: FoCs.Unity.Features.Grid
 //       File: GridPosition.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
-
 
 using System;
 using ForestOfChaos.Unity.Types;

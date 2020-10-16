@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.AdvVar.Editor
 //       File: AdvReferencePropertyDrawerBase.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:04 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
-
 
 using System;
 using ForestOfChaos.Unity.AdvVar.Base;
@@ -14,6 +13,7 @@ using ForestOfChaos.Unity.Editor.PropertyDrawers;
 using ForestOfChaos.Unity.Extensions;
 using ForestOfChaos.Unity.Utilities;
 using UnityEditor;
+using UnityEditor.AnimatedValues;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.Editor {
@@ -27,6 +27,8 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         internal static readonly GUIContent   globalReferenceGUIContent = new GUIContent("Use Reference",   "Use Reference");
         internal static readonly GUIContent[] OPTIONS_ARRAY             = {localConstantGUIContent, globalReferenceGUIContent};
         internal static readonly RectEdit[]   EDITS_ARRAY               = {RectEdit.SetHeight(SingleLine), RectEdit.ChangeY(1)};
+
+        public AdvReferencePropertyDrawerBase() => IsExpanded = new AnimBool {speed = 0.7f};
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
             Foldout = DoDraw(position, property, Foldout, ref label);
@@ -62,35 +64,21 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
 
             using (var propScope = Disposables.PropertyScope(position, label, property)) {
                 label = propScope.content;
+                var editedPosition = position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1));
 
                 if (useLocal.boolValue) {
                     if (drawLocalValue == null) {
-                        useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)),
-                                                                          localValue,
-                                                                          label,
-                                                                          OPTIONS_ARRAY,
-                                                                          useLocal.boolValue? 0 : 1)
-                                                    .Value ==
-                                             0;
+                        var val = FoCsGUI.DrawPropertyWithMenu(editedPosition, localValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1);
+                        useLocal.boolValue = val.Value == 0;
                     }
                     else {
-                        useLocal.boolValue = FoCsGUI.DrawActionWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)),
-                                                                        drawLocalValue,
-                                                                        label,
-                                                                        OPTIONS_ARRAY,
-                                                                        useLocal.boolValue? 0 : 1)
-                                                    .Value ==
-                                             0;
+                        var val = FoCsGUI.DrawActionWithMenu(editedPosition, drawLocalValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1);
+                        useLocal.boolValue = val.Value == 0;
                     }
                 }
                 else {
-                    useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1)),
-                                                                      globalReference,
-                                                                      label,
-                                                                      OPTIONS_ARRAY,
-                                                                      useLocal.boolValue? 0 : 1)
-                                                .Value ==
-                                         0;
+                    var val = FoCsGUI.DrawPropertyWithMenu(editedPosition, globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1);
+                    useLocal.boolValue = val.Value == 0;
                 }
             }
 
@@ -105,39 +93,41 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
             var iterator         = serializedObject.GetIterator();
             iterator.Next(true);
 
-            if (!useLocal.boolValue && (globalReference.objectReferenceValue != null)) {
-                foldout = EditorGUI.Foldout(position.Edit(RectEdit.AddY(1), RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine)), foldout, foldoutGUIContent);
+            if (useLocal.boolValue || (globalReference.objectReferenceValue == null))
+                return foldout;
 
-                if (foldout) {
-                    position.height += 1;
-                    DrawSurroundingBox(position);
-                    position.y += Padding;
+            foldout = EditorGUI.Foldout(position.Edit(RectEdit.AddY(1), RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine)), foldout, foldoutGUIContent);
 
-                    using (Disposables.Indent()) {
-                        using (var changeCheckScope = Disposables.ChangeCheck()) {
-                            var next = iterator.NextVisible(true);
+            if (!foldout)
+                return false;
 
-                            if (FoCsEditor.IsDefaultScriptProperty(iterator))
-                                iterator.NextVisible(true);
+            position.height += 1;
+            DrawSurroundingBox(position);
+            position.y += Padding;
 
-                            if (next) {
-                                var drawPos = position.Edit(RectEdit.AddY(SingleLine), RectEdit.SubtractHeight(SingleLinePlusPadding));
+            using (Disposables.Indent()) {
+                using (var changeCheckScope = Disposables.ChangeCheck()) {
+                    var next = iterator.NextVisible(true);
 
-                                do {
-                                    if (!FoCsEditor.IsPropertyHidden(iterator))
-                                        drawPos = DrawSubProp(iterator, drawPos);
-                                }
-                                while (iterator.NextVisible(false));
-                            }
+                    if (FoCsEditor.IsDefaultScriptProperty(iterator))
+                        iterator.NextVisible(true);
 
-                            if (changeCheckScope.changed)
-                                serializedObject.ApplyModifiedProperties();
+                    if (next) {
+                        var drawPos = position.Edit(RectEdit.AddY(SingleLine), RectEdit.SubtractHeight(SingleLinePlusPadding));
+
+                        do {
+                            if (!FoCsEditor.IsPropertyHidden(iterator))
+                                drawPos = DrawSubProp(iterator, drawPos);
                         }
+                        while (iterator.NextVisible(false));
                     }
+
+                    if (changeCheckScope.changed)
+                        serializedObject.ApplyModifiedProperties();
                 }
             }
 
-            return foldout;
+            return true;
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
@@ -146,8 +136,11 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
             if (@ref.objectReferenceValue)
                 SerializedObject = new SerializedObject(@ref.objectReferenceValue);
 
-            return PropertyHeight(property, SerializedObject, Foldout);
+            return PropertyHeight(property, SerializedObject, IsExpanded.value);
         }
+
+        /// <inheritdoc />
+        protected override void CheckAnimBool(SerializedProperty property) { }
     }
 
     internal static class AdvPropDrawerExt {

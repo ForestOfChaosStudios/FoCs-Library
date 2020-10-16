@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: ListExtensions.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
@@ -21,9 +20,7 @@ namespace ForestOfChaos.Unity.Extensions {
 
         public static bool IsNullOrEmpty<T>(this List<T> list) => (list == null) || (list.Count == 0);
 
-        public static IList<T> Clone<T>(this IList<T> listToClone) where T: ICloneable {
-            return listToClone.Select(item => (T)item.Clone()).ToList();
-        }
+        public static IList<T> Clone<T>(this IList<T> listToClone) where T: ICloneable => listToClone.Select(item => (T)item.Clone()).ToList();
 
         public static bool InRange<T>(this List<T> list, int index) {
             if (list.IsNullOrEmpty())

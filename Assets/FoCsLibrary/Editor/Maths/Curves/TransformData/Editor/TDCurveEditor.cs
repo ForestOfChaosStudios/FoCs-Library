@@ -1,15 +1,14 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: TDCurveEditor.cs
 //    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/09/12 | 12:04 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
 
-
+using ForestOfChaos.Unity.Extensions;
 using ForestOfChaos.Unity.Maths.Curves.Components;
 using ForestOfChaos.Unity.Types;
-using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEngine;
 
@@ -108,7 +107,7 @@ namespace ForestOfChaos.Unity.Editor.Maths.Curves {
                                 break;
                         }
 
-                        Handles.Label(tdPos, new GUIContent(string.Format("Index: {0}", i)));
+                        Handles.Label(tdPos, new GUIContent($"Index: {i}"));
 
                         if (!Target.UseGlobalSpace)
                             tdPos = Target.transform.InverseTransformPoint(tdPos);

@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: UnitySettingsReader.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:04 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
-
 
 using System.Linq;
 using ForestOfChaos.Unity.Extensions;

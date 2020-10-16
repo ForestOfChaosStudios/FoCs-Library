@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: Vector3I.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using UnityEngine;
@@ -171,14 +170,11 @@ namespace ForestOfChaos.Unity.Types {
         }
 
         public override bool Equals(object obj) {
-            if (ReferenceEquals(null, obj))
-                return false;
-
-            if (obj is Vector3I)
-                return Equals((Vector3I)obj);
-
-            if (obj is int)
-                return Equals((int)obj);
+            switch (obj) {
+                case null:         return false;
+                case Vector3I vec: return Equals(vec);
+                case int intval:   return Equals(intval);
+            }
 
             return false;
         }

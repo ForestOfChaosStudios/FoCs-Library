@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.AdvVar
 //       File: AdvReference.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using ForestOfChaos.Unity.Extensions;
@@ -16,6 +15,12 @@ namespace ForestOfChaos.Unity.AdvVar.Base {
         [SerializeField]
         private T storedValue;
 
+        /// <summary>
+        ///     Triggered before the value is changed, passing the current value, then the new value
+        /// </summary>
+        [NonSerialized]
+        public Action<T, T> OnValueChange;
+
         protected virtual T InternalValue {
             get => storedValue;
             set => storedValue = value;
@@ -24,8 +29,8 @@ namespace ForestOfChaos.Unity.AdvVar.Base {
         public T Value {
             get => InternalValue;
             set {
+                OnValueChange.Trigger(InternalValue, value);
                 InternalValue = value;
-                OnValueChange.Trigger();
             }
         }
     }
@@ -33,7 +38,5 @@ namespace ForestOfChaos.Unity.AdvVar.Base {
     /// <summary>
     ///     This is a base class so that as Unity needs a none generic base class for editors/property drawers
     /// </summary>
-    public class AdvReference: ScriptableObject {
-        public Action OnValueChange;
-    }
+    public class AdvReference: ScriptableObject { }
 }

@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.AdvVar.Editor
 //       File: StringReferenceEditor.cs
 //    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/09/12 | 12:04 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
-
 
 using ForestOfChaos.Unity.Editor;
 using ForestOfChaos.Unity.Editor.Utilities;
@@ -13,8 +12,8 @@ using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.Editor {
-    [CustomEditor(typeof(StringReference))]
     [CanEditMultipleObjects]
+    [CustomEditor(typeof(StringReference))]
     public class StringReferenceEditor: FoCsEditor {
         public override void OnInspectorGUI() {
             using (Disposables.Indent()) {
@@ -35,12 +34,12 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
                         serializedObject.ApplyModifiedProperties();
                 }
 
-                EditorGUILayout.GetControlRect(false, FoCsGUI.Padding);
+                FoCsGUI.Layout.GetControlRect(false, FoCsGUI.Padding);
             }
         }
 
-        private void DoTextBox(SerializedProperty serializedProperty) {
-            EditorGUILayout.LabelField("Value");
+        private static void DoTextBox(SerializedProperty serializedProperty) {
+            FoCsGUI.Layout.LabelField("Value");
             serializedProperty.stringValue = EditorGUILayout.TextArea(serializedProperty.stringValue, GUILayout.Height(EditorGUIUtility.singleLineHeight * 5));
         }
     }

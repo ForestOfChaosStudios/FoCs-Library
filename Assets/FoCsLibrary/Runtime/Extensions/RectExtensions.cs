@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: RectExtensions.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using ForestOfChaos.Unity.Utilities;
@@ -14,11 +13,7 @@ using Random = UnityEngine.Random;
 
 namespace ForestOfChaos.Unity.Extensions {
     public static class RectExtensions {
-        public static Vector2 GetRandomPosInRect(this Rect rect) {
-            var pos = new Vector2(Random.Range(rect.min.x, rect.max.x), Random.Range(rect.min.y, rect.max.y));
-
-            return pos;
-        }
+        public static Vector2 GetRandomPosInRect(this Rect rect) => new Vector2(Random.Range(rect.min.x, rect.max.x), Random.Range(rect.min.y, rect.max.y));
 
         public static Rect Edit(this Rect rect, RectEdit[] edits, params RectEdit[] editParams) {
             var output = new Rect(rect);

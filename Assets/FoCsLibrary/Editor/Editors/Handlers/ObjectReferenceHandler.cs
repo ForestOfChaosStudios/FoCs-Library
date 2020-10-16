@@ -1,11 +1,10 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: ObjectReferenceHandler.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
@@ -13,6 +12,7 @@ using ForestOfChaos.Unity.Attributes;
 using ForestOfChaos.Unity.Editor.PropertyDrawers;
 using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
+using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor {
     public class ObjectReferenceHandler: IPropertyLayoutHandler {
@@ -47,6 +47,21 @@ namespace ForestOfChaos.Unity.Editor {
             }
         }
 
+        private void DrawWithHeader(ObjectReference drawer) {
+            using (var cc = Disposables.ChangeCheck()) {
+                drawer.IsReferenceOpen.target = drawer.ReferenceOpen;
+                drawer.DrawHeader(true, true);
+
+                using (var fade = Disposables.FadeGroupScope(drawer.IsReferenceOpen.faded)) {
+                    if (fade.visible)
+                        drawer.DrawReference(URLStorage);
+                }
+
+                if (cc.changed)
+                    URLStorage.owner.Repaint();
+            }
+        }
+
         public void HandleProperty(SerializedProperty property) {
             var drawer  = owner.GetObjectDrawer(property, owner);
             var @object = property.objectReferenceValue;
@@ -57,7 +72,7 @@ namespace ForestOfChaos.Unity.Editor {
                 return;
             }
 
-            var attribute    = property.GetSerializedPropertyAttributes<ShowAsComponentAttribute>();
+            var attribute    = property.GetSerializedPropertyAttributes();
             var hasAttribute = AttributeType.None;
 
             if (attribute.IsNullOrEmpty())
@@ -75,20 +90,38 @@ namespace ForestOfChaos.Unity.Editor {
 
                         break;
                     }
+
+                    if (a is HeaderAttribute) {
+                        hasAttribute = AttributeType.Header;
+
+                        break;
+                    }
                 }
             }
 
-            if (hasAttribute == AttributeType.ShowAsComponent) {
-                drawer.DrawHeader(false);
-                var id = property.GetId();
+            switch (hasAttribute) {
+                case AttributeType.ShowAsComponent: {
+                    drawer.DrawHeader();
+                    var id = property.GetId();
 
-                if (!ShowAfter.ContainsKey(id))
-                    ShowAfter.Add(id, new EditorFoldout {Foldout = true});
+                    if (!ShowAfter.ContainsKey(id))
+                        ShowAfter.Add(id, new EditorFoldout {Foldout = true});
+
+                    break;
+                }
+                case AttributeType.NoObjectFoldout:
+                    drawer.DrawHeader();
+
+                    break;
+                case AttributeType.Header:
+                    DrawWithHeader(drawer);
+
+                    break;
+                default:
+                    NormalDraw(drawer);
+
+                    break;
             }
-            else if (hasAttribute == AttributeType.NoObjectFoldout)
-                drawer.DrawHeader(false);
-            else
-                NormalDraw(drawer);
         }
 
         public float PropertyHeight(SerializedProperty property) => FoCsGUI.SingleLine;
@@ -124,7 +157,8 @@ namespace ForestOfChaos.Unity.Editor {
         private enum AttributeType {
             None            = 0,
             ShowAsComponent = 1,
-            NoObjectFoldout = 2
+            NoObjectFoldout = 2,
+            Header          = 3
         }
 
         private struct EditorFoldout {

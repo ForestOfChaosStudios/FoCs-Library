@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: Vector2I.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using UnityEngine;
@@ -153,14 +152,11 @@ namespace ForestOfChaos.Unity.Types {
         }
 
         public override bool Equals(object obj) {
-            if (ReferenceEquals(null, obj))
-                return false;
-
-            if (obj is Vector2I)
-                return Equals((Vector2I)obj);
-
-            if (obj is int)
-                return Equals((int)obj);
+            switch (obj) {
+                case null:         return false;
+                case Vector2I vec: return Equals(vec);
+                case int intval:   return Equals(intval);
+            }
 
             return false;
         }
@@ -196,37 +192,13 @@ namespace ForestOfChaos.Unity.Types {
 
         public override string ToString() => $"X: {x}, Y: {y}";
 
-        public static Vector2I Zero {
-            get {
-                const int num = 0;
+        public static Vector2I Zero => new Vector2I(0, true);
 
-                return new Vector2I(num, true);
-            }
-        }
+        public static Vector2I One => new Vector2I(1, true);
 
-        public static Vector2I One {
-            get {
-                const int num = 1;
+        public static Vector2I MinInt => new Vector2I(int.MinValue, true);
 
-                return new Vector2I(num, true);
-            }
-        }
-
-        public static Vector2I MinInt {
-            get {
-                const int num = int.MinValue;
-
-                return new Vector2I(num, true);
-            }
-        }
-
-        public static Vector2I MaxInt {
-            get {
-                const int num = int.MaxValue;
-
-                return new Vector2I(num, true);
-            }
-        }
+        public static Vector2I MaxInt => new Vector2I(int.MaxValue, true);
 
         public static Vector2I Up => new Vector2I(0, 1);
 

@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library
 //       File: FoCsAssetFinder.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:02 AM
+// LastEdited: 2020/10/11 | 10:09 PM
 #endregion
-
 
 using System;
 using System.Collections.Generic;
@@ -26,7 +25,7 @@ namespace ForestOfChaos.Unity.Utilities {
         public static Object[] FindAssetsByType(Type type) {
 #if UNITY_EDITOR
             var assets = new List<Object>();
-            var guids  = AssetDatabase.FindAssets(string.Format("t:{0}", type.ToString().Replace("UnityEngine.", "")));
+            var guids  = AssetDatabase.FindAssets($"t:{type.ToString().Replace("UnityEngine.", "")}");
 
             for (var i = 0; i < guids.Length; i++) {
                 var assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
@@ -49,7 +48,7 @@ namespace ForestOfChaos.Unity.Utilities {
         public static Object[] FindAssetsByTypeWithScene(Type type) {
 #if UNITY_EDITOR
             var assets = new List<Object>();
-            var guids  = AssetDatabase.FindAssets(string.Format("t:{0}", type.ToString().Replace("UnityEngine.", "")));
+            var guids  = AssetDatabase.FindAssets($"t:{type.ToString().Replace("UnityEngine.", "")}");
 
             for (var i = 0; i < guids.Length; i++) {
                 var assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);

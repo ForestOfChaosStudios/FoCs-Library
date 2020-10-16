@@ -3,9 +3,8 @@
 //    Project: FoCs.Unity.Library.Editor
 //       File: EditorHelpers.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using UnityEditor;
 using UnityEngine;
@@ -112,8 +111,7 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
 
                 using (Disposables.ColorChanger(isType? GUI.color : Color.red)) {
                     var pasteContent = new GUIContent("Paste (E)",
-                                                      string.Format("Pastes the data. (using the EditorJSONUtility)\n{0}",
-                                                                    copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length)));
+                                                      $"Pastes the data. (using the EditorJSONUtility)\n{copyBuff.Substring(0, copyBuff.Length >= 512? 512 : copyBuff.Length)}");
 
                     if (!isType)
                         pasteContent.tooltip = "Warning, this will attempt to paste any fields with the same name.\n" + pasteContent.tooltip;

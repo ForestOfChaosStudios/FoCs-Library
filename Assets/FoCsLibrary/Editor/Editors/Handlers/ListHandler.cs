@@ -1,11 +1,10 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: ListHandler.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 //#define CUSTOM_LIST
 
@@ -16,7 +15,7 @@ namespace ForestOfChaos.Unity.Editor {
     internal class ListHandler: IPropertyLayoutHandler {
         private readonly UnityReorderableListStorage ListStorage;
 
-        public ListHandler(FoCsEditor _owner) => ListStorage = _owner.URLPStorage;
+        public ListHandler(FoCsEditor _owner) => ListStorage = _owner.UrlpStorage;
 
         public ListHandler(UnityReorderableListStorage _ListStorage) => ListStorage = _ListStorage;
 #if CUSTOM_LIST

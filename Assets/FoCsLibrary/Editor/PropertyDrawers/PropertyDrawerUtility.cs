@@ -1,11 +1,10 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: PropertyDrawerUtility.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:10 PM
 #endregion
-
 
 using System;
 using System.Collections;
@@ -21,7 +20,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
             if (obj == null)
                 return null;
 
-            T actualObject = null;
+            T actualObject;
 
             if (obj.GetType().IsArray) {
                 var index = Convert.ToInt32(new string(property.propertyPath.Where(char.IsDigit).ToArray()));
@@ -155,7 +154,6 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
             return attributes;
         }
 
-        public static string GetId(this SerializedProperty property) =>
-                string.Format("{0}:{1}-{2}", property.serializedObject.targetObject.GetInstanceID(), property.propertyPath, property.name);
+        public static string GetId(this SerializedProperty property) => $"{property.serializedObject.targetObject.GetInstanceID()}:{property.propertyPath}-{property.name}";
     }
 }

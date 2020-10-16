@@ -1,15 +1,14 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2020
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsBetterInspector.cs
 //    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/09/12 | 12:03 AM
+// LastEdited: 2020/10/11 | 10:11 PM
 #endregion
 
-
 using System.Collections.Generic;
-using ForestOfChaos.Unity.Extensions;
 using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEngine;
 using UEditor = UnityEditor.Editor;
