@@ -1,4 +1,4 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2022
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library
 //       File: StringExtensions.cs
@@ -19,6 +19,8 @@ namespace ForestOfChaos.Unity.Extensions {
         public static bool DoesStringHaveInvalidChars(this string str) => StringRegexMatch(str, INVALID_CHARS);
 
         public static bool IsNullOrEmpty(this string str) => string.IsNullOrEmpty(str);
+        
+        public static bool IsNotNullOrEmpty(this string str) => !string.IsNullOrEmpty(str);
 
         public static bool HasContent(this string str) => !string.IsNullOrEmpty(str);
 
