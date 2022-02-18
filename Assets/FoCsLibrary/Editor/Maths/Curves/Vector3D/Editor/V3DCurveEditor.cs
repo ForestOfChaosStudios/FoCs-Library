@@ -12,7 +12,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor.Maths.Curves {
-    public class V3DCurveEditor<T>: FoCsEditor<T> where T: ICurveV3DComponent {
+    public class V3DCurveEditor<TCurveV3DComponent>: FoCsEditor<TCurveV3DComponent> where TCurveV3DComponent: ICurveV3DComponent {
         private static float     resolution = 0.1f;
         private static Mode      MyMode     = Mode.Move;
         private static Transform debugTransform;
@@ -24,14 +24,14 @@ namespace ForestOfChaos.Unity.Editor.Maths.Curves {
             Move
         }
 
-        private T Curve;
+        private TCurveV3DComponent Curve;
 
         /// <inheritdoc />
         public override bool AllowsSortingModeChanging => false;
 
         protected override void OnEnable() {
             base.OnEnable();
-            Curve = target as T;
+            Curve = target as TCurveV3DComponent;
         }
 
         protected override void DoExtraDraw() {

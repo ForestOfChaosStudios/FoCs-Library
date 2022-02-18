@@ -10,8 +10,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Maths.Curves.Components {
-    public class IV3CurveComponent<T>: ICurveV3DComponent, IV3Curve where T: IV3Curve {
-        public T Curve;
+    public class IV3CurveComponent<TCurve>: ICurveV3DComponent, IV3Curve where TCurve: IV3Curve {
+        public TCurve Curve;
 
         public override bool UseGlobalSpace {
             get => Curve.UseGlobalSpace;

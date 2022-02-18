@@ -1,5 +1,5 @@
 ﻿#region © Forest Of Chaos Studios 2019 - 2022
-//   Solution: FuschsiriumRTS
+//   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library
 //       File: Vector4I.cs
 //    Created: 2019/05/21

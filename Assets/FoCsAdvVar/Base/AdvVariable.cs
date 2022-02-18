@@ -12,18 +12,18 @@ using UnityEngine;
 namespace ForestOfChaos.Unity.AdvVar.Base {
 
     [Serializable]
-    public class AdvVariable<T>: AdvVariable {
+    public class AdvVariable<TVariable> : AdvVariable {
         /// <summary>
         ///     Triggered before the value is changed, passing the current value, then the new value
         /// </summary>
         [NonSerialized]
-        public Action<T, T> OnValueChange;
+        public Action<TVariable, TVariable> OnValueChange;
 
         [SerializeField]
-        private T LocalValue;
+        private TVariable LocalValue;
 
         [SerializeField]
-        private AdvReference<T> Reference;
+        private AdvReference<TVariable> Reference;
 
         [NonSerialized]
         private AdvVariableInternals internalData;
@@ -31,7 +31,7 @@ namespace ForestOfChaos.Unity.AdvVar.Base {
         /// <summary>
         ///     Returns the value based, can throw error if set to global but nothing assigned
         /// </summary>
-        public T Value {
+        public TVariable Value {
             get {
                 if (UseLocal)
                     return LocalValue;
@@ -58,36 +58,36 @@ namespace ForestOfChaos.Unity.AdvVar.Base {
 
         public AdvVariable() { }
 
-        public AdvVariable(T localValue) {
+        public AdvVariable(TVariable localValue) {
             LocalValue = localValue;
             UseLocal   = true;
         }
 
-        public AdvVariable(AdvReference<T> reference) {
+        public AdvVariable(AdvReference<TVariable> reference) {
             Reference = reference;
             UseLocal  = false;
         }
 
-        public AdvVariable(T localValue, AdvReference<T> reference, bool useLocal = false) {
+        public AdvVariable(TVariable localValue, AdvReference<TVariable> reference, bool useLocal = false) {
             LocalValue = localValue;
             Reference  = reference;
             UseLocal   = useLocal;
         }
 
-        public static implicit operator T(AdvVariable<T> input) => input.Value;
+        public static implicit operator TVariable(AdvVariable<TVariable> input) => input.Value;
 
-        public static explicit operator AdvVariable<T>(T input) => new AdvVariable<T>(input);
+        public static explicit operator AdvVariable<TVariable>(TVariable input) => new AdvVariable<TVariable>(input);
 
         /// <summary>
         ///     This class is used to allow access to the internal values at runtime, regardless of if it is set to local or global
         /// </summary>
         public class AdvVariableInternals {
-            private readonly AdvVariable<T> classRef;
+            private readonly AdvVariable<TVariable> classRef;
 
             /// <summary>
             ///     Get-Set the global value
             /// </summary>
-            public AdvReference<T> GlobalReference {
+            public AdvReference<TVariable> GlobalReference {
                 get => classRef.Reference;
                 set => classRef.Reference = value;
             }
@@ -95,16 +95,16 @@ namespace ForestOfChaos.Unity.AdvVar.Base {
             /// <summary>
             ///     Get-Set the local value
             /// </summary>
-            public T LocalValue {
+            public TVariable LocalValue {
                 get => classRef.LocalValue;
                 set => classRef.LocalValue = value;
             }
 
-            public AdvVariableInternals(AdvVariable<T> _classRef) => classRef = _classRef;
+            public AdvVariableInternals(AdvVariable<TVariable> _classRef) => classRef = _classRef;
         }
 
         public class AdvVariableReferenceMissingError: Exception {
-            public AdvVariableReferenceMissingError(): base($"Missing Reference of {typeof(AdvReference<T>)}, Set to Local, or add reference.") { }
+            public AdvVariableReferenceMissingError(): base($"Missing Reference of {typeof(AdvReference<TVariable>)}, Set to Local, or add reference.") { }
         }
     }
 

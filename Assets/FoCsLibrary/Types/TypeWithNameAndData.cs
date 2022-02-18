@@ -25,8 +25,8 @@ namespace ForestOfChaos.Unity.Types {
         }
 
         [Serializable]
-        public class GenericType<T>: BaseGenericType {
-            private T _data;
+        public class GenericType<DataType>: BaseGenericType {
+            private DataType _data;
 
             [NonSerialized]
             public Action OnAfterDataChange;
@@ -35,9 +35,9 @@ namespace ForestOfChaos.Unity.Types {
             public Action OnBeforeDataChange;
 
             [NonSerialized]
-            public Action<T, T> OnDataChangeOldNewValue;
+            public Action<DataType, DataType> OnDataChangeOldNewValue;
 
-            public T Data {
+            public DataType Data {
                 get => _data;
                 set {
                     OnDataChangeOldNewValue?.Invoke(_data, value);
@@ -49,22 +49,22 @@ namespace ForestOfChaos.Unity.Types {
 
             public GenericType(string name = ""): base(name) => Data = default;
 
-            public GenericType(string name, T d): base(name) {
+            public GenericType(string name, DataType d): base(name) {
                 Name = name;
                 Data = d;
             }
 
-            public static implicit operator T(GenericType<T> input) => input.Data;
+            public static implicit operator DataType(GenericType<DataType> input) => input.Data;
 
-            public override void SetData(object obj) => Data = (T)obj;
+            public override void SetData(object obj) => Data = (DataType)obj;
 
-            public virtual T GetTypeFromString(string data) => default;
+            public virtual DataType GetTypeFromString(string data) => default;
 
             public override string ToString() => ToString(false);
 
             public string ToString(bool b) {
                 if (b)
-                    return Name + " : (" + typeof(T) + ")" + Data;
+                    return Name + " : (" + typeof(DataType) + ")" + Data;
 
                 return Name + " : " + Data;
             }

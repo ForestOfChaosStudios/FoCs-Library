@@ -11,20 +11,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.Base {
-    public class AdvListReference<T>: AdvListReference {
+    public class AdvListReference<TList>: AdvListReference {
         [SerializeField]
-        private List<T> _value;
+        private List<TList> _value;
 
         [NonSerialized]
-        public Action<T> OnValueAdded;
+        public Action<TList> OnValueAdded;
 
         [NonSerialized]
         public Action OnValueChange;
 
         [NonSerialized]
-        public Action<T> OnValueRemoved;
+        public Action<TList> OnValueRemoved;
 
-        public List<T> Value {
+        public List<TList> Value {
             get => _value;
             set {
                 _value = value;
@@ -32,14 +32,14 @@ namespace ForestOfChaos.Unity.AdvVar.Base {
             }
         }
 
-        public void Add(T value) {
+        public void Add(TList value) {
             Value.Add(value);
             OnValueAdded?.Invoke(value);
         }
 
-        public bool Contains(T value) => Value.Contains(value);
+        public bool Contains(TList value) => Value.Contains(value);
 
-        public void Remove(T value) {
+        public void Remove(TList value) {
             Value.Remove(value);
             OnValueRemoved?.Invoke(value);
         }

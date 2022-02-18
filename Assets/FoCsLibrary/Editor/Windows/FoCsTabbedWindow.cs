@@ -12,7 +12,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor.Windows {
-    public abstract class FoCsTabbedWindow<T>: FoCsWindow<T> where T: FoCsWindow {
+    public abstract class FoCsTabbedWindow<TTab>: FoCsWindow<TTab> where TTab: FoCsWindow {
         public enum TitleBarPos {
             Top,
             Bottom,
@@ -26,7 +26,7 @@ namespace ForestOfChaos.Unity.Editor.Windows {
         public  TitleBarPos TitleBarPosition   = TitleBarPos.Top;
         public  bool        TitleBarScrollable;
 
-        public abstract FoCsTab<T>[] Tabs { get; }
+        public abstract FoCsTab<TTab>[] Tabs { get; }
 
         public float TitleBarLabelWidthTotal => TitleBarScrollable? TitleBarLabelWidth + 20 : TitleBarLabelWidth;
 

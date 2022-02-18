@@ -394,9 +394,9 @@ namespace ForestOfChaos.Unity.Editor {
 
     /// <summary>
     /// </summary>
-    /// <typeparam name="T">Type of <see cref="UnityEngine.Object" /> that the target serializedObject</typeparam>
-    public class FoCsEditor<T>: FoCsEditor where T: Object {
-        protected T Target => (T)target;
+    /// <typeparam name="TWindow">Type of <see cref="UnityEngine.Object" /> that the target serializedObject</typeparam>
+    public class FoCsEditor<TWindow>: FoCsEditor where TWindow: Object {
+        protected TWindow Target => (TWindow)target;
     }
 
 }

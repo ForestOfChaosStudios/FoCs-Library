@@ -7,9 +7,9 @@
 #endregion
 
 namespace ForestOfChaos.Unity.Editor.Windows {
-    public abstract class FoCsTab<T> where T: FoCsWindow {
+    public abstract class FoCsTab<TWindow> where TWindow: FoCsWindow {
         public abstract string TabName { get; }
 
-        public abstract void DrawTab(FoCsWindow<T> owner);
+        public abstract void DrawTab(FoCsWindow<TWindow> owner);
     }
 }

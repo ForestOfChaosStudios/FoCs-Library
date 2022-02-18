@@ -24,7 +24,6 @@ namespace ForestOfChaos.Unity.Editor {
 
         public static EditorGUI.PropertyScope PropertyScope(Rect rect, GUIContent label, SerializedProperty prop) => new EditorGUI.PropertyScope(rect, label, prop);
 
-#region Handles
         public static Handles.DrawingScope HandleScope() => new Handles.DrawingScope();
 
         public static Handles.DrawingScope HandleScope(Color color) => new Handles.DrawingScope(color);
@@ -32,9 +31,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static Handles.DrawingScope HandleScope(Color color, Matrix4x4 matrix) => new Handles.DrawingScope(color, matrix);
 
         public static Handles.DrawingScope HandleScope(Matrix4x4 matrix) => new Handles.DrawingScope(matrix);
-#endregion
 
-#region Indent
         public static EditorIndent Indent() => new EditorIndent();
 
         public static EditorIndent IndentOnlyIfLessThenIndent(int indentLevel) {
@@ -53,15 +50,11 @@ namespace ForestOfChaos.Unity.Editor {
         public static EditorIndent SetIndent(int indentLevel) => IndentSet(indentLevel);
 
         public static EditorIndent IndentZeroed() => new EditorIndent(0, true);
-#endregion
 
-#region ColorChanger
         public static EditorColorChanger ColorChanger(Color col) => new EditorColorChanger(col);
 
         public static EditorColorChanger ColorChanger(Color col, EditorColourType type) => new EditorColorChanger(col, type);
-#endregion
 
-#region LabelField
         public static EditorWidth LabelSetWidth(float size) => new EditorWidth(size, EditorWidth.WidthType.Label, EditorWidth.ChangeType.Set);
 
         public static EditorWidth FieldSetWidth(float size) => new EditorWidth(size, EditorWidth.WidthType.Field, EditorWidth.ChangeType.Set);
@@ -73,17 +66,13 @@ namespace ForestOfChaos.Unity.Editor {
         public static EditorWidth LabelFieldAddWidth(float size) => new EditorWidth(size, EditorWidth.WidthType.Both);
 
         public static EditorWidth LabelFieldSetWidth(float size) => new EditorWidth(size, EditorWidth.WidthType.Both, EditorWidth.ChangeType.Set);
-#endregion
 
-#region UnityDisposables
         public static EditorGUI.DisabledGroupScope DisabledScope(bool val = true) => new EditorGUI.DisabledGroupScope(val);
 
         public static EditorGUILayout.ToggleGroupScope ToggleGroupScope(string label, bool toggle) => new EditorGUILayout.ToggleGroupScope(label, toggle);
 
         public static EditorGUI.ChangeCheckScope ChangeCheck() => new EditorGUI.ChangeCheckScope();
 
-#region LayoutScopes
-#region HorizontalScope
         public static GUILayout.HorizontalScope HorizontalScope() => new GUILayout.HorizontalScope();
 
         public static GUILayout.HorizontalScope HorizontalScope(GUIStyle skinBox) => new GUILayout.HorizontalScope(skinBox);
@@ -91,9 +80,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static GUILayout.HorizontalScope HorizontalScope(params GUILayoutOption[] options) => new GUILayout.HorizontalScope(options);
 
         public static GUILayout.HorizontalScope HorizontalScope(GUIStyle skinBox, params GUILayoutOption[] options) => new GUILayout.HorizontalScope(skinBox, options);
-#endregion
 
-#region VerticalScope
         public static GUILayout.VerticalScope VerticalScope() => new GUILayout.VerticalScope();
 
         public static GUILayout.VerticalScope VerticalScope(GUIStyle skinBox) => new GUILayout.VerticalScope(skinBox);
@@ -101,9 +88,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static GUILayout.VerticalScope VerticalScope(params GUILayoutOption[] options) => new GUILayout.VerticalScope(options);
 
         public static GUILayout.VerticalScope VerticalScope(GUIStyle skinBox, params GUILayoutOption[] options) => new GUILayout.VerticalScope(skinBox, options);
-#endregion
 
-#region AreaScope
         public static GUILayout.AreaScope AreaScope(Rect rect) => new GUILayout.AreaScope(rect);
 
         public static GUILayout.AreaScope AreaScope(Rect rect, string content) => new GUILayout.AreaScope(rect, content);
@@ -117,9 +102,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static GUILayout.AreaScope AreaScope(Rect rect, Texture texture) => new GUILayout.AreaScope(rect, texture);
 
         public static GUILayout.AreaScope AreaScope(Rect rect, Texture texture, GUIStyle style) => new GUILayout.AreaScope(rect, texture, style);
-#endregion
 
-#region ScrollViewScope
         public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos) => new EditorGUILayout.ScrollViewScope(scrollPos);
 
         public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos, bool handleScrollWheel) =>
@@ -137,14 +120,10 @@ namespace ForestOfChaos.Unity.Editor {
                                                                       bool                     alwaysShowVertical,
                                                                       params GUILayoutOption[] options) =>
                 new EditorGUILayout.ScrollViewScope(scrollPos, alwaysShowHorizontal, alwaysShowVertical, options) { handleScrollWheel = handleScrollWheel };
-#endregion
-#endregion
-#endregion
 
-#region RectLayout
+
         public static RectHorizontalScope RectHorizontalScope(int count, Rect rect) => new RectHorizontalScope(count, rect);
 
         public static RectVerticalScope RectVerticalScope(int count, Rect rect) => new RectVerticalScope(count, rect);
-#endregion
     }
 }

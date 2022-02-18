@@ -7,10 +7,10 @@
 #endregion
 
 namespace ForestOfChaos.Unity.AdvVar.RuntimeRef.Components {
-    public abstract class BaseAddToRunTimeSet<T>: FoCsBehaviour {
-        public RunTimeList<T> Set;
+    public abstract class BaseAddToRunTimeSet<TSet>: FoCsBehaviour {
+        public RunTimeList<TSet> Set;
 
-        public abstract T Value { get; }
+        public abstract TSet Value { get; }
 
         public void OnEnable() {
             if (Set)

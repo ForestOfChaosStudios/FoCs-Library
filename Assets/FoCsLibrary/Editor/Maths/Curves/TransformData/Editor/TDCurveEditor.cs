@@ -13,7 +13,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor.Maths.Curves {
-    public class TDCurveEditor<T>: FoCsEditor<T> where T: ICurveTDComponent {
+    public class TDCurveEditor<TCurveTdComponent>: FoCsEditor<TCurveTdComponent> where TCurveTdComponent: ICurveTDComponent {
         private static float     resolution = 0.1f;
         private static Mode      MyMode     = Mode.Move;
         private static Transform debugTransform;
@@ -29,11 +29,11 @@ namespace ForestOfChaos.Unity.Editor.Maths.Curves {
             RotateShowMoveArrows
         }
 
-        private T Curve;
+        private TCurveTdComponent Curve;
 
         protected override void OnEnable() {
             base.OnEnable();
-            Curve = target as T;
+            Curve = target as TCurveTdComponent;
         }
 
         protected override void DoExtraDraw() {

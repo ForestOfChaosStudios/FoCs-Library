@@ -9,11 +9,11 @@
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.RuntimeRef.Components {
-    public abstract class BaseSetRunTimeRef<T>: FoCsBehaviour where T: class {
-        public RunTimeRef<T> Ref;
+    public abstract class BaseSetRunTimeRef<TSet>: FoCsBehaviour where TSet: class {
+        public RunTimeRef<TSet> Ref;
         public bool          RemoveOnDisable = true;
 
-        public abstract T Value { get; }
+        public abstract TSet Value { get; }
 
         public void OnEnable() {
             if (Ref)

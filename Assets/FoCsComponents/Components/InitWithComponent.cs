@@ -9,17 +9,17 @@
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Components {
-    public class InitWithComponent<T> where T: Component {
+    public class InitWithComponent<TComponent> where TComponent: Component {
         public GameObject gameObject;
-        public T          ScriptComponent;
+        public TComponent          ScriptComponent;
 
         public InitWithComponent(string name) {
             gameObject      = new GameObject(name);
-            ScriptComponent = gameObject.AddComponent<T>();
+            ScriptComponent = gameObject.AddComponent<TComponent>();
         }
 
-        public static implicit operator T(InitWithComponent<T> fp) => fp.ScriptComponent;
+        public static implicit operator TComponent(InitWithComponent<TComponent> fp) => fp.ScriptComponent;
 
-        public static implicit operator GameObject(InitWithComponent<T> fp) => fp.gameObject;
+        public static implicit operator GameObject(InitWithComponent<TComponent> fp) => fp.gameObject;
     }
 }

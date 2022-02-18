@@ -12,16 +12,16 @@ using UnityEngine;
 
 namespace ForestOfChaos.Unity.AdvVar.Base {
     [Serializable]
-    public class AdvListVariable<T>: AdvListVariable {
+    public class AdvListVariable<TList> : AdvListVariable {
         [SerializeField]
-        private List<T> ConstantValue;
+        private List<TList> ConstantValue;
 
         public bool UseConstant = true;
 
         [SerializeField]
-        private AdvListReference<T> Variable;
+        private AdvListReference<TList> Variable;
 
-        public List<T> Value => UseConstant? ConstantValue : Variable.Value;
+        public List<TList> Value => UseConstant? ConstantValue : Variable.Value;
     }
 
     /// <summary>
