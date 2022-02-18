@@ -1,9 +1,9 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: Disposables.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
@@ -123,20 +123,20 @@ namespace ForestOfChaos.Unity.Editor {
         public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos) => new EditorGUILayout.ScrollViewScope(scrollPos);
 
         public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos, bool handleScrollWheel) =>
-                new EditorGUILayout.ScrollViewScope(scrollPos) {handleScrollWheel = handleScrollWheel};
+                new EditorGUILayout.ScrollViewScope(scrollPos) { handleScrollWheel = handleScrollWheel };
 
         public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos, params GUILayoutOption[] options) =>
                 new EditorGUILayout.ScrollViewScope(scrollPos, options);
 
         public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2 scrollPos, bool handleScrollWheel, params GUILayoutOption[] options) =>
-                new EditorGUILayout.ScrollViewScope(scrollPos, options) {handleScrollWheel = handleScrollWheel};
+                new EditorGUILayout.ScrollViewScope(scrollPos, options) { handleScrollWheel = handleScrollWheel };
 
         public static EditorGUILayout.ScrollViewScope ScrollViewScope(Vector2                  scrollPos,
                                                                       bool                     handleScrollWheel,
                                                                       bool                     alwaysShowHorizontal,
                                                                       bool                     alwaysShowVertical,
                                                                       params GUILayoutOption[] options) =>
-                new EditorGUILayout.ScrollViewScope(scrollPos, alwaysShowHorizontal, alwaysShowVertical, options) {handleScrollWheel = handleScrollWheel};
+                new EditorGUILayout.ScrollViewScope(scrollPos, alwaysShowHorizontal, alwaysShowVertical, options) { handleScrollWheel = handleScrollWheel };
 #endregion
 #endregion
 #endregion

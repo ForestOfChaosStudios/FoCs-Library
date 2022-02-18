@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: UnityReorderableListProperty.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
@@ -20,40 +20,40 @@ using ORD = ForestOfChaos.Unity.Editor.PropertyDrawers.ObjectReferenceDrawer;
 namespace ForestOfChaos.Unity.Editor {
     public class UnityReorderableListProperty {
         public static    int                      GLOBAL_CURRENT_ID;
-        private static   ReorderableList.Defaults s_Defaults;
-        private static   Action                   OnLimitingChange;
-        private static   bool?                    limitingEnabled;
+        private static   ReorderableList.Defaults _reorderableListDefaults;
+        private static   Action                   _onLimitingChange;
+        private static   bool?                    _limitingEnabled;
         private readonly Dictionary<string, ORD>  objectDrawers = new Dictionary<string, ORD>();
         public           int                      ID;
         public           ListLimiter              Limiter;
-        private          SerializedProperty       property;
+        private          SerializedProperty       _property;
         public           SerializedPropertyType   SerializedPropertyType = SerializedPropertyType.Generic;
 
         public static bool LimitingEnabled {
             get {
-                if (!limitingEnabled.HasValue)
-                    limitingEnabled = EditorPrefs.GetBool("FoCsRLP.LimitingEnabled");
+                if (!_limitingEnabled.HasValue)
+                    _limitingEnabled = EditorPrefs.GetBool("FoCsRLP.LimitingEnabled");
 
-                return limitingEnabled.Value;
+                return _limitingEnabled.Value;
             }
             set {
-                limitingEnabled = value;
+                _limitingEnabled = value;
                 EditorPrefs.SetBool("FoCsRLP.LimitingEnabled", value);
-                OnLimitingChange.Trigger();
+                _onLimitingChange?.Invoke();
             }
         }
 
-        public static ReorderableList.Defaults Defaults => s_Defaults ?? (s_Defaults = new ReorderableList.Defaults());
+        public static ReorderableList.Defaults Defaults => _reorderableListDefaults ?? (_reorderableListDefaults = new ReorderableList.Defaults());
 
         public ReorderableList List { get; private set; }
 
         public AnimBool IsExpanded { get; set; }
 
         public SerializedProperty Property {
-            get => property;
+            get => _property;
             set {
-                property                = value;
-                List.serializedProperty = property;
+                _property               = value;
+                List.serializedProperty = _property;
             }
         }
 
@@ -63,19 +63,19 @@ namespace ForestOfChaos.Unity.Editor {
         }
 
         public UnityReorderableListProperty(SerializedProperty property): this() {
-            this.property = property;
+            _property = property;
             InitList();
         }
 
         public UnityReorderableListProperty(SerializedProperty property, bool dragable, bool displayHeader = false, bool displayAdd = true, bool displayRemove = true): this() {
-            this.property = property;
+            _property = property;
             InitList(dragable, displayHeader, displayAdd, displayRemove);
         }
 
         ~UnityReorderableListProperty() {
-            property         =  null;
-            List             =  null;
-            OnLimitingChange -= ChangeLimiting;
+            _property         =  null;
+            List              =  null;
+            _onLimitingChange -= ChangeLimiting;
         }
 
         public static implicit operator UnityReorderableListProperty(SerializedProperty input) => new UnityReorderableListProperty(input);
@@ -87,8 +87,8 @@ namespace ForestOfChaos.Unity.Editor {
         }
 
         private void InitList(bool dragable = true, bool displayHeader = true, bool displayAdd = true, bool displayRemove = true) {
-            IsExpanded       =  new AnimBool(property.isExpanded) {speed = 0.7f};
-            OnLimitingChange += ChangeLimiting;
+            IsExpanded        =  new AnimBool(_property.isExpanded) { speed = 0.7f };
+            _onLimitingChange += ChangeLimiting;
 
             List = new ReorderableList(Property.serializedObject, Property, dragable, displayHeader, displayAdd, displayRemove) {
                     drawHeaderCallback    = OnListDrawHeaderCallback,
@@ -122,7 +122,7 @@ namespace ForestOfChaos.Unity.Editor {
             if (SerializedPropertyType != SerializedPropertyType.ObjectReference)
                 return;
 
-            if (!property.arrayElementType.Contains("PPtr<"))
+            if (!_property.arrayElementType.Contains("PPtr<"))
                 return;
 
             var @event = Event.current;
@@ -173,13 +173,13 @@ namespace ForestOfChaos.Unity.Editor {
         }
 
         private void SetSerializedPropertyType() {
-            if (property.arraySize == 0) {
-                property.InsertArrayElementAtIndex(0);
-                SerializedPropertyType = property.GetArrayElementAtIndex(0).propertyType;
-                property.DeleteArrayElementAtIndex(0);
+            if (_property.arraySize == 0) {
+                _property.InsertArrayElementAtIndex(0);
+                SerializedPropertyType = _property.GetArrayElementAtIndex(0).propertyType;
+                _property.DeleteArrayElementAtIndex(0);
             }
             else
-                SerializedPropertyType = property.GetArrayElementAtIndex(0).propertyType;
+                SerializedPropertyType = _property.GetArrayElementAtIndex(0).propertyType;
         }
 
         private void CheckLimiter() {
@@ -223,7 +223,7 @@ namespace ForestOfChaos.Unity.Editor {
             var drawer                       = GetObjectDrawer(prop);
             var GuiCont                      = new GUIContent(prop.displayName);
             List.elementHeight = rect.height = ObjectReferenceElementHeight(prop, GuiCont);
-            drawer.OnGUI(rect, property, GuiCont);
+            drawer.OnGUI(rect, _property, GuiCont);
         }
 
         private float ObjectReferenceElementHeight(SerializedProperty prop) => ObjectReferenceElementHeight(prop, new GUIContent(prop.displayName));
@@ -257,9 +257,9 @@ namespace ForestOfChaos.Unity.Editor {
         private void DoDropAdd() {
             foreach (var obj in DragAndDrop.objectReferences) {
                 var typeName = obj.GetType().Name;
-                var length   = property.arraySize;
-                property.InsertArrayElementAtIndex(length);
-                var prop = property.GetArrayElementAtIndex(length);
+                var length   = _property.arraySize;
+                _property.InsertArrayElementAtIndex(length);
+                var prop = _property.GetArrayElementAtIndex(length);
                 prop.objectReferenceValue = obj;
 
                 if (prop.objectReferenceValue != null)
@@ -328,7 +328,7 @@ namespace ForestOfChaos.Unity.Editor {
                 }
 
                 if (prop.objectReferenceValue == null)
-                    property.DeleteArrayElementAtIndex(property.arraySize - 1);
+                    _property.DeleteArrayElementAtIndex(_property.arraySize - 1);
             }
 
             GUI.changed = true;
@@ -391,7 +391,7 @@ namespace ForestOfChaos.Unity.Editor {
                     if (miniLabel != null)
                         return miniLabel;
 
-                    miniLabel = new GUIStyle(EditorStyles.miniLabel) {alignment = TextAnchor.UpperCenter};
+                    miniLabel = new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.UpperCenter };
 
                     return miniLabel;
                 }
@@ -405,23 +405,23 @@ namespace ForestOfChaos.Unity.Editor {
             public         UnityReorderableListProperty MyListProperty;
             private        bool                         Update;
 
-            private static int _TOTAL_VISIBLE_COUNT {
+            private static int _TotalVisibleCount {
                 get {
-                    var num = Mathf.Clamp(EditorPrefs.GetInt("FoCsRLP._TOTAL_VISIBLE_COUNT"), 0, int.MaxValue);
+                    var num = Mathf.Clamp(EditorPrefs.GetInt("FoCsRLP._TotalVisibleCount"), 0, int.MaxValue);
 
                     if (num == 0)
-                        return _TOTAL_VISIBLE_COUNT = 25;
+                        return _TotalVisibleCount = 25;
 
                     return num;
                 }
-                set => EditorPrefs.SetInt("FoCsRLP._TOTAL_VISIBLE_COUNT", Mathf.Clamp(value, 0, int.MaxValue));
+                set => EditorPrefs.SetInt("FoCsRLP._TotalVisibleCount", Mathf.Clamp(value, 0, int.MaxValue));
             }
 
-            public static int TOTAL_VISIBLE_COUNT {
-                get => _TOTAL_VISIBLE_COUNT;
+            public static int TotalVisibleCount {
+                get => _TotalVisibleCount;
                 set {
-                    _TOTAL_VISIBLE_COUNT = value;
-                    ChangeCount.Trigger();
+                    _TotalVisibleCount = value;
+                    ChangeCount?.Invoke();
                 }
             }
 
@@ -444,10 +444,10 @@ namespace ForestOfChaos.Unity.Editor {
             public bool ShowElement(int index) => (index >= Min) && (index < Max);
 
             public static ListLimiter GetLimiter(UnityReorderableListProperty listProperty) {
-                if (listProperty.Property.arraySize < TOTAL_VISIBLE_COUNT)
+                if (listProperty.Property.arraySize < TotalVisibleCount)
                     return null;
 
-                var limiter = new ListLimiter {MyListProperty = listProperty, Min = 0, Max = TOTAL_VISIBLE_COUNT, Update = true};
+                var limiter = new ListLimiter { MyListProperty = listProperty, Min = 0, Max = TotalVisibleCount, Update = true };
                 ChangeCount += limiter.UpdateRange;
 
                 return limiter;
@@ -470,35 +470,35 @@ namespace ForestOfChaos.Unity.Editor {
                     CheckUpdate();
 
                 var newMin = Min    + amount;
-                var newMax = newMin + TOTAL_VISIBLE_COUNT;
+                var newMax = newMin + TotalVisibleCount;
 
                 if ((newMax < Count) && (newMin >= 0)) {
                     Min = Min + amount;
-                    Max = Min + TOTAL_VISIBLE_COUNT;
+                    Max = Min + TotalVisibleCount;
 
                     return;
                 }
 
                 if (newMax >= Count) {
                     newMax = Count;
-                    Min    = newMax - TOTAL_VISIBLE_COUNT;
+                    Min    = newMax - TotalVisibleCount;
                     Max    = newMax;
 
                     return;
                 }
 
                 Min = Min + amount;
-                Max = Min + TOTAL_VISIBLE_COUNT;
+                Max = Min + TotalVisibleCount;
             }
 
             public void ChangeStart() {
                 Min = 0;
-                Max = Min + TOTAL_VISIBLE_COUNT;
+                Max = Min + TotalVisibleCount;
             }
 
             public void ChangeEnd() {
                 Max = Count;
-                Min = Max - TOTAL_VISIBLE_COUNT;
+                Min = Max - TotalVisibleCount;
             }
 
             public void UpdateRange() {
@@ -516,6 +516,9 @@ namespace ForestOfChaos.Unity.Editor {
 
 #region Delegate Methods
         private float OnListElementHeightCallback(int index) {
+            if (List.serializedProperty.arraySize < index)
+                return 0;
+
             var prop = List.serializedProperty.GetArrayElementAtIndex(index);
 
             if (Limiter == null) {
@@ -548,15 +551,15 @@ namespace ForestOfChaos.Unity.Editor {
                 x -= 25f;
 
             using (Disposables.IndentSet(0)) {
-                var style = property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none;
-                FoCsGUI.Label(rect, $"{property.displayName} [{property.arraySize}]", style);
-                property.isExpanded = FoCsGUI.Foldout(rect.Edit(RectEdit.SubtractWidth(64)), property.isExpanded);
+                var style = _property.prefabOverride? EditorStyles.boldLabel : GUIStyle.none;
+                FoCsGUI.Label(rect, $"{_property.displayName} [{_property.arraySize}]", style);
+                _property.isExpanded = FoCsGUI.Foldout(rect.Edit(RectEdit.SubtractWidth(64)), _property.isExpanded);
             }
 
-            using (Disposables.DisabledScope(!property.isExpanded)) {
-                var rect2            = new Rect(x, rect.y, xMax - x,   rect.height);
-                var addButtonRect    = new Rect(xMax - 29f      - 25f, rect2.y - 3f, 25f, 13f);
-                var removeButtonRect = new Rect(xMax            - 29f, rect2.y - 3f, 25f, 13f);
+            using (Disposables.DisabledScope(!_property.isExpanded)) {
+                var rect2            = new Rect(x, rect.y, xMax - x,         rect.height);
+                var addButtonRect    = new Rect(xMax            - 29f - 25f, rect2.y - 3f, 25f, 13f);
+                var removeButtonRect = new Rect(xMax            - 29f,       rect2.y - 3f, 25f, 13f);
 
                 if (List.displayAdd)
                     AddButtonsGUI(addButtonRect.Edit(RectEdit.AddY(3)));
@@ -579,9 +582,9 @@ namespace ForestOfChaos.Unity.Editor {
             if (Limiter != null)
                 x -= 25f * 6;
 
-            var rect             = new Rect(x, rowRect.y, xMax - x,   rowRect.height);
-            var addButtonRect    = new Rect(xMax - 29f         - 25f, rect.y - 3f, 25f, 13f);
-            var removeButtonRect = new Rect(xMax               - 29f, rect.y - 3f, 25f, 13f);
+            var rect             = new Rect(x, rowRect.y, xMax - x,         rowRect.height);
+            var addButtonRect    = new Rect(xMax               - 29f - 25f, rect.y - 3f, 25f, 13f);
+            var removeButtonRect = new Rect(xMax               - 29f,       rect.y - 3f, 25f, 13f);
 
             if (Event.current.type == EventType.Repaint)
                 ListStyles.FooterBackground.Draw(rect, false, false, false, false);

@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: ObjectReferenceDrawer.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System.Collections.Generic;
@@ -102,7 +102,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
 
         protected virtual void CheckAnimBool(SerializedProperty property) {
             if (IsExpanded == null)
-                IsExpanded = new AnimBool(property.isExpanded) {speed = 1};
+                IsExpanded = new AnimBool(property.isExpanded) { speed = 1 };
 
             IsExpanded.value = property.isExpanded;
         }

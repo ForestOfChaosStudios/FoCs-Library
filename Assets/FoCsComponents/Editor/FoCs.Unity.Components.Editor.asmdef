@@ -1,9 +1,10 @@
 {
     "name": "FoCs.Unity.Components.Editor",
+    "rootNamespace": "",
     "references": [
         "UnityEditor.UI",
-        "FoCs.Unity.Components",
         "FoCs.Unity.Library",
+        "FoCs.Unity.Components",
         "FoCs.Unity.Library.Editor"
     ],
     "includePlatforms": [

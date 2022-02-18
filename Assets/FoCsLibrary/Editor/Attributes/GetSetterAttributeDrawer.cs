@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: GetSetterAttributeDrawer.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using ForestOfChaos.Unity.Attributes;
@@ -19,7 +19,7 @@ namespace ForestOfChaos.Unity.Editor.Attributes {
     [CustomPropertyDrawer(typeof(GetSetterAttribute))]
     public class GetSetterAttributeDrawer: FoCsPropertyDrawerWithAttribute<GetSetterAttribute> {
         internal const           string       Tooltip       = "Persists until recompile";
-        internal static readonly GUIContent[] OPTIONS_ARRAY = {new GUIContent("Call Setter", Tooltip), new GUIContent("Don't Call Setter", Tooltip)};
+        internal static readonly GUIContent[] OPTIONS_ARRAY = { new GUIContent("Call Setter", Tooltip), new GUIContent("Don't Call Setter", Tooltip) };
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
             using (var propScope = Disposables.PropertyScope(position, label, property)) {

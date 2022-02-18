@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsGUILayout.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
@@ -701,14 +701,14 @@ namespace ForestOfChaos.Unity.Editor {
 
 #region Other
             public static GUIEvent ProgressBar(float fillAmount, string label = "", params GUILayOpt[] options) {
-                var data = new GUIEvent {Event = new Event(Event.current), Rect = GetControlRect(options)};
+                var data = new GUIEvent { Event = new Event(Event.current), Rect = GetControlRect(options) };
                 EditorGUI.ProgressBar(data.Rect, fillAmount, label);
 
                 return data;
             }
 
             public static GUIEvent ProgressBarSplit(float fillAmount, bool isPositiveLeft = true, params GUILayOpt[] options) {
-                var data = new GUIEvent {Event = new Event(Event.current), Rect = GetControlRect(options)};
+                var data = new GUIEvent { Event = new Event(Event.current), Rect = GetControlRect(options) };
                 FoCsGUI.ProgressBarSplit(data.Rect, fillAmount, isPositiveLeft);
 
                 return data;

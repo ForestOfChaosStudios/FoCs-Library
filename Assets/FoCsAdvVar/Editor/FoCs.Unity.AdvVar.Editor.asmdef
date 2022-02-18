@@ -1,10 +1,11 @@
 {
     "name": "FoCs.Unity.AdvVar.Editor",
+    "rootNamespace": "",
     "references": [
-        "FoCs.Unity.AdvVar",
         "FoCs.Unity.Library",
         "FoCs.Unity.Library.Editor",
-        "FoCs.Unity.Components"
+        "FoCs.Unity.Components",
+        "FoCs.Unity.AdvVar"
     ],
     "includePlatforms": [
         "Editor"

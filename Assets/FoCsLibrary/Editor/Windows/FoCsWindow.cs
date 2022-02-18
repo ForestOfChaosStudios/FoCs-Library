@@ -1,9 +1,9 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsWindow.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using UnityEditor;
@@ -17,22 +17,22 @@ namespace ForestOfChaos.Unity.Editor.Windows {
     ///     GetWindowAndOpenTab();
     ///     }
     /// </summary>
-    /// <typeparam name="T">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
-    public abstract class FoCsWindow<T>: FoCsWindow where T: FoCsWindow, IRepaintable {
-        private static T window;
+    /// <typeparam name="TWindow">Class name of type that inherits directly from this class, for a static ref to its self</typeparam>
+    public abstract class FoCsWindow<TWindow>: FoCsWindow where TWindow: FoCsWindow, IRepaintable {
+        private static TWindow window;
 
-        protected static T Window => window? window : window = GetWindow();
+        protected static TWindow Window => window? window : window = GetWindow();
 
-        protected static T GetWindow() {
+        protected static TWindow GetWindow() {
             if (window != null)
                 return window;
 
-            window = FindObjectOfType<T>() ?? CreateInstance<T>();
+            window = FindObjectOfType<TWindow>() ?? CreateInstance<TWindow>();
 
             return window;
         }
 
-        protected static T GetWindowAndShow() {
+        protected static TWindow GetWindowAndShow() {
             GetWindow();
             window.Show();
             window.Focus();
@@ -40,7 +40,7 @@ namespace ForestOfChaos.Unity.Editor.Windows {
             return window;
         }
 
-        protected static T GetWindowAndOpenUtility() {
+        protected static TWindow GetWindowAndOpenUtility() {
             GetWindow();
             window.ShowUtility();
             window.Focus();

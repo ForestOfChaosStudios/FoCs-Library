@@ -1,9 +1,9 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.AdvVar.Editor
 //       File: RuntimeListEditor.cs
-//    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using ForestOfChaos.Unity.AdvVar.RuntimeRef;

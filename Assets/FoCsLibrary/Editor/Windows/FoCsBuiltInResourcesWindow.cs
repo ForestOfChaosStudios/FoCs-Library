@@ -1,9 +1,9 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsBuiltInResourcesWindow.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
@@ -134,7 +134,7 @@ namespace ForestOfChaos.Unity.Editor.Windows {
 
                         var draw   = new Drawing();
                         var width  = Mathf.Max(GUI.skin.button.CalcSize(new GUIContent(texture.name)).x, texture.width) + 8.0f;
-                        var height = texture.height + GUI.skin.button.CalcSize(new GUIContent(texture.name)).y          + 8.0f;
+                        var height = texture.height + GUI.skin.button.CalcSize(new GUIContent(texture.name)).y + 8.0f;
 
                         if (x + width > position.width - 32.0f) {
                             x         =  5.0f;

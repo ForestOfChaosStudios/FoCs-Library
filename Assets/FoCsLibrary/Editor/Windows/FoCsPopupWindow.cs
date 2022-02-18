@@ -1,13 +1,12 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsPopupWindow.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
-using ForestOfChaos.Unity.Extensions;
 
 namespace ForestOfChaos.Unity.Editor.Windows {
     public class FoCsPopupWindow: FoCsWindow<FoCsPopupWindow> {
@@ -53,7 +52,7 @@ namespace ForestOfChaos.Unity.Editor.Windows {
                 return;
 
             Window.currentArguments.Window = Window;
-            currentArguments.OnGUI.Trigger(currentArguments);
+            currentArguments.OnGUI?.Invoke(currentArguments);
         }
     }
 

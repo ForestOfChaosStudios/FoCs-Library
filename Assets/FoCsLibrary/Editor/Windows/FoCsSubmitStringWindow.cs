@@ -1,15 +1,14 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsSubmitStringWindow.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
 using ForestOfChaos.Unity.Editor;
 using ForestOfChaos.Unity.Editor.Windows;
-using ForestOfChaos.Unity.Extensions;
 using UnityEditor;
 using UnityEngine;
 
@@ -46,13 +45,13 @@ namespace ForestOfChaos.Unity.AdvVar.Editor.Windows {
 
             using (Disposables.HorizontalScope()) {
                 if (FoCsGUI.Layout.Button(currentArguments.SubmitMessage)) {
-                    currentArguments.OnSubmit.Trigger(currentArguments);
+                    currentArguments.OnSubmit?.Invoke(currentArguments);
                     Close();
                     EndWindows();
                 }
 
                 if (FoCsGUI.Layout.Button(currentArguments.CancelMessage)) {
-                    currentArguments.OnCancel.Trigger(currentArguments);
+                    currentArguments.OnCancel?.Invoke(currentArguments);
                     Close();
                     EndWindows();
                 }
@@ -62,7 +61,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor.Windows {
                 return;
 
             if (FoCsGUI.Layout.Button(currentArguments.SubmitAnotherMessage))
-                currentArguments.OnSubmitAnother.Trigger(currentArguments);
+                currentArguments.OnSubmitAnother?.Invoke(currentArguments);
         }
 
         public class SubmitStringArguments {

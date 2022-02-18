@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region Â© Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: MenuItems.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using UnityEditor;
@@ -99,24 +99,24 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
         public const string S                                    = "/";
         public const string SCRIPTS_FILE_EXTENSION               = ".cs";
         public const string SPLIT                                = S;
-        public const string FORESTOFCHAOS_                       = FORESTOFCHAOS                + S;
-        public const string FORESTOFCHAOS_SYSTEMS_               = FORESTOFCHAOS + S + SYSTEMS  + S;
-        public const string FORESTOFCHAOS_TOOLS_                 = FORESTOFCHAOS + S + TOOLS    + S;
-        public const string _FORESTOFCHAOS_                      = S + FORESTOFCHAOS            + S;
-        public const string FOLDERS_                             = FOLDERS                      + S;
-        public const string ASSETS_ART                           = ASSETS + S                   + ART;
-        public const string ASSETS_GENERATED                     = ASSETS + S                   + GENERATED;
-        public const string ASSETS_GENERATED_SCRIPTS             = ASSETS_GENERATED + S         + SCRIPTS;
-        public const string ASSETS_GENERATED_ENUM                = ASSETS_GENERATED + S         + ENUM;
-        public const string ASSETS_GENERATED_STATICCLASS         = ASSETS_GENERATED + S         + STATICCLASS;
-        public const string ASSETS_PLUGINS_GENERATED             = ASSETS + S + PLUGINS + S     + GENERATED;
+        public const string FORESTOFCHAOS_                       = FORESTOFCHAOS            + S;
+        public const string FORESTOFCHAOS_SYSTEMS_               = FORESTOFCHAOS            + S             + SYSTEMS + S;
+        public const string FORESTOFCHAOS_TOOLS_                 = FORESTOFCHAOS            + S             + TOOLS   + S;
+        public const string _FORESTOFCHAOS_                      = S                        + FORESTOFCHAOS + S;
+        public const string FOLDERS_                             = FOLDERS                  + S;
+        public const string ASSETS_ART                           = ASSETS                   + S + ART;
+        public const string ASSETS_GENERATED                     = ASSETS                   + S + GENERATED;
+        public const string ASSETS_GENERATED_SCRIPTS             = ASSETS_GENERATED         + S + SCRIPTS;
+        public const string ASSETS_GENERATED_ENUM                = ASSETS_GENERATED         + S + ENUM;
+        public const string ASSETS_GENERATED_STATICCLASS         = ASSETS_GENERATED         + S + STATICCLASS;
+        public const string ASSETS_PLUGINS_GENERATED             = ASSETS                   + S + PLUGINS + S + GENERATED;
         public const string ASSETS_PLUGINS_GENERATED_SCRIPTS     = ASSETS_PLUGINS_GENERATED + S + SCRIPTS;
         public const string ASSETS_PLUGINS_GENERATED_ENUM        = ASSETS_PLUGINS_GENERATED + S + ENUM;
         public const string ASSETS_PLUGINS_GENERATED_STATICCLASS = ASSETS_PLUGINS_GENERATED + S + STATICCLASS;
-        public const string ASSETS_GENERATED_RAWDATA             = ASSETS_GENERATED + S         + RAWDATA;
-        public const string ASSETS_SCRIPTS                       = ASSETS + S                   + SCRIPTS;
-        public const string ASSETS_PLUGINS                       = ASSETS + S                   + PLUGINS;
-        public const string ASSETS_STREAMINGASSETS               = ASSETS + S                   + STREAMINGASSETS;
-        public const string ASSETS_RESOURCES                     = ASSETS + S                   + RESOURCES;
+        public const string ASSETS_GENERATED_RAWDATA             = ASSETS_GENERATED         + S + RAWDATA;
+        public const string ASSETS_SCRIPTS                       = ASSETS                   + S + SCRIPTS;
+        public const string ASSETS_PLUGINS                       = ASSETS                   + S + PLUGINS;
+        public const string ASSETS_STREAMINGASSETS               = ASSETS                   + S + STREAMINGASSETS;
+        public const string ASSETS_RESOURCES                     = ASSETS                   + S + RESOURCES;
     }
 }

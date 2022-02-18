@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: ObjectReference.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using ForestOfChaos.Unity.Editor.Utilities;
@@ -36,12 +36,12 @@ namespace ForestOfChaos.Unity.Editor {
             }
         }
 
-        public ObjectReference() => IsReferenceOpen = new AnimBool(false) {speed = 0.7f};
+        public ObjectReference() => IsReferenceOpen = new AnimBool(false) { speed = 0.7f };
 
         public ObjectReference(SerializedProperty _property, FoCsEditor _owner) {
             Property        = _property;
             owner           = _owner;
-            IsReferenceOpen = new AnimBool(false) {speed = 0.7f};
+            IsReferenceOpen = new AnimBool(false) { speed = 0.7f };
         }
 
         /// <summary>

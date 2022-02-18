@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region Â© Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: CopyPasteUtility.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
@@ -35,10 +35,10 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
 
         static CopyPasteUtility() =>
                 TypeCopyData = new Dictionary<Type, CopyMode> {
-                        {typeof(FlareLayer), CopyMode.None},
-                        {typeof(AudioListener), CopyMode.None},
-                        {typeof(Transform), CopyMode.Editor},
-                        {typeof(Object), CopyMode.Unknown}
+                        { typeof(FlareLayer), CopyMode.None },
+                        { typeof(AudioListener), CopyMode.None },
+                        { typeof(Transform), CopyMode.Editor },
+                        { typeof(Object), CopyMode.Unknown }
                 };
 
         private static CopyMode DoAddToDictionary<T>(T value) {
@@ -255,7 +255,7 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
         private static string RemoveTypeFromCopyBuffer() => RemoveTypeFromCopyBuffer(CopyBuffer);
 
         public static string RemoveTypeFromCopyBuffer(string buffer) {
-            var copyBufferSplit = buffer.Split(new[] {COPY_SPLIT}, StringSplitOptions.None);
+            var copyBufferSplit = buffer.Split(new[] { COPY_SPLIT }, StringSplitOptions.None);
 
             if (copyBufferSplit.Length > 1) {
                 var list = copyBufferSplit.ToList();
@@ -269,7 +269,7 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
 
         public static string GetJSONStoredType(string json) {
             if (json.Contains(COPY_SPLIT)) {
-                var copyBufferSplit = json.Split(new[] {COPY_SPLIT}, StringSplitOptions.None);
+                var copyBufferSplit = json.Split(new[] { COPY_SPLIT }, StringSplitOptions.None);
 
                 return copyBufferSplit[0];
             }

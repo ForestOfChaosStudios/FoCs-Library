@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: InputAxisPropertyDrawer.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System.Linq;
@@ -24,7 +24,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
         internal static readonly GUIContent   disableSyncAxisNamesGUIContent = new GUIContent("Disable Sync",  "Disable Sync Axis Names");
         internal static readonly GUIContent   ProgressBarContent             = new GUIContent("Current Value", "Shows what the current value of the Axis is.");
         internal static readonly GUIContent   PopupContent                   = new GUIContent("Input Axis",    "Chose from the available Unity Input Axis values.");
-        internal static readonly GUIContent[] OPTIONS_ARRAY                  = {enableSyncAxisNamesGUIContent, disableSyncAxisNamesGUIContent};
+        internal static readonly GUIContent[] OPTIONS_ARRAY                  = { enableSyncAxisNamesGUIContent, disableSyncAxisNamesGUIContent };
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
             if (ShowLabel(label.text))

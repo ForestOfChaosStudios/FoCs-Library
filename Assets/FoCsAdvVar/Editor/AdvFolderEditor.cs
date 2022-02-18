@@ -1,9 +1,9 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.AdvVar.Editor
 //       File: AdvFolderEditor.cs
-//    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2020/04/25
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
@@ -269,7 +269,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
             var types = ReflectionUtilities.GetTypesWith<AdvFolderNameAttribute, ScriptableObject>(false);
 
             var finalList = new SortedDictionary<AdvFolderNameAttribute, List<Type>> {
-                    {new AnyAdvFolder(), new List<Type>()}
+                    { new AnyAdvFolder(), new List<Type>() }
             };
 
             foreach (var type in types) {
@@ -282,7 +282,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
                     finalList[attribute].AddWithDuplicateCheck(type);
                 }
                 else
-                    finalList.Add(attribute, new List<Type> {type});
+                    finalList.Add(attribute, new List<Type> { type });
             }
 
             return finalList;

@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: TransformDataDrawer.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using ForestOfChaos.Unity.Editor.PropertyDrawers;
@@ -37,7 +37,7 @@ namespace ForestOfChaos.Unity.Editor.Maths.Curves {
                     var Scale    = property.FindPropertyRelative("Scale");
 
                     using (var horizontalScope =
-                            Disposables.RectHorizontalScope(5, position.Edit(RectEdit.SetHeight(SingleLine - 2), RectEdit.DivideWidth(2), RectEdit.AddX(position.width * 0.5f)))) {
+                           Disposables.RectHorizontalScope(5, position.Edit(RectEdit.SetHeight(SingleLine - 2), RectEdit.DivideWidth(2), RectEdit.AddX(position.width * 0.5f)))) {
                         var                  copyBtn = FoCsGUI.Button(horizontalScope.GetNext(2), CopyContent);
                         var                  isType  = CopyPasteUtility.IsTypeInBuffer(owner);
                         FoCsGUI.GUIEventBool pasteBtn;

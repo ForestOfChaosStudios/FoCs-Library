@@ -1,9 +1,9 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsGUIEvent.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using UnityEngine;
@@ -32,37 +32,37 @@ namespace ForestOfChaos.Unity.Editor {
             public static implicit operator Rect(GUIEvent input) => input.Rect;
 
             public static GUIEvent Create() {
-                var data = new GUIEvent {Event = new Event(Event.current), Rect = GUILayoutUtility.GetLastRect()};
+                var data = new GUIEvent { Event = new Event(Event.current), Rect = GUILayoutUtility.GetLastRect() };
 
                 return data;
             }
 
             public static GUIEvent Create(Rect rect) {
-                var data = new GUIEvent {Event = new Event(Event.current)};
+                var data = new GUIEvent { Event = new Event(Event.current) };
 
                 return data;
             }
 
             public static GUIEvent<T> Create<T>(T val) {
-                var data = new GUIEvent<T> {Event = new Event(Event.current), Value = val, Rect = GUILayoutUtility.GetLastRect()};
+                var data = new GUIEvent<T> { Event = new Event(Event.current), Value = val, Rect = GUILayoutUtility.GetLastRect() };
 
                 return data;
             }
 
             public static GUIEvent<T> Create<T>(Rect rect, T val) {
-                var data = new GUIEvent<T> {Event = new Event(Event.current), Rect = rect, Value = val};
+                var data = new GUIEvent<T> { Event = new Event(Event.current), Rect = rect, Value = val };
 
                 return data;
             }
 
             public static GUIEventBool Create(bool val) {
-                var data = new GUIEventBool {Event = new Event(Event.current), Value = val, Rect = GUILayoutUtility.GetLastRect()};
+                var data = new GUIEventBool { Event = new Event(Event.current), Value = val, Rect = GUILayoutUtility.GetLastRect() };
 
                 return data;
             }
 
             public static GUIEventBool Create(Rect rect, bool val) {
-                var data = new GUIEventBool {Event = new Event(Event.current), Rect = rect, Value = val};
+                var data = new GUIEventBool { Event = new Event(Event.current), Rect = rect, Value = val };
 
                 return data;
             }

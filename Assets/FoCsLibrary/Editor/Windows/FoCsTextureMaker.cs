@@ -1,9 +1,9 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsTextureMaker.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using ForestOfChaos.Unity.Editor.Utilities;
@@ -27,7 +27,7 @@ namespace ForestOfChaos.Unity.Editor.Windows {
 
             if (FoCsGUI.Layout.Button("Create Texture")) {
                 var tex = new Texture2D(2, 2);
-                tex.SetPixels(new[] {color, color, color, color});
+                tex.SetPixels(new[] { color, color, color, color });
                 tex.Apply();
                 AssetDatabase.CreateAsset(tex, $"Assets/Solid_{ColorUtility.ToHtmlStringRGB(color)}.asset");
             }

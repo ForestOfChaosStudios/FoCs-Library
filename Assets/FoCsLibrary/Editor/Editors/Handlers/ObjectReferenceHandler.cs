@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: ObjectReferenceHandler.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
@@ -105,7 +105,7 @@ namespace ForestOfChaos.Unity.Editor {
                     var id = property.GetId();
 
                     if (!ShowAfter.ContainsKey(id))
-                        ShowAfter.Add(id, new EditorFoldout {Foldout = true});
+                        ShowAfter.Add(id, new EditorFoldout { Foldout = true });
 
                     break;
                 }

@@ -1,9 +1,9 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsReorderableListSettingsTab.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using UnityEngine;
@@ -28,10 +28,10 @@ namespace ForestOfChaos.Unity.Editor {
                 using (var cc = Disposables.ChangeCheck()) {
                     FoCsGUI.Layout.Label("List Range", FoCsGUI.Styles.Unity.BoldLabel);
                     FoCsGUI.Layout.InfoBox("Change max number of displayed items in the lists. DEFAULT = 25");
-                    var num = FoCsGUI.Layout.IntField("Total Display Count", UnityReorderableListProperty.ListLimiter.TOTAL_VISIBLE_COUNT);
+                    var num = FoCsGUI.Layout.IntField("Total Display Count", UnityReorderableListProperty.ListLimiter.TotalVisibleCount);
 
                     if (cc.changed)
-                        UnityReorderableListProperty.ListLimiter.TOTAL_VISIBLE_COUNT = num;
+                        UnityReorderableListProperty.ListLimiter.TotalVisibleCount = num;
                 }
 
                 FoCsGUI.Layout.Label();

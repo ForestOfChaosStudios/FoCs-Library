@@ -1,9 +1,9 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.AdvVar.Editor
 //       File: AdvReferencePropertyDrawerBase.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
@@ -25,10 +25,10 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
         internal const           string       USE_LOCAL_STR             = "UseLocal";
         internal static readonly GUIContent   localConstantGUIContent   = new GUIContent("Use Local Value", "Use Local Value");
         internal static readonly GUIContent   globalReferenceGUIContent = new GUIContent("Use Reference",   "Use Reference");
-        internal static readonly GUIContent[] OPTIONS_ARRAY             = {localConstantGUIContent, globalReferenceGUIContent};
-        internal static readonly RectEdit[]   EDITS_ARRAY               = {RectEdit.SetHeight(SingleLine), RectEdit.ChangeY(1)};
+        internal static readonly GUIContent[] Options_Array             = { localConstantGUIContent, globalReferenceGUIContent };
+        internal static readonly RectEdit[]   Edits_Array               = { RectEdit.SetHeight(SingleLine), RectEdit.ChangeY(1) };
 
-        public AdvReferencePropertyDrawerBase() => IsExpanded = new AnimBool {speed = 0.7f};
+        public AdvReferencePropertyDrawerBase() => IsExpanded = new AnimBool { speed = 0.7f };
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
             Foldout = DoDraw(position, property, Foldout, ref label);
@@ -42,10 +42,10 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
             using (var propScope = Disposables.PropertyScope(position, label, property)) {
                 label = propScope.content;
 
-                useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(EDITS_ARRAY),
+                useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(Edits_Array),
                                                                   useLocal.boolValue? localValue : globalReference,
                                                                   label,
-                                                                  OPTIONS_ARRAY,
+                                                                  Options_Array,
                                                                   useLocal.boolValue? 0 : 1)
                                             .Value ==
                                      0;
@@ -68,16 +68,16 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
 
                 if (useLocal.boolValue) {
                     if (drawLocalValue == null) {
-                        var val = FoCsGUI.DrawPropertyWithMenu(editedPosition, localValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1);
+                        var val = FoCsGUI.DrawPropertyWithMenu(editedPosition, localValue, label, Options_Array, useLocal.boolValue? 0 : 1);
                         useLocal.boolValue = val.Value == 0;
                     }
                     else {
-                        var val = FoCsGUI.DrawActionWithMenu(editedPosition, drawLocalValue, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1);
+                        var val = FoCsGUI.DrawActionWithMenu(editedPosition, drawLocalValue, label, Options_Array, useLocal.boolValue? 0 : 1);
                         useLocal.boolValue = val.Value == 0;
                     }
                 }
                 else {
-                    var val = FoCsGUI.DrawPropertyWithMenu(editedPosition, globalReference, label, OPTIONS_ARRAY, useLocal.boolValue? 0 : 1);
+                    var val = FoCsGUI.DrawPropertyWithMenu(editedPosition, globalReference, label, Options_Array, useLocal.boolValue? 0 : 1);
                     useLocal.boolValue = val.Value == 0;
                 }
             }

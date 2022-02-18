@@ -1,9 +1,9 @@
-﻿#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.AdvVar.Editor
 //       File: AdvEventEditor.cs
-//    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2020/04/25
+// LastEdited: 2022/02/19
 #endregion
 
 using ForestOfChaos.Unity.AdvVar.Events;
@@ -18,10 +18,10 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
             base.OnInspectorGUI();
 
             using (Disposables.DisabledScope(!Application.isPlaying)) {
-                var @event = FoCsGUI.Layout.Button("Trigger Event");
+                var @event = FoCsGUI.Layout.Button("Invoke Event");
 
                 if (@event)
-                    Target.Trigger();
+                    Target.Invoke();
             }
         }
     }

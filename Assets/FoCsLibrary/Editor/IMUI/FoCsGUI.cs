@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: FoCsGUI.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
@@ -48,7 +48,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static GUIEvent Label(Rect rect, Texture texture, GUIStyle style) => LabelMaster(rect, new GUICon(texture), style);
 
         private static GUIEvent LabelMaster(Rect rect, GUICon guiCon, GUIStyle style) {
-            var data = new GUIEvent {Event = new Event(Event.current), Rect = rect};
+            var data = new GUIEvent { Event = new Event(Event.current), Rect = rect };
             EditorGUI.LabelField(rect, guiCon, style);
 
             return data;
@@ -73,7 +73,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eBool Button(Rect rect, Texture texture, GUIStyle style) => ButtonMaster(rect, new GUICon(texture), style);
 
         private static eBool ButtonMaster(Rect rect, GUICon guiCon, GUIStyle style) =>
-                new eBool {Event = new Event(Event.current), Rect = rect, Value = GUI.Button(rect, guiCon, style)};
+                new eBool { Event = new Event(Event.current), Rect = rect, Value = GUI.Button(rect, guiCon, style) };
 #endregion
 
 #region Toggle
@@ -94,7 +94,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eBool Toggle(Rect rect, bool toggle, Texture texture, GUIStyle style) => ToggleMaster(rect, toggle, new GUICon(texture), style);
 
         public static eBool ToggleMaster(Rect rect, bool toggle, GUICon guiCon, GUIStyle style) =>
-                new eBool {Event = new Event(Event.current), Rect = rect, Value = GUI.Toggle(rect, toggle, guiCon, style)};
+                new eBool { Event = new Event(Event.current), Rect = rect, Value = GUI.Toggle(rect, toggle, guiCon, style) };
 #endregion
 
 #region Toggle
@@ -115,7 +115,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eBool ToggleLeft(Rect rect, bool toggle, Texture texture, GUIStyle style) => ToggleLeftMaster(rect, toggle, new GUICon(texture), style);
 
         public static eBool ToggleLeftMaster(Rect rect, bool toggle, GUICon guiCon, GUIStyle style) =>
-                new eBool {Event = new Event(Event.current), Rect = rect, Value = EditorGUI.ToggleLeft(rect, guiCon, toggle, style)};
+                new eBool { Event = new Event(Event.current), Rect = rect, Value = EditorGUI.ToggleLeft(rect, guiCon, toggle, style) };
 #endregion
 
 #region Foldout
@@ -150,7 +150,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eInt IntField(Rect rect, GUICon guiCon, int value, GUIStyle style) => IntFieldMaster(rect, guiCon, value, style);
 
         private static eInt IntFieldMaster(Rect rect, GUICon guiCon, int value, GUIStyle style) =>
-                new eInt {Event = new Event(Event.current), Rect = rect, Value = EditorGUI.IntField(rect, guiCon, value, style)};
+                new eInt { Event = new Event(Event.current), Rect = rect, Value = EditorGUI.IntField(rect, guiCon, value, style) };
 #endregion
 
 #region DelayedIntField
@@ -165,7 +165,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eInt DelayedIntField(Rect rect, GUICon guiCon, int value, GUIStyle style) => DelayedIntFieldMaster(rect, guiCon, value, style);
 
         private static eInt DelayedIntFieldMaster(Rect rect, GUICon guiCon, int value, GUIStyle style) =>
-                new eInt {Event = new Event(Event.current), Rect = rect, Value = EditorGUI.DelayedIntField(rect, guiCon, value, style)};
+                new eInt { Event = new Event(Event.current), Rect = rect, Value = EditorGUI.DelayedIntField(rect, guiCon, value, style) };
 #endregion
 
 #region FloatField
@@ -182,7 +182,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eFloat FloatField(Rect rect, GUICon guiCon, float value, GUIStyle style) => FloatFieldMaster(rect, guiCon, value, style);
 
         private static eFloat FloatFieldMaster(Rect rect, GUICon guiCon, float value, GUIStyle style) =>
-                new eFloat {Event = new Event(Event.current), Rect = rect, Value = EditorGUI.FloatField(rect, guiCon, value, style)};
+                new eFloat { Event = new Event(Event.current), Rect = rect, Value = EditorGUI.FloatField(rect, guiCon, value, style) };
 #endregion
 
 #region DelayedFloatField
@@ -199,7 +199,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eFloat DelayedFloatField(Rect rect, GUICon guiCon, float value, GUIStyle style) => DelayedFloatFieldMaster(rect, guiCon, value, style);
 
         private static eFloat DelayedFloatFieldMaster(Rect rect, GUICon guiCon, float value, GUIStyle style) =>
-                new eFloat {Event = new Event(Event.current), Rect = rect, Value = EditorGUI.DelayedFloatField(rect, guiCon, value, style)};
+                new eFloat { Event = new Event(Event.current), Rect = rect, Value = EditorGUI.DelayedFloatField(rect, guiCon, value, style) };
 #endregion
 
 #region DoubleField
@@ -216,7 +216,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eDouble DoubleField(Rect rect, GUICon guiCon, double value, GUIStyle style) => DoubleFieldMaster(rect, guiCon, value, style);
 
         private static eDouble DoubleFieldMaster(Rect rect, GUICon guiCon, double value, GUIStyle style) =>
-                new eDouble {Event = new Event(Event.current), Rect = rect, Value = EditorGUI.DoubleField(rect, guiCon, value, style)};
+                new eDouble { Event = new Event(Event.current), Rect = rect, Value = EditorGUI.DoubleField(rect, guiCon, value, style) };
 #endregion
 
 #region DelayedDoubleField
@@ -233,7 +233,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eDouble DelayedDoubleField(Rect rect, GUICon guiCon, double value, GUIStyle style) => DelayedDoubleFieldMaster(rect, guiCon, value, style);
 
         private static eDouble DelayedDoubleFieldMaster(Rect rect, GUICon guiCon, double value, GUIStyle style) =>
-                new eDouble {Event = new Event(Event.current), Rect = rect, Value = EditorGUI.DelayedDoubleField(rect, guiCon, value, style)};
+                new eDouble { Event = new Event(Event.current), Rect = rect, Value = EditorGUI.DelayedDoubleField(rect, guiCon, value, style) };
 #endregion
 
 #region TextField
@@ -250,7 +250,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eString TextField(Rect rect, GUICon guiCon, string value, GUIStyle style) => TextFieldMaster(rect, guiCon, value, style);
 
         private static eString TextFieldMaster(Rect rect, GUICon guiCon, string value, GUIStyle style) =>
-                new eString {Event = new Event(Event.current), Rect = rect, Value = EditorGUI.TextField(rect, guiCon, value, style)};
+                new eString { Event = new Event(Event.current), Rect = rect, Value = EditorGUI.TextField(rect, guiCon, value, style) };
 #endregion
 
 #region DelayedTextField
@@ -267,7 +267,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eString DelayedTextField(Rect rect, GUICon guiCon, string value, GUIStyle style) => DelayedTextFieldMaster(rect, guiCon, value, style);
 
         private static eString DelayedTextFieldMaster(Rect rect, GUICon guiCon, string value, GUIStyle style) =>
-                new eString {Event = new Event(Event.current), Rect = rect, Value = EditorGUI.DelayedTextField(rect, guiCon, value, style)};
+                new eString { Event = new Event(Event.current), Rect = rect, Value = EditorGUI.DelayedTextField(rect, guiCon, value, style) };
 #endregion
 
 #region TextArea
@@ -276,7 +276,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eString TextArea(Rect rect, string value, GUIStyle style) => TextAreaMaster(rect, value, style);
 
         private static eString TextAreaMaster(Rect rect, string value, GUIStyle style) =>
-                new eString {Event = new Event(Event.current), Rect = rect, Value = EditorGUI.TextArea(rect, value, style)};
+                new eString { Event = new Event(Event.current), Rect = rect, Value = EditorGUI.TextArea(rect, value, style) };
 #endregion
 
 #region RawObjectField
@@ -289,7 +289,7 @@ namespace ForestOfChaos.Unity.Editor {
                 RawObjectFieldMaster(rect, guiCon, value, type, allowSceneObjects);
 
         private static eObject RawObjectFieldMaster(Rect rect, GUICon guiCon, Object value, Type type, bool allowSceneObjects) =>
-                new eObject {Event = new Event(Event.current), Rect = rect, Value = EditorGUI.ObjectField(rect, guiCon, value, type, allowSceneObjects)};
+                new eObject { Event = new Event(Event.current), Rect = rect, Value = EditorGUI.ObjectField(rect, guiCon, value, type, allowSceneObjects) };
 #endregion
 
 #region ObjectFieldGeneric
@@ -303,7 +303,7 @@ namespace ForestOfChaos.Unity.Editor {
                 ObjectFieldMaster(rect, guiCon, value, type, allowSceneObjects);
 
         private static GUIEvent<T> ObjectFieldMaster<T>(Rect rect, GUICon guiCon, T value, Type type, bool allowSceneObjects) where T: Object =>
-                new GUIEvent<T> {Event = new Event(Event.current), Rect = rect, Value = (T)EditorGUI.ObjectField(rect, guiCon, value, type, allowSceneObjects)};
+                new GUIEvent<T> { Event = new Event(Event.current), Rect = rect, Value = (T)EditorGUI.ObjectField(rect, guiCon, value, type, allowSceneObjects) };
 #endregion
 
 #region HelpBox
@@ -316,7 +316,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static GUIEvent HelpBox(Rect rect, string text) => HelpBoxMaster(rect, text, MessageType.None);
 
         private static GUIEvent HelpBoxMaster(Rect rect, string text, MessageType type) {
-            var data = new GUIEvent {Event = new Event(Event.current), Rect = rect};
+            var data = new GUIEvent { Event = new Event(Event.current), Rect = rect };
             EditorGUI.HelpBox(rect, text, type);
 
             return data;
@@ -333,7 +333,7 @@ namespace ForestOfChaos.Unity.Editor {
         }
 
         private static eProp PropDraw(Rect pos, SerProp prop, GUICon cont, bool includeChildren, AttributeCheck ignoreCheck) {
-            var data = new eProp {Event = new Event(Event.current), Rect = pos, Value = prop};
+            var data = new eProp { Event = new Event(Event.current), Rect = pos, Value = prop };
 
             if (ignoreCheck == AttributeCheck.DontCheck)
                 return DoPropSwitchDraw(pos, prop, cont, includeChildren, data);
@@ -472,7 +472,7 @@ namespace ForestOfChaos.Unity.Editor {
 
 #region ProgressBar
         public static GUIEvent ProgressBar(Rect rect, float fillAmount, string label = "") {
-            var data = new GUIEvent {Event = new Event(Event.current), Rect = rect};
+            var data = new GUIEvent { Event = new Event(Event.current), Rect = rect };
             EditorGUI.ProgressBar(rect, fillAmount, label);
 
             return data;
@@ -545,7 +545,7 @@ namespace ForestOfChaos.Unity.Editor {
             Label(labelRect, label);
 
             using (Disposables.DisabledScope(disabled))
-                draw.Trigger(propRect);
+                draw?.Invoke(propRect);
 
             using (Disposables.SetIndent(0)) {
                 var index = EditorGUI.Popup(menuRect, GUICon.none, active, Options, Styles.InLineOptionsMenu);

@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: TransformEditor.cs
-//    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2020/04/25
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
@@ -32,7 +32,7 @@ namespace ForestOfChaos.Unity.Editor {
             set => EditorPrefs.SetInt("FoCsTE.TabNum", tabNum = value);
         }
 
-        private static GUILayoutOption[] SCALE_LABEL_OPTIONS => new[] {GUILayout.Width(60), SCALE_BUTTON_HEIGHT};
+        private static GUILayoutOption[] SCALE_LABEL_OPTIONS => new[] { GUILayout.Width(60), SCALE_BUTTON_HEIGHT };
 
         private static GUILayoutOption SCALE_BUTTON_HEIGHT => GUILayout.Height(16);
 
@@ -70,7 +70,7 @@ namespace ForestOfChaos.Unity.Editor {
                     }
                 }
 
-                TabName[TabNum].Value.Trigger();
+                TabName[TabNum].Value?.Invoke();
                 serializedObject.ApplyModifiedProperties();
             }
         }

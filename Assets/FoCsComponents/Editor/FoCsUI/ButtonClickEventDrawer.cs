@@ -1,14 +1,13 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region © Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Components.Editor
 //       File: ButtonClickEventDrawer.cs
-//    Created: 2020/04/25 | 5:51 AM
-// LastEdited: 2020/10/11 | 10:09 PM
+//    Created: 2020/04/25
+// LastEdited: 2022/02/19
 #endregion
 
 using ForestOfChaos.Unity.FoCsUI.Button;
 using UnityEditor;
-using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor.FoCsUI {
     [CanEditMultipleObjects]
@@ -16,7 +15,7 @@ namespace ForestOfChaos.Unity.Editor.FoCsUI {
     public class ButtonClickEventBaseDrawer: FoCsEditor {
         protected override void DoExtraDraw() {
             using (Disposables.HorizontalScope()) {
-                if (GUILayout.Button("Add Object Name ID")) {
+                if (FoCsGUI.Layout.Button("Add Object Name ID")) {
                     var btn = (FoCsButton)serializedObject.targetObject;
 
                     if (!btn.Button.name.Contains("_btn"))
@@ -25,10 +24,11 @@ namespace ForestOfChaos.Unity.Editor.FoCsUI {
                     btn.TextGO.name = btn.Button.name.Replace("_btn", "") + "_text";
                 }
 
-                if (GUILayout.Button("Change Button Text to Button GO Name")) {
-                    var btn = (FoCsButton)serializedObject.targetObject;
-                    btn.Text = btn.Button.name.Replace("_btn", "");
-                }
+                if (!FoCsGUI.Layout.Button("Change Button Text to Button GO Name"))
+                    return;
+
+                var btn2 = (FoCsButton)serializedObject.targetObject;
+                btn2.Text = btn2.Button.name.Replace("_btn", "");
             }
         }
     }

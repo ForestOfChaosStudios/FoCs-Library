@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region Â© Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: DisableEditingAttributeDrawer.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:11 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using ForestOfChaos.Unity.Attributes;
@@ -14,7 +14,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
     [CustomPropertyDrawer(typeof(DisableEditingAttribute), true)]
     public class DisableEditingAttributeDrawer: FoCsPropertyDrawerWithAttribute<DisableEditingAttribute> {
         private const            float        WIDTH         = 16f;
-        internal static readonly GUIContent[] OPTIONS_ARRAY = {new GUIContent("Enable Editing"), new GUIContent("Disable Editing")};
+        internal static readonly GUIContent[] OPTIONS_ARRAY = { new GUIContent("Enable Editing"), new GUIContent("Disable Editing") };
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
             using (var propScope = Disposables.PropertyScope(position, label, property)) {

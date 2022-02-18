@@ -1,9 +1,9 @@
-#region © Forest Of Chaos Studios 2019 - 2020
+#region Â© Forest Of Chaos Studios 2019 - 2022
 //   Solution: FoCs-Library
 //    Project: FoCs.Unity.Library.Editor
 //       File: ScriptGenerators.cs
-//    Created: 2019/05/21 | 12:00 AM
-// LastEdited: 2020/10/11 | 10:10 PM
+//    Created: 2019/05/21
+// LastEdited: 2022/02/19
 #endregion
 
 using System;
@@ -17,23 +17,23 @@ using UnityEditor;
 namespace ForestOfChaos.Unity.Editor.Utilities {
     public static class ScriptGenerators {
         public static Dictionary<Type, System.Type> TypeToString = new Dictionary<Type, System.Type> {
-                {Type.String, typeof(TypeWithNameAndData.StringType)},
-                {Type.Int, typeof(TypeWithNameAndData.IntType)},
-                {Type.Int32, typeof(TypeWithNameAndData.Int32Type)},
-                {Type.Int64, typeof(TypeWithNameAndData.Int64Type)},
-                {Type.Float, typeof(TypeWithNameAndData.FloatType)},
-                {Type.Byte, typeof(TypeWithNameAndData.ByteType)},
-                {Type.Bool, typeof(TypeWithNameAndData.BoolType)}
+                { Type.String, typeof(TypeWithNameAndData.StringType) },
+                { Type.Int, typeof(TypeWithNameAndData.IntType) },
+                { Type.Int32, typeof(TypeWithNameAndData.Int32Type) },
+                { Type.Int64, typeof(TypeWithNameAndData.Int64Type) },
+                { Type.Float, typeof(TypeWithNameAndData.FloatType) },
+                { Type.Byte, typeof(TypeWithNameAndData.ByteType) },
+                { Type.Bool, typeof(TypeWithNameAndData.BoolType) }
         };
 
         public static Dictionary<Type, object> TypeToData = new Dictionary<Type, object> {
-                {Type.String, "\"\""},
-                {Type.Int, 0},
-                {Type.Int32, 0},
-                {Type.Int64, 0},
-                {Type.Float, 0},
-                {Type.Byte, 0},
-                {Type.Bool, false}
+                { Type.String, "\"\"" },
+                { Type.Int, 0 },
+                { Type.Int32, 0 },
+                { Type.Int64, 0 },
+                { Type.Float, 0 },
+                { Type.Byte, 0 },
+                { Type.Bool, false }
         };
 
         [Serializable]
