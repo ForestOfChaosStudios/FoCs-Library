@@ -29,7 +29,7 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
         }
 
         protected override Rect DoGetNextAmount(int amount, Rect retVal) {
-            retVal = retVal.Edit(RectEdit.SetWidth(retVal.width * amount));
+            retVal = retVal.GetModifiedRect(RectEdit.SetWidth(retVal.width * amount));
 
             return retVal;
         }

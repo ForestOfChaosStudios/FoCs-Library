@@ -714,6 +714,30 @@ namespace ForestOfChaos.Unity.Editor {
                 return data;
             }
 #endregion
+
+            public static Rect GetRect(GUICon content, GUIStyle style) => GUILayoutUtility.GetRect(content, style);
+
+            public static Rect GetRect(GUICon content, GUIStyle style, params GUILayOpt[] options) => GUILayoutUtility.GetRect(content, style, options);
+
+            public static Rect GetRect(float width, float height) => GUILayoutUtility.GetRect(width, height);
+
+            public static Rect GetRect(float width, float height, GUIStyle style) => GUILayoutUtility.GetRect(width, height, style);
+
+            public static Rect GetRect(float width, float height, params GUILayOpt[] options) => GUILayoutUtility.GetRect(width, height, options);
+
+            public static Rect GetRect(float width, float height, GUIStyle style, params GUILayOpt[] options) => GUILayoutUtility.GetRect(width, height, style, options);
+
+            public static Rect GetRect(float minWidth, float maxWidth, float minHeight, float maxHeight) => GUILayoutUtility.GetRect(minWidth, maxWidth, minHeight, maxHeight);
+
+            public static Rect GetRect(float minWidth, float maxWidth, float minHeight, float maxHeight, GUIStyle style) =>
+                    GUILayoutUtility.GetRect(minWidth, maxWidth, minHeight, maxHeight, style);
+
+            public static Rect GetRect(float minWidth, float maxWidth, float minHeight, float maxHeight, params GUILayoutOption[] options) =>
+                    GUILayoutUtility.GetRect(minWidth, maxWidth, minHeight, maxHeight, options);
+
+            public static Rect GetRect(float minWidth, float maxWidth, float minHeight, float maxHeight, GUIStyle style, params GUILayoutOption[] options) =>
+                    GUILayoutUtility.GetRect(minWidth, maxWidth, minHeight, maxHeight, style, options);
+
         }
     }
 }

@@ -85,7 +85,7 @@ namespace ForestOfChaos.Unity.Editor {
 
         public void VerifyIPropertyLayoutHandlerArray(ObjectReferenceHandler owner) {
             if (Handlers == null)
-                Handlers = new List<IPropertyLayoutHandler> { new ListHandler(owner.owner), new DefaultScriptPropertyHandler(owner.owner) };
+                Handlers = new List<IPropertyLayoutHandler> { new ListHandler(owner.Owner), new DefaultScriptPropertyHandler(owner.Owner) };
 
             VerifyIPropertyLayout();
         }

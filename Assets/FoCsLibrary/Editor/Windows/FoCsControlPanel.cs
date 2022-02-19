@@ -16,7 +16,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor.Windows {
-    public class FoCsControlPanel: FoCsWindow<FoCsControlPanel> {
+    public partial class FoCsControlPanel: FoCsWindow<FoCsControlPanel> {
         private const  string     SHORT_TITLE = "Control Panel";
         private const  string     TITLE       = "FoCs " + SHORT_TITLE;
         public static  GUISkin    skin;
@@ -25,7 +25,7 @@ namespace ForestOfChaos.Unity.Editor.Windows {
 
         private static List<Type> WindowList => windowList ?? (windowList = ReflectionUtilities.GetTypesWith<FoCsWindowAttribute>(false));
 
-        private static List<Type> TabList => tabList ?? (tabList = ReflectionUtilities.GetTypesWith<Editor.FoCsControlPanel.FoCsControlPanelTabAttribute>(false));
+        private static List<Type> TabList => tabList ?? (tabList = ReflectionUtilities.GetTypesWith<FoCsControlPanelTabAttribute>(false));
 
         private static int ActiveTab {
             get => EditorPrefs.GetInt("FoCsCP.ActiveIndex");

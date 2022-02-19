@@ -34,10 +34,10 @@ namespace ForestOfChaos.Unity.Editor.Animation {
             using (var propScope = Disposables.PropertyScope(position, label, property)) {
                 position.height = SingleLine;
                 label           = propScope.content;
-                var labelPos = position.Edit(RectEdit.SetWidth(EditorGUIUtility.labelWidth));
+                var labelPos = position.GetModifiedRect(RectEdit.SetWidth(EditorGUIUtility.labelWidth));
                 FoCsGUI.Label(labelPos, label);
 
-                using (var scope = Disposables.RectHorizontalScope(6, position.Edit(RectEdit.AddX(labelPos.width), RectEdit.SetWidth(position.width - labelPos.width)))) {
+                using (var scope = Disposables.RectHorizontalScope(6, position.GetModifiedRect(RectEdit.AddX(labelPos.width), RectEdit.SetWidth(position.width - labelPos.width)))) {
                     using (Disposables.IndentSet(0)) {
                         using (var innerScope = Disposables.RectHorizontalScope(3, scope.GetNext(2))) {
                             FoCsGUI.Label(innerScope.GetNext(), KEY_LABEL);

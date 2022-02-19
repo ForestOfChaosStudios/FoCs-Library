@@ -9,8 +9,8 @@
 using ForestOfChaos.Unity.Editor.Utilities;
 using UnityEngine;
 
-namespace ForestOfChaos.Unity.Editor {
-    [FoCsControlPanel.FoCsControlPanelTabAttribute]
+namespace ForestOfChaos.Unity.Editor.Windows {
+    [FoCsControlPanel.FoCsControlPanelTab]
     public static class FoCsCopyPasteUtilityTab {
         public static void DrawGUI(FoCsControlPanel owner) {
             using (Disposables.HorizontalScope()) {

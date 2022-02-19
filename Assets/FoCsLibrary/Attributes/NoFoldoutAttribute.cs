@@ -10,8 +10,20 @@ using UnityEngine;
 
 namespace ForestOfChaos.Unity.Attributes {
     public class NoFoldoutAttribute: PropertyAttribute {
-        public readonly bool ShowVariableName;
+        public readonly bool   ShowVariableName;
+        public readonly bool   IndentChildItems;
+        public readonly string ArrayElementNameReplacement;
 
-        public NoFoldoutAttribute(bool showName = true) => ShowVariableName = showName;
+        public NoFoldoutAttribute(bool showName, bool indentChildItems = true, string arrayElementNameReplacement = null) {
+            ShowVariableName            = showName;
+            IndentChildItems            = indentChildItems;
+            ArrayElementNameReplacement = arrayElementNameReplacement;
+        }
+
+        public NoFoldoutAttribute():this(true,true,null) {
+        }
+
+        public NoFoldoutAttribute(string arrayElementNameReplacement) : this(true, true, arrayElementNameReplacement) {
+        }
     }
 }

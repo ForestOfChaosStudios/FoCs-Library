@@ -8,12 +8,15 @@
 
 using ForestOfChaos.Unity.Attributes;
 using ForestOfChaos.Unity.Editor.Utilities;
+using ForestOfChaos.Unity.Extensions;
+using ForestOfChaos.Unity.Utilities;
 using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
     [CustomPropertyDrawer(typeof(NoFoldoutAttribute), true)]
     public class NoFoldoutAttributeDrawer: FoCsPropertyDrawerWithAttribute<NoFoldoutAttribute> {
+        private UnityReorderableListStorage listStorage = new UnityReorderableListStorage();
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
             using (var propScope = Disposables.PropertyScope(position, label, property)) {
                 var rect = position;
@@ -21,18 +24,38 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
                 property.isExpanded = true;
 
                 if (GetAttribute.ShowVariableName) {
+                    if (GetAttribute.ArrayElementNameReplacement.IsNotNullOrEmpty()) {
+                        label.text = label.text.Replace("Element", GetAttribute.ArrayElementNameReplacement);
+                    }
                     rect.height = SingleLine;
-                    EditorGUI.LabelField(rect, label);
+                    FoCsGUI.Label(rect, label);
                     rect.y += SingleLine;
                 }
 
                 property.NextVisible(true);
-
-                using (Disposables.Indent()) {
-                    foreach (var child in property.GetChildren()) {
-                        FoCsGUI.PropertyField(rect, child, true, FoCsGUI.AttributeCheck.DoCheck);
-                        rect.y += FoCsGUI.GetPropertyHeight(child, GUIContent.none, true, FoCsGUI.AttributeCheck.DoCheck);
+                if (GetAttribute.IndentChildItems) {
+                    using (Disposables.Indent()) {
+                        DrawProperty(property, rect);
                     }
+                }
+                else {
+                    DrawProperty(property, rect);
+                }
+            }
+        }
+
+        private void DrawProperty(SerializedProperty property, Rect rect) {
+            var modifiedRect = new Rect(rect);
+            foreach (var child in property.GetChildren()) {
+                if (child.isArray) {
+                    var list = listStorage.GetList(child);
+                    using (Disposables.Indent(2))
+                        list.HandleDrawing(modifiedRect.GetModifiedRect(RectEdit.Indent()));
+                    modifiedRect = modifiedRect.GetModifiedRect(RectEdit.AddY(list.GetTotalHeight()));
+                }
+                else {
+                    FoCsGUI.PropertyField(modifiedRect, child, true, FoCsGUI.AttributeCheck.DoCheck);
+                    modifiedRect = modifiedRect.GetModifiedRect(RectEdit.AddY(FoCsGUI.GetPropertyHeight(child, GUIContent.none, true, FoCsGUI.AttributeCheck.DoCheck)));
                 }
             }
         }
@@ -42,8 +65,15 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers.Attributes {
             property.isExpanded = true;
             property.NextVisible(true);
 
-            foreach (var child in property.GetChildren())
-                totalHeight += FoCsGUI.GetPropertyHeight(child, GUIContent.none, true, FoCsGUI.AttributeCheck.DoCheck);
+            foreach (var child in property.GetChildren()) {
+                if (child.isArray) {
+                    var list = listStorage.GetList(child);
+                    totalHeight += list.GetTotalHeight();
+                }
+                else {
+                    totalHeight += FoCsGUI.GetPropertyHeight(child, GUIContent.none, true, FoCsGUI.AttributeCheck.DoCheck);
+                }
+            }
 
             return totalHeight - 2f;
         }

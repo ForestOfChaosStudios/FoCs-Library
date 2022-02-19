@@ -16,24 +16,23 @@ using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor {
     public class ObjectReferenceHandler: IPropertyLayoutHandler {
-        public readonly  FoCsEditor                        owner;
+        public readonly  FoCsEditor                        Owner;
         private readonly Dictionary<string, EditorFoldout> ShowAfter = new Dictionary<string, EditorFoldout>();
         private          UnityReorderableListStorage       storage;
 
         public UnityReorderableListStorage URLStorage {
-            get => storage ?? (storage = new UnityReorderableListStorage(owner));
+            get => storage ?? (storage = new UnityReorderableListStorage());
             set => storage = value;
         }
 
-        public ObjectReferenceHandler(FoCsEditor _owner) => owner = _owner;
+        public ObjectReferenceHandler(FoCsEditor owner) => Owner = owner;
 
-        public ObjectReferenceHandler(UnityReorderableListStorage _URLStorage) {
-            storage = _URLStorage;
-            owner   = null;
+        public ObjectReferenceHandler(UnityReorderableListStorage urlStorage) {
+            storage = urlStorage;
+            Owner   = null;
         }
 
         private void NormalDraw(ObjectReference drawer) {
-            using (var cc = Disposables.ChangeCheck()) {
                 drawer.IsReferenceOpen.target = drawer.ReferenceOpen;
                 drawer.DrawHeader();
 
@@ -41,14 +40,9 @@ namespace ForestOfChaos.Unity.Editor {
                     if (fade.visible)
                         drawer.DrawReference(URLStorage);
                 }
-
-                if (cc.changed)
-                    URLStorage.owner.Repaint();
-            }
         }
 
         private void DrawWithHeader(ObjectReference drawer) {
-            using (var cc = Disposables.ChangeCheck()) {
                 drawer.IsReferenceOpen.target = drawer.ReferenceOpen;
                 drawer.DrawHeader(true, true);
 
@@ -56,14 +50,10 @@ namespace ForestOfChaos.Unity.Editor {
                     if (fade.visible)
                         drawer.DrawReference(URLStorage);
                 }
-
-                if (cc.changed)
-                    URLStorage.owner.Repaint();
-            }
         }
 
         public void HandleProperty(SerializedProperty property) {
-            var drawer  = owner.GetObjectDrawer(property, owner);
+            var drawer  = Owner.GetObjectDrawer(property, Owner);
             var @object = property.objectReferenceValue;
 
             if (@object == null) {

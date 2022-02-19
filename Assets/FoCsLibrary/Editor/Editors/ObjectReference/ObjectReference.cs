@@ -20,13 +20,10 @@ namespace ForestOfChaos.Unity.Editor {
     public class ObjectReference {
         private readonly HandlerController           Handler = new HandlerController();
         public           AnimBool                    IsReferenceOpen;
-        private          UnityReorderableListStorage listHandler;
         public           FoCsEditor                  owner;
         public           SerializedProperty          Property;
         private          bool                        referenceOpen;
         public           SerializedObject            SerializedObject;
-
-        private UnityReorderableListStorage ListHandler => listHandler ?? (listHandler = new UnityReorderableListStorage(owner));
 
         public bool ReferenceOpen {
             get => referenceOpen;
@@ -88,9 +85,9 @@ namespace ForestOfChaos.Unity.Editor {
             var rect = GUILayoutUtility.GetLastRect();
 
             if (hasHeaderText)
-                rect = rect.Edit(RectEdit.SetWidth(16), RectEdit.SetHeight(rect.height * 0.5f), RectEdit.AddY(rect.height * 0.5f));
+                rect = rect.GetModifiedRect(RectEdit.SetWidth(16), RectEdit.SetHeight(rect.height * 0.5f), RectEdit.AddY(rect.height * 0.5f));
             else
-                rect = rect.Edit(RectEdit.SetWidth(16));
+                rect = rect.GetModifiedRect(RectEdit.SetWidth(16));
 
             if (showFoldout)
                 ReferenceOpen = FoCsGUI.Foldout(rect, ReferenceOpen);

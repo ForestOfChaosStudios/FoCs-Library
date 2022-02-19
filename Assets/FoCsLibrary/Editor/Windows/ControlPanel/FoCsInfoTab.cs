@@ -8,8 +8,8 @@
 
 using UnityEngine;
 
-namespace ForestOfChaos.Unity.Editor {
-    [FoCsControlPanel.FoCsControlPanelTabAttribute]
+namespace ForestOfChaos.Unity.Editor.Windows {
+    [FoCsControlPanel.FoCsControlPanelTab]
     public static class FoCsInfoTab {
         public static void DrawGUI(FoCsControlPanel owner) {
             using (Disposables.HorizontalScope(FoCsGUI.Styles.Unity.Box, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))

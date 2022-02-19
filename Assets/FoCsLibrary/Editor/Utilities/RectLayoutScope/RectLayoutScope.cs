@@ -74,7 +74,7 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
         }
 
         protected virtual Rect DoGetNextAmount(int amount, Rect retVal) {
-            retVal = retVal.Edit(RectEdit.SetWidth(retVal.width * amount));
+            retVal = retVal.GetModifiedRect(RectEdit.SetWidth(retVal.width * amount));
 
             return retVal;
         }
@@ -91,7 +91,7 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
             var retVal = NextRect;
             DoNextRect();
 
-            return retVal.Edit(rectEdit);
+            return retVal.GetModifiedRect(rectEdit);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
             if ((CurrentIndex == Count) || (CurrentIndex + amount > Count))
                 throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
 
-            return GetNext(amount).Edit(rectEdit);
+            return GetNext(amount).GetModifiedRect(rectEdit);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
             var retVal = NextRect;
             DoNextRect();
 
-            return retVal.Edit(edits);
+            return retVal.GetModifiedRect(edits);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace ForestOfChaos.Unity.Editor.Utilities {
             if ((CurrentIndex == Count) || (CurrentIndex + amount > Count))
                 throw new IndexOutOfRangeException("Trying to create a rect, that is no longer in bounds");
 
-            return GetNext(amount).Edit(edits);
+            return GetNext(amount).GetModifiedRect(edits);
         }
 
         public void Dispose() {

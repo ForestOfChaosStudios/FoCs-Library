@@ -40,7 +40,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
                 label = propScope.content;
 
                 if (EditorGUI.indentLevel <= 1)
-                    position = position.Edit(RectEdit.ChangeX(16f));
+                    position = position.GetModifiedRect(RectEdit.ChangeX(16f));
 
                 var axisProp         = property.FindPropertyRelative("Axis");
                 var ValueInverted    = new EditorEntry("Invert Result",                 property.FindPropertyRelative("ValueInverted"));

@@ -15,56 +15,60 @@ namespace ForestOfChaos.Unity.Extensions {
     public static class RectExtensions {
         public static Vector2 GetRandomPosInRect(this Rect rect) => new Vector2(Random.Range(rect.min.x, rect.max.x), Random.Range(rect.min.y, rect.max.y));
 
-        public static Rect Edit(this Rect rect, RectEdit[] edits, params RectEdit[] editParams) {
+        public static Rect GetModifiedRect(this Rect rect, RectEdit[] edits) {
             var output = new Rect(rect);
 
             foreach (var pair in edits)
-                DoEdit(ref output, pair);
-
-            foreach (var pair in editParams)
-                DoEdit(ref output, pair);
+                ProcessModification(ref output, pair);
 
             return output;
         }
 
-        public static Rect Edit(this Rect rect, RectEdit edits, params RectEdit[] editParams) {
+        public static Rect GetModifiedRect(this Rect rect, RectEdit edits) {
             var output = new Rect(rect);
-            DoEdit(ref output, edits);
-
-            foreach (var pair in editParams)
-                DoEdit(ref output, pair);
+            ProcessModification(ref output, edits);
 
             return output;
         }
 
-        private static void DoEdit(ref Rect output, RectEdit pair) {
-            switch (pair.Type) {
+        public static Rect GetModifiedRect(this Rect rect, RectEdit edits, params RectEdit[] editParams) {
+            var output = new Rect(rect);
+            ProcessModification(ref output, edits);
+
+            foreach (var pair in editParams)
+                ProcessModification(ref output, pair);
+
+            return output;
+        }
+
+        private static void ProcessModification(ref Rect output, RectEdit edit) {
+            switch (edit.Type) {
                 case RectEdit.RectEditType.Add:
-                    RectEdit.Add(pair, ref output);
+                    RectEdit.Add(edit, ref output);
 
                     break;
                 case RectEdit.RectEditType.Change:
-                    RectEdit.Change(pair, ref output);
+                    RectEdit.Change(edit, ref output);
 
                     break;
                 case RectEdit.RectEditType.Set:
-                    RectEdit.Set(pair, ref output);
+                    RectEdit.Set(edit, ref output);
 
                     break;
                 case RectEdit.RectEditType.Multiply:
-                    RectEdit.Multiply(pair, ref output);
+                    RectEdit.Multiply(edit, ref output);
 
                     break;
                 case RectEdit.RectEditType.Subtract:
-                    RectEdit.Subtract(pair, ref output);
+                    RectEdit.Subtract(edit, ref output);
 
                     break;
                 case RectEdit.RectEditType.Divide:
-                    RectEdit.Divide(pair, ref output);
+                    RectEdit.Divide(edit, ref output);
 
                     break;
                 case RectEdit.RectEditType.Modulo:
-                    RectEdit.Modulo(pair, ref output);
+                    RectEdit.Modulo(edit, ref output);
 
                     break;
                 default: throw new ArgumentOutOfRangeException();

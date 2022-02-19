@@ -41,7 +41,7 @@ namespace ForestOfChaos.Unity.Editor.Attributes {
         }
 
         private static int DoLessThen4Draw(Rect position, SerializedProperty property, int buttonsIntValue, float labelWidth, int enumLength, bool[] buttonPressed) {
-            using (var scope = Disposables.RectHorizontalScope(enumLength, position.Edit(RectEdit.SetWidth(position.width - labelWidth), RectEdit.AddX(labelWidth)))) {
+            using (var scope = Disposables.RectHorizontalScope(enumLength, position.GetModifiedRect(RectEdit.SetWidth(position.width - labelWidth), RectEdit.AddX(labelWidth)))) {
                 for (var i = 0; i < enumLength; i++) {
                     // Check if the button is/was pressed
                     if ((property.intValue & 1 << i) == (1 << i))
@@ -61,7 +61,7 @@ namespace ForestOfChaos.Unity.Editor.Attributes {
         //{
         //	for(var x = 0; x < enumLength; x += 4)
         //	{
-        //		using(var scope = Disposables.RectHorizontalScope(4, position.Edit(RectEdit.SetWidth(position.width - labelWidth), RectEdit.AddX(labelWidth), RectEdit.SetHeight(SingleLine))))
+        //		using(var scope = Disposables.RectHorizontalScope(4, position.GetModifiedRect(RectEdit.SetWidth(position.width - labelWidth), RectEdit.AddX(labelWidth), RectEdit.SetHeight(SingleLine))))
         //		{
         //			for(var i = x; i < 4; i++)
         //			{

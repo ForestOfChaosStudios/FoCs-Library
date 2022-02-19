@@ -40,7 +40,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
                     EditorGUI.LabelField(position, label);
 
                     using (Disposables.IndentSet(0)) {
-                        var pos = position.Edit(RectEdit.AddX(EditorGUIUtility.labelWidth), RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
+                        var pos = position.GetModifiedRect(RectEdit.AddX(EditorGUIUtility.labelWidth), RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
                         DoFieldsDraw(pos, property);
                     }
                 }
@@ -79,7 +79,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
                     EditorGUI.LabelField(position, label);
 
                     using (Disposables.IndentSet(0)) {
-                        var pos = position.Edit(RectEdit.AddX(EditorGUIUtility.labelWidth), RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
+                        var pos = position.GetModifiedRect(RectEdit.AddX(EditorGUIUtility.labelWidth), RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
                         DoFieldsDraw(pos, property);
                     }
                 }
@@ -119,7 +119,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
                     EditorGUI.LabelField(position, label);
 
                     using (Disposables.IndentSet(0)) {
-                        var pos = position.Edit(RectEdit.AddX(EditorGUIUtility.labelWidth), RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
+                        var pos = position.GetModifiedRect(RectEdit.AddX(EditorGUIUtility.labelWidth), RectEdit.SubtractWidth(EditorGUIUtility.labelWidth));
                         DoFieldsDraw(pos, property);
                     }
                 }

@@ -121,6 +121,39 @@ namespace ForestOfChaos.Unity.Editor {
                                                                       params GUILayoutOption[] options) =>
                 new EditorGUILayout.ScrollViewScope(scrollPos, alwaysShowHorizontal, alwaysShowVertical, options) { handleScrollWheel = handleScrollWheel };
 
+        public static EditorGUILayout.ScrollViewScope ScrollViewScope(ref Vector2 scrollPos) {
+            var result = new EditorGUILayout.ScrollViewScope(scrollPos);
+            scrollPos = result.scrollPosition;
+            return result;
+        }
+
+        public static EditorGUILayout.ScrollViewScope ScrollViewScope(ref Vector2 scrollPos, bool handleScrollWheel) {
+            var result = new EditorGUILayout.ScrollViewScope(scrollPos) { handleScrollWheel = handleScrollWheel };
+            scrollPos = result.scrollPosition;
+            return result;
+        }
+
+        public static EditorGUILayout.ScrollViewScope ScrollViewScope(ref Vector2 scrollPos, params GUILayoutOption[] options) {
+            var result = new EditorGUILayout.ScrollViewScope(scrollPos, options);
+            scrollPos = result.scrollPosition;
+            return result;
+        }
+
+        public static EditorGUILayout.ScrollViewScope ScrollViewScope(ref Vector2 scrollPos, bool handleScrollWheel, params GUILayoutOption[] options) {
+            var result = new EditorGUILayout.ScrollViewScope(scrollPos, options) { handleScrollWheel = handleScrollWheel };
+            scrollPos = result.scrollPosition;
+            return result;
+        }
+
+        public static EditorGUILayout.ScrollViewScope ScrollViewScope(ref Vector2              scrollPos,
+                                                                      bool                     handleScrollWheel,
+                                                                      bool                     alwaysShowHorizontal,
+                                                                      bool                     alwaysShowVertical,
+                                                                      params GUILayoutOption[] options) {
+            var result = new EditorGUILayout.ScrollViewScope(scrollPos, alwaysShowHorizontal, alwaysShowVertical, options) { handleScrollWheel = handleScrollWheel };
+            scrollPos = result.scrollPosition;
+            return result;
+        }
 
         public static RectHorizontalScope RectHorizontalScope(int count, Rect rect) => new RectHorizontalScope(count, rect);
 

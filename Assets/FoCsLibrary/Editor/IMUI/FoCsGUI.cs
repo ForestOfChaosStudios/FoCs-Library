@@ -350,6 +350,7 @@ namespace ForestOfChaos.Unity.Editor {
 
         private static eProp DoPropSwitchDraw(Rect pos, SerProp prop, GUICon cont, bool includeChildren, eProp data) {
             switch (prop.propertyType) {
+                //TODO add more custom handlers like list
                 case SerializedPropertyType.Quaternion:
                 case SerializedPropertyType.Vector4:
                     Vector4PropEditor.Draw(pos, prop, cont);
@@ -524,7 +525,7 @@ namespace ForestOfChaos.Unity.Editor {
         public static eInt DrawDisabledPropertyWithMenu(bool disabled, Rect position, SerProp property, GUICon label, GUICon[] Options, int active, bool autoLabelField = false) {
             Action<Rect> draw = rect => {
                 using (Disposables.SetIndent(0))
-                    PropertyField(rect.Edit(RectEdit.ChangeY(-1), RectEdit.SetHeight(SingleLine)), property, GUICon.none, property.hasVisibleChildren, autoLabelField);
+                    PropertyField(rect.GetModifiedRect(RectEdit.ChangeY(-1), RectEdit.SetHeight(SingleLine)), property, GUICon.none, property.hasVisibleChildren, autoLabelField);
             };
 
             return DrawActionWithMenu(disabled, position, draw, label, Options, active);
@@ -537,7 +538,7 @@ namespace ForestOfChaos.Unity.Editor {
             var propRect  = new Rect(position);
             var labelRect = new Rect(position);
             var menuRect  = new Rect(position);
-            labelRect     = labelRect.Edit(RectEdit.SubtractY(1), RectEdit.SetWidth(EditorGUIUtility.labelWidth));
+            labelRect     = labelRect.GetModifiedRect(RectEdit.SubtractY(1), RectEdit.SetWidth(EditorGUIUtility.labelWidth));
             menuRect.xMin = menuRect.xMax - MENU_BUTTON_SIZE;
             menuRect.xMax = position.xMax;
             propRect.xMin = labelRect.xMax;

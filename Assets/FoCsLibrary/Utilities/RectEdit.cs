@@ -6,6 +6,7 @@
 // LastEdited: 2022/02/19
 #endregion
 
+using UnityEditor;
 using UnityEngine;
 
 namespace ForestOfChaos.Unity.Utilities {
@@ -69,7 +70,10 @@ namespace ForestOfChaos.Unity.Utilities {
 
         public static RectEdit Create(RectEditType type, RectAxis axis, float amount) => new RectEdit(type, axis, amount);
 
-        public static RectEdit AddX(float amount) => Create(RectEditType.Add, RectAxis.X, amount);
+        public static RectEdit IndentToEditorLevel() => Create(RectEditType.Change, RectAxis.X, 15f * EditorGUI.indentLevel);
+        public static RectEdit Indent()              => Create(RectEditType.Change, RectAxis.X, 15f);
+        public static RectEdit Indent(int amount)    => Create(RectEditType.Change, RectAxis.X, 15f * amount);
+        public static RectEdit AddX(float amount)    => Create(RectEditType.Add,    RectAxis.X, amount);
 
         public static RectEdit AddY(float amount) => Create(RectEditType.Add, RectAxis.Y, amount);
 

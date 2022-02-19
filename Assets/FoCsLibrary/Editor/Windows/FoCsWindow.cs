@@ -7,7 +7,6 @@
 #endregion
 
 using UnityEditor;
-using UnityEngine;
 
 namespace ForestOfChaos.Unity.Editor.Windows {
     /// <inheritdoc />
@@ -23,11 +22,15 @@ namespace ForestOfChaos.Unity.Editor.Windows {
 
         protected static TWindow Window => window? window : window = GetWindow();
 
+        public static TWindow CreateInstance()   => CreateInstance<TWindow>();
+
+        public static TWindow FindObjectOfType() => FindObjectOfType<TWindow>();
+
         protected static TWindow GetWindow() {
             if (window != null)
                 return window;
 
-            window = FindObjectOfType<TWindow>() ?? CreateInstance<TWindow>();
+            window = FindObjectOfType() ?? CreateInstance();
 
             return window;
         }
@@ -53,16 +56,16 @@ namespace ForestOfChaos.Unity.Editor.Windows {
         protected abstract void OnGUI();
 
         public static void DrawSpace() {
-            EditorGUILayout.Space();
+            FoCsGUI.Layout.Space();
         }
 
         public static void DrawSpace(int count) {
             for (var i = 0; i < count; i++)
-                EditorGUILayout.Space();
+                FoCsGUI.Layout.Space();
         }
 
         public static void DrawSpace(float size) {
-            GUILayout.Space(size);
+            FoCsGUI.Layout.Space(size);
         }
     }
 }

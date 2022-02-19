@@ -60,7 +60,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
                 SerializedObject.Update();
 
             Foldout = DoFoldoutGUI(position, Foldout);
-            DrawReference(position.Edit(RectEdit.ChangeY(elementHeight - SingleLine)), SerializedObject, Foldout);
+            DrawReference(position.GetModifiedRect(RectEdit.ChangeY(elementHeight - SingleLine)), SerializedObject, Foldout);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
@@ -77,7 +77,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
                 label = propScope.content;
 
                 using (var changeCheckScope = Disposables.ChangeCheck()) {
-                    var prop = FoCsGUI.PropertyField(position.Edit(RectEdit.SetHeight(elementHeight)), property, label);
+                    var prop = FoCsGUI.PropertyField(position.GetModifiedRect(RectEdit.SetHeight(elementHeight)), property, label);
 
                     if (prop.EventIsMouseRInRect) {
                         property.DrawCreateAndAssignObjectMenu();
@@ -93,7 +93,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
         }
 
         public bool DoFoldoutGUI(Rect position, bool internalFoldout) {
-            internalFoldout = EditorGUI.Foldout(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(1)),
+            internalFoldout = EditorGUI.Foldout(position.GetModifiedRect(RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine), RectEdit.ChangeY(1)),
                                                 internalFoldout,
                                                 foldoutGUIContent);
 
@@ -122,7 +122,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
 
             using (var changeCheckScope = Disposables.ChangeCheck()) {
                 using (Disposables.Indent()) {
-                    var drawPos = position.Edit(RectEdit.AddY(SingleLine), RectEdit.SubtractHeight(SingleLine), RectEdit.ChangeY(1));
+                    var drawPos = position.GetModifiedRect(RectEdit.AddY(SingleLine), RectEdit.SubtractHeight(SingleLine), RectEdit.ChangeY(1));
 
                     do {
                         if (!FoCsEditor.IsPropertyHidden(iterator))
@@ -138,7 +138,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
 
         protected static void DrawSurroundingBox(Rect position) {
             if (Event.current.type == EventType.Repaint) {
-                GUI.skin.box.Draw(position.Edit(RectEdit.ChangeY(SingleLine - 1), RectEdit.SubtractWidth(SingleLine + 7), RectEdit.AddX(SingleLine + 9)),
+                GUI.skin.box.Draw(position.GetModifiedRect(RectEdit.ChangeY(SingleLine - 1), RectEdit.SubtractWidth(SingleLine + 7), RectEdit.AddX(SingleLine + 9)),
                                   false,
                                   false,
                                   false,
@@ -154,9 +154,9 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
 
                 using (Disposables.SetIndent(0)) {
                     if (prop.isExpanded)
-                        list.HandleDrawing(drawPos.Edit(RectEdit.ChangeX(16)));
+                        list.HandleDrawing(drawPos.GetModifiedRect(RectEdit.ChangeX(16)));
                     else
-                        list.DrawHeader(drawPos.Edit(RectEdit.ChangeX(16)));
+                        list.DrawHeader(drawPos.GetModifiedRect(RectEdit.ChangeX(16)));
                 }
 
                 drawPos.y += height + Padding;

@@ -11,32 +11,21 @@ using UnityEditor;
 
 namespace ForestOfChaos.Unity.Editor {
     public class UnityReorderableListStorage {
-        internal static List<UnityReorderableListStorage>                storages = new List<UnityReorderableListStorage>();
-        public          IRepaintable                                     owner;
-        internal        Dictionary<string, UnityReorderableListProperty> URLPList = new Dictionary<string, UnityReorderableListProperty>(1);
+        internal static List<UnityReorderableListStorage>                storage = new List<UnityReorderableListStorage>();
+        internal        Dictionary<string, UnityReorderableListProperty> lists = new Dictionary<string, UnityReorderableListProperty>();
 
         public UnityReorderableListStorage() {
-            storages.Add(this);
-        }
-
-        public UnityReorderableListStorage(FoCsEditor painter) {
-            storages.Add(this);
-            owner = painter;
-        }
-
-        public UnityReorderableListStorage(IRepaintable painter) {
-            storages.Add(this);
-            owner = painter;
+            storage.Add(this);
         }
 
         ~UnityReorderableListStorage() {
-            storages.Remove(this);
+            storage.Remove(this);
         }
 
         public UnityReorderableListProperty GetList(SerializedProperty property) {
             var id = GetId(property);
 
-            if (URLPList.TryGetValue(id, out var reorderableList)) {
+            if (lists.TryGetValue(id, out var reorderableList)) {
                 if (reorderableList.Property.serializedObject != null)
                     reorderableList.Property = property;
                 else
@@ -46,10 +35,7 @@ namespace ForestOfChaos.Unity.Editor {
             }
 
             reorderableList = new UnityReorderableListProperty(property, true, true);
-            URLPList.Add(id, reorderableList);
-
-            if (owner != null)
-                reorderableList.IsExpanded.valueChanged.AddListener(owner.Repaint);
+            lists.Add(id, reorderableList);
 
             return reorderableList;
         }

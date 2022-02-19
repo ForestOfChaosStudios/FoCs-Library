@@ -43,7 +43,7 @@ namespace ForestOfChaos.Unity.Editor.PropertyDrawers {
 
             using (var cc = Disposables.ChangeCheck()) {
                 using (Disposables.SetIndent(0))
-                    val.eulerAngles = EditorGUI.Vector3Field(position.Edit(RectEdit.SetHeight(SingleLine), RectEdit.SubtractWidth(2)), GUIContent.none, val.eulerAngles);
+                    val.eulerAngles = EditorGUI.Vector3Field(position.GetModifiedRect(RectEdit.SetHeight(SingleLine), RectEdit.SubtractWidth(2)), GUIContent.none, val.eulerAngles);
 
                 if (cc.changed)
                     property.quaternionValue = val;

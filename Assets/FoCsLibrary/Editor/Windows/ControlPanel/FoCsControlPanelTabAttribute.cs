@@ -8,9 +8,9 @@
 
 using System;
 
-namespace ForestOfChaos.Unity.Editor {
+namespace ForestOfChaos.Unity.Editor.Windows {
     // ReSharper disable once MismatchedFileName
-    public class FoCsControlPanel {
+    public partial class FoCsControlPanel {
         /// <summary>
         ///     This Attribute is used for Tabs that show in the FoCs Control Panel
         ///     Requires a method

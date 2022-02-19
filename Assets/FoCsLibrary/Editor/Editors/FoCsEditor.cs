@@ -134,16 +134,6 @@ namespace ForestOfChaos.Unity.Editor {
         /// </summary>
         /// <returns></returns>
         public override bool RequiresConstantRepaint() {
-            foreach (var property in serializedObject.Properties()) {
-                if (!property.isArray)
-                    continue;
-
-                var reorderableListProperty = UrlpStorage.GetList(property);
-
-                if (reorderableListProperty.IsExpanded.isAnimating)
-                    return true;
-            }
-
             return false;
         }
 
@@ -188,7 +178,7 @@ namespace ForestOfChaos.Unity.Editor {
         /// </summary>
         private void InitReorderableListStorage() {
             if (UrlpStorage == null)
-                UrlpStorage = new UnityReorderableListStorage(this);
+                UrlpStorage = new UnityReorderableListStorage();
         }
 
         /// <summary>
@@ -394,9 +384,9 @@ namespace ForestOfChaos.Unity.Editor {
 
     /// <summary>
     /// </summary>
-    /// <typeparam name="TWindow">Type of <see cref="UnityEngine.Object" /> that the target serializedObject</typeparam>
-    public class FoCsEditor<TWindow>: FoCsEditor where TWindow: Object {
-        protected TWindow Target => (TWindow)target;
+    /// <typeparam name="TTarget">Type of <see cref="UnityEngine.Object" /> that the target serializedObject</typeparam>
+    public class FoCsEditor<TTarget>: FoCsEditor where TTarget: Object {
+        protected TTarget Target => (TTarget)target;
     }
 
 }

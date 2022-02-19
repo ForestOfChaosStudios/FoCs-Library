@@ -28,8 +28,8 @@ namespace ForestOfChaos.Unity.Editor.Maths.Curves {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
             using (var prop = Disposables.PropertyScope(position, label, property)) {
                 var owner = GetTargetObject(property);
-                FoCsGUI.Label(position.Edit(RectEdit.SetHeight(SingleLine)), prop.content);
-                DoDragDrop(position.Edit(RectEdit.MultiplyWidth(0.5f)), property);
+                FoCsGUI.Label(position.GetModifiedRect(RectEdit.SetHeight(SingleLine)), prop.content);
+                DoDragDrop(position.GetModifiedRect(RectEdit.MultiplyWidth(0.5f)), property);
 
                 using (Disposables.Indent()) {
                     var Position = property.FindPropertyRelative("Position");
@@ -37,7 +37,7 @@ namespace ForestOfChaos.Unity.Editor.Maths.Curves {
                     var Scale    = property.FindPropertyRelative("Scale");
 
                     using (var horizontalScope =
-                           Disposables.RectHorizontalScope(5, position.Edit(RectEdit.SetHeight(SingleLine - 2), RectEdit.DivideWidth(2), RectEdit.AddX(position.width * 0.5f)))) {
+                           Disposables.RectHorizontalScope(5, position.GetModifiedRect(RectEdit.SetHeight(SingleLine - 2), RectEdit.DivideWidth(2), RectEdit.AddX(position.width * 0.5f)))) {
                         var                  copyBtn = FoCsGUI.Button(horizontalScope.GetNext(2), CopyContent);
                         var                  isType  = CopyPasteUtility.IsTypeInBuffer(owner);
                         FoCsGUI.GUIEventBool pasteBtn;
@@ -65,7 +65,7 @@ namespace ForestOfChaos.Unity.Editor.Maths.Curves {
                         }
                     }
 
-                    using (var vertScope = Disposables.RectVerticalScope(3, position.Edit(RectEdit.SetHeight(SingleLine * 3), RectEdit.AddY(SingleLine)))) {
+                    using (var vertScope = Disposables.RectVerticalScope(3, position.GetModifiedRect(RectEdit.SetHeight(SingleLine * 3), RectEdit.AddY(SingleLine)))) {
                         Vector3PropEditor.Draw(vertScope.GetNext(), Position, PositionContent);
                         QuaternionPropertyDrawer.Draw(vertScope.GetNext(), Rotation, RotationContent);
                         Vector3PropEditor.Draw(vertScope.GetNext(), Scale, ScaleContent);
@@ -78,7 +78,7 @@ namespace ForestOfChaos.Unity.Editor.Maths.Curves {
             if (DragAndDrop.objectReferences.IsNullOrEmpty())
                 return;
 
-            pos = pos.Edit(RectEdit.SetHeight(SingleLine));
+            pos = pos.GetModifiedRect(RectEdit.SetHeight(SingleLine));
             var @event    = Event.current;
             var obj       = DragAndDrop.objectReferences[0];
             var go        = obj as GameObject;

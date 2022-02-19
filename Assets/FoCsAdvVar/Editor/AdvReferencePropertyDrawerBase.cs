@@ -42,7 +42,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
             using (var propScope = Disposables.PropertyScope(position, label, property)) {
                 label = propScope.content;
 
-                useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.Edit(Edits_Array),
+                useLocal.boolValue = FoCsGUI.DrawPropertyWithMenu(position.GetModifiedRect(Edits_Array),
                                                                   useLocal.boolValue? localValue : globalReference,
                                                                   label,
                                                                   Options_Array,
@@ -64,7 +64,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
 
             using (var propScope = Disposables.PropertyScope(position, label, property)) {
                 label = propScope.content;
-                var editedPosition = position.Edit(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1));
+                var editedPosition = position.GetModifiedRect(RectEdit.SetHeight(SingleLinePlusPadding), RectEdit.ChangeY(1));
 
                 if (useLocal.boolValue) {
                     if (drawLocalValue == null) {
@@ -96,7 +96,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
             if (useLocal.boolValue || (globalReference.objectReferenceValue == null))
                 return foldout;
 
-            foldout = EditorGUI.Foldout(position.Edit(RectEdit.AddY(1), RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine)), foldout, foldoutGUIContent);
+            foldout = EditorGUI.Foldout(position.GetModifiedRect(RectEdit.AddY(1), RectEdit.SetHeight(SingleLine), RectEdit.SetWidth(SingleLine)), foldout, foldoutGUIContent);
 
             if (!foldout)
                 return false;
@@ -113,7 +113,7 @@ namespace ForestOfChaos.Unity.AdvVar.Editor {
                         iterator.NextVisible(true);
 
                     if (next) {
-                        var drawPos = position.Edit(RectEdit.AddY(SingleLine), RectEdit.SubtractHeight(SingleLinePlusPadding));
+                        var drawPos = position.GetModifiedRect(RectEdit.AddY(SingleLine), RectEdit.SubtractHeight(SingleLinePlusPadding));
 
                         do {
                             if (!FoCsEditor.IsPropertyHidden(iterator))
